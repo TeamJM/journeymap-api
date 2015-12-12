@@ -100,7 +100,7 @@ public class ClientAPIFactory
      * Provides a stub implementation of the ClientAPI suitable for rudimentary integration work
      * without having the JourneyMap client mod jar in your development environment.
      *
-     * @return
+     * @return a stub implementation
      */
     public static ClientAPI getStub()
     {

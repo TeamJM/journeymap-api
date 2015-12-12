@@ -77,7 +77,7 @@ public class MapIcon
     /**
      * Sets the pixel offsets used to move the icon relative to the map point.
      *
-     * @param anchorX
+     * @param anchorX left offset in pixels
      */
     public void setAnchor(float anchorX, float anchorY)
     {
@@ -88,7 +88,7 @@ public class MapIcon
     /**
      * Gets the icon image texture location.
      *
-     * @return
+     * @return the resourceLocation
      */
     public String getResourceLocation()
     {
@@ -98,7 +98,7 @@ public class MapIcon
     /**
      * Gets the starting x pixel of icon in sprite sheet.
      *
-     * @return
+     * @return left offset in pixels
      */
     public int getOriginX()
     {
@@ -108,7 +108,7 @@ public class MapIcon
     /**
      * Gets the starting y pixel of icon in sprite sheet.
      *
-     * @return
+     * @return top offset in pixels
      */
     public int getOriginY()
     {
@@ -118,7 +118,7 @@ public class MapIcon
     /**
      * Gets the icon width.
      *
-     * @return
+     * @return width in pixels
      */
     public int getWidth()
     {
@@ -128,7 +128,7 @@ public class MapIcon
     /**
      * Gets the icon height.
      *
-     * @return
+     * @return height in pixels
      */
     public int getHeight()
     {
@@ -136,9 +136,9 @@ public class MapIcon
     }
 
     /**
-     * Gets the color to be applied to the image.
+     * Gets the color (rgb) to be applied to the image.
      *
-     * @return
+     * @return color int
      */
     public int getColor()
     {
@@ -146,10 +146,10 @@ public class MapIcon
     }
 
     /**
-     * Sets the color to be applied to the image.  Use white (0xffffff)
+     * Sets the color (rgb) to be applied to the image.  Use white (0xffffff)
      * to not change the icon color.
      *
-     * @param color
+     * @param color rgb int
      */
     public void setColor(int color)
     {
@@ -160,7 +160,7 @@ public class MapIcon
      * Gets the x pixel offset used to move the icon relative to the
      * point it is paired with. By default anchorX is set to half the icon width.
      *
-     * @return
+     * @return left offset in pixels
      */
     public float getAnchorX()
     {
@@ -171,7 +171,7 @@ public class MapIcon
      * Gets the y pixel offset used to move the icon relative to the
      * point it is paired with. By default anchorY is set to half the icon height.
      *
-     * @return pixels
+     * @return pixels top offset in pixels
      */
     public float getAnchorY()
     {
