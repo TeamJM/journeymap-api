@@ -1,7 +1,7 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api)
 ====
 
-An API for integrating mods with JourneyMap for [Minecraft](http://journeymap.info).  Allows mods to create waypoints
+An API for integrating mods with [JourneyMap for Minecraft](http://journeymap.info).  Allows mods to create waypoints
 and place overlays and markers in one or more map displays within JourneyMap.
 
 Integrating this Code into your Mod
