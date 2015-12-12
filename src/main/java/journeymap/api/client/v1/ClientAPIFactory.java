@@ -129,7 +129,7 @@ public class ClientAPIFactory
             }
 
             @Override
-            public void addWaypoint(String modId, WaypointSpec specification)
+            public void addWaypoint(String modId, WaypointDefinition specification)
             {
                 waypointIds.add(specification.getWaypointId());
                 log("Added waypoint " + specification.getWaypointId());
@@ -155,7 +155,7 @@ public class ClientAPIFactory
             }
 
             @Override
-            public void addMarker(String modId, MarkerSpec specification)
+            public void addMarker(String modId, MarkerOverlay specification)
             {
                 markerIds.add(specification.getMarkerId());
                 log("Added marker " + specification.getMarkerId());
@@ -181,7 +181,7 @@ public class ClientAPIFactory
             }
 
             @Override
-            public void showPolygon(String modId, PolygonSpec specification)
+            public void showPolygon(String modId, PolygonOverlay specification)
             {
                 polygonIds.add(specification.getPolygonId());
                 log("Added polygon " + specification.getPolygonId());

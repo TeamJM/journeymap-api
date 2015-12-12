@@ -30,7 +30,7 @@ import com.google.common.base.Verify;
 /**
  * Specification defining how a waypoint will be suggested to a user.
  */
-public class WaypointSpec
+public class WaypointDefinition
 {
     private String waypointId;
     private String waypointGroupName;
@@ -51,7 +51,7 @@ public class WaypointSpec
      * @param color             rgb color of waypoint label
      * @param dimensions        Dimensions where waypoint should be displayed.
      */
-    public WaypointSpec(String waypointId, String waypointGroupName, String waypointName, MapPoint point, MapIcon icon, int color, int[] dimensions)
+    public WaypointDefinition(String waypointId, String waypointGroupName, String waypointName, MapPoint point, MapIcon icon, int color, int[] dimensions)
     {
         Verify.verifyNotNull(waypointId);
         Verify.verifyNotNull(waypointName);

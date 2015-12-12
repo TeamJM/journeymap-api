@@ -31,9 +31,9 @@ import com.google.common.base.Verify;
 import java.util.List;
 
 /**
- * Specification defining how a polygon map overlay should be displayed.
+ * A polygon overlay displays a geometric area on a map.  For example: An area of claimed chunks.
  */
-public class PolygonSpec extends OverlayBase
+public class PolygonOverlay extends OverlayBase
 {
     private String polygonId;
     private MapPolygon outerArea;
@@ -51,7 +51,7 @@ public class PolygonSpec extends OverlayBase
      * @param overlayGroupName (Optional) A suggested group or category name used to organize map overlays.
      * @param outerArea        A polygon of the outer area to be displayed.
      */
-    public PolygonSpec(String polygonId, String overlayGroupName, MapPolygon outerArea)
+    public PolygonOverlay(String polygonId, String overlayGroupName, MapPolygon outerArea)
     {
         this(polygonId, overlayGroupName, null, null, outerArea, null);
     }
@@ -66,7 +66,7 @@ public class PolygonSpec extends OverlayBase
      * @param outerArea        A polygon of the outer area to be displayed.
      * @param holes            (Optional) A list of polygons treated as holes inside the outerArea
      */
-    public PolygonSpec(String polygonId, String overlayGroupName, String title, String label, MapPolygon outerArea, List<MapPolygon> holes)
+    public PolygonOverlay(String polygonId, String overlayGroupName, String title, String label, MapPolygon outerArea, List<MapPolygon> holes)
     {
         Verify.verifyNotNull(polygonId);
         this.polygonId = polygonId;
@@ -89,11 +89,11 @@ public class PolygonSpec extends OverlayBase
      */
     public void setStyle(float strokeWidth, int strokeColor, float strokeOpacity, int fillColor, int fillOpacity)
     {
-        this.strokeWidth = strokeWidth;
-        this.strokeColor = strokeColor;
-        this.strokeOpacity = strokeOpacity;
-        this.fillColor = fillColor;
-        this.fillOpacity = fillOpacity;
+        setStrokeWidth(strokeWidth);
+        setStrokeColor(strokeColor);
+        setStrokeOpacity(strokeOpacity);
+        setFillColor(fillColor);
+        setFillOpacity(fillOpacity);
     }
 
     /**
@@ -184,7 +184,6 @@ public class PolygonSpec extends OverlayBase
     public void setStrokeOpacity(float strokeOpacity)
     {
         this.strokeOpacity = Math.max(0, Math.min(strokeOpacity, 1));
-        ;
     }
 
     /**

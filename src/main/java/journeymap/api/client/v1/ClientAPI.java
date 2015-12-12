@@ -64,7 +64,7 @@ public interface ClientAPI
      * @param specification Specification for the waypoint to display.
      * @see #checkPlayerWaypointOptIn(String)
      */
-    public void addWaypoint(String modId, WaypointSpec specification);
+    public void addWaypoint(String modId, WaypointDefinition specification);
 
     /**
      * Remove a player's waypoint, if it exists. The outcome is based on what the PlayerResponse is
@@ -105,7 +105,7 @@ public interface ClientAPI
      * @param specification Specification for the map marker.
      * @see #checkPlayerMapOverlayOptIn(String)
      */
-    public void addMarker(String modId, MarkerSpec specification);
+    public void addMarker(String modId, MarkerOverlay specification);
 
     /**
      * Gets a list of map marker ids associated with your mod.
@@ -145,7 +145,7 @@ public interface ClientAPI
      * @param specification Specification of the polygon to display
      * @see #checkPlayerMapOverlayOptIn(String)
      */
-    public void showPolygon(String modId, PolygonSpec specification);
+    public void showPolygon(String modId, PolygonOverlay specification);
 
     /**
      * Gets a list of polygon ids associated with your mod.  If the PlayerResponse regarding map overlays from your

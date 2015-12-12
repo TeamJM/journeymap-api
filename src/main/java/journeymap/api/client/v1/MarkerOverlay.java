@@ -29,9 +29,9 @@ import com.google.common.base.Objects;
 import com.google.common.base.Verify;
 
 /**
- * Specification defining how a map Marker should be displayed.
+ * A Marker overlat shows a geographical point on the map with an icon and a label.  For example: The spawn point.
  */
-public class MarkerSpec extends OverlayBase
+public class MarkerOverlay extends OverlayBase
 {
     private String markerId;
     private MapPoint point;
@@ -44,7 +44,7 @@ public class MarkerSpec extends OverlayBase
      * @param point    Location of the marker.
      * @param icon     The icon to display as the marker.
      */
-    public MarkerSpec(String markerId, MapPoint point, MapIcon icon)
+    public MarkerOverlay(String markerId, MapPoint point, MapIcon icon)
     {
         this(markerId, null, point, null, null, icon);
     }
@@ -59,7 +59,7 @@ public class MarkerSpec extends OverlayBase
      * @param label            (Optional) Label text to be displayed on the overlay.
      * @param icon             The icon to display as the marker.
      */
-    public MarkerSpec(String markerId, String overlayGroupName, MapPoint point, String title, String label, MapIcon icon)
+    public MarkerOverlay(String markerId, String overlayGroupName, MapPoint point, String title, String label, MapIcon icon)
     {
         Verify.verifyNotNull(markerId);
         Verify.verifyNotNull(icon);
