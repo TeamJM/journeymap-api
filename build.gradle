@@ -13,7 +13,7 @@ dependencies {
 }
 
 group 'teamjm'
-version '1.0-SNAPSHOT'
+version '0.1-SNAPSHOT'
 sourceCompatibility = 1.7
 
 sourceSets {
