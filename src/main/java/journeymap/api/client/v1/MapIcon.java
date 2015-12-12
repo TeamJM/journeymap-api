@@ -39,6 +39,7 @@ public class MapIcon
     private int width;
     private int height;
     private int color = 0xffffff;
+    private float opacity;
     private float anchorX;
     private float anchorY;
 
@@ -157,6 +158,26 @@ public class MapIcon
     }
 
     /**
+     * Gets the opacity of the image (between 0 and 1).
+     *
+     * @return opacity
+     */
+    public float getOpacity()
+    {
+        return opacity;
+    }
+
+    /**
+     * Sets the opacity of the image.
+     *
+     * @param opacity between 0 and 1
+     */
+    public void setOpacity(float opacity)
+    {
+        this.opacity = Math.max(0, Math.min(opacity, 1));
+    }
+
+    /**
      * Gets the x pixel offset used to move the icon relative to the
      * point it is paired with. By default anchorX is set to half the icon width.
      *
@@ -186,6 +207,7 @@ public class MapIcon
                 .add("anchorX", anchorX)
                 .add("anchorY", anchorY)
                 .add("color", color)
+                .add("opacity", opacity)
                 .add("height", height)
                 .add("originX", originX)
                 .add("originY", originY)
