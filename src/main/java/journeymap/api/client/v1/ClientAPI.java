@@ -40,12 +40,12 @@ public interface ClientAPI
     public int getMaxApiVersion();
 
     /**
-     * Check whether player will accept waypoint additions/removals by your mod.
+     * Check whether player will accept waypoints from your mod.
      *
      * @param modId Mod id
      * @return true if player accepts addition/removal of waypoints
      */
-    public boolean checkPlayerWaypointOptIn(String modId);
+    public boolean getPlayerAcceptsWaypoints(String modId);
 
     /**
      * Check whether player will accept map overlays (markers and polygons) from your mod.
@@ -53,7 +53,7 @@ public interface ClientAPI
      * @param modId Mod id
      * @return true if player accepts display of map overlays
      */
-    public boolean checkPlayerMapOverlayOptIn(String modId);
+    public boolean getPlayerAcceptsOverlays(String modId);
 
     /**
      * Add a waypoint for the player. If checkPlayerWaypointOptIn returns false,
@@ -61,8 +61,8 @@ public interface ClientAPI
      * a suggested waypoint, doesn't mean they'll keep it forever.
      *
      * @param modId         Mod id
-     * @param waypointDefinition Specification for the waypoint to display.
-     * @see #checkPlayerWaypointOptIn(String)
+     * @param waypointDefinition Defines the waypoint to display.
+     * @see #getPlayerAcceptsWaypoints(String)
      */
     public void addWaypoint(String modId, WaypointDefinition waypointDefinition);
 
@@ -72,13 +72,13 @@ public interface ClientAPI
      *
      * @param modId      Mod id
      * @param waypointId A unique id (within your mod) for the waypoint.
-     * @see #checkPlayerWaypointOptIn(String)
+     * @see #getPlayerAcceptsWaypoints(String)
      */
     public void removeWaypoint(String modId, String waypointId);
 
     /**
      * Check whether the player has a waypoint with the given waypointId associated with your mod.
-     * If checkPlayerWaypointOptIn returns false, this method does nothing.
+     * If getPlayerAcceptsWaypoints returns false, this method does nothing.
      *
      * @param modId      Mod id
      * @param waypointId A unique id (within your mod) for the waypoint.
@@ -92,7 +92,7 @@ public interface ClientAPI
      *
      * @param modId Mod id
      * @return A list, possibly empty.
-     * @see #checkPlayerWaypointOptIn(String)
+     * @see #getPlayerAcceptsWaypoints(String)
      */
     public List<String> getWaypointIds(String modId);
 
@@ -103,13 +103,13 @@ public interface ClientAPI
      * If a MarkerOverlay with the same markerId already exists, the new one will replace the old one.
      *
      * @param modId         Mod id
-     * @param markerOverlay Specification for the map marker.
-     * @see #checkPlayerMapOverlayOptIn(String)
+     * @param markerOverlay Describes the marker overlay to display.
+     * @see #getPlayerAcceptsOverlays(String)
      */
     public void addMarker(String modId, MarkerOverlay markerOverlay);
 
     /**
-     * Remove a MarkerOverlay, if it exists. If checkPlayerMapOverlayOptIn returns false,
+     * Remove a MarkerOverlay, if it exists. If getPlayerAcceptsOverlays returns false,
      * this method does nothing.
      *
      * @param modId    Mod id
@@ -119,7 +119,7 @@ public interface ClientAPI
 
     /**
      * Check whether the player has a map marker with the given markerId associated with your mod.
-     * If checkPlayerMapOverlayOptIn returns false, this method returns false.
+     * If getPlayerAcceptsOverlays returns false, this method returns false.
      *
      * @param modId    Mod id
      * @param markerId A unique id (within your mod) for the MarkerOverlay.
@@ -129,7 +129,7 @@ public interface ClientAPI
 
     /**
      * Gets a list of MarkerOverlay ids associated with your mod.
-     * If checkPlayerWaypointOptIn returns false, an empty list will be returned.
+     * If getPlayerAcceptsWaypoints returns false, an empty list will be returned.
      *
      * @param modId Mod id
      * @return A list, possibly empty.
@@ -143,13 +143,13 @@ public interface ClientAPI
      * If an ImageOverlay with same imageId already exists, the new one will replace the old one.
      *
      * @param modId        Mod id
-     * @param imageOverlay Specification for the map image.
-     * @see #checkPlayerMapOverlayOptIn(String)
+     * @param imageOverlay Describes the image overlay to display.
+     * @see #getPlayerAcceptsOverlays(String)
      */
     public void addImage(String modId, ImageOverlay imageOverlay);
 
     /**
-     * Remove an ImageOverlay, if it exists. If checkPlayerMapOverlayOptIn returns false,
+     * Remove an ImageOverlay, if it exists. If getPlayerAcceptsOverlays returns false,
      * this method does nothing.
      *
      * @param modId   Mod id
@@ -159,7 +159,7 @@ public interface ClientAPI
 
     /**
      * Check whether the player has an ImageOverlay with the given imageId associated with your mod.
-     * If checkPlayerMapOverlayOptIn returns false, this method returns false.
+     * If getPlayerAcceptsOverlays returns false, this method returns false.
      *
      * @param modId   Mod id
      * @param imageId A unique id (within your mod) for the map image.
@@ -168,7 +168,7 @@ public interface ClientAPI
     public boolean getImageExists(String modId, String imageId);
 
     /**
-     * Gets a list of ImageOverlay imageIds associated with your mod. If checkPlayerMapOverlayOptIn returns false,
+     * Gets a list of ImageOverlay imageIds associated with your mod. If getPlayerAcceptsOverlays returns false,
      * an empty list will be returned.
      *
      * @param modId Mod id
@@ -183,13 +183,13 @@ public interface ClientAPI
      * If a PolygonOverlay with the same polygonId already exists, the new one will replace the old one.
      *
      * @param modId         Mod id
-     * @param polygonOverlay Specification of the polygon to display
-     * @see #checkPlayerMapOverlayOptIn(String)
+     * @param polygonOverlay Defines the polygon overlay to display
+     * @see #getPlayerAcceptsOverlays(String)
      */
     public void addPolygon(String modId, PolygonOverlay polygonOverlay);
 
     /**
-     * Remove a PolygonOverlay, if it exists. If checkPlayerMapOverlayOptIn returns false,
+     * Remove a PolygonOverlay, if it exists. If getPlayerAcceptsOverlays returns false,
      * this method does nothing.
      *
      * @param modId     Mod id
@@ -199,7 +199,7 @@ public interface ClientAPI
 
     /**
      * Check whether the player has a PolygonOverlay with the given polygonId associated with your mod.
-     * If checkPlayerMapOverlayOptIn returns false, this method returns false.
+     * If getPlayerAcceptsOverlays returns false, this method returns false.
      *
      * @param modId     Mod id
      * @param polygonId A unique id (within your mod) for the polygon.
@@ -208,7 +208,7 @@ public interface ClientAPI
     public boolean getPolygonExists(String modId, String polygonId);
 
     /**
-     * Gets a list of PolygonOverlay polygonIds associated with your mod.  If checkPlayerMapOverlayOptIn
+     * Gets a list of PolygonOverlay polygonIds associated with your mod.  If getPlayerAcceptsOverlays
      * returns false, an empty list will be returned.
      *
      * @param modId Mod id

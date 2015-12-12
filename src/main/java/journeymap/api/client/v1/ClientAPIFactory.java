@@ -119,13 +119,13 @@ public class ClientAPIFactory
             }
 
             @Override
-            public boolean checkPlayerWaypointOptIn(String modId)
+            public boolean getPlayerAcceptsWaypoints(String modId)
             {
                 return true;
             }
 
             @Override
-            public boolean checkPlayerMapOverlayOptIn(String modId)
+            public boolean getPlayerAcceptsOverlays(String modId)
             {
                 return true;
             }
