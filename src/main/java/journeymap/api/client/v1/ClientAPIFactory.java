@@ -25,6 +25,7 @@
 
 package journeymap.api.client.v1;
 
+import com.google.common.collect.LinkedHashMultimap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -106,9 +107,10 @@ public class ClientAPIFactory
     {
         return new ClientAPI()
         {
-            private List<String> waypointIds = new ArrayList<String>();
-            private List<String> markerIds = new ArrayList<String>();
-            private List<String> polygonIds = new ArrayList<String>();
+            private LinkedHashMultimap<String, String> waypointIds = LinkedHashMultimap.create();
+            private LinkedHashMultimap<String, String> imageIds = LinkedHashMultimap.create();
+            private LinkedHashMultimap<String, String> markerIds = LinkedHashMultimap.create();
+            private LinkedHashMultimap<String, String> polygonIds = LinkedHashMultimap.create();
 
             @Override
             public int getMaxApiVersion()
@@ -129,81 +131,105 @@ public class ClientAPIFactory
             }
 
             @Override
-            public void addWaypoint(String modId, WaypointDefinition specification)
+            public void addWaypoint(String modId, WaypointDefinition waypointDefinition)
             {
-                waypointIds.add(specification.getWaypointId());
-                log("Added waypoint " + specification.getWaypointId());
+                waypointIds.put(modId, waypointDefinition.getWaypointId());
+                log("Added waypoint " + waypointDefinition.getWaypointId());
             }
 
             @Override
             public void removeWaypoint(String modId, String waypointId)
             {
-                waypointIds.remove(waypointId);
+                waypointIds.remove(modId, waypointId);
                 log("Removed waypoint " + waypointId);
             }
 
             @Override
             public boolean getWaypointExists(String modId, String waypointId)
             {
-                return waypointIds.contains(waypointId);
+                return waypointIds.containsEntry(modId, waypointId);
             }
 
             @Override
             public List<String> getWaypointIds(String modId)
             {
-                return new ArrayList<String>(waypointIds);
+                return new ArrayList<String>(waypointIds.get(modId));
             }
 
             @Override
-            public void addMarker(String modId, MarkerOverlay specification)
+            public void addMarker(String modId, MarkerOverlay markerOverlay)
             {
-                markerIds.add(specification.getMarkerId());
-                log("Added marker " + specification.getMarkerId());
+                markerIds.put(modId, markerOverlay.getMarkerId());
+                log("Added marker " + markerOverlay.getMarkerId());
             }
 
             @Override
             public List<String> getMarkerIds(String modId)
             {
-                return new ArrayList<String>(markerIds);
+                return new ArrayList<String>(markerIds.get(modId));
+            }
+
+            @Override
+            public void addImage(String modId, ImageOverlay imageOverlay)
+            {
+                imageIds.put(modId, imageOverlay.getImageId());
+            }
+
+            @Override
+            public void removeImage(String modId, String imageId)
+            {
+                imageIds.remove(modId, imageId);
+            }
+
+            @Override
+            public boolean getImageExists(String modId, String imageId)
+            {
+                return imageIds.containsEntry(modId, imageId);
+            }
+
+            @Override
+            public List<String> getImageIds(String modId)
+            {
+                return new ArrayList<String>(imageIds.get(modId));
             }
 
             @Override
             public void removeMarker(String modId, String markerId)
             {
-                markerIds.remove(markerId);
+                markerIds.remove(modId, markerId);
                 log("Removed marker " + markerId);
             }
 
             @Override
             public boolean getMarkerExists(String modId, String markerId)
             {
-                return markerIds.contains(markerId);
+                return markerIds.containsEntry(modId, markerId);
             }
 
             @Override
-            public void showPolygon(String modId, PolygonOverlay specification)
+            public void addPolygon(String modId, PolygonOverlay polygonOverlay)
             {
-                polygonIds.add(specification.getPolygonId());
-                log("Added polygon " + specification.getPolygonId());
+                polygonIds.put(modId, polygonOverlay.getPolygonId());
+                log("Added polygon " + polygonOverlay.getPolygonId());
             }
 
             @Override
             public List<String> getPolygonIds(String modId)
             {
-                return new ArrayList<String>(polygonIds);
+                return new ArrayList<String>(polygonIds.get(modId));
             }
 
             @Override
             public void removePolygon(String modId, String polygonId)
             {
-                polygonIds.remove(polygonId);
+                polygonIds.remove(modId, polygonId);
                 log("Removed polygon " + polygonId);
             }
 
             @Override
             public boolean getPolygonExists(String modId, String polygonId)
             {
-                return polygonIds.contains(polygonId);
+                return polygonIds.containsEntry(modId, polygonId);
             }
 
             private void log(String message)
