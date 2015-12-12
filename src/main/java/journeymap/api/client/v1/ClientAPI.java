@@ -56,7 +56,7 @@ public interface ClientAPI
     public boolean getPlayerAcceptsOverlays(String modId);
 
     /**
-     * Add a waypoint for the player. If checkPlayerWaypointOptIn returns false,
+     * Add a waypoint for the player. If getPlayerAcceptsWaypoints returns false,
      * this method does nothing.  Also note that just because a player accepts
      * a suggested waypoint, doesn't mean they'll keep it forever.
      *
@@ -67,7 +67,7 @@ public interface ClientAPI
     public void addWaypoint(String modId, WaypointDefinition waypointDefinition);
 
     /**
-     * Remove a player's waypoint, if it exists. If checkPlayerWaypointOptIn returns false,
+     * Remove a player's waypoint, if it exists. If getPlayerAcceptsWaypoints returns false,
      * this method does nothing.
      *
      * @param modId      Mod id
@@ -88,7 +88,7 @@ public interface ClientAPI
 
     /**
      * Gets a list of player waypoint ids associated with your mod.
-     * If checkPlayerWaypointOptIn returns false, this method does nothing.
+     * If getPlayerAcceptsWaypoints returns false, this method does nothing.
      *
      * @param modId Mod id
      * @return A list, possibly empty.
@@ -97,7 +97,7 @@ public interface ClientAPI
     public List<String> getWaypointIds(String modId);
 
     /**
-     * Attempt to show a marker on one or more map views. If checkPlayerMapOverlayOptIn returns false,
+     * Attempt to show a marker on one or more map views. If rMapOverlayOptIn returns false,
      * this method does nothing.
      * <p/>
      * If a MarkerOverlay with the same markerId already exists, the new one will replace the old one.
@@ -137,7 +137,7 @@ public interface ClientAPI
     public List<String> getMarkerIds(String modId);
 
     /**
-     * Attempt to show a image on one or more map views.  If checkPlayerMapOverlayOptIn returns false,
+     * Attempt to show a image on one or more map views.  If getPlayerAcceptsOverlays returns false,
      * this method does nothing.
      * <p/>
      * If an ImageOverlay with same imageId already exists, the new one will replace the old one.
@@ -177,7 +177,7 @@ public interface ClientAPI
     public List<String> getImageIds(String modId);
     
     /**
-     * Attempt to show a PolygonOverlay on one or more map views.  If checkPlayerMapOverlayOptIn returns false,
+     * Attempt to show a PolygonOverlay on one or more map views.  If getPlayerAcceptsOverlays returns false,
      * this method does nothing.
      * <p/>
      * If a PolygonOverlay with the same polygonId already exists, the new one will replace the old one.
