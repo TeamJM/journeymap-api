@@ -21,7 +21,7 @@ Building Code in this Repository
 
 Assumptions:  You already know how to use Git and Gradle.
 
-Simply run the Gradle 'assemble' task to generate the following:
+Simply run the Gradle 'build' task to generate the following:
 
 * */build/libs/journeymap-api-#.jar*
 * */build/libs/journeymap-api-#-javadoc.jar*
