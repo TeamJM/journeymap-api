@@ -23,7 +23,7 @@
  *
  */
 
-package journeymap.api.client.v1;
+package journeymap.client.api.map;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Verify;
@@ -31,7 +31,7 @@ import com.google.common.base.Verify;
 /**
  * Defines attributes needed to display an icon on the map.
  */
-public class MapIcon
+public final class MapIcon
 {
     private String resourceLocation;
     private int originX;

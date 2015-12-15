@@ -23,7 +23,7 @@
  *
  */
 
-package journeymap.api.client.v1;
+package journeymap.client.api.map;
 
 /**
  * Base class for common Map overlay characteristics.

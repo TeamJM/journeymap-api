@@ -23,88 +23,103 @@
  *
  */
 
-package journeymap.api.client.v1;
+package journeymap.client.api.map;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Verify;
 
 /**
- * A Marker overlat shows a geographical point on the map with an icon and a label.  For example: The spawn point.
+ * An image overlay places an image on the map between the given coordinates.
  */
-public class MarkerOverlay extends OverlayBase
+public final class ImageOverlay extends OverlayBase
 {
-    private String markerId;
-    private MapPoint point;
-    private MapIcon icon;
+    private String imageId;
+    private MapPoint northWestPoint;
+    private MapPoint southEastPoint;
+    private MapIcon image;
 
     /**
      * Constructor.
      *
-     * @param markerId A unique id for the marker (scoped to your mod) which can be used to remove/update it.
-     * @param point    Location of the marker.
-     * @param icon     The icon to display as the marker.
+     * @param imageId        A unique id for the marker (scoped to your mod) which can be used to remove/update it.
+     * @param northWestPoint Location of the top-left corner of the image.
+     * @param southEastPoint Location of the lower-right corner of the image.
+     * @param image          The image to display as the overlay.
      */
-    public MarkerOverlay(String markerId, MapPoint point, MapIcon icon)
+    public ImageOverlay(String imageId, MapPoint northWestPoint, MapPoint southEastPoint, MapIcon image)
     {
-        this(markerId, null, point, null, null, icon);
+        this(imageId, null, northWestPoint, southEastPoint, null, null, image);
     }
 
     /**
      * Constructor.
      *
-     * @param markerId         A unique id for the marker (scoped to your mod) which can be used to remove/update it.
+     * @param imageId          A unique id for the marker (scoped to your mod) which can be used to remove/update it.
      * @param overlayGroupName A suggested group or category name used to organize map overlays.
-     * @param point            Location of the marker.
+     * @param northWestPoint   Location of the top-left of the image.
+     * @param southEastPoint   Location of the lower-right corner of the image.
      * @param title            (Optional) Rollover text to be displayed when the mouse is over the overlay.
      * @param label            (Optional) Label text to be displayed on the overlay.
-     * @param icon             The icon to display as the marker.
+     * @param image            The image to display as the overlay.
      */
-    public MarkerOverlay(String markerId, String overlayGroupName, MapPoint point, String title, String label, MapIcon icon)
+    public ImageOverlay(String imageId, String overlayGroupName, MapPoint northWestPoint, MapPoint southEastPoint,
+                        String title, String label, MapIcon image)
     {
-        Verify.verifyNotNull(markerId);
-        Verify.verifyNotNull(icon);
-        Verify.verifyNotNull(point);
-        this.markerId = markerId;
-        this.icon = icon;
-        this.point = point;
+        Verify.verifyNotNull(imageId);
+        Verify.verifyNotNull(image);
+        Verify.verifyNotNull(northWestPoint);
+        Verify.verifyNotNull(southEastPoint);
+        this.imageId = imageId;
+        this.image = image;
+        this.northWestPoint = northWestPoint;
+        this.southEastPoint = southEastPoint;
         super.setOverlayGroupName(overlayGroupName);
         super.setTitle(title);
         super.setLabel(label);
     }
 
     /**
-     * A unique id for the marker which can be used to remove/update it.
+     * A unique id for the image overlay which can be used to remove/update it.
      */
-    public String getMarkerId()
+    public String getImageId()
     {
-        return markerId;
+        return imageId;
     }
 
     /**
-     * Location of the marker.
+     * Top-left location of the image overlay.
      */
-    public MapPoint getPoint()
+    public MapPoint getNorthWestPoint()
     {
-        return point;
+        return northWestPoint;
     }
 
     /**
-     * Icon to display in the marker.
+     * Bottom-right location of the image overlay.
+     */
+    public MapPoint getSouthEastPoint()
+    {
+        return southEastPoint;
+    }
+
+    /**
+     * Image to display as the overlay.
      *
      * @return icon
      */
-    public MapIcon getIcon()
+    public MapIcon getImage()
     {
-        return icon;
+        return image;
     }
 
     @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("markerId", markerId)
-                .add("point", point)
-                .add("icon", icon)
+                .add("imageId", imageId)
+                .add("northWestPoint", northWestPoint)
+                .add("southEastPoint", southEastPoint)
+                .add("image", image)
                 .add("label", label)
                 .add("title", title)
                 .add("overlayGroupName", overlayGroupName)

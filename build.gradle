@@ -1,20 +1,61 @@
-repositories {
-    mavenCentral()
+/*
+ *
+ * JourneyMap API
+ * http://journeymap.info
+ * http://bitbucket.org/TeamJM/journeymap-api
+ *
+ * Copyright (c) 2011-2015 Techbrew.  All Rights Reserved.
+ * The following limited rights are granted to you:
+ *
+ * You MAY:
+ *   + Write your own code that uses this API source code as a dependency.
+ *   + Distribute compiled classes of unmodified API source code which your code depends upon.
+ *   + Fork and modify API source code for the purpose of submitting Pull Requests to the
+ *        TeamJM/journeymap-api repository.  Submitting new or modified code to the repository
+ *        means that you are granting Techbrew all rights over the code.
+ *
+ * You MAY NOT:
+ *   - Submit any code to the TeamJM/journeymap-api repository with a different license than this one.
+ *   - Distribute modified versions of the API source code or compiled artifacts of  modified API
+ *        source code.  In this context, "modified" means changes which have not been both approved
+ *        and merged into the TeamJM/journeymap-api repository.
+ *   - Use or distribute the API code in any way not explicitly granted by this license statement.
+ *
+ */
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
 }
 
+apply plugin: 'forge'
 apply plugin: 'java'
 
+group 'teamjm'
+version = api_version + '-SNAPSHOT'
+
+minecraft {
+    version = "${forge_version}-${minecraft_version}"
+    mappings = "snapshot_${snapshot}"
+    replace "@API_VERSION@", api_version
+}
+
 dependencies {
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.google.guava:guava:17.0'
-    compile 'org.apache.logging.log4j:log4j-api:2.0'
-    compile 'org.apache.logging.log4j:log4j-core:2.0'
     testCompile 'junit:junit:4.11'
 }
 
-group 'teamjm'
-version '0.1-SNAPSHOT'
-sourceCompatibility = 1.7
 
 sourceSets {
     main {

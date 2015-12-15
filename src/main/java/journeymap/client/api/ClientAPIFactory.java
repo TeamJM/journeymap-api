@@ -23,9 +23,13 @@
  *
  */
 
-package journeymap.api.client.v1;
+package journeymap.client.api;
 
 import com.google.common.collect.LinkedHashMultimap;
+import journeymap.client.api.map.ImageOverlay;
+import journeymap.client.api.map.MarkerOverlay;
+import journeymap.client.api.map.PolygonOverlay;
+import journeymap.client.api.map.WaypointDefinition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,11 +43,17 @@ import java.util.List;
  * from the loaded mod.  If the mod isn't present, a stub implementation
  * is returned.
  */
-public class ClientAPIFactory
+public final class ClientAPIFactory
 {
+    public final static String API_OWNER = "journeymap";
+    public final static String API_VERSION = "@API_VERSION@";
+    public final static String API_PROVIDES_API = "journeymap|client-api";
+    public final static String API_PROVIDES_MAP = "journeymap|client-api-map";
+    public final static String API_PROVIDES_UTIL = "journeymap|client-api-util";
+    public final static String API_PROVIDES_IMPL = "journeymap|client-api-impl";
     final static Logger LOGGER = LogManager.getLogger("journeymap-api");
-    final static String IMPL_NAME = "JourneyMap ClientAPI v1";
-    final static String IMPL_CLASS = "journeymap.api.client.v1.impl.ClientAPIImpl";
+    final static String IMPL_NAME = "JourneyMap ClientAPI v" + API_VERSION;
+    final static String IMPL_CLASS = "journeymap.client.api.impl.ClientAPIImpl";
     final static String IMPL_METHOD = "getInstance";
 
     /**

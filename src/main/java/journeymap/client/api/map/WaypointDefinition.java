@@ -23,14 +23,14 @@
  *
  */
 
-package journeymap.api.client.v1;
+package journeymap.client.api.map;
 
 import com.google.common.base.Verify;
 
 /**
  * Specification defining how a waypoint will be suggested to a user.
  */
-public class WaypointDefinition
+public final class WaypointDefinition
 {
     private String waypointId;
     private String waypointGroupName;

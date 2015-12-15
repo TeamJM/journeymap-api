@@ -23,7 +23,7 @@
  *
  */
 
-package journeymap.api.client.v1;
+package journeymap.client.api.map;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Verify;
@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * A polygon overlay displays a geometric area on a map.  For example: An area of claimed chunks.
  */
-public class PolygonOverlay extends OverlayBase
+public final class PolygonOverlay extends OverlayBase
 {
     private String polygonId;
     private MapPolygon outerArea;

@@ -23,7 +23,7 @@
  *
  */
 
-package journeymap.api.client.v1;
+package journeymap.client.api.map;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Verify;
@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * A MapPolygon is a sequence of at least 4 MapPoints, the first and last being equal.
  */
-public class MapPolygon
+public final class MapPolygon
 {
     private ArrayList<MapPoint> points = new ArrayList<MapPoint>(4);
 
