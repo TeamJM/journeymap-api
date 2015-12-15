@@ -19,9 +19,10 @@ This page will be updated as development progresses.
 Dependencies
 ===
 The only dependencies for this API are for libraries already included with Minecraft and Forge:
+
 * Guava
 * Gson
-* Forge (just for the @API annotation)
+* Forge (just for the @ API annotation)
 * JUnit
 
 Building Code in this Repository
@@ -50,9 +51,9 @@ to read the **Licence Information** below.
 * Utility classes utilizing [java.awt.geom.Area.add()](https://docs.oracle.com/javase/7/docs/api/java/awt/geom/Area.html) to 
 create optimized polygons comprised of multiple chunks.
 * A sample mod project using the API that:
-* * Displays slime chunks in JourneyMap
-* * Shows how to include the .classes from the journeymap-api jar in another mod
-* * Shows how to check ClientAPIFactory.isJourneyMapPresent() in the mod's post-init phase 
+    * Displays slime chunks in JourneyMap
+    * Shows how to include the .classes from the journeymap-api jar in another mod
+    * Shows how to check ClientAPIFactory.isJourneyMapPresent() in the mod's post-init phase 
 
 License Information
 ===
