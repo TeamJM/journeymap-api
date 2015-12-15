@@ -16,16 +16,43 @@ it and starts implementing it in JourneyMap.
 
 This page will be updated as development progresses.
 
+Dependencies
+===
+The only dependencies for this API are for libraries already included with Minecraft and Forge:
+* Guava
+* Gson
+* Forge (just for the @API annotation)
+* JUnit
+
 Building Code in this Repository
 ===
 
-Assumptions:  You already know how to use Git and Gradle.
+**Assumptions:**
+
+1. You already know how to use Git and Gradle.
+2. You already have Forge built in your local Gradle repo.
 
 Simply run the Gradle 'build' task to generate the following:
 
 * */build/libs/journeymap-api-#.jar*
 * */build/libs/journeymap-api-#-javadoc.jar*
 * */build/libs/journeymap-api-#-sources.jar*
+
+Help Wanted
+===
+If you have suggestions or improvements to the API structure, feel free to make Pull Requests. Chatting with the TeamJM
+developers in Espernet IRC #journeymap is highly suggested.  Before you change anything or submit code, however, be sure
+to read the **Licence Information** below.
+
+**Areas of help needed:**
+
+* Unit tests!
+* Utility classes utilizing [java.awt.geom.Area.add()](https://docs.oracle.com/javase/7/docs/api/java/awt/geom/Area.html) to 
+create optimized polygons comprised of multiple chunks.
+* A sample mod project using the API that:
+* * Displays slime chunks in JourneyMap
+* * Shows how to include the .classes from the journeymap-api jar in another mod
+* * Shows how to check ClientAPIFactory.isJourneyMapPresent() in the mod's post-init phase 
 
 License Information
 ===
