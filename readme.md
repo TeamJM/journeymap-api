@@ -39,21 +39,6 @@ Simply run the Gradle 'build' task to generate the following:
 * */build/libs/journeymap-api-#-javadoc.jar*
 * */build/libs/journeymap-api-#-sources.jar*
 
-
-Include the API classes in your Mod
-===
-Here's an example task for Gradle that shows how you could include the API classes in your Mod jar. You would need to make your jar task depend on it so that this task is called first:
-
-```
-#!groovy
-task includeJourneymapApi() {
-    ant.unzip(src: 'libs/journeymap-api-X.jar', dest: 'build/classes/main', overwrite:'true') {
-        patternset( ) { exclude( name: 'META-INF/**' ) }
-    }
-}
-
-```
-
 Help Wanted
 ===
 If you have suggestions or improvements to the API structure, feel free to make Pull Requests. Chatting with the TeamJM
