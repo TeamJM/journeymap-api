@@ -23,59 +23,67 @@
  *
  */
 
-package journeymap.client.api.map;
+package example.client.impl.overlay;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Verify;
+import cpw.mods.fml.common.Optional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A polygon overlay displays a geometric area on a map.  For example: An area of claimed chunks.
  */
-public final class PolygonOverlay extends OverlayBase
+@Optional.InterfaceList({
+        @Optional.Interface(iface = "journeymap.client.api.overlay.IPolygonOverlay", modid = "journeymap"),
+        @Optional.Interface(iface = "journeymap.client.api.overlay.IOverlayProperties", modid = "journeymap"),
+        @Optional.Interface(iface = "journeymap.client.api.model.IMapPolygon", modid = "journeymap")
+})
+public final class PolygonOverlay extends Overlay implements journeymap.client.api.overlay.IPolygonOverlay
 {
-    private String polygonId;
-    private MapPolygon outerArea;
-    private List<MapPolygon> holes;
+    private journeymap.client.api.model.IMapPolygon outerArea;
+    private List<journeymap.client.api.model.IMapPolygon> holes;
     private float strokeWidth = 2;
     private int strokeColor = 0xffffff;
     private float strokeOpacity = 1;
     private int fillColor = 0x000000;
     private float fillOpacity = 0.5f;
+    private journeymap.client.api.overlay.IOverlayProperties overlayProperties;
 
     /**
      * Constructor.
      *
+     * @param modId            Your mod id.
      * @param polygonId        A unique id for the polygon (scoped within your mod) which can be used to remove/update it.
-     * @param overlayGroupName (Optional) A suggested group or category name used to organize map overlays.
      * @param outerArea        A polygon of the outer area to be displayed.
+     * @param overlayProperties  Common overlay properties.
      */
-    public PolygonOverlay(String polygonId, String overlayGroupName, MapPolygon outerArea)
+    public PolygonOverlay(String modId, String polygonId, journeymap.client.api.model.IMapPolygon outerArea,
+                          journeymap.client.api.overlay.IOverlayProperties overlayProperties)
     {
-        this(polygonId, overlayGroupName, null, null, outerArea, null);
+        this(modId, polygonId, outerArea, null, overlayProperties);
     }
 
     /**
      * Constructor.
      *
+     * @param modId            Your mod id.
      * @param polygonId        A unique id for the polygon (scoped within your mod) which can be used to remove/update it.
-     * @param overlayGroupName (Optional) A suggested group or category name used to organize map overlays.
-     * @param title            (Optional) Rollover text to be displayed when the mouse is over the overlay.
-     * @param label            (Optional) Label text to be displayed on the polygon.
      * @param outerArea        A polygon of the outer area to be displayed.
      * @param holes            (Optional) A list of polygons treated as holes inside the outerArea
+     * @param overlayProperties  Common overlay properties.
      */
-    public PolygonOverlay(String polygonId, String overlayGroupName, String title, String label, MapPolygon outerArea, List<MapPolygon> holes)
+    public PolygonOverlay(String modId, String polygonId, journeymap.client.api.model.IMapPolygon outerArea,
+                          List<journeymap.client.api.model.IMapPolygon> holes,
+                          journeymap.client.api.overlay.IOverlayProperties overlayProperties)
     {
-        Verify.verifyNotNull(polygonId);
-        this.polygonId = polygonId;
-        Verify.verifyNotNull(polygonId);
+        super(modId, polygonId);
+        Verify.verifyNotNull(outerArea);
+        Verify.verifyNotNull(overlayProperties);
         this.outerArea = outerArea;
-        this.holes = holes;
-        super.setOverlayGroupName(overlayGroupName);
-        super.setTitle(title);
-        super.setLabel(label);
+        this.holes = new ArrayList<journeymap.client.api.model.IMapPolygon>(holes);
+        this.overlayProperties = overlayProperties;
     }
 
     /**
@@ -87,7 +95,7 @@ public final class PolygonOverlay extends OverlayBase
      * @param fillColor     Fill color (rgb) of the polygon.
      * @param fillOpacity   Fill opacity (between 0 and 1) of the polygon area.
      */
-    public void setStyle(float strokeWidth, int strokeColor, float strokeOpacity, int fillColor, int fillOpacity)
+    public void setStyle(float strokeWidth, int strokeColor, float strokeOpacity, int fillColor, float fillOpacity)
     {
         setStrokeWidth(strokeWidth);
         setStrokeColor(strokeColor);
@@ -97,21 +105,12 @@ public final class PolygonOverlay extends OverlayBase
     }
 
     /**
-     * A unique id for the polygon which can be used to remove/update it.
-     *
-     * @return the polygon id
-     */
-    public String getPolygonId()
-    {
-        return polygonId;
-    }
-
-    /**
      * A polygon of the outer area to be displayed.
      *
      * @return the outer area
      */
-    public MapPolygon getOuterArea()
+    @Override
+    public journeymap.client.api.model.IMapPolygon getOuterArea()
     {
         return outerArea;
     }
@@ -121,7 +120,8 @@ public final class PolygonOverlay extends OverlayBase
      *
      * @return the holes
      */
-    public List<MapPolygon> getHoles()
+    @Override
+    public List<journeymap.client.api.model.IMapPolygon> getHoles()
     {
         return holes;
     }
@@ -131,6 +131,7 @@ public final class PolygonOverlay extends OverlayBase
      *
      * @return the stroke width
      */
+    @Override
     public float getStrokeWidth()
     {
         return strokeWidth;
@@ -151,6 +152,7 @@ public final class PolygonOverlay extends OverlayBase
      *
      * @return the stroke color
      */
+    @Override
     public int getStrokeColor()
     {
         return strokeColor;
@@ -171,6 +173,7 @@ public final class PolygonOverlay extends OverlayBase
      *
      * @return the stroke opacity
      */
+    @Override
     public float getStrokeOpacity()
     {
         return strokeOpacity;
@@ -191,6 +194,7 @@ public final class PolygonOverlay extends OverlayBase
      *
      * @return the fill color
      */
+    @Override
     public int getFillColor()
     {
         return fillColor;
@@ -211,6 +215,7 @@ public final class PolygonOverlay extends OverlayBase
      *
      * @return the fill opacity
      */
+    @Override
     public float getFillOpacity()
     {
         return fillOpacity;
@@ -221,7 +226,7 @@ public final class PolygonOverlay extends OverlayBase
      *
      * @param fillOpacity the fill opacity
      */
-    public void setFillOpacity(int fillOpacity)
+    public void setFillOpacity(float fillOpacity)
     {
         this.fillOpacity = Math.max(0, Math.min(fillOpacity, 1));
     }
@@ -230,24 +235,15 @@ public final class PolygonOverlay extends OverlayBase
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("polygonId", polygonId)
-                .add("label", label)
-                .add("title", title)
-                .add("overlayGroupName", overlayGroupName)
-                .add("outerArea", outerArea)
-                .add("holes", holes)
+                .add("polygonId", getDisplayId())
                 .add("fillColor", fillColor)
                 .add("fillOpacity", fillOpacity)
+                .add("holes", holes)
+                .add("outerArea", outerArea)
                 .add("strokeColor", strokeColor)
                 .add("strokeOpacity", strokeOpacity)
                 .add("strokeWidth", strokeWidth)
-                .add("color", color)
-                .add("inFullscreen", inFullscreen)
-                .add("inMinimap", inMinimap)
-                .add("inWebmap", inWebmap)
-                .add("maxZoom", maxZoom)
-                .add("minZoom", minZoom)
-                .add("zIndex", zIndex)
+                .add("overlayProperties", overlayProperties)
                 .toString();
     }
 }

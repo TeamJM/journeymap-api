@@ -23,57 +23,56 @@
  *
  */
 
-package journeymap.client.api.map;
+package example.client.impl.overlay;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Verify;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import cpw.mods.fml.common.Optional;
 
 /**
- * A MapPolygon is a sequence of at least 4 MapPoints, the first and last being equal.
+ * Provides IDs and key information for map overlays in JourneyMap.
  */
-public final class MapPolygon
+@Optional.Interface(iface = "journeymap.client.api.overlay.IOverlay", modid = "journeymap")
+public class Overlay implements journeymap.client.api.overlay.IOverlay
 {
-    private ArrayList<MapPoint> points = new ArrayList<MapPoint>(4);
+    private final String modId;
+    private final String displayId;
 
     /**
      * Constructor.
      *
-     * @param pointsList a sequence of at least 4 MapPoints, the first and last being equal.
-     * @throws IllegalArgumentException if conditions for a proper polygon aren't met.
+     * @param modId     Your mod id.
+     * @param displayId A unique id for the displayable item.
      */
-    public MapPolygon(List<MapPoint> pointsList)
+    public Overlay(String modId, String displayId)
     {
-        Verify.verifyNotNull(pointsList);
-        if (pointsList.size() < 4)
-        {
-            throw new IllegalArgumentException("MapPolygon must have at least 4 points.");
-        }
-        if (!pointsList.get(0).equals(pointsList.get(pointsList.size() - 1)))
-        {
-            throw new IllegalArgumentException("MapPolygon must have equal first and last points.");
-        }
-        this.points.addAll(pointsList);
+        Verify.verifyNotNull(modId);
+        Verify.verifyNotNull(displayId);
+        this.modId = modId;
+        this.displayId = displayId;
     }
 
     /**
-     * Iterates the points.
+     * Your mod id.
      *
-     * @return iterator
+     * @return modId
      */
-    public Iterator<MapPoint> iterator()
+    @Override
+    public String getModId()
     {
-        return null;
+        return modId;
     }
 
+    /**
+     * A unique id for the displayable item. Uniqueness is only needed among items in your mod of the same type;
+     * each ImageOverlay should have a unique ID within your mod,
+     * each MarkerOverlay should have a unique ID within your mod,
+     * etc.
+     *
+     * @return displayId
+     */
     @Override
-    public String toString()
+    public String getDisplayId()
     {
-        return Objects.toStringHelper(this)
-                .add("points", points)
-                .toString();
+        return displayId;
     }
 }

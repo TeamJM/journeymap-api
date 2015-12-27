@@ -23,12 +23,27 @@
  *
  */
 
-/**
- * An API for client-side JourneyMap.  Allows mods to create waypoints
- * and place overlays and markers in one or more map displays.
- *
- * @author techbrew
- */
-@API(owner = IClientAPI.API_OWNER, apiVersion = IClientAPI.API_VERSION, provides = IClientAPI.API_PROVIDES_API) package journeymap.client.api;
+package journeymap.client.api.overlay;
 
-import cpw.mods.fml.common.API;
+/**
+ * Provides IDs needed to display map overlays in JourneyMap.
+ */
+public interface IOverlay
+{
+    /**
+     * Your mod id.
+     *
+     * @return modId
+     */
+    String getModId();
+
+    /**
+     * A unique id for the displayable item. Uniqueness is only needed among items in your mod of the same type;
+     * each ImageOverlay should have a unique ID within your mod,
+     * each MarkerOverlay should have a unique ID within your mod,
+     * etc.
+     *
+     * @return displayId
+     */
+    String getDisplayId();
+}

@@ -23,18 +23,20 @@
  *
  */
 
-package journeymap.client.api.map;
+package example.client.impl.model;
 
 import com.google.common.base.Objects;
+import cpw.mods.fml.common.Optional;
 
 /**
  * A MapPoint is a triple of world coordinates.
  */
-public class MapPoint
+@Optional.Interface(iface = "journeymap.client.api.model.IMapPoint", modid = "journeymap")
+public final class MapPoint implements journeymap.client.api.model.IMapPoint
 {
-    private int x;
-    private int y;
-    private int z;
+    private final int x;
+    private final int y;
+    private final int z;
 
     /**
      * Constructor.
@@ -50,16 +52,19 @@ public class MapPoint
         this.z = z;
     }
 
+    @Override
     public int getX()
     {
         return x;
     }
 
+    @Override
     public int getY()
     {
         return y;
     }
 
+    @Override
     public int getZ()
     {
         return z;
@@ -72,7 +77,7 @@ public class MapPoint
         {
             return true;
         }
-        if (!(o instanceof MapPoint))
+        if (!(o instanceof journeymap.client.api.model.IMapPoint))
         {
             return false;
         }

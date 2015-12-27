@@ -23,12 +23,32 @@
  *
  */
 
-/**
- * Utility classes.
- *
- * @author techbrew
- */
-@API(owner = ClientAPIFactory.API_OWNER, apiVersion = ClientAPIFactory.API_VERSION, provides = ClientAPIFactory.API_PROVIDES_UTIL) package journeymap.client.api.util;
+package journeymap.client.api.overlay;
 
-import cpw.mods.fml.common.API;
-import journeymap.client.api.ClientAPIFactory;
+import journeymap.client.api.model.IMapIcon;
+import journeymap.client.api.model.IMapPoint;
+
+/**
+ * A Marker overlay shows a geographical point on the map with an icon and a label.  For example: The spawn point.
+ */
+public interface IMarkerOverlay extends IOverlay
+{
+    /**
+     * Location of the marker.
+     */
+    IMapPoint getPoint();
+
+    /**
+     * Icon to display in the marker.
+     *
+     * @return icon
+     */
+    IMapIcon getIcon();
+
+    /**
+     * The overlay properties.
+     *
+     * @return properties
+     */
+    IOverlayProperties getOverlayProperties();
+}

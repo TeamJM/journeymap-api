@@ -23,12 +23,56 @@
  *
  */
 
-/**
- * An API for client-side JourneyMap.  Allows mods to create waypoints
- * and place overlays and markers in one or more map displays.
- *
- * @author techbrew
- */
-@API(owner = IClientAPI.API_OWNER, apiVersion = IClientAPI.API_VERSION, provides = IClientAPI.API_PROVIDES_API) package journeymap.client.api;
+package journeymap.client.api.model;
 
-import cpw.mods.fml.common.API;
+/**
+ * Definition for a waypoint that is offered to a user.
+ */
+public interface IWaypointDef
+{
+    /**
+     * Unique id (scoped to your mod)
+     */
+    String getWaypointId();
+
+    /**
+     * (Optional) Group or category name for the waypoint.
+     */
+    String getWaypointGroupName();
+
+    /**
+     * Waypoint name.
+     */
+    String getWaypointName();
+
+    /**
+     * Waypoint location.
+     */
+    IMapPoint getPoint();
+
+    /**
+     * Color for waypoint label.
+     *
+     * @return rgb int
+     */
+    int getColor();
+
+    /**
+     * Dimensions where waypoint should be displayed.
+     */
+    int[] getDimensions();
+
+    /**
+     * Icon specification for waypoint.
+     *
+     * @return spec
+     */
+    IMapIcon getIcon();
+
+    /**
+     * If the icon is saved to a file by JourneyMap, this determines the filename that will be used.
+     *
+     * @return icon filename
+     */
+    String getIconName();
+}

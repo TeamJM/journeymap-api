@@ -23,12 +23,19 @@
  *
  */
 
-/**
- * An API for client-side JourneyMap.  Allows mods to create waypoints
- * and place overlays and markers in one or more map displays.
- *
- * @author techbrew
- */
-@API(owner = IClientAPI.API_OWNER, apiVersion = IClientAPI.API_VERSION, provides = IClientAPI.API_PROVIDES_API) package journeymap.client.api;
+package journeymap.client.api.model;
 
-import cpw.mods.fml.common.API;
+import java.util.Iterator;
+
+/**
+ * A MapPolygon is a sequence of at least 4 MapPoints, the first and last being equal.
+ */
+public interface IMapPolygon
+{
+    /**
+     * Iterates the points.
+     *
+     * @return iterator
+     */
+    Iterator<IMapPoint> iterator();
+}

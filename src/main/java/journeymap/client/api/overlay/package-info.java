@@ -24,11 +24,12 @@
  */
 
 /**
- * Map-related objects.
+ * An API for client-side JourneyMap.  Allows mods to create waypoints
+ * and place overlays and markers in one or more map displays.
  *
  * @author techbrew
  */
-@API(owner = ClientAPIFactory.API_OWNER, apiVersion = ClientAPIFactory.API_VERSION, provides = ClientAPIFactory.API_PROVIDES_MAP) package journeymap.client.api.map;
+@API(owner = IClientAPI.API_OWNER, apiVersion = IClientAPI.API_VERSION, provides = IClientAPI.API_PROVIDES_OVERLAY) package journeymap.client.api.overlay;
 
 import cpw.mods.fml.common.API;
-import journeymap.client.api.ClientAPIFactory;
+import journeymap.client.api.IClientAPI;

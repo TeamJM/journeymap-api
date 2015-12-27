@@ -23,73 +23,57 @@
  *
  */
 
-package journeymap.client.api.map;
+package example.client.impl.overlay;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Verify;
+import cpw.mods.fml.common.Optional;
 
 /**
  * An image overlay places an image on the map between the given coordinates.
  */
-public final class ImageOverlay extends OverlayBase
+@Optional.InterfaceList({
+        @Optional.Interface(iface = "journeymap.client.api.overlay.IImageOverlay", modid = "journeymap"),
+        @Optional.Interface(iface = "journeymap.client.api.overlay.IOverlayProperties", modid = "journeymap"),
+        @Optional.Interface(iface = "journeymap.client.api.model.IMapPoint", modid = "journeymap"),
+        @Optional.Interface(iface = "journeymap.client.api.model.IMapIcon", modid = "journeymap")
+})
+public final class ImageOverlay extends Overlay implements journeymap.client.api.overlay.IImageOverlay
 {
-    private String imageId;
-    private MapPoint northWestPoint;
-    private MapPoint southEastPoint;
-    private MapIcon image;
+    private final journeymap.client.api.overlay.IOverlayProperties overlayProperties;
+    private final journeymap.client.api.model.IMapPoint northWestPoint;
+    private final journeymap.client.api.model.IMapPoint southEastPoint;
+    private final journeymap.client.api.model.IMapIcon image;
 
     /**
      * Constructor.
-     *
+     * @param modId          Your mod id.
      * @param imageId        A unique id for the marker (scoped to your mod) which can be used to remove/update it.
      * @param northWestPoint Location of the top-left corner of the image.
      * @param southEastPoint Location of the lower-right corner of the image.
      * @param image          The image to display as the overlay.
+     * @param overlayProperties  Common overlay characteristics.
      */
-    public ImageOverlay(String imageId, MapPoint northWestPoint, MapPoint southEastPoint, MapIcon image)
+    public ImageOverlay(String modId, String imageId, journeymap.client.api.model.IMapPoint northWestPoint,
+                        journeymap.client.api.model.IMapPoint southEastPoint, journeymap.client.api.model.IMapIcon image,
+                        journeymap.client.api.overlay.IOverlayProperties overlayProperties)
     {
-        this(imageId, null, northWestPoint, southEastPoint, null, null, image);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param imageId          A unique id for the marker (scoped to your mod) which can be used to remove/update it.
-     * @param overlayGroupName A suggested group or category name used to organize map overlays.
-     * @param northWestPoint   Location of the top-left of the image.
-     * @param southEastPoint   Location of the lower-right corner of the image.
-     * @param title            (Optional) Rollover text to be displayed when the mouse is over the overlay.
-     * @param label            (Optional) Label text to be displayed on the overlay.
-     * @param image            The image to display as the overlay.
-     */
-    public ImageOverlay(String imageId, String overlayGroupName, MapPoint northWestPoint, MapPoint southEastPoint,
-                        String title, String label, MapIcon image)
-    {
-        Verify.verifyNotNull(imageId);
+        super(modId, imageId);
         Verify.verifyNotNull(image);
         Verify.verifyNotNull(northWestPoint);
         Verify.verifyNotNull(southEastPoint);
-        this.imageId = imageId;
+        Verify.verifyNotNull(overlayProperties);
         this.image = image;
         this.northWestPoint = northWestPoint;
         this.southEastPoint = southEastPoint;
-        super.setOverlayGroupName(overlayGroupName);
-        super.setTitle(title);
-        super.setLabel(label);
-    }
-
-    /**
-     * A unique id for the image overlay which can be used to remove/update it.
-     */
-    public String getImageId()
-    {
-        return imageId;
+        this.overlayProperties = overlayProperties;
     }
 
     /**
      * Top-left location of the image overlay.
      */
-    public MapPoint getNorthWestPoint()
+    @Override
+    public journeymap.client.api.model.IMapPoint getNorthWestPoint()
     {
         return northWestPoint;
     }
@@ -97,7 +81,8 @@ public final class ImageOverlay extends OverlayBase
     /**
      * Bottom-right location of the image overlay.
      */
-    public MapPoint getSouthEastPoint()
+    @Override
+    public journeymap.client.api.model.IMapPoint getSouthEastPoint()
     {
         return southEastPoint;
     }
@@ -107,29 +92,32 @@ public final class ImageOverlay extends OverlayBase
      *
      * @return icon
      */
-    public MapIcon getImage()
+    @Override
+    public journeymap.client.api.model.IMapIcon getImage()
     {
         return image;
+    }
+
+    /**
+     * Common overlay characteristics.
+     *
+     * @return properties
+     */
+    @Override
+    public journeymap.client.api.overlay.IOverlayProperties getOverlayProperties()
+    {
+        return overlayProperties;
     }
 
     @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("imageId", imageId)
+                .add("imageId", getDisplayId())
                 .add("northWestPoint", northWestPoint)
                 .add("southEastPoint", southEastPoint)
                 .add("image", image)
-                .add("label", label)
-                .add("title", title)
-                .add("overlayGroupName", overlayGroupName)
-                .add("color", color)
-                .add("inFullscreen", inFullscreen)
-                .add("inMinimap", inMinimap)
-                .add("inWebmap", inWebmap)
-                .add("maxZoom", maxZoom)
-                .add("minZoom", minZoom)
-                .add("zIndex", zIndex)
+                .add("overlayProperties", overlayProperties)
                 .toString();
     }
 }

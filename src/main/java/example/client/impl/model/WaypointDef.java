@@ -23,22 +23,29 @@
  *
  */
 
-package journeymap.client.api.map;
+package example.client.impl.model;
 
 import com.google.common.base.Verify;
+import cpw.mods.fml.common.Optional;
 
 /**
- * Specification defining how a waypoint will be suggested to a user.
+ * Definition for a waypoint that is offered to a user.
  */
-public final class WaypointDefinition
+@Optional.InterfaceList({
+        @Optional.Interface(iface = "journeymap.client.api.model.IWaypointDef", modid = "journeymap"),
+        @Optional.Interface(iface = "journeymap.client.api.model.IMapPoint", modid = "journeymap"),
+        @Optional.Interface(iface = "journeymap.client.api.model.IMapIcon", modid = "journeymap"),
+})
+public final class WaypointDef implements journeymap.client.api.model.IWaypointDef
 {
+    private journeymap.client.api.model.IMapPoint point;
+    private journeymap.client.api.model.IMapIcon icon;
     private String waypointId;
     private String waypointGroupName;
     private String waypointName;
-    private MapPoint point;
     private int[] dimensions;
     private int color;
-    private MapIcon icon;
+    private String iconName;
 
     /**
      * Constructor.
@@ -51,18 +58,21 @@ public final class WaypointDefinition
      * @param color             rgb color of waypoint label
      * @param dimensions        Dimensions where waypoint should be displayed.
      */
-    public WaypointDefinition(String waypointId, String waypointGroupName, String waypointName, MapPoint point, MapIcon icon, int color, int[] dimensions)
+    public WaypointDef(String waypointId, String waypointGroupName, String waypointName, journeymap.client.api.model.IMapPoint point,
+                       journeymap.client.api.model.IMapIcon icon, String iconName, int color, int[] dimensions)
     {
         Verify.verifyNotNull(waypointId);
         Verify.verifyNotNull(waypointName);
         Verify.verifyNotNull(point);
         Verify.verifyNotNull(icon);
+        Verify.verifyNotNull(iconName);
 
         this.waypointId = waypointId;
         this.waypointGroupName = waypointGroupName;
         this.waypointName = waypointName;
         this.point = point;
         this.icon = icon;
+        this.iconName = iconName;
         this.color = Math.max(0x000000, Math.min(color, 0xffffff));
         this.dimensions = dimensions;
     }
@@ -70,6 +80,7 @@ public final class WaypointDefinition
     /**
      * Unique id (scoped to your mod)
      */
+    @Override
     public String getWaypointId()
     {
         return waypointId;
@@ -78,6 +89,7 @@ public final class WaypointDefinition
     /**
      * (Optional) Group or category name for the waypoint.
      */
+    @Override
     public String getWaypointGroupName()
     {
         return waypointGroupName;
@@ -86,6 +98,7 @@ public final class WaypointDefinition
     /**
      * Waypoint name.
      */
+    @Override
     public String getWaypointName()
     {
         return waypointName;
@@ -94,7 +107,8 @@ public final class WaypointDefinition
     /**
      * Waypoint location.
      */
-    public MapPoint getPoint()
+    @Override
+    public journeymap.client.api.model.IMapPoint getPoint()
     {
         return point;
     }
@@ -104,6 +118,7 @@ public final class WaypointDefinition
      *
      * @return rgb int
      */
+    @Override
     public int getColor()
     {
         return color;
@@ -112,6 +127,7 @@ public final class WaypointDefinition
     /**
      * Dimensions where waypoint should be displayed.
      */
+    @Override
     public int[] getDimensions()
     {
         return dimensions;
@@ -122,8 +138,20 @@ public final class WaypointDefinition
      *
      * @return spec
      */
-    public MapIcon getIcon()
+    @Override
+    public journeymap.client.api.model.IMapIcon getIcon()
     {
         return icon;
+    }
+
+    /**
+     * If the icon is saved to a file by JourneyMap, this determines the filename that will be used.
+     *
+     * @return icon filename
+     */
+    @Override
+    public String getIconName()
+    {
+        return iconName;
     }
 }

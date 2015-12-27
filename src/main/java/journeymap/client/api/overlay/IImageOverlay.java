@@ -23,12 +23,37 @@
  *
  */
 
-/**
- * An API for client-side JourneyMap.  Allows mods to create waypoints
- * and place overlays and markers in one or more map displays.
- *
- * @author techbrew
- */
-@API(owner = IClientAPI.API_OWNER, apiVersion = IClientAPI.API_VERSION, provides = IClientAPI.API_PROVIDES_API) package journeymap.client.api;
+package journeymap.client.api.overlay;
 
-import cpw.mods.fml.common.API;
+import journeymap.client.api.model.IMapIcon;
+import journeymap.client.api.model.IMapPoint;
+
+/**
+ * An image overlay scales an image on the map between the given coordinates.
+ */
+public interface IImageOverlay extends IOverlay
+{
+    /**
+     * Top-left location of the image overlay.
+     */
+    IMapPoint getNorthWestPoint();
+
+    /**
+     * Bottom-right location of the image overlay.
+     */
+    IMapPoint getSouthEastPoint();
+
+    /**
+     * Image to display as the overlay.
+     *
+     * @return icon
+     */
+    IMapIcon getImage();
+
+    /**
+     * Common overlay characteristics.
+     *
+     * @return properties
+     */
+    IOverlayProperties getOverlayProperties();
+}

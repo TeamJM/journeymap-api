@@ -25,24 +25,33 @@
 
 package journeymap.client.api;
 
-import journeymap.client.api.map.ImageOverlay;
-import journeymap.client.api.map.MarkerOverlay;
-import journeymap.client.api.map.PolygonOverlay;
-import journeymap.client.api.map.WaypointDefinition;
+import journeymap.client.api.model.IWaypointDef;
+import journeymap.client.api.overlay.IImageOverlay;
+import journeymap.client.api.overlay.IMarkerOverlay;
+import journeymap.client.api.overlay.IPolygonOverlay;
 
 import java.util.List;
 
 /**
- * Definition for the JourneyMap Client API v1
+ * Definition for the JourneyMap Client API v1.
+ *
+ * To get the working ClientAPI at runtime, use the following code:
+ * <code>
+ *  // ClientAPI is an enum singleton with the name INSTANCE.
+ *  if(Loader.isModLoaded("journeymap")) {
+ *     Class<Enum> implClass = (Class<Enum>) Class.forName("journeymap.client.api.ClientAPI");
+ *     return (IClientAPI) Enum.valueOf(implClass, "INSTANCE");
+ *  }
+ * </code>
  */
-public interface ClientAPI
+public interface IClientAPI
 {
-    /**
-     * The highest API version present in the JourneyMap client mod.
-     *
-     * @return the highest version
-     */
-    int getMaxApiVersion();
+    String API_OWNER = "journeymap";
+    String API_VERSION = "@API_VERSION@";
+    String API_PROVIDES_API = "journeymap|client-api";
+    String API_PROVIDES_MODEL = "journeymap|client-api-model";
+    String API_PROVIDES_OVERLAY = "journeymap|client-api-overlay";
+    String FACTORY_CLASS = "journeymap.client.api.ClientAPI";
 
     /**
      * Check whether player will accept waypoints from your mod.
@@ -69,7 +78,7 @@ public interface ClientAPI
      * @param waypointDefinition Defines the waypoint to display.
      * @see #getPlayerAcceptsWaypoints(String)
      */
-    void addWaypoint(String modId, WaypointDefinition waypointDefinition);
+    void addWaypoint(String modId, IWaypointDef waypointDefinition);
 
     /**
      * Remove a player's waypoint, if it exists. If getPlayerAcceptsWaypoints returns false,
@@ -111,7 +120,7 @@ public interface ClientAPI
      * @param markerOverlay Describes the marker overlay to display.
      * @see #getPlayerAcceptsOverlays(String)
      */
-    void addMarker(String modId, MarkerOverlay markerOverlay);
+    void addMarker(String modId, IMarkerOverlay markerOverlay);
 
     /**
      * Remove a MarkerOverlay, if it exists. If getPlayerAcceptsOverlays returns false,
@@ -151,7 +160,7 @@ public interface ClientAPI
      * @param imageOverlay Describes the image overlay to display.
      * @see #getPlayerAcceptsOverlays(String)
      */
-    void addImage(String modId, ImageOverlay imageOverlay);
+    void addImage(String modId, IImageOverlay imageOverlay);
 
     /**
      * Remove an ImageOverlay, if it exists. If getPlayerAcceptsOverlays returns false,
@@ -191,7 +200,7 @@ public interface ClientAPI
      * @param polygonOverlay Defines the polygon overlay to display
      * @see #getPlayerAcceptsOverlays(String)
      */
-    void addPolygon(String modId, PolygonOverlay polygonOverlay);
+    void addPolygon(String modId, IPolygonOverlay polygonOverlay);
 
     /**
      * Remove a PolygonOverlay, if it exists. If getPlayerAcceptsOverlays returns false,

@@ -23,12 +23,31 @@
  *
  */
 
-/**
- * An API for client-side JourneyMap.  Allows mods to create waypoints
- * and place overlays and markers in one or more map displays.
- *
- * @author techbrew
- */
-@API(owner = IClientAPI.API_OWNER, apiVersion = IClientAPI.API_VERSION, provides = IClientAPI.API_PROVIDES_API) package journeymap.client.api;
+package journeymap.client.api.model;
 
-import cpw.mods.fml.common.API;
+/**
+ * Provides block coordinates.
+ */
+public interface IMapPoint
+{
+    /**
+     * Block x
+     *
+     * @return x
+     */
+    int getX();
+
+    /**
+     * Block y.
+     *
+     * @return y
+     */
+    int getY();
+
+    /**
+     * Block z.
+     *
+     * @return z
+     */
+    int getZ();
+}
