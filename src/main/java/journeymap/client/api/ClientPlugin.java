@@ -18,15 +18,18 @@
  *
  */
 
+package journeymap.client.api;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
+
 /**
- * An API for client-side JourneyMap.  Allows mods to create waypoints
- * and place overlays and markers in one or more map displays.
- *
- * @author Techbrew
+ * Used by JourneyMap to discover and classload plugin classes.
+ * <p/>
+ * Classes with this annotation must have a no-arg constructor
+ * and must also implement the {@link IClientPlugin} interface.
  */
-@API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api")
-@ParametersAreNonnullByDefault package journeymap.client.api;
-
-import cpw.mods.fml.common.API;
-
-import javax.annotation.ParametersAreNonnullByDefault;
+@Target(ElementType.TYPE)
+public @interface ClientPlugin
+{
+}

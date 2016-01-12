@@ -18,15 +18,38 @@
  *
  */
 
+package journeymap.client.api.event;
+
+import journeymap.client.api.display.Displayable;
+
 /**
- * An API for client-side JourneyMap.  Allows mods to create waypoints
- * and place overlays and markers in one or more map displays.
- *
- * @author Techbrew
+ * Event propagated by the Client API to IClientPlugin implementations.
  */
-@API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api")
-@ParametersAreNonnullByDefault package journeymap.client.api;
+public class ClientEvent
+{
+    public final Type type;
+    public int dimension;
+    public Object value;
 
-import cpw.mods.fml.common.API;
+    public ClientEvent(Type type, int dimension)
+    {
+        this.type = type;
+        this.dimension = dimension;
+    }
 
-import javax.annotation.ParametersAreNonnullByDefault;
+    public ClientEvent(Type type, int dimension, Object value)
+    {
+        this.type = type;
+        this.dimension = dimension;
+    }
+
+    public enum Type
+    {
+        /**
+         * Signal for ClientPlugins to {@link journeymap.client.api.IClientAPI#show(Displayable)} its
+         * Displayables for the {@link #dimension} indicated. (ModWaypoints with persisted==true will already be shown.)
+         * The {@link #value} field is always null.
+         */
+        DISPLAY_STARTED
+    }
+}

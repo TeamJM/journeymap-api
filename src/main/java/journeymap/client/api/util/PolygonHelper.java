@@ -18,15 +18,41 @@
  *
  */
 
+package journeymap.client.api.util;
+
+import journeymap.client.api.model.MapPoint;
+import journeymap.client.api.model.MapPolygon;
+
 /**
- * An API for client-side JourneyMap.  Allows mods to create waypoints
- * and place overlays and markers in one or more map displays.
- *
- * @author Techbrew
+ * Utility class related to Polygons
  */
-@API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api")
-@ParametersAreNonnullByDefault package journeymap.client.api;
+public class PolygonHelper
+{
+    /**
+     * Creates a polygon for the chunk containing worldCoords.
+     *
+     * @param x world X
+     * @param y world Y
+     * @param z world Z
+     * @return a polygon for the surrounding chunk
+     */
+    public static MapPolygon createChunkPolygonForWorldCoords(int x, int y, int z)
+    {
+        return createChunkPolygon(x >> 4, y, z >> 4);
+    }
 
-import cpw.mods.fml.common.API;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+    /**
+     * Creates a polygon for the chunk coords.
+     *
+     * @param chunkX  chunk x
+     * @param worldY  y
+     * @param chunkZ  chunk z
+     * @return polygon
+     */
+    public static MapPolygon createChunkPolygon(int chunkX, int worldY, int chunkZ)
+    {
+        MapPoint p = new MapPoint(chunkX << 4, worldY, chunkZ << 4);
+        return new MapPolygon(p, p.offset(15, 0), p.offset(15, 15), p.offset(0, 15), p);
+    }
+}

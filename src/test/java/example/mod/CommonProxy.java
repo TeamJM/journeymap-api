@@ -18,15 +18,20 @@
  *
  */
 
+package example.mod;
+
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+
 /**
- * An API for client-side JourneyMap.  Allows mods to create waypoints
- * and place overlays and markers in one or more map displays.
- *
- * @author Techbrew
+ * Base class for sided proxies.
  */
-@API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api")
-@ParametersAreNonnullByDefault package journeymap.client.api;
+public abstract class CommonProxy
+{
+    public abstract void preInit(FMLPreInitializationEvent event);
 
-import cpw.mods.fml.common.API;
+    public abstract void init(FMLInitializationEvent event);
 
-import javax.annotation.ParametersAreNonnullByDefault;
+    public abstract void postInit(FMLPostInitializationEvent event);
+}

@@ -1,235 +1,146 @@
 /*
- *
- * JourneyMap API
- * http://journeymap.info
+ * JourneyMap API (http://journeymap.info)
  * http://bitbucket.org/TeamJM/journeymap-api
  *
- * Copyright (c) 2011-2015 Techbrew.  All Rights Reserved.
+ * Copyright (c) 2011-2016 Techbrew.  All Rights Reserved.
  * The following limited rights are granted to you:
  *
  * You MAY:
- * + Write your own code that uses the API source code in journeymap.* packages as a dependency.
- * + Write your own code that uses, modifies, or extends the example source code in example.* packages
- * + Distribute compiled classes of unmodified API source code in journeymap.* packages
- * + Fork and modify any source code for the purpose of submitting Pull Requests to the
- *        TeamJM/journeymap-api repository.  Submitting new or modified code to the repository
- *        means that you are granting Techbrew all rights over the code.
+ *  + Write your own code that uses the API source code in journeymap.* packages as a dependency.
+ *  + Write and distribute your own code that uses, modifies, or extends the example source code in example.* packages
+ *  + Fork and modify any source code for the purpose of submitting Pull Requests to the TeamJM/journeymap-api repository.
+ *    Submitting new or modified code to the repository means that you are granting Techbrew all rights to the submitted code.
  *
  * You MAY NOT:
- *   - Submit any code to the TeamJM/journeymap-api repository with a different license than this one.
- *   - Distribute modified API source code from journeymap.* packages or compiled classes of modified API
- *        source code.  In this context, "modified" means changes which have not been both approved
- *        and merged into the TeamJM/journeymap-api repository.
- *   - Use or distribute the API source code or example source code in any way not explicitly granted
- *        by this license statement.
+ *  - Distribute source code or classes (whether modified or not) from journeymap.* packages.
+ *  - Submit any code to the TeamJM/journeymap-api repository with a different license than this one.
+ *  - Use code or artifacts from the repository in any way not explicitly granted by this license.
  *
  */
 
 package journeymap.client.api;
 
-import journeymap.client.api.model.IWaypointDef;
-import journeymap.client.api.overlay.IImageOverlay;
-import journeymap.client.api.overlay.IMarkerOverlay;
-import journeymap.client.api.overlay.IPolygonOverlay;
+import journeymap.client.api.display.DisplayType;
+import journeymap.client.api.display.Displayable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 /**
- * Definition for the JourneyMap Client API v1.
- *
- * To get the working ClientAPI at runtime, use the following code:
- * <code>
- *  // ClientAPI is an enum singleton with the name INSTANCE.
- *  if(Loader.isModLoaded("journeymap")) {
- *     Class<Enum> implClass = (Class<Enum>) Class.forName("journeymap.client.api.ClientAPI");
- *     return (IClientAPI) Enum.valueOf(implClass, "INSTANCE");
- *  }
- * </code>
+ * Definition for the JourneyMap Client API.
  */
+@ParametersAreNonnullByDefault
 public interface IClientAPI
 {
     String API_OWNER = "journeymap";
     String API_VERSION = "@API_VERSION@";
-    String API_PROVIDES_API = "journeymap|client-api";
-    String API_PROVIDES_MODEL = "journeymap|client-api-model";
-    String API_PROVIDES_OVERLAY = "journeymap|client-api-overlay";
-    String FACTORY_CLASS = "journeymap.client.api.ClientAPI";
 
     /**
-     * Check whether player will accept waypoints from your mod.
+     * Whether JourneyMap is active. It's good to check this before making other calls to the API.
+     * There are small delays between a player entering the world (or changing dimensions) and when JourneyMap is
+     * activated. It can also be the case that a player has disabled all functionality in JourneyMap for some reason.
+     * In either case, this method will return false and you should check again later.
      *
-     * @param modId Mod id
-     * @return true if player accepts addition/removal of waypoints
+     * @return true if active
      */
-    boolean getPlayerAcceptsWaypoints(String modId);
+    boolean isActive();
 
     /**
-     * Check whether player will accept map overlays (markers and polygons) from your mod.
-     *
-     * @param modId Mod id
-     * @return true if player accepts display of map overlays
-     */
-    boolean getPlayerAcceptsOverlays(String modId);
-
-    /**
-     * Add a waypoint for the player. If getPlayerAcceptsWaypoints returns false,
-     * this method does nothing.  Also note that just because a player accepts
-     * a suggested waypoint, doesn't mean they'll keep it forever.
-     *
-     * @param modId         Mod id
-     * @param waypointDefinition Defines the waypoint to display.
-     * @see #getPlayerAcceptsWaypoints(String)
-     */
-    void addWaypoint(String modId, IWaypointDef waypointDefinition);
-
-    /**
-     * Remove a player's waypoint, if it exists. If getPlayerAcceptsWaypoints returns false,
-     * this method does nothing.
-     *
-     * @param modId      Mod id
-     * @param waypointId A unique id (within your mod) for the waypoint.
-     * @see #getPlayerAcceptsWaypoints(String)
-     */
-    void removeWaypoint(String modId, String waypointId);
-
-    /**
-     * Check whether the player has a waypoint with the given waypointId associated with your mod.
-     * If getPlayerAcceptsWaypoints returns false, this method does nothing.
-     *
-     * @param modId      Mod id
-     * @param waypointId A unique id (within your mod) for the waypoint.
-     * @return true if a waypoint with the id exists.
-     */
-    boolean getWaypointExists(String modId, String waypointId);
-
-    /**
-     * Gets a list of player waypoint ids associated with your mod.
-     * If getPlayerAcceptsWaypoints returns false, this method does nothing.
-     *
-     * @param modId Mod id
-     * @return A list, possibly empty.
-     * @see #getPlayerAcceptsWaypoints(String)
-     */
-    List<String> getWaypointIds(String modId);
-
-    /**
-     * Attempt to show a marker on one or more map views. If rMapOverlayOptIn returns false,
-     * this method does nothing.
+     * Add (or update) a displayable object to the player's maps. If you modify a Displayable after it
+     * has been added, call this method again to ensure the maps reflect your changes.
      * <p/>
-     * If a MarkerOverlay with the same markerId already exists, the new one will replace the old one.
-     *
-     * @param modId         Mod id
-     * @param markerOverlay Describes the marker overlay to display.
-     * @see #getPlayerAcceptsOverlays(String)
-     */
-    void addMarker(String modId, IMarkerOverlay markerOverlay);
-
-    /**
-     * Remove a MarkerOverlay, if it exists. If getPlayerAcceptsOverlays returns false,
-     * this method does nothing.
-     *
-     * @param modId    Mod id
-     * @param markerId A unique id (within your mod) for the map marker.
-     */
-    void removeMarker(String modId, String markerId);
-
-    /**
-     * Check whether the player has a map marker with the given markerId associated with your mod.
-     * If getPlayerAcceptsOverlays returns false, this method returns false.
-     *
-     * @param modId    Mod id
-     * @param markerId A unique id (within your mod) for the MarkerOverlay.
-     * @return true if a waypoint with the id exists.
-     */
-    boolean getMarkerExists(String modId, String markerId);
-
-    /**
-     * Gets a list of MarkerOverlay ids associated with your mod.
-     * If getPlayerAcceptsWaypoints returns false, an empty list will be returned.
-     *
-     * @param modId Mod id
-     * @return A list, possibly empty.
-     */
-    List<String> getMarkerIds(String modId);
-
-    /**
-     * Attempt to show a image on one or more map views.  If getPlayerAcceptsOverlays returns false,
-     * this method does nothing.
+     * If an object of the same Displayable.Type
+     * from your mod with the same displayId has already been added, it will be replaced.
      * <p/>
-     * If an ImageOverlay with same imageId already exists, the new one will replace the old one.
+     * Has no effect on display types not accepted by the player.
      *
-     * @param modId        Mod id
-     * @param imageOverlay Describes the image overlay to display.
-     * @see #getPlayerAcceptsOverlays(String)
+     * @param displayable The object to display.
+     * @see #playerAccepts(String, DisplayType)
      */
-    void addImage(String modId, IImageOverlay imageOverlay);
+    void show(Displayable displayable);
 
     /**
-     * Remove an ImageOverlay, if it exists. If getPlayerAcceptsOverlays returns false,
-     * this method does nothing.
+     * Remove a displayable from the player's maps.
+     * Has no effect on display types not accepted by the player.
      *
-     * @param modId   Mod id
-     * @param imageId A unique id (within your mod) for the map image.
+     * @param displayable The object to display.
+     * @see #playerAccepts(String, DisplayType)
      */
-    void removeImage(String modId, String imageId);
+    void remove(Displayable displayable);
 
     /**
-     * Check whether the player has an ImageOverlay with the given imageId associated with your mod.
-     * If getPlayerAcceptsOverlays returns false, this method returns false.
+     * Remove a displayable from the player's maps (if it exists).
+     * Has no effect on display types not accepted by the player.
      *
-     * @param modId   Mod id
-     * @param imageId A unique id (within your mod) for the map image.
-     * @return true if a waypoint with the id exists.
+     * @param modId       Mod id
+     * @param displayType Display type to check
+     * @param displayId   The display id
+     * @see #playerAccepts(String, DisplayType)
      */
-    boolean getImageExists(String modId, String imageId);
+    void remove(String modId, DisplayType displayType, String displayId);
 
     /**
-     * Gets a list of ImageOverlay imageIds associated with your mod. If getPlayerAcceptsOverlays returns false,
-     * an empty list will be returned.
+     * Remove all displayables by DisplayType from the player's maps.
+     * Has no effect on display types not accepted by the player.
+     *
+     * @param modId       Mod id
+     * @param displayType Display type
+     * @see #playerAccepts(String, DisplayType)
+     */
+    void removeAll(String modId, DisplayType displayType);
+
+    /**
+     * Remove all displayables.
+     * Has no effect on display types not accepted by the player.
+     *
+     * @param modId Mod id
+     * @see #playerAccepts(String, DisplayType)
+     */
+    void removeAll(String modId);
+
+    /**
+     * Check whether a displayable exists in the Client API.  A return value of true means the Client API has the
+     * indicated displayable, but not necessarily that the player has made it visible.
+     *
+     * Always returns false if the display type is not accepted by the player.
+     *
+     * @param modId       Mod id
+     * @param displayType Display type to check
+     * @param displayId   The display id
+     * @see #playerAccepts(String, DisplayType)
+     */
+    boolean exists(String modId, DisplayType displayType, String displayId);
+
+    /**
+     * Check whether a displayable exists in the Client API and is rendered in at least one map display. A
+     * return value of true doesn't necessarily mean the disable is actively on-screen, however.
+     *
+     * Always returns false if the display type is not accepted by the player.
+     *
+     * @param modId       Mod id
+     * @param displayType Display type to check
+     * @param displayId   The display id
+     * @see #playerAccepts(String, DisplayType)
+     */
+    boolean isVisible(String modId, DisplayType displayType, String displayId);
+
+    /**
+     * Gets a list of player displayable ids associated with your mod.
+     * Always returns an empty list if the display type is not accepted by the player.
      *
      * @param modId Mod id
      * @return A list, possibly empty.
+     * @see #playerAccepts(String, DisplayType)
      */
-    List<String> getImageIds(String modId);
-    
-    /**
-     * Attempt to show a PolygonOverlay on one or more map views.  If getPlayerAcceptsOverlays returns false,
-     * this method does nothing.
-     * <p/>
-     * If a PolygonOverlay with the same polygonId already exists, the new one will replace the old one.
-     *
-     * @param modId         Mod id
-     * @param polygonOverlay Defines the polygon overlay to display
-     * @see #getPlayerAcceptsOverlays(String)
-     */
-    void addPolygon(String modId, IPolygonOverlay polygonOverlay);
+    List<String> getShownIds(String modId, DisplayType displayType);
 
     /**
-     * Remove a PolygonOverlay, if it exists. If getPlayerAcceptsOverlays returns false,
-     * this method does nothing.
+     * Check whether player will accept a type of Displayable from your mod. (Like Displayables or Overlays).
      *
-     * @param modId     Mod id
-     * @param polygonId A unique id (within your mod) for the polygon.
+     * @param modId       Mod id
+     * @param displayType Display type to check
+     * @return true if player accepts addition/removal of displayables
+     * @see DisplayType
      */
-    void removePolygon(String modId, String polygonId);
-
-    /**
-     * Check whether the player has a PolygonOverlay with the given polygonId associated with your mod.
-     * If getPlayerAcceptsOverlays returns false, this method returns false.
-     *
-     * @param modId     Mod id
-     * @param polygonId A unique id (within your mod) for the polygon.
-     * @return true if a polygon with the id exists.
-     */
-    boolean getPolygonExists(String modId, String polygonId);
-
-    /**
-     * Gets a list of PolygonOverlay polygonIds associated with your mod.  If getPlayerAcceptsOverlays
-     * returns false, an empty list will be returned.
-     *
-     * @param modId Mod id
-     * @return A list, possibly empty.
-     */
-    List<String> getPolygonIds(String modId);
-
+    boolean playerAccepts(String modId, DisplayType displayType);
 }
