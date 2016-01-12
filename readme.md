@@ -7,9 +7,7 @@ and place overlays and markers in one or more map displays within JourneyMap.
 Integrating this Code into your Mod
 ===
 
-This API is currently being developed and is likely to change. 
-
-**It doesn't work with JourneyMap yet.**
+This API is currently being developed and is likely to change. **It doesn't work with JourneyMap yet.**
 
 You're seeing it so you can provide feedback to Techbrew on Espernet IRC #journeymap before he finalizes 
 it and starts implementing it in JourneyMap.
@@ -27,7 +25,6 @@ The only dependencies for this API are for libraries already included with Minec
 
 Building Code in this Repository
 ===
-
 **Assumptions:**
 
 1. You already know how to use Git and Gradle.
@@ -39,27 +36,27 @@ Simply run the Gradle 'build' task to generate the following:
 * */build/libs/journeymap-api-#-javadoc.jar*
 * */build/libs/journeymap-api-#-example.zip*
 
-
 How to use the API classes in your Mod
 ===
 
-The goal for using the JourneyMap API is that you have a "soft dependency" only.  
- * You should only have a compile-time dependency only
- * You should not have a runtime dependency if JourneyMap isn't loaded
- * You should not include any JourneyMap API classes in your mod jar. 
+The goal for using the JourneyMap API is that you have a **soft dependency** only.  
 
-Here is the recommended approach:  (see src/test/java/example)
+ * You should **only** have a compile-time dependency
+ * You should **not** have a runtime dependency if JourneyMap isn't loaded
+ * You should **never** include any JourneyMap API classes in your mod jar. 
 
-1. Write a class that implements the JourneyMap *journeymap.client.api.IClientPlugin* interface (like 'ExampleJourneymapPlugin')
-    - Annotate the class with *@journeymap.client.api.ClientPlugin* so that JourneyMap can find and instantiate it
+Here is the recommended approach:  (See [src/test/java/example](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/test/java/example/mod/) examples)
+
+1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/test/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
+    - Annotate the class with *[@journeymap.client.api.ClientPlugin](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/journeymap/client/api/ClientPlugin.java)* so that JourneyMap can find and instantiate it
     - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
-1. Define a facade interface (like 'IExampleMapFacade') for your mod's map-related functions (like 'showWaypoint(x,y,z)')
+1. Define a facade interface (like '[IExampleMapFacade](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/test/java/example/mod/client/facade/IExampleMapFacade.java)') for your mod's map-related functions (like 'showWaypoint(x,y,z)')
     - The facade interface will always be classloaded, so it should not use JourneyMap API classes. Use primitives or your own objects.
-    - Add a facade interface field to your mod's ClientProxy class (like 'ClientProxy.IExampleMapFacade') so it can be used by your mod.
-1. Write an implementation of your facade interface (like 'ExampleMapFacade') that uses the JourneyMap IClientAPI interface to perform the actual facade work needed.
-    - Have your IClientPlugin create an instance of the facade implementation, passing it the IClientAPI.
-    - Have your IClientPlugin set the instance on your mod's ClientProxy class (like 'ClientProxy.IExampleMapFacade')
-
+    - Add a facade interface field to your mod's ClientProxy class (like '[ClientProxy.MapFacade](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/test/java/example/mod/client/ClientProxy.java)') so it can be used by your mod.
+1. Write an implementation of your facade interface (like '[ExampleMapFacade](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/test/java/example/mod/client/plugin/ExampleMapFacade.java)') that uses the JourneyMap [IClientAPI](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/journeymap/client/api/IClientAPI.java) interface to perform the actual facade work needed.
+    - Have your IClientPlugin create an instance of the facade implementation using the [IClientAPI](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/journeymap/client/api/IClientAPI.java) provided by JourneyMap.
+    - Have your IClientPlugin set the instance on your mod's ClientProxy class (like '[ClientProxy.MapFacade](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/test/java/example/mod/client/ClientProxy.java)')
+    - Don't make references to this implementation class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
 
 Help Wanted
 ===
@@ -72,10 +69,6 @@ to read the **Licence Information** below.
 * Unit tests!
 * Utility classes utilizing [java.awt.geom.Area.add()](https://docs.oracle.com/javase/7/docs/api/java/awt/geom/Area.html) to 
 create optimized polygons comprised of multiple chunks.
-* A sample mod project using the API that:
-    * Displays slime chunks in JourneyMap
-    * Shows how to include the .classes from the journeymap-api jar in another mod
-    * Shows how to check ClientAPIFactory.isJourneyMapPresent() in the mod's post-init phase 
 
 License Information
 ===
