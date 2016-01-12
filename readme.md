@@ -37,7 +37,29 @@ Simply run the Gradle 'build' task to generate the following:
 
 * */build/libs/journeymap-api-#.jar*
 * */build/libs/journeymap-api-#-javadoc.jar*
-* */build/libs/journeymap-api-#-sources.jar*
+* */build/libs/journeymap-api-#-example.zip*
+
+
+How to use the API classes in your Mod
+===
+
+The goal for using the JourneyMap API is that you have a "soft dependency" only.  
+ * You should only have a compile-time dependency only
+ * You should not have a runtime dependency if JourneyMap isn't loaded
+ * You should not include any JourneyMap API classes in your mod jar. 
+
+Here is the recommended approach:  (see src/test/java/example)
+
+1. Write a class that implements the JourneyMap *journeymap.client.api.IClientPlugin* interface (like 'ExampleJourneymapPlugin')
+    - Annotate the class with *@journeymap.client.api.ClientPlugin* so that JourneyMap can find and instantiate it
+    - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
+1. Define a facade interface (like 'IExampleMapFacade') for your mod's map-related functions (like 'showWaypoint(x,y,z)')
+    - The facade interface will always be classloaded, so it should not use JourneyMap API classes. Use primitives or your own objects.
+    - Add a facade interface field to your mod's ClientProxy class (like 'ClientProxy.IExampleMapFacade') so it can be used by your mod.
+1. Write an implementation of your facade interface (like 'ExampleMapFacade') that uses the JourneyMap IClientAPI interface to perform the actual facade work needed.
+    - Have your IClientPlugin create an instance of the facade implementation, passing it the IClientAPI.
+    - Have your IClientPlugin set the instance on your mod's ClientProxy class (like 'ClientProxy.IExampleMapFacade')
+
 
 Help Wanted
 ===
