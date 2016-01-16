@@ -26,6 +26,6 @@
 @API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api-model")
 @ParametersAreNonnullByDefault package journeymap.client.api.model;
 
-import cpw.mods.fml.common.API;
+import net.minecraftforge.fml.common.API;
 
 import javax.annotation.ParametersAreNonnullByDefault;

@@ -20,31 +20,28 @@
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
-
-apply plugin: 'forge'
-apply plugin: 'java'
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 group 'teamjm'
-version = api_version + '-SNAPSHOT'
+archivesBaseName = "journeymap-api"
+version = project.minecraft_version + '-' + project.api_version
 
 minecraft {
-    version = "${forge_version}-${minecraft_version}"
+    version = "${minecraft_version}-${forge_version}"
+    runDir = "run"
     mappings = "snapshot_${snapshot}"
-    replace "@API_VERSION@", api_version
+    replace '@API_VERSION@', project.api_version
+    replace '@MC_VERSION@', project.minecraft.version
 }
 
 dependencies {

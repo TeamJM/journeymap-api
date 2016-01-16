@@ -20,14 +20,14 @@
 
 package example.mod.client;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import example.mod.CommonProxy;
 import example.mod.client.facade.IExampleMapFacade;
 import example.mod.client.listener.ChunkEventListener;
 import example.mod.client.listener.SleepEventListener;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.util.ArrayList;
 

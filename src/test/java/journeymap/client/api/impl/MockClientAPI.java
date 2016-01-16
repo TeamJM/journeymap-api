@@ -24,9 +24,9 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.LinkedHashMultimap;
-import cpw.mods.fml.common.Optional;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
+import net.minecraftforge.fml.common.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

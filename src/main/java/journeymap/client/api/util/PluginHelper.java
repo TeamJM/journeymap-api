@@ -20,11 +20,11 @@
 
 package journeymap.client.api.util;
 
-import cpw.mods.fml.common.discovery.ASMDataTable;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
+import net.minecraftforge.fml.common.discovery.ASMDataTable;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

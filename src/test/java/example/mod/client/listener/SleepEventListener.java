@@ -20,10 +20,10 @@
 
 package example.mod.client.listener;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import example.mod.client.ClientProxy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Listens to sleep events, creates a waypoint for the bed location via the ClientProxy.IExampleMapFacade interface
@@ -42,7 +42,7 @@ public class SleepEventListener
         {
             if (ClientProxy.MapFacade != null && ClientProxy.MapFacade.canShowBedWaypoint())
             {
-                ClientProxy.MapFacade.showBedWaypoint(event.x, event.y, event.z, event.entityPlayer.dimension);
+                ClientProxy.MapFacade.showBedWaypoint(event.pos.getX(), event.pos.getY(), event.pos.getZ(), event.entityPlayer.dimension);
             }
         }
     }

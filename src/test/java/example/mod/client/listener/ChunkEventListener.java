@@ -20,10 +20,10 @@
 
 package example.mod.client.listener;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import example.mod.client.ClientProxy;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Listens to Forge events, creates waypoints and overlays via this mod's ClientProxy.IExampleMapFacade interface
@@ -42,7 +42,7 @@ public class ChunkEventListener
             Chunk chunk = event.getChunk();
             if (isSlimeChunk(chunk))
             {
-                ClientProxy.MapFacade.showSlimeChunk(chunk.getChunkCoordIntPair(), event.world.provider.dimensionId);
+                ClientProxy.MapFacade.showSlimeChunk(chunk.getChunkCoordIntPair(), event.world.provider.getDimensionId());
             }
         }
     }
@@ -58,7 +58,7 @@ public class ChunkEventListener
             Chunk chunk = event.getChunk();
             if (isSlimeChunk(chunk))
             {
-                ClientProxy.MapFacade.removeSlimeChunk(chunk.getChunkCoordIntPair(), event.world.provider.dimensionId);
+                ClientProxy.MapFacade.removeSlimeChunk(chunk.getChunkCoordIntPair(), event.world.provider.getDimensionId());
             }
         }
     }
