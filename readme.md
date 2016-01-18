@@ -1,13 +1,13 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api)
 ====
 
-An API for integrating mods with [JourneyMap for Minecraft](http://journeymap.info).  Allows mods to create waypoints
-and place overlays and markers in one or more map displays within JourneyMap.
+A plugin-style (soft dependency) API allowing other mods to create waypoints
+and show overlays and markers within [JourneyMap for Minecraft](http://journeymap.info) 1.8.9+.
 
-Integrating this Code into your Mod
+Before you Start Coding
 ===
 
-This API is currently being developed and is likely to change. **It doesn't work with JourneyMap yet.**
+This API is currently being developed and is subject to change. **It hasn't been implemented in JourneyMap yet.**
 
 You're seeing it so you can provide feedback to Techbrew on Espernet IRC #journeymap before he finalizes 
 it and starts implementing it in JourneyMap.
@@ -20,11 +20,28 @@ The only dependencies for this API are for libraries already included with Minec
 
 * Guava
 * Gson
-* Forge (just for the @ API annotation)
+* Forge
 * JUnit
+
+Changelog
+===
+
+**API v1.8.9-0.5**
+
+* Overhauled design to use the annotated plugin approach recommended by the Forge team.
+* Updated dependency to Forge 1.8.9
+
+**0.4 and earlier**
+
+* Iterative designs, now obsolete
 
 Building Code in this Repository
 ===
+
+You can simply get the API jar file (containing both source and classes) from the
+[Downloads](https://bitbucket.org/TeamJM/journeymap-api/downloads) page, but if you want 
+to build the source code, read on...
+
 **Assumptions:**
 
 1. You already know how to use Git and Gradle.
