@@ -61,9 +61,18 @@ sourceSets {
     }
 }
 
+ext.sharedManifest = manifest {
+    attributes("Implementation-Title": "JourneyMap API",
+            "Implementation-Version": project.version,
+            "Implementation-URL": "https://bitbucket.org/TeamJM/journeymap-api")
+}
+
 jar {
     dependsOn classes
     from sourceSets.main.allJava
+    manifest = project.manifest {
+        from sharedManifest
+    }
 }
 
 task exampleJar(type: Jar, dependsOn: classes) {
@@ -75,6 +84,9 @@ task exampleJar(type: Jar, dependsOn: classes) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
+    manifest = project.manifest {
+        from sharedManifest
+    }
 }
 
 artifacts {
