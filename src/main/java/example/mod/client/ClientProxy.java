@@ -18,45 +18,60 @@
  *
  */
 
-package example.mod;
+package example.mod.client;
 
-/**
- * Example mod showing how to use the JourneyMap API.
- */
-
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
+import example.mod.CommonProxy;
+import example.mod.client.facade.IExampleMapFacade;
+import example.mod.client.listener.ChunkEventListener;
+import example.mod.client.listener.SleepEventListener;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = ExampleMod.MODID, version = ExampleMod.VERSION)
-public class ExampleMod
+import java.util.ArrayList;
+
+/**
+ * Client-sided proxy. Using a MapFacade interface (unique to this example example.mod's functionality) prevents
+ * the need to directly reference any JourneyMap API classes here.
+ */
+public class ClientProxy extends CommonProxy
 {
-    public static final String MODID = "examplemod-jm-api";
-    public static final String VERSION = "@API_VERSION@";
+    // Populated by the ExampleJourneymapPlugin class if/when it is initialized by JourneyMap.
+    public static IExampleMapFacade MapFacade;
 
-    @Mod.Instance(ExampleMod.MODID)
-    public static ExampleMod instance;
+    // List of event listeners
+    private ArrayList<Object> eventListeners = new ArrayList<Object>();
 
-    @SidedProxy(clientSide = "example.mod.client.ClientProxy", serverSide = "example.mod.server.ServerProxy")
-    public static CommonProxy proxy;
-
-    @Mod.EventHandler
+    @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        proxy.preInit(event);
+
     }
 
-    @Mod.EventHandler
+    @Override
     public void init(FMLInitializationEvent event)
     {
-        proxy.init(event);
+        // Create event listeners that use ClientProxy.MapFacade if/when it is set.
+        eventListeners.add(new ChunkEventListener());
+        eventListeners.add(new SleepEventListener());
+
+        // Register event listeners
+        for (Object listener : eventListeners)
+        {
+            MinecraftForge.EVENT_BUS.register(listener);
+        }
     }
 
-    @Mod.EventHandler
+    @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-        proxy.postInit(event);
+        // Optional for development purposes:  Load a MockClientAPI if a working
+        // JourneyMap API hasn't been loaded by now
+        if (MapFacade == null)
+        {
+
+        }
     }
+
 }

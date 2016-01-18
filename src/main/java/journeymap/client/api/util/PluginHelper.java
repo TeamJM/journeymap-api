@@ -46,7 +46,7 @@ public enum PluginHelper
     protected boolean initialized;
 
     /**
-     * Called by JourneyMap during preInit phase of mod loading.
+     * Called by JourneyMap during preInit phase of example.mod loading.
      * <p/>
      * Mods which are testing integration can also call this in a dev environment
      * and pass in a stub implementation, but must never do so in production code.
@@ -90,7 +90,7 @@ public enum PluginHelper
     }
 
     /**
-     * Called by JourneyMap during init phase of mod loading.  Can only be called once per runtime.
+     * Called by JourneyMap during init phase of example.mod loading.  Can only be called once per runtime.
      * <p/>
      * Mods which are testing integration can also call this in a dev environment
      * and pass in a stub implementation, but must never do so in production code.

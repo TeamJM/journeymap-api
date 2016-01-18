@@ -34,7 +34,7 @@ public abstract class Displayable
     /**
      * Constructor.
      *
-     * @param modId     the mod id
+     * @param modId     the example.mod id
      * @param displayId the display id
      */
     Displayable(String modId, String displayId)
@@ -66,9 +66,9 @@ public abstract class Displayable
     }
 
     /**
-     * Your mod id.
+     * Your example.mod id.
      *
-     * @return modId mod id
+     * @return modId example.mod id
      */
     public String getModId()
     {

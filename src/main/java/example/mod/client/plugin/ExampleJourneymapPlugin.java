@@ -31,7 +31,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 /**
  * Example plugin implementation. To prevent classloader errors if JourneyMap
  * isn't loaded (and thus the API classes aren't loaded), don't reference this
- * class anywhere directly in your mod.
+ * class anywhere directly in your example.mod.
  * <p/>
  * The annotation makes your plugin discoverable to JourneyMap, which will create
  * an instance of the plugin and call initialize on it.
@@ -43,7 +43,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class ExampleJourneymapPlugin implements IClientPlugin
 {
     /**
-     * Called by JourneyMap during the init phase of mod loading.  Your implementation
+     * Called by JourneyMap during the init phase of example.mod loading.  Your implementation
      * should retain a reference to the IClientAPI passed in, since that is what your plugin
      * will use to add overlays, etc. to JourneyMap.
      *

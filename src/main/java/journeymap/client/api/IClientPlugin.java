@@ -34,7 +34,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public interface IClientPlugin
 {
     /**
-     * Called by JourneyMap during the init phase of mod loading.  Your implementation
+     * Called by JourneyMap during the init phase of example.mod loading.  Your implementation
      * should retain a reference to the IClientAPI passed in, since that is what your plugin
      * will use to add overlays, etc. to JourneyMap.
      *

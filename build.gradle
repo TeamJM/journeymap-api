@@ -61,35 +61,21 @@ sourceSets {
     }
 }
 
-ext.sharedManifest = manifest {
-    attributes("Implementation-Title": "JourneyMap API",
-            "Implementation-Version": project.version,
-            "Implementation-URL": "https://bitbucket.org/TeamJM/journeymap-api")
-}
-
 jar {
     dependsOn classes
-    from sourceSets.main.allJava
-    manifest = project.manifest {
-        from sharedManifest
+    from sourceSets.main.output
+    manifest {
+        attributes("Implementation-Title": "JourneyMap API",
+                "Implementation-Version": project.version,
+                "Implementation-URL": "https://bitbucket.org/TeamJM/journeymap-api")
     }
-}
-
-task exampleJar(type: Jar, dependsOn: classes) {
-    classifier = 'example'
-    from sourceSets.test.allJava
-    extension 'zip'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
-    manifest = project.manifest {
-        from sharedManifest
-    }
 }
 
 artifacts {
-    archives exampleJar
     archives javadocJar
 }

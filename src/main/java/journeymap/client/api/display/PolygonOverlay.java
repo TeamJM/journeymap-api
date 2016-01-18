@@ -48,8 +48,8 @@ public final class PolygonOverlay extends Overlay
     /**
      * Constructor.
      *
-     * @param modId     Your mod id.
-     * @param displayId A unique id for the polygon (scoped within your mod) which can be used to remove/update it.
+     * @param modId     Your example.mod id.
+     * @param displayId A unique id for the polygon (scoped within your example.mod) which can be used to remove/update it.
      * @param outerArea A polygon of the outer area to be displayed.
      */
     public PolygonOverlay(String modId, String displayId, int dimension, ShapeProperties shapeProperties, MapPolygon outerArea)
@@ -60,8 +60,8 @@ public final class PolygonOverlay extends Overlay
     /**
      * Constructor.
      *
-     * @param modId     Your mod id.
-     * @param displayId A unique id for the polygon (scoped within your mod) which can be used to remove/update it.
+     * @param modId     Your example.mod id.
+     * @param displayId A unique id for the polygon (scoped within your example.mod) which can be used to remove/update it.
      * @param outerArea A polygon of the outer area to be displayed.
      * @param holes     (Optional) A list of polygons treated as holes inside the outerArea
      */

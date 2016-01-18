@@ -50,7 +50,7 @@ public interface IClientAPI
      * has been added, call this method again to ensure the maps reflect your changes.
      * <p/>
      * If an object of the same Displayable.Type
-     * from your mod with the same displayId has already been added, it will be replaced.
+     * from your example.mod with the same displayId has already been added, it will be replaced.
      * <p/>
      * Has no effect on display types not accepted by the player.
      *
@@ -125,7 +125,7 @@ public interface IClientAPI
     boolean isVisible(String modId, DisplayType displayType, String displayId);
 
     /**
-     * Gets a list of player displayable ids associated with your mod.
+     * Gets a list of player displayable ids associated with your example.mod.
      * Always returns an empty list if the display type is not accepted by the player.
      *
      * @param modId Mod id
@@ -135,7 +135,7 @@ public interface IClientAPI
     List<String> getShownIds(String modId, DisplayType displayType);
 
     /**
-     * Check whether player will accept a type of Displayable from your mod. (Like Displayables or Overlays).
+     * Check whether player will accept a type of Displayable from your example.mod. (Like Displayables or Overlays).
      *
      * @param modId       Mod id
      * @param displayType Display type to check

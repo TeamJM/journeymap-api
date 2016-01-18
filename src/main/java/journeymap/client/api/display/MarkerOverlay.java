@@ -45,8 +45,8 @@ public final class MarkerOverlay extends Overlay
     /**
      * Constructor.
      *
-     * @param modId    Your mod id.
-     * @param markerId A unique id for the marker (scoped to your mod) which can be used to remove/update it.
+     * @param modId    Your example.mod id.
+     * @param markerId A unique id for the marker (scoped to your example.mod) which can be used to remove/update it.
      * @param point    Location of the marker.
      * @param icon     The icon to display as the marker.
      */

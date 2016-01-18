@@ -27,7 +27,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Listens to sleep events, creates a waypoint for the bed location via the ClientProxy.IExampleMapFacade interface
- * (if present). Using the facade interface (unique to this example mod) prevents the need to directly reference
+ * (if present). Using the facade interface (unique to this example example.mod) prevents the need to directly reference
  * any JourneyMap API classes here.
  */
 public class SleepEventListener
