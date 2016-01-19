@@ -18,7 +18,6 @@
  *
  */
 
-// Repos
 buildscript {
     repositories {
         jcenter()
@@ -31,21 +30,12 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
-
-// Gradle Plugins
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-// Project Properties (also see gradle.properties)
 group 'teamjm'
 archivesBaseName = "journeymap-api"
 version = project.minecraft_version + '-' + project.api_version
 
-// Additional library dependencies
-dependencies {
-    testCompile 'junit:junit:4.11'
-}
-
-// ForgeGradle spec for Minecraft
 minecraft {
     version = "${minecraft_version}-${forge_version}"
     runDir = "run"
@@ -54,73 +44,38 @@ minecraft {
     replace '@MC_VERSION@', project.minecraft.version
 }
 
-// Replace tokens in resources files
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+dependencies {
+    testCompile 'junit:junit:4.11'
+}
 
-    // replace stuff in mcmod.info on copy
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
     }
-
-    // copy everything else
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
     }
 }
 
-// Reobfuscated jar for just the Example Mod
 jar {
     dependsOn classes
     from sourceSets.main.output
-    classifier = 'examplemod'
-    include 'example/**'
-    include 'mcmod.info'
-    include 'assets/**'
     manifest {
-        attributes = [
-                "Manifest-Version": "1.0",
-                "Implementation-Title": "Example Mod for JourneyMap API",
+        attributes("Implementation-Title": "JourneyMap API",
                 "Implementation-Version": project.version,
-                "Implementation-URL": "https://bitbucket.org/TeamJM/journeymap-api"
-        ]
+                "Implementation-URL": "https://bitbucket.org/TeamJM/journeymap-api")
     }
 }
 
-// Jar for just the API - Stays deobfuscated so it can go in a mod project's /libs folder
-task deobfJar(type: Jar, dependsOn: classes) {
-    mustRunAfter = ['jar']
-    classifier = 'deobf'
-    from sourceSets.main.output
-    include 'journeymap/**'
-    manifest {
-        attributes = [
-                "Manifest-Version": "1.0",
-                "Implementation-Title": "JourneyMap API",
-                "Implementation-Version": project.version,
-                "Implementation-URL": "https://bitbucket.org/TeamJM/journeymap-api"
-        ]
-    }
-}
-
-// Javadoc generation
-javadoc {
-    title = 'JourneyMap API and Example Mod'
-}
-
-// Jar for Javadocs
-task javadocZip(type: Jar, dependsOn: javadoc) {
+task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
-    extension = 'zip'
     from javadoc.destinationDir
 }
 
-// Additional artifacts produced by build task
 artifacts {
-    archives deobfJar
-    archives javadocZip
+    archives javadocJar
 }
