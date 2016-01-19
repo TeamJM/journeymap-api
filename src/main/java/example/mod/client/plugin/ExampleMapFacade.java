@@ -55,7 +55,7 @@ class ExampleMapFacade implements IExampleMapFacade
 
         // Create the basic bed waypoint now, but it won't be shown until the player sleeps
         // and it can be updated with the correct dimension and world coordinates
-        MapImage bedIcon = new MapImage(new ResourceLocation("assets/examplemod/images/bed.png"), 32, 32);
+        MapImage bedIcon = new MapImage(new ResourceLocation("examplemod:images/bed.png"), 32, 32);
         bedWaypoint = new ModWaypoint(ExampleMod.MODID, "bed_0", "Handy Locations", "Bed", 0, 0, 0, bedIcon, 0xffffff, true, Integer.MIN_VALUE);
     }
 
