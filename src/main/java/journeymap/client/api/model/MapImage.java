@@ -21,12 +21,13 @@
 package journeymap.client.api.model;
 
 import com.google.common.base.Objects;
+import example.mod.ExampleMod;
 import journeymap.client.api.display.Displayable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -84,13 +85,15 @@ public final class MapImage
     {
         try
         {
-            return ImageIO.read(Minecraft.getMinecraft().mcDefaultResourcePack.getInputStream(location));
+            IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
+            return TextureUtil.readBufferedImage(resourceManager.getResource(location).getInputStream());
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            ExampleMod.LOGGER.error("Can't read MapImage location: " + location, e);
             BufferedImage missing = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
-            missing.getRaster().setPixels(0, 0, 16, 16, TextureUtil.missingTextureData);
+            // TODO: Confirm this works
+            missing.setRGB(0,0,16,16,TextureUtil.missingTextureData,0,16);
             return missing;
         }
     }
