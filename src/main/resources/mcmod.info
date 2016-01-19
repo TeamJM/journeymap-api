@@ -1,0 +1,16 @@
+[
+{
+  "modid": "examplemod-jm",
+  "name": "Example for JourneyMap API",
+  "description": "Example mod showing how to write a plugin for the JourneyMap API.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://bitbucket.org/TeamJM/journeymap-api/",
+  "updateUrl": "",
+  "authorList": ["TechBrew"],
+  "credits": "TeamJM",
+  "logoFile": "assets/examplemod/images/bed.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
