@@ -24,16 +24,19 @@ import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 
 /**
- * Used by JourneyMap to load and initialize plugins.  A plugin class must be annotated with
+ * Enum singleton used by JourneyMap to load and initialize plugins.  A plugin class must be annotated with
  * the {@link ClientPlugin} annotation and also implement the {@link IClientPlugin} interface.
  */
+@ParametersAreNonnullByDefault
 public enum PluginHelper
 {
     INSTANCE;
@@ -46,19 +49,21 @@ public enum PluginHelper
     protected boolean initialized;
 
     /**
-     * Called by JourneyMap during preInit phase of example.mod loading.
+     * Called by JourneyMap during it's preInitialization phase to find plugin classes
+     * included in other mods and then instantiate them.
      * <p/>
      * Mods which are testing integration can also call this in a dev environment
      * and pass in a stub implementation, but must never do so in production code.
      *
      * @param event preInit
+     * @return list of instantiated plugins
      */
-    public void findPlugins(FMLPreInitializationEvent event)
+    public List<IClientPlugin> preInitPlugins(FMLPreInitializationEvent event)
     {
         if (plugins == null)
         {
             ASMDataTable asmDataTable = event.getAsmData();
-            this.plugins = new ArrayList<IClientPlugin>();
+            List<IClientPlugin> discovered = new ArrayList<IClientPlugin>();
             Set<ASMDataTable.ASMData> asmDataSet = asmDataTable.getAll(PLUGIN_ANNOTATION_NAME);
 
             for (ASMDataTable.ASMData asmData : asmDataSet)
@@ -71,7 +76,7 @@ public enum PluginHelper
                     {
                         Class<? extends IClientPlugin> interfaceImplClass = pluginClass.asSubclass(IClientPlugin.class);
                         IClientPlugin instance = interfaceImplClass.newInstance();
-                        plugins.add(instance);
+                        discovered.add(instance);
                         LOGGER.info(String.format("Found @%s: %s", PLUGIN_ANNOTATION_NAME, className));
                     }
                     else
@@ -86,63 +91,73 @@ public enum PluginHelper
                             PLUGIN_ANNOTATION_NAME, className, e.getMessage()), e);
                 }
             }
+
+            if(discovered.isEmpty())
+            {
+                LOGGER.info("No plugins for JourneyMap API discovered.");
+            }
+
+            plugins = Collections.unmodifiableList(discovered);
         }
+
+        return plugins;
     }
 
     /**
-     * Called by JourneyMap during init phase of example.mod loading.  Can only be called once per runtime.
+     * Called by JourneyMap during its initialization phase.  Can only be called once per runtime.
      * <p/>
      * Mods which are testing integration can also call this in a dev environment
      * and pass in a stub implementation, but must never do so in production code.
      *
+     * @param event init event
      * @param clientAPI Client API implementation
+     * @return list of initialized plugins, null if plugin discovery never occurred
      */
-    public void initializePlugins(IClientAPI clientAPI)
+    public List<IClientPlugin> initPlugins(FMLInitializationEvent event, IClientAPI clientAPI)
     {
-        synchronized (INSTANCE)
+        if (plugins == null)
         {
-            if (plugins == null)
-            {
-                // Exception used just to show a trace back to whoever shouldn't have called this.
-                LOGGER.warn("Plugins haven't been found, can't initialize!", new IllegalStateException());
-                return;
-            }
-
-            if (!initialized)
-            {
-                LOGGER.info(String.format("Initializing plugins with Client API: %s", clientAPI.getClass().getName()));
-                Iterator<IClientPlugin> iter = plugins.iterator();
-                while (iter.hasNext())
-                {
-                    IClientPlugin plugin = iter.next();
-                    try
-                    {
-                        plugin.initialize(clientAPI);
-                        LOGGER.info(String.format("Initialized %s: %s", PLUGIN_INTERFACE_NAME, plugin.getClass().getName()));
-                    }
-                    catch (Exception e)
-                    {
-                        LOGGER.error("Failed to initialize IClientPlugin: " + plugin.getClass().getName(), e);
-                        iter.remove();
-                    }
-                }
-
-                // Finalize the list
-                plugins = Collections.unmodifiableList(plugins);
-                initialized = true;
-            }
-            else
-            {
-                // Exception used just to show a trace back to whoever shouldn't have called this.
-                LOGGER.warn("Plugins already initialized!", new IllegalStateException());
-            }
+            // Exception used just to show a trace back to whoever shouldn't have called this.
+            LOGGER.warn("Plugin discovery never occurred.", new IllegalStateException());
         }
+        else if (!initialized)
+        {
+            LOGGER.info(String.format("Initializing plugins with Client API: %s", clientAPI.getClass().getName()));
+
+            List<IClientPlugin> discovered = new ArrayList<IClientPlugin>(plugins);
+            Iterator<IClientPlugin> iter = discovered.iterator();
+            while (iter.hasNext())
+            {
+                IClientPlugin plugin = iter.next();
+                try
+                {
+                    plugin.initialize(clientAPI);
+                    LOGGER.info(String.format("Initialized %s: %s", PLUGIN_INTERFACE_NAME, plugin.getClass().getName()));
+                }
+                catch (Exception e)
+                {
+                    LOGGER.error("Failed to initialize IClientPlugin: " + plugin.getClass().getName(), e);
+                    iter.remove();
+                }
+            }
+
+            // Finalize the list
+            plugins = Collections.unmodifiableList(discovered);
+            initialized = true;
+        }
+        else
+        {
+            // Exception used just to show a trace back to whoever shouldn't have called this.
+            LOGGER.warn("Plugins already initialized!", new IllegalStateException());
+        }
+
+        return plugins;
     }
 
     /**
      * Get the list of plugins found.
      *
-     * @return null if {@link #findPlugins(FMLPreInitializationEvent)} hasn't been called yet
+     * @return null if {@link #preInitPlugins(FMLPreInitializationEvent)} hasn't been called yet
      */
     public List<IClientPlugin> getPlugins()
     {
