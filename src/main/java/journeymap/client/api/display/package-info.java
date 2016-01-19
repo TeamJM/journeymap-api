@@ -19,12 +19,13 @@
  */
 
 /**
- * Overlay objects which can be displayed on maps.
+ * Objects used by the API to display shapes, images, etc. on maps.
  *
  * @author techbrew
  */
 @API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api-display")
-@ParametersAreNonnullByDefault package journeymap.client.api.display;
+@ParametersAreNonnullByDefault
+package journeymap.client.api.display;
 
 import net.minecraftforge.fml.common.API;
 

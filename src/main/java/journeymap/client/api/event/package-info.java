@@ -18,30 +18,15 @@
  *
  */
 
-package example.mod.server;
-
-import example.mod.CommonProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
 /**
- * Server-sided proxy.  Currently unused.
+ * Events propagated by the API
+ *
+ * @author techbrew
  */
-public class ServerProxy extends CommonProxy
-{
-    @Override
-    public void preInit(FMLPreInitializationEvent event)
-    {
-    }
+@API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api-event")
+@ParametersAreNonnullByDefault
+package journeymap.client.api.event;
 
-    @Override
-    public void init(FMLInitializationEvent event)
-    {
-    }
+import net.minecraftforge.fml.common.API;
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event)
-    {
-    }
-}
+import javax.annotation.ParametersAreNonnullByDefault;

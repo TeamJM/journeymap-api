@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import java.util.ArrayList;
 
 /**
- * Client-sided proxy. Using a MapFacade interface (unique to this example example.mod's functionality) prevents
+ * Client-sided proxy. Using a MapFacade interface (unique to this example mod's functionality) prevents
  * the need to directly reference any JourneyMap API classes here.
  */
 public class ClientProxy extends CommonProxy

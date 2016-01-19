@@ -23,7 +23,7 @@ package example.mod.client.facade;
 import net.minecraft.world.ChunkCoordIntPair;
 
 /**
- * Interface abstraction for map-related actions that this ExampleMod can do,
+ * Interface abstraction for map-related actions that this Example Mod can do,
  * but without directly referencing any JourneyMap API classes.
  */
 public interface IExampleMapFacade

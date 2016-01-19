@@ -21,26 +21,21 @@
 package example.mod.client.plugin;
 
 import example.mod.client.ClientProxy;
-import journeymap.client.api.IClientAPI;
-import journeymap.client.api.IClientPlugin;
-import journeymap.client.api.display.Displayable;
-import journeymap.client.api.event.ClientEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * Example plugin implementation. To prevent classloader errors if JourneyMap
- * isn't loaded (and thus the API classes aren't loaded), don't reference this
- * class anywhere directly in your example.mod.
+ * Example plugin implementation. To prevent classloader errors if JourneyMap isn't loaded
+ * (and thus the API classes aren't loaded), this class isn't referenced anywhere directly in the mod.
  * <p/>
- * The annotation makes your plugin discoverable to JourneyMap, which will create
- * an instance of the plugin and call initialize on it.
+ * The @journeymap.client.api.ClientPlugin annotation makes this plugin class discoverable to JourneyMap,
+ * which will create an instance of it and then call initialize on it.
  * <p/>
- * This example creates polygon overlays for slime chunks.
+ * The
  */
 @ParametersAreNonnullByDefault
 @journeymap.client.api.ClientPlugin
-public class ExampleJourneymapPlugin implements IClientPlugin
+public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlugin
 {
     /**
      * Called by JourneyMap during the init phase of example.mod loading.  Your implementation
@@ -50,27 +45,27 @@ public class ExampleJourneymapPlugin implements IClientPlugin
      * @param api Client API implementation
      */
     @Override
-    public void initialize(final IClientAPI api)
+    public void initialize(final journeymap.client.api.IClientAPI api)
     {
         // Set ClientProxy.ExampleMapFacade with an implementation that uses the JourneyMap IClientAPI under the covers.
         ClientProxy.MapFacade = new ExampleMapFacade(api);
     }
 
     /**
-     * Called by JourneyMap on the main Minecraft thread when a {@link ClientEvent} occurs.
+     * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p/>
      * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_STARTED},
-     * this is a signal to {@link journeymap.client.api.IClientAPI#show(Displayable)} all relevant
-     * Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
-     * (ModWaypoints with persisted==true will already be shown.)
+     * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
+     * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
+     * (Note: ModWaypoints with persisted==true will already be shown.)
      *
      * @param event the event
      */
     @Override
-    public void onEvent(ClientEvent event)
+    public void onEvent(journeymap.client.api.event.ClientEvent event)
     {
-        if (ClientProxy.MapFacade != null && event.type == ClientEvent.Type.DISPLAY_STARTED)
+        if (ClientProxy.MapFacade != null && event.type == journeymap.client.api.event.ClientEvent.Type.DISPLAY_STARTED)
         {
             ClientProxy.MapFacade.refreshMap(event.dimension);
         }
