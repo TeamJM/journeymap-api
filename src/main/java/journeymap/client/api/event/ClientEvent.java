@@ -71,7 +71,7 @@ public class ClientEvent
 
         /**
          * Signal for ClientPlugins that JourneyMap is going to create a Death Waypoint for the player.
-         * The {@link #value} field will be a {@link journeymap.client.api.display.ModWaypoint} with the
+         * The {@link #value} field will be a {@link journeymap.client.api.model.MapPoint} with the
          * appropriate coordinates set.  Event can be cancelled, preventing the Death Waypoint from being created.
          */
         DEATH_WAYPOINT(true);
