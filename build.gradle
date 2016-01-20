@@ -18,7 +18,7 @@
  *
  */
 
-// Repos
+/* Repos */
 buildscript {
     repositories {
         jcenter()
@@ -32,29 +32,29 @@ buildscript {
     }
 }
 
-// Gradle Plugins
+/* Gradle Plugins */
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-// Project Properties (also see gradle.properties)
+/* Project Properties (also see gradle.properties) */
 group 'teamjm'
 archivesBaseName = "journeymap-api"
 version = project.minecraft_version + '-' + project.api_version
 
-// Additional library dependencies
+/* Additional library dependencies */
 dependencies {
     testCompile 'junit:junit:4.11'
 }
 
-// ForgeGradle spec for Minecraft
+/* ForgeGradle spec for Minecraft */
 minecraft {
-    version = "${minecraft_version}-${forge_version}"
+    version = "${project.minecraft_version}-${project.forge_version}"
     runDir = "run"
-    mappings = "snapshot_${snapshot}"
+    mappings = "${project.mappings}"
     replace '@API_VERSION@', project.api_version
-    replace '@MC_VERSION@', project.minecraft.version
+    replace '@MC_VERSION@', project.minecraft_version
 }
 
-// Replace tokens in resources files
+/* Replace tokens in resources files */
 processResources
 {
     // this will ensure that this task is redone when the versions change.
@@ -73,7 +73,7 @@ processResources
     }
 }
 
-// Reobfuscated jar for just the Example Mod
+/* Reobfuscated jar for just the Example Mod */
 jar {
     dependsOn classes
     from sourceSets.main.output
@@ -91,7 +91,7 @@ jar {
     }
 }
 
-// Jar for just the API - Stays deobfuscated so it can go in a mod project's /libs folder
+/* Jar for just the API - Stays deobfuscated so it can go in a mod project's /libs folder */
 task deobfJar(type: Jar, dependsOn: classes) {
     mustRunAfter = ['jar']
     classifier = 'deobf'
@@ -107,19 +107,19 @@ task deobfJar(type: Jar, dependsOn: classes) {
     }
 }
 
-// Javadoc generation
+/* Javadoc generation */
 javadoc {
     title = 'JourneyMap API and Example Mod'
 }
 
-// Jar for Javadocs
+/* Jar for Javadocs */
 task javadocZip(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     extension = 'zip'
     from javadoc.destinationDir
 }
 
-// Additional artifacts produced by build task
+/* Additional artifacts produced by build task */
 artifacts {
     archives deobfJar
     archives javadocZip
