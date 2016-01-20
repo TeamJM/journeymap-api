@@ -18,6 +18,10 @@ The JourneyMap API is designed so that your mod will only have a **soft dependen
 
 Changelog
 ===
+**API v1.8.9-0.7**
+
+* ClientEvent is now potentially cancellable.
+* Added new ClientEvent.Type: DEATH_WAYPOINT
 
 **API v1.8.9-0.6**
 

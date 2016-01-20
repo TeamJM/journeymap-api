@@ -30,6 +30,7 @@ public class ClientEvent
     public final Type type;
     public int dimension;
     public Object value;
+    private boolean cancelled;
 
     public ClientEvent(Type type, int dimension)
     {
@@ -43,13 +44,43 @@ public class ClientEvent
         this.dimension = dimension;
     }
 
+    public boolean isCancelled()
+    {
+        return cancelled;
+    }
+
+    /**
+     * Cancels the event only if the Type is cancellable.
+     */
+    public void cancel()
+    {
+        if(type.cancellable)
+        {
+            this.cancelled = true;
+        }
+    }
+
     public enum Type
     {
         /**
          * Signal for ClientPlugins to {@link journeymap.client.api.IClientAPI#show(Displayable)} its
          * Displayables for the {@link #dimension} indicated. (ModWaypoints with persisted==true will already be shown.)
-         * The {@link #value} field is always null.
+         * The {@link #value} field is always null.  Cannot be cancelled.
          */
-        DISPLAY_STARTED
+        DISPLAY_STARTED(false),
+
+        /**
+         * Signal for ClientPlugins that JourneyMap is going to create a Death Waypoint for the player.
+         * The {@link #value} field will be a {@link journeymap.client.api.display.ModWaypoint} with the
+         * appropriate coordinates set.  Event can be cancelled, preventing the Death Waypoint from being created.
+         */
+        DEATH_WAYPOINT(true);
+
+        boolean cancellable;
+
+        Type(boolean cancellable)
+        {
+            this.cancellable = cancellable;
+        }
     }
 }
