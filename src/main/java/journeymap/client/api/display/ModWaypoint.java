@@ -22,7 +22,7 @@ package journeymap.client.api.display;
 
 import com.google.common.base.Objects;
 import journeymap.client.api.model.MapImage;
-import journeymap.client.api.model.MapPoint;
+import net.minecraft.util.BlockPos;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ import java.util.Arrays;
  */
 public final class ModWaypoint extends Displayable
 {
-    private MapPoint point;
+    private BlockPos point;
     private MapImage icon;
     private String waypointGroupName;
     private String waypointName;
@@ -63,7 +63,7 @@ public final class ModWaypoint extends Displayable
     public ModWaypoint(String modId, String displayId, String waypointGroupName, String waypointName,
                        int x, int y, int z, @Nullable MapImage icon, int color, boolean persistent, int dimension)
     {
-        this(modId, displayId, waypointGroupName, waypointName, new MapPoint(x, y, z), icon, color, persistent, dimension);
+        this(modId, displayId, waypointGroupName, waypointName, new BlockPos(x, y, z), icon, color, persistent, dimension);
     }
 
     /**
@@ -79,7 +79,7 @@ public final class ModWaypoint extends Displayable
      * @param dimensions        Dimension ids where waypoint should be displayed.
      */
     public ModWaypoint(String modId, String displayId, String waypointGroupName, String waypointName,
-                       MapPoint point, @Nullable MapImage icon, int color, boolean persistent, int... dimensions)
+                       BlockPos point, @Nullable MapImage icon, int color, boolean persistent, int... dimensions)
     {
         super(modId, displayId);
         setWaypointGroupName(waypointGroupName);
@@ -133,7 +133,7 @@ public final class ModWaypoint extends Displayable
     /**
      * Waypoint location.
      */
-    public MapPoint getPoint()
+    public BlockPos getPoint()
     {
         return point;
     }
@@ -144,7 +144,7 @@ public final class ModWaypoint extends Displayable
      * @param point the point
      * @return this
      */
-    public ModWaypoint setPoint(MapPoint point)
+    public ModWaypoint setPoint(BlockPos point)
     {
         this.point = point;
         return this;

@@ -20,8 +20,9 @@
 
 package journeymap.client.api.util;
 
-import journeymap.client.api.model.MapPoint;
 import journeymap.client.api.model.MapPolygon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 
 /**
  * Utility class related to Polygons
@@ -52,7 +53,11 @@ public class PolygonHelper
      */
     public static MapPolygon createChunkPolygon(int chunkX, int worldY, int chunkZ)
     {
-        MapPoint p = new MapPoint(chunkX << 4, worldY, chunkZ << 4);
-        return new MapPolygon(p, p.offset(15, 0), p.offset(15, 15), p.offset(0, 15), p);
+        BlockPos nw = new BlockPos(chunkX << 4, worldY, chunkZ << 4);
+        BlockPos ne = nw.offset(EnumFacing.EAST, 15);
+        BlockPos se = ne.offset(EnumFacing.SOUTH, 15);
+        BlockPos sw = se.offset(EnumFacing.WEST, 15);
+
+        return new MapPolygon(nw, ne, se, sw, nw);
     }
 }

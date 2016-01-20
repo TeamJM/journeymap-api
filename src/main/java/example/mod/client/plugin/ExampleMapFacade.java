@@ -27,10 +27,10 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.ModWaypoint;
 import journeymap.client.api.display.PolygonOverlay;
 import journeymap.client.api.model.MapImage;
-import journeymap.client.api.model.MapPoint;
 import journeymap.client.api.model.MapPolygon;
 import journeymap.client.api.model.ShapeProperties;
 import journeymap.client.api.util.PolygonHelper;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
 
@@ -126,7 +126,7 @@ class ExampleMapFacade implements IExampleMapFacade
     @Override
     public void showBedWaypoint(int x, int y, int z, int dimension)
     {
-        MapPoint bedLocation = new MapPoint(x, y, z);
+        BlockPos bedLocation = new BlockPos(x, y, z);
         if (bedWaypoint.isInDimension(dimension) || !bedWaypoint.getPoint().equals(bedLocation))
         {
             bedWaypoint.setPoint(bedLocation).setDimensions(dimension);

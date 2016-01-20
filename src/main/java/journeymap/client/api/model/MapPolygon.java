@@ -21,11 +21,12 @@
 package journeymap.client.api.model;
 
 import com.google.common.base.Objects;
+import net.minecraft.util.BlockPos;
 
 import java.util.*;
 
 /**
- * A MapPolygon is a sequence of at least 4 MapPoints, the first and last being equal.
+ * A MapPolygon is a sequence of at least 4 BlockPoss, the first and last being equal.
  * <p/>
  * Note that the actual list passed into the constructor isn't retained; the points
  * are copied into an unmodifiable list. If you need to update the points, pass in a new
@@ -35,15 +36,15 @@ import java.util.*;
  */
 public final class MapPolygon
 {
-    private List<MapPoint> points;
+    private List<BlockPos> points;
 
     /**
      * Constructor.
      *
-     * @param points a sequence of at least 4 MapPoints, the first and last being equal.
+     * @param points a sequence of at least 4 BlockPoss, the first and last being equal.
      * @throws IllegalArgumentException if conditions for a proper polygon aren't met.
      */
-    public MapPolygon(MapPoint... points)
+    public MapPolygon(BlockPos... points)
     {
         this(Arrays.asList(points));
     }
@@ -51,10 +52,10 @@ public final class MapPolygon
     /**
      * Constructor.
      *
-     * @param points a sequence of at least 4 MapPoints, the first and last being equal.
+     * @param points a sequence of at least 4 BlockPoss, the first and last being equal.
      * @throws IllegalArgumentException if conditions for a proper polygon aren't met.
      */
-    public MapPolygon(List<MapPoint> points)
+    public MapPolygon(List<BlockPos> points)
     {
         setPoints(points);
     }
@@ -64,12 +65,12 @@ public final class MapPolygon
      *
      * @return points
      */
-    public List<MapPoint> getPoints()
+    public List<BlockPos> getPoints()
     {
         return points;
     }
 
-    public MapPolygon setPoints(List<MapPoint> points)
+    public MapPolygon setPoints(List<BlockPos> points)
     {
         if (points.size() < 4)
         {
@@ -79,7 +80,7 @@ public final class MapPolygon
         if (!points.get(0).equals(points.get(points.size() - 1)))
         {
             // First and last points must be equal
-            List<MapPoint> temp = new ArrayList<MapPoint>(points);
+            List<BlockPos> temp = new ArrayList<BlockPos>(points);
             temp.add(points.get(0));
             points = temp;
         }
@@ -93,7 +94,7 @@ public final class MapPolygon
      *
      * @return iterator
      */
-    public Iterator<MapPoint> iterator()
+    public Iterator<BlockPos> iterator()
     {
         return points.iterator();
     }

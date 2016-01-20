@@ -22,7 +22,7 @@ package journeymap.client.api.display;
 
 import com.google.common.base.Objects;
 import journeymap.client.api.model.MapImage;
-import journeymap.client.api.model.MapPoint;
+import net.minecraft.util.BlockPos;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -38,8 +38,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public final class ImageOverlay extends Overlay
 {
-    private MapPoint northWestPoint;
-    private MapPoint southEastPoint;
+    private BlockPos northWestPoint;
+    private BlockPos southEastPoint;
     private MapImage image;
 
     /**
@@ -51,7 +51,7 @@ public final class ImageOverlay extends Overlay
      * @param southEastPoint Location of the lower-right corner of the image.
      * @param image          The image to display as the overlay.
      */
-    public ImageOverlay(String modId, String imageId, MapPoint northWestPoint, MapPoint southEastPoint, MapImage image)
+    public ImageOverlay(String modId, String imageId, BlockPos northWestPoint, BlockPos southEastPoint, MapImage image)
     {
         super(modId, imageId);
         setNorthWestPoint(northWestPoint);
@@ -62,7 +62,7 @@ public final class ImageOverlay extends Overlay
     /**
      * Top-left location of the image overlay.
      */
-    public MapPoint getNorthWestPoint()
+    public BlockPos getNorthWestPoint()
     {
         return northWestPoint;
     }
@@ -73,7 +73,7 @@ public final class ImageOverlay extends Overlay
      * @param northWestPoint point
      * @return this
      */
-    public ImageOverlay setNorthWestPoint(MapPoint northWestPoint)
+    public ImageOverlay setNorthWestPoint(BlockPos northWestPoint)
     {
         this.northWestPoint = northWestPoint;
         return this;
@@ -82,7 +82,7 @@ public final class ImageOverlay extends Overlay
     /**
      * Bottom-right location of the image overlay.
      */
-    public MapPoint getSouthEastPoint()
+    public BlockPos getSouthEastPoint()
     {
         return southEastPoint;
     }
@@ -93,7 +93,7 @@ public final class ImageOverlay extends Overlay
      * @param southEastPoint point
      * @return this
      */
-    public ImageOverlay setSouthEastPoint(MapPoint southEastPoint)
+    public ImageOverlay setSouthEastPoint(BlockPos southEastPoint)
     {
         this.southEastPoint = southEastPoint;
         return this;
