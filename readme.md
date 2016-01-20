@@ -1,30 +1,28 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api)
 ====
 
-A plugin-style (soft dependency) API allowing other mods to create waypoints
-and show overlays and markers within [JourneyMap for Minecraft](http://journeymap.info) 1.8.9+.
+- - - -
 
-Before you Start Coding
-===
+**Note:** This API is currently being developed and is subject to change. It hasn't been implemented in JourneyMap yet. You're seeing it so you can provide feedback to Techbrew on Espernet IRC #journeymap before he finalizes 
+it and starts implementing it in JourneyMap. This page will be updated as development progresses.
 
-This API is currently being developed and is subject to change. **It hasn't been implemented in JourneyMap yet.**
+- - - -
 
-You're seeing it so you can provide feedback to Techbrew on Espernet IRC #journeymap before he finalizes 
-it and starts implementing it in JourneyMap.
+A plugin-style (soft dependency) API allowing other mods to create waypoints and show overlays and markers within [JourneyMap for Minecraft](http://journeymap.info) 1.8.9+.
 
-This page will be updated as development progresses.
+The JourneyMap API is designed so that your mod will only have a **soft dependency** on it:  
 
-Dependencies
-===
-The only dependencies for this API are for libraries already included with Minecraft and Forge:
-
-* Guava
-* Gson
-* Forge
-* JUnit
+ * You should **only** have a compile-time dependency via your plugin implementation.
+ * You should **not** need a runtime dependency. As long as you don't declare a dependency on "journeymap" in your mcmod.info file, your mod should load even if JourneyMap doesn't.
+ * You should **never** include any JourneyMap API classes in your mod's jar. No shading is needed.
 
 Changelog
 ===
+
+**API v1.8.9-0.6**
+
+* Build now produces a `journeymap-api-*-deobf.jar` for use in a dev environment and a `journeymap-api-*-examplemod.jar` for use in the `run/mods` directory
+* Method signature changes and bugfixes in PluginHelper
 
 **API v1.8.9-0.5**
 
@@ -35,34 +33,30 @@ Changelog
 
 * Iterative designs, now obsolete
 
-Building Code in this Repository
+How to use the JourneyMap API in your development environment
 ===
 
-You can simply get the API jar file (containing both source and classes) from the
-[Downloads](https://bitbucket.org/TeamJM/journeymap-api/downloads) page, but if you want 
-to build the source code, read on...
+1. Either get the files you'll need from the [Downloads](https://bitbucket.org/TeamJM/journeymap-api/downloads) page, or clone
+this repository and run `gradlew setupDecompWorkspace build`.
 
-**Assumptions:**
+2. Put the `journeymap-api-*-deobf.jar` and the `journeymap-api-*-sources.jar` in your project's `/libs` directory.  
+(Create the directory if you don't have one.)
 
-1. You already know how to use Git and Gradle.
-2. You already have Forge built in your local Gradle repo.
+3. Update your Gradle build's dependencies (if needed) to find jars in the `/libs` directory.  For example:
 
-Simply run the Gradle 'build' task to generate the following:
+~~~~groovy
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.*');
+}
+~~~~
 
-* */build/libs/journeymap-api-#.jar*
-* */build/libs/journeymap-api-#-javadoc.jar*
-* */build/libs/journeymap-api-#-example.zip*
+Optional: You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
+to see the Example Mod code in action.
 
-How to use the API classes in your Mod
+How to write a plugin for the JourneyMap API in your mod.
 ===
 
-The goal for using the JourneyMap API is that you have a **soft dependency** only.  
-
- * You should **only** have a compile-time dependency
- * You should **not** have a runtime dependency if JourneyMap isn't loaded
- * You should **never** include any JourneyMap API classes in your mod's jar. 
-
-Here is the recommended approach:  (See [src/test/java/example](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/test/java/example/mod/) examples)
+Here is the recommended approach:
 
 1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
     - Annotate the class with *[@journeymap.client.api.ClientPlugin](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/journeymap/client/api/ClientPlugin.java)* so that JourneyMap can find and instantiate it
@@ -90,7 +84,7 @@ create optimized polygons comprised of multiple chunks.
 License Information
 ===
 
-All code in this journeymap-api repository is Copyright (c) Techbrew.  **All Rights Reserved.**
+**All code in this journeymap-api repository is Copyright (&copy;) Techbrew. All Rights Reserved.**
 
 *However, the following limited rights are granted to you:*
 
