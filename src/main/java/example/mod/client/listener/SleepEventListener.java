@@ -20,8 +20,10 @@
 
 package example.mod.client.listener;
 
+import example.mod.ExampleMod;
 import example.mod.client.ClientProxy;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -38,12 +40,16 @@ public class SleepEventListener
     @SubscribeEvent
     public void onPlayerSlept(PlayerSleepInBedEvent event)
     {
-        if (event.result == EntityPlayer.EnumStatus.OK)
+        try
         {
             if (ClientProxy.MapFacade != null && ClientProxy.MapFacade.canShowBedWaypoint())
             {
-                ClientProxy.MapFacade.showBedWaypoint(event.pos.getX(), event.pos.getY(), event.pos.getZ(), event.entityPlayer.dimension);
+                ClientProxy.MapFacade.showBedWaypoint(event.entityPlayer.getBedLocation(), event.entityPlayer.dimension);
             }
+        }
+        catch (Throwable t)
+        {
+            ExampleMod.LOGGER.error(t.getMessage(), t);
         }
     }
 }
