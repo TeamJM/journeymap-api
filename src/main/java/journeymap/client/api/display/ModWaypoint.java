@@ -45,6 +45,7 @@ public final class ModWaypoint extends Displayable
     private int[] dimensions;
     private int color;
     private boolean persistent;
+    private boolean editable;
 
     /**
      * Constructor.
@@ -270,6 +271,26 @@ public final class ModWaypoint extends Displayable
         return this;
     }
 
+    /**
+     * Whether the player can edit the waypoint.
+     * @return true if editable
+     */
+    public boolean isEditable()
+    {
+        return editable;
+    }
+
+    /**
+     * Sets whether the player can edit the waypoint.
+     * @param editable is editable
+     * @return this
+     */
+    public ModWaypoint setEditable(boolean editable)
+    {
+        this.editable = editable;
+        return this;
+    }
+
     @Override
     public String toString()
     {
@@ -278,6 +299,7 @@ public final class ModWaypoint extends Displayable
                 .add("displayId", displayId)
                 .add("waypointName", waypointName)
                 .add("waypointGroupName", waypointGroupName)
+                .add("editable", editable)
                 .add("color", color)
                 .add("dimensions", dimensions)
                 .add("icon", icon)
