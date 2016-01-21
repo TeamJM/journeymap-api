@@ -62,23 +62,30 @@ class ExampleMapFacade implements IExampleMapFacade
     @Override
     public void refreshMap(int dimension)
     {
-        if (canShowSlimeChunks())
+        try
         {
-            for (PolygonOverlay slimeChunkOverlay : slimeChunkOverlays.values())
+            if (canShowSlimeChunks())
             {
-                if (slimeChunkOverlay.getDimension() == dimension)
+                for (PolygonOverlay slimeChunkOverlay : slimeChunkOverlays.values())
                 {
-                    jmClientAPI.show(slimeChunkOverlay);
+                    if (slimeChunkOverlay.getDimension() == dimension)
+                    {
+                        jmClientAPI.show(slimeChunkOverlay);
+                    }
+                }
+            }
+
+            if (canShowBedWaypoint())
+            {
+                if (!bedWaypoint.isPersistent() && !bedWaypoint.isInDimension(dimension))
+                {
+                    jmClientAPI.show(bedWaypoint);
                 }
             }
         }
-
-        if (canShowBedWaypoint())
+        catch (Throwable t)
         {
-            if (!bedWaypoint.isPersistent() && !bedWaypoint.isInDimension(dimension))
-            {
-                jmClientAPI.show(bedWaypoint);
-            }
+            ExampleMod.LOGGER.error(t.getMessage(), t);
         }
     }
 
@@ -91,29 +98,43 @@ class ExampleMapFacade implements IExampleMapFacade
     @Override
     public void showSlimeChunk(ChunkCoordIntPair chunkCoords, int dimension)
     {
-        String displayId = "slime_" + chunkCoords.toString();
+        try
+        {
+            String displayId = "slime_" + chunkCoords.toString();
 
-        ShapeProperties shapeProps = new ShapeProperties()
-                .setStrokeWidth(2)
-                .setStrokeColor(0x00ff00).setStrokeOpacity(.7f)
-                .setFillColor(0x00ff00).setFillOpacity(.4f);
+            ShapeProperties shapeProps = new ShapeProperties()
+                    .setStrokeWidth(2)
+                    .setStrokeColor(0x00ff00).setStrokeOpacity(.7f)
+                    .setFillColor(0x00ff00).setFillOpacity(.4f);
 
-        MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.chunkXPos, 0, chunkCoords.chunkZPos);
+            MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.chunkXPos, 0, chunkCoords.chunkZPos);
 
-        PolygonOverlay chunkOverlay = new PolygonOverlay(ExampleMod.MODID, displayId, dimension, shapeProps, polygon);
-        chunkOverlay.setOverlayGroupName("Slime Chunks").setTitle("Slime Chunk");
+            PolygonOverlay chunkOverlay = new PolygonOverlay(ExampleMod.MODID, displayId, dimension, shapeProps, polygon);
+            chunkOverlay.setOverlayGroupName("Slime Chunks").setTitle("Slime Chunk");
 
-        slimeChunkOverlays.put(chunkCoords, chunkOverlay);
-        jmClientAPI.show(chunkOverlay);
+            slimeChunkOverlays.put(chunkCoords, chunkOverlay);
+            jmClientAPI.show(chunkOverlay);
+        }
+        catch (Throwable t)
+        {
+            ExampleMod.LOGGER.error(t.getMessage(), t);
+        }
     }
 
     @Override
     public void removeSlimeChunk(ChunkCoordIntPair chunkCoords, int dimension)
     {
-        PolygonOverlay overlay = slimeChunkOverlays.get(chunkCoords);
-        if (overlay != null)
+        try
         {
-            jmClientAPI.remove(overlay);
+            PolygonOverlay overlay = slimeChunkOverlays.get(chunkCoords);
+            if (overlay != null)
+            {
+                jmClientAPI.remove(overlay);
+            }
+        }
+        catch (Throwable t)
+        {
+            ExampleMod.LOGGER.error(t.getMessage(), t);
         }
     }
 
@@ -124,15 +145,21 @@ class ExampleMapFacade implements IExampleMapFacade
     }
 
     @Override
-    public void showBedWaypoint(int x, int y, int z, int dimension)
+    public void showBedWaypoint(BlockPos bedLocation, int dimension)
     {
-        BlockPos bedLocation = new BlockPos(x, y, z);
-        if (bedWaypoint.isInDimension(dimension) || !bedWaypoint.getPoint().equals(bedLocation))
+        try
         {
-            bedWaypoint.setPoint(bedLocation).setDimensions(dimension);
+            if (bedWaypoint.isInDimension(dimension) || !bedWaypoint.getPoint().equals(bedLocation))
+            {
+                bedWaypoint.setPoint(bedLocation).setDimensions(dimension);
 
-            // Add or update existing waypoint
-            jmClientAPI.show(bedWaypoint);
+                // Add or update existing waypoint
+                jmClientAPI.show(bedWaypoint);
+            }
+        }
+        catch (Throwable t)
+        {
+            ExampleMod.LOGGER.error(t.getMessage(), t);
         }
     }
 

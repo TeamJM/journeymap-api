@@ -20,6 +20,7 @@
 
 package example.mod.client.facade;
 
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.ChunkCoordIntPair;
 
 /**
@@ -68,10 +69,8 @@ public interface IExampleMapFacade
     /**
      * Create a waypoint for the bed slept in at the provided coordinates.
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param position
      * @param dimension
      */
-    void showBedWaypoint(int x, int y, int z, int dimension);
+    void showBedWaypoint(BlockPos position, int dimension);
 }
