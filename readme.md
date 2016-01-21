@@ -18,6 +18,13 @@ The JourneyMap API is designed so that your mod will only have a **soft dependen
 
 Changelog
 ===
+**API v1.8.9-0.9**
+
+* ModWaypoint now has an isEditable property
+* Example Mod's ExampleMapFacade.showBedWaypoint() now takes a BlockPos
+* Bugfix in Example Mod's SleepEventListener: event.result is always null
+* Build updated to Forge 11.15.0.1712
+
 **API v1.8.9-0.8**
 
 * MapPoint has been replaced with Minecraft's BlockPos
