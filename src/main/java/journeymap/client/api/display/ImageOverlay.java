@@ -125,10 +125,9 @@ public final class ImageOverlay extends Overlay
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("modId", modId)
-                .add("displayId", displayId)
-                .add("dimension", dimension)
+                .add("guid", getGuid())
                 .add("overlayGroupName", overlayGroupName)
+                .add("dimension", dimension)
                 .add("title", title)
                 .add("label", label)
                 .add("textProperties", textProperties)

@@ -103,8 +103,7 @@ public final class MarkerOverlay extends Overlay
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("modId", modId)
-                .add("displayId", displayId)
+                .add("guid", getGuid())
                 .add("dimension", dimension)
                 .add("overlayGroupName", overlayGroupName)
                 .add("title", title)

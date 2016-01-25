@@ -20,7 +20,11 @@
 
 package journeymap.client.api.display;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Objects;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.UUID;
 
 /**
  * Base class for Overlays and Waypoints.
@@ -30,17 +34,29 @@ public abstract class Displayable
 {
     protected final String modId;
     protected final String displayId;
+    protected final DisplayType displayType;
 
     /**
-     * Constructor.
+     * Constructor which will generate a GUID display id.
      *
-     * @param modId     the example.mod id
+     * @param modId     the mod id
+     */
+    Displayable(String modId)
+    {
+        this(modId, UUID.randomUUID().toString());
+    }
+
+    /**
+     * Constructor with explicit display id.
+     *
+     * @param modId     the mod id
      * @param displayId the display id
      */
     Displayable(String modId, String displayId)
     {
         this.modId = modId;
         this.displayId = displayId;
+        this.displayType = DisplayType.of(getClass());
     }
 
     /**
@@ -70,7 +86,7 @@ public abstract class Displayable
      *
      * @return modId example.mod id
      */
-    public String getModId()
+    public final String getModId()
     {
         return modId;
     }
@@ -80,8 +96,57 @@ public abstract class Displayable
      *
      * @return displayId display id
      */
-    public String getDisplayId()
+    public final String getDisplayId()
     {
         return displayId;
+    }
+
+    /**
+     * DisplayType enum for the object.
+     *
+     * @return enum value
+     */
+    public final DisplayType getDisplayType()
+    {
+        return displayType;
+    }
+
+    /**
+     * Colon-delimited GUID for the display object in the form of "modid:displayType:displayId".
+     *
+     * @return the guid
+     */
+    public final String getGuid()
+    {
+        return Joiner.on(":").join(modId, displayType, displayId);
+    }
+
+    /**
+     * Equality is based on either reference equality or GUID.
+     *
+     * @param o other
+     * @return true if equal
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof Displayable))
+        {
+            return false;
+        }
+        Displayable that = (Displayable) o;
+        return Objects.equal(modId, that.modId) &&
+                Objects.equal(displayType, that.displayType) &&
+                Objects.equal(displayId, that.displayId);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(modId, displayType, displayId);
     }
 }

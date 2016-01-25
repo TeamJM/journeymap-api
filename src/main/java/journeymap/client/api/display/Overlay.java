@@ -20,7 +20,6 @@
 
 package journeymap.client.api.display;
 
-import com.google.common.base.Objects;
 import journeymap.client.api.model.TextProperties;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -299,24 +298,4 @@ public abstract class Overlay extends Displayable
         return this;
     }
 
-
-    @Override
-    public String toString()
-    {
-        return Objects.toStringHelper(this)
-                .add("modId", modId)
-                .add("displayId", displayId)
-                .add("dimension", dimension)
-                .add("overlayGroupName", overlayGroupName)
-                .add("title", title)
-                .add("label", label)
-                .add("textProperties", textProperties)
-                .add("minZoom", minZoom)
-                .add("maxZoom", maxZoom)
-                .add("zIndex", zIndex)
-                .add("inFullscreen", inFullscreen)
-                .add("inMinimap", inMinimap)
-                .add("inWebmap", inWebmap)
-                .toString();
-    }
 }

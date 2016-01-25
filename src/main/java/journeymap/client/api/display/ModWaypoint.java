@@ -238,16 +238,6 @@ public final class ModWaypoint extends Displayable
     }
 
     /**
-     * Your example.mod id.
-     *
-     * @return modId example.mod id
-     */
-    public String getModId()
-    {
-        return modId;
-    }
-
-    /**
      * Whether or not the waypoint should be persisted (saved to file)
      * after the player disconnects from the world or changes dimensions.
      *
@@ -295,8 +285,7 @@ public final class ModWaypoint extends Displayable
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("modId", modId)
-                .add("displayId", displayId)
+                .add("guid", getGuid())
                 .add("waypointName", waypointName)
                 .add("waypointGroupName", waypointGroupName)
                 .add("editable", editable)
