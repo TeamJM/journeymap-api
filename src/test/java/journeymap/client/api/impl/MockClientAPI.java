@@ -67,7 +67,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     @Override
     public void show(Displayable displayable)
     {
-        showDisplayable(displayable.getModId(), DisplayType.of(displayable.getClass()), displayable.getDisplayId());
+        showDisplayable(displayable.getModId(), displayable.getDisplayType(), displayable.getDisplayId());
     }
 
     private void showDisplayable(String modId, DisplayType displayType, String displayId)
@@ -79,7 +79,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     @Override
     public void remove(Displayable displayable)
     {
-        remove(displayable.getModId(), DisplayType.of(displayable.getClass()), displayable.getDisplayId());
+        remove(displayable.getModId(), displayable.getDisplayType(), displayable.getDisplayId());
     }
 
     @Override
@@ -104,15 +104,15 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public boolean exists(String modId, DisplayType displayType, String displayId)
+    public boolean exists(Displayable displayable)
     {
-        return modDisplayables.getUnchecked(modId).containsEntry(displayType, displayId);
+        return exists(displayable.getModId(), displayable.getDisplayType(), displayable.getDisplayId());
     }
 
     @Override
-    public boolean isVisible(String modId, DisplayType displayType, String displayId)
+    public boolean exists(String modId, DisplayType displayType, String displayId)
     {
-        return exists(modId, displayType, displayId);
+        return modDisplayables.getUnchecked(modId).containsEntry(displayType, displayId);
     }
 
     @Override

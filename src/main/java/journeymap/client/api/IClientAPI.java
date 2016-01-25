@@ -55,9 +55,10 @@ public interface IClientAPI
      * Has no effect on display types not accepted by the player.
      *
      * @param displayable The object to display.
+     * @throws Exception if the Displayable can't be shown.
      * @see #playerAccepts(String, DisplayType)
      */
-    void show(Displayable displayable);
+    void show(Displayable displayable) throws Exception;
 
     /**
      * Remove a displayable from the player's maps.
@@ -101,6 +102,17 @@ public interface IClientAPI
     /**
      * Check whether a displayable exists in the Client API.  A return value of true means the Client API has the
      * indicated displayable, but not necessarily that the player has made it visible.
+     * <p/>
+     * Always returns false if the display type is not accepted by the player.
+     *
+     * @param displayable the object
+     * @see #playerAccepts(String, DisplayType)
+     */
+    boolean exists(Displayable displayable);
+
+    /**
+     * Check whether a displayable exists in the Client API.  A return value of true means the Client API has the
+     * indicated displayable, but not necessarily that the player has made it visible.
      *
      * Always returns false if the display type is not accepted by the player.
      *
@@ -110,19 +122,6 @@ public interface IClientAPI
      * @see #playerAccepts(String, DisplayType)
      */
     boolean exists(String modId, DisplayType displayType, String displayId);
-
-    /**
-     * Check whether a displayable exists in the Client API and is rendered in at least one map display. A
-     * return value of true doesn't necessarily mean the disable is actively on-screen, however.
-     *
-     * Always returns false if the display type is not accepted by the player.
-     *
-     * @param modId       Mod id
-     * @param displayType Display type to check
-     * @param displayId   The display id
-     * @see #playerAccepts(String, DisplayType)
-     */
-    boolean isVisible(String modId, DisplayType displayType, String displayId);
 
     /**
      * Gets a list of player displayable ids associated with your example.mod.
