@@ -49,6 +49,11 @@ public class ClientEvent
         return cancelled;
     }
 
+    public boolean isCancellable()
+    {
+        return type.cancellable;
+    }
+
     /**
      * Cancels the event only if the Type is cancellable.
      */
