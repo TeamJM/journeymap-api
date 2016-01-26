@@ -56,8 +56,8 @@ Changelog
 
 * Iterative designs, now obsolete
 
-How to use the JourneyMap API in your development environment
-====
+
+# How to use the JourneyMap API in your development environment #
 
 1. Add Maven Central to your list of repositories
 1. Add a compile dependency on info.journeymap:journeymap-api:#version
@@ -79,8 +79,7 @@ dependencies {
 Optional: You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
 to see the Example Mod code in action.
 
-How to write a plugin for the JourneyMap API in your mod.
-====
+# How to write a plugin for the JourneyMap API in your mod. #
 
 Here is the recommended approach:
 
