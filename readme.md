@@ -11,10 +11,10 @@ to read the [License Information](docs/license.md).
 News
 ============================================================
 
-**26 Jan 2016**: Version 1.0 of the API design is complete, and Techbrew has begun writing the implementation for it in JourneyMap. Watch
+* **26 Jan 2016**: Version 1.0 of the API design is complete, and Techbrew has begun writing the implementation for it in JourneyMap. Watch
 this site or follow @JourneyMapMod on Twitter for news about releases that support this API.
 
-**25 Jan 2016**: JourneyMap API artifacts are now hosted in [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api)
+* **25 Jan 2016**: JourneyMap API artifacts are now hosted in [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api)
 
 
 [How to use the JourneyMap API](docs/howto.md)
@@ -43,4 +43,3 @@ Help Wanted
 * Unit tests!
 * Utility classes utilizing [java.awt.geom.Area.add()](https://docs.oracle.com/javase/7/docs/api/java/awt/geom/Area.html) to 
 create optimized polygons comprised of multiple chunks.
-
