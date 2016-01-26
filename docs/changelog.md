@@ -1,4 +1,4 @@
-[JourneyMap API](src/master/readme.md) Changelog
+[JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api) Changelog
 ======================================================
 
 **API v1.8.9-1.0**

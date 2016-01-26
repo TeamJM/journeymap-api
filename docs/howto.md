@@ -1,4 +1,4 @@
-How to use the [JourneyMap API](src/master/readme.md)
+How to use the [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api)
 =============================
 
 To hook into JourneyMap from your mod, you'll write a plugin class that handles all interactions with JourneyMap
@@ -42,7 +42,7 @@ stepping through a debugger in your development environment.*
 II. Look at the Example Code
 =============================
 
-* Look in the [example package](src/master/src/main/java/example) for a complete 
+* Look in the [example package](src/main/java/example) for a complete 
 example of a mod that has implemented a plugin for the JourneyMap API.
 
 * You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
@@ -55,15 +55,15 @@ to see the Example Mod code in action.  To get the examplemod.jar, download it f
 III. Write your Plugin
 =============================
 
-1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](src/master/src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](src/master/src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
-    - Annotate the class with *[@journeymap.client.api.ClientPlugin](src/master/src/main/java/journeymap/client/api/ClientPlugin.java)* so that JourneyMap can find and instantiate it
+1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
+    - Annotate the class with *[@journeymap.client.api.ClientPlugin](src/main/java/journeymap/client/api/ClientPlugin.java)* so that JourneyMap can find and instantiate it
     - Don't make references to this class elsewhere in your example.mod. You don't want it classloaded if JourneyMap isn't loaded.
-1. Define a facade interface (like '[IExampleMapFacade](src/master/src/main/java/example/mod/client/facade/IExampleMapFacade.java)') for your example.mod's map-related functions (like 'showWaypoint(x,y,z)')
+1. Define a facade interface (like '[IExampleMapFacade](src/main/java/example/mod/client/facade/IExampleMapFacade.java)') for your example.mod's map-related functions (like 'showWaypoint(x,y,z)')
     - The facade interface will always be classloaded, so it should not use JourneyMap API classes. Use primitives or your own objects.
-    - Add a facade interface field to your example.mod's ClientProxy class (like '[ClientProxy.MapFacade](src/master/src/main/java/example/mod/client/ClientProxy.java)') so it can be used by your example.mod.
-1. Write an implementation of your facade interface (like '[ExampleMapFacade](src/master/src/main/java/example/mod/client/plugin/ExampleMapFacade.java)') that uses the JourneyMap [IClientAPI](src/master/src/main/java/journeymap/client/api/IClientAPI.java) interface to perform the actual facade work needed.
-    - Have your IClientPlugin create an instance of the facade implementation using the [IClientAPI](src/master/src/main/java/journeymap/client/api/IClientAPI.java) provided by JourneyMap.
-    - Have your IClientPlugin set the instance on your example.mod's ClientProxy class (like '[ClientProxy.MapFacade](src/master/src/main/java/example/mod/client/ClientProxy.java)')
+    - Add a facade interface field to your example.mod's ClientProxy class (like '[ClientProxy.MapFacade](src/main/java/example/mod/client/ClientProxy.java)') so it can be used by your example.mod.
+1. Write an implementation of your facade interface (like '[ExampleMapFacade](src/main/java/example/mod/client/plugin/ExampleMapFacade.java)') that uses the JourneyMap [IClientAPI](src/main/java/journeymap/client/api/IClientAPI.java) interface to perform the actual facade work needed.
+    - Have your IClientPlugin create an instance of the facade implementation using the [IClientAPI](src/main/java/journeymap/client/api/IClientAPI.java) provided by JourneyMap.
+    - Have your IClientPlugin set the instance on your example.mod's ClientProxy class (like '[ClientProxy.MapFacade](src/main/java/example/mod/client/ClientProxy.java)')
     - Don't make references to this implementation class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
     
 IV. Test your Plugin

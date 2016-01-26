@@ -1,4 +1,4 @@
-[JourneyMap API](src/master/readme.md) License Information
+[JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api) License Information
 ==========================================================
 
 **All code in this journeymap-api repository is Copyright (C) Techbrew. All Rights Reserved.**
