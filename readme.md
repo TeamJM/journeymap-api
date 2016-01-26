@@ -84,7 +84,8 @@ dependencies {
 * Look in the [example package](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/example) for a complete example mod that has a plugin for the JourneyMap API.*
 
 * You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
-to see the Example Mod code in action.  To get the examplemod.jar, either build this project or download it from [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22journeymap-api% *
+to see the Example Mod code in action.  To get the examplemod.jar, either build this project or download it from [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api) .
+
 
 *** III. Write a Plugin: ***
 
