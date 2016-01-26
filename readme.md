@@ -17,7 +17,7 @@ The JourneyMap API is designed so that your mod will only have a **soft dependen
  * You should **never** include any JourneyMap API classes in your mod's jar. No shading is needed.
 
 Changelog
-===
+====
 
 **API v1.8.9-1.0**
 
@@ -57,7 +57,7 @@ Changelog
 * Iterative designs, now obsolete
 
 How to use the JourneyMap API in your development environment
-===
+====
 
 1. Add Maven Central to your list of repositories
 1. Add a compile dependency on info.journeymap:journeymap-api:#version
@@ -80,7 +80,7 @@ Optional: You can put the `journeymap-api-*-examplemod.jar` in your runtime mods
 to see the Example Mod code in action.
 
 How to write a plugin for the JourneyMap API in your mod.
-===
+====
 
 Here is the recommended approach:
 
@@ -96,7 +96,7 @@ Here is the recommended approach:
     - Don't make references to this implementation class elsewhere in your example.mod. You don't want it classloaded if JourneyMap isn't loaded.
 
 Help Wanted
-===
+====
 If you have suggestions or improvements to the API structure, feel free to make Pull Requests. Chatting with the TeamJM
 developers in Espernet IRC #journeymap is highly suggested.  Before you change anything or submit code, however, be sure
 to read the **Licence Information** below.
@@ -108,7 +108,7 @@ to read the **Licence Information** below.
 create optimized polygons comprised of multiple chunks.
 
 License Information
-===
+====
 
 **All code in this journeymap-api repository is Copyright (&copy;) Techbrew. All Rights Reserved.**
 
