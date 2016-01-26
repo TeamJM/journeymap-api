@@ -57,7 +57,8 @@ Changelog
 * Iterative designs, now obsolete
 
 
-# How to use the JourneyMap API in your development environment #
+How to use the JourneyMap API
+=============================================================
 
 1. Add Maven Central to your list of repositories
 1. Add a compile dependency on info.journeymap:journeymap-api:#version
@@ -76,12 +77,11 @@ dependencies {
 
 ```
 
-Optional: You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
+1. Optional: You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
 to see the Example Mod code in action.
 
-# How to write a plugin for the JourneyMap API in your mod. #
 
-Here is the recommended approach:
+Here is the recommended approach to writing a plugin:
 
 1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
     - Annotate the class with *[@journeymap.client.api.ClientPlugin](https://bitbucket.org/TeamJM/journeymap-api/src/master/src/main/java/journeymap/client/api/ClientPlugin.java)* so that JourneyMap can find and instantiate it
@@ -107,7 +107,7 @@ to read the **Licence Information** below.
 create optimized polygons comprised of multiple chunks.
 
 License Information
-====
+===================
 
 **All code in this journeymap-api repository is Copyright (&copy;) Techbrew. All Rights Reserved.**
 
