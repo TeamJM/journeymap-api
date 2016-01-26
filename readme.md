@@ -18,6 +18,14 @@ The JourneyMap API is designed so that your mod will only have a **soft dependen
 
 Changelog
 ===
+
+**API v1.8.9-1.0**
+
+* Added constructor to Displayable that doesn't require displayId, added getGuid() and getDisplayType() methods, made several methods final.
+* IClientAPI.show() now explicitly throws Exception. Added exists(Displayable) overload, removed isVisible().
+* Jars now available in Maven Central!
+* Build of `journeymap-api-[version].jar` is still deobf, but no longer has 'deobf' in the name
+
 **API v1.8.9-0.9**
 
 * ModWaypoint now has an isEditable property
@@ -51,19 +59,22 @@ Changelog
 How to use the JourneyMap API in your development environment
 ===
 
-1. Either get the files you'll need from the [Downloads](https://bitbucket.org/TeamJM/journeymap-api/downloads) page, or clone
-this repository and run `gradlew setupDecompWorkspace build`.
+1. Add Maven Central to your list of repositories
+1. Add a compile dependency on info.journeymap:journeymap-api:#version
 
-2. Put the `journeymap-api-*-deobf.jar` and the `journeymap-api-*-sources.jar` in your project's `/libs` directory.  
-(Create the directory if you don't have one.)
-
-3. Update your Gradle build's dependencies (if needed) to find jars in the `/libs` directory.  For example:
-
-~~~~groovy
-dependencies {
-    compile fileTree(dir: 'libs', include: '*.*');
+```
+#!gradle
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 }
-~~~~
+
+dependencies {
+    compile 'info.journeymap:journeymap-api:1.8.9-1.0'
+}
+
+```
 
 Optional: You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
 to see the Example Mod code in action.

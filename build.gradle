@@ -34,22 +34,17 @@ buildscript {
 
 /* Gradle Plugins */
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
-/* Project Properties (also see gradle.properties) */
-group 'teamjm'
-archivesBaseName = "journeymap-api"
+/* Artifact Version */
 version = project.minecraft_version + '-' + project.api_version
-
-/* Additional library dependencies */
-dependencies {
-    testCompile 'junit:junit:4.11'
-}
 
 /* ForgeGradle spec for Minecraft */
 minecraft {
-    version = "${project.minecraft_version}-${project.forge_version}"
+    version = project.minecraft_version + "-" + project.forge_version
     runDir = "run"
-    mappings = "${project.mappings}"
+    mappings = project.mappings
     replace '@API_VERSION@', project.api_version
     replace '@MC_VERSION@', project.minecraft_version
 }
@@ -84,43 +79,99 @@ jar {
     manifest {
         attributes = [
                 "Manifest-Version": "1.0",
-                "Implementation-Title": "Example Mod for JourneyMap API",
+                "Implementation-Title": project.title_example,
                 "Implementation-Version": project.version,
-                "Implementation-URL": "https://bitbucket.org/TeamJM/journeymap-api"
+                "Implementation-URL"  : project.git_website
         ]
     }
 }
 
-/* Jar for just the API - Stays deobfuscated so it can go in a mod project's /libs folder */
+/* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
 task deobfJar(type: Jar, dependsOn: classes) {
     mustRunAfter = ['jar']
-    classifier = 'deobf'
     from sourceSets.main.output
     include 'journeymap/**'
     manifest {
         attributes = [
                 "Manifest-Version": "1.0",
-                "Implementation-Title": "JourneyMap API",
+                "Implementation-Title": project.title,
                 "Implementation-Version": project.version,
-                "Implementation-URL": "https://bitbucket.org/TeamJM/journeymap-api"
+                "Implementation-URL"  : project.git_website
         ]
     }
 }
 
-/* Javadoc generation */
+/* Javadoc properties */
 javadoc {
-    title = 'JourneyMap API and Example Mod'
+    title = project.title_javadoc
 }
 
 /* Jar for Javadocs */
-task javadocZip(type: Jar, dependsOn: javadoc) {
+task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
-    extension = 'zip'
     from javadoc.destinationDir
+}
+
+/* Jar for Sources */
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
 }
 
 /* Additional artifacts produced by build task */
 artifacts {
+    archives jar
     archives deobfJar
-    archives javadocZip
+    archives javadocJar
+    archives sourcesJar
+}
+
+/* Jar signing (http://central.sonatype.org/pages/gradle.html) */
+signing {
+    sign configurations.archives
+}
+
+/* Sonatype Central Maven Deployment */
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+                name = project.title
+                description = project.description
+                url = project.git_website
+                packaging = 'jar'
+
+                scm {
+                    connection project.gir_scm
+                    developerConnection project.gir_scm
+                    url project.git_url
+                }
+
+                licenses {
+                    license {
+                        name 'Copyright'
+                        url project.license_url
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'techbrew'
+                        name 'Techbrew'
+                        email 'techbrew@journeymap.info'
+                    }
+                }
+            }
+        }
+    }
 }
