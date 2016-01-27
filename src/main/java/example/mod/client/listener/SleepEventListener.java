@@ -22,29 +22,31 @@ package example.mod.client.listener;
 
 import example.mod.ExampleMod;
 import example.mod.client.ClientProxy;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * Listens to sleep events, creates a waypoint for the bed location via the ClientProxy.IExampleMapFacade interface
- * (if present). Using the facade interface (unique to this example example.mod) prevents the need to directly reference
+ * (if present). Using the facade interface (unique to this example mod) prevents the need to directly reference
  * any JourneyMap API classes here.
  */
 public class SleepEventListener
 {
     /**
      * Listen for Forge PlayerSleepInBedEvents, create a waypoint for the bed if ClientProxy.MapFacade is set.
+     * This is just a quick example, and doesn't take into account whether the player successfully slept.
      */
     @SubscribeEvent
     public void onPlayerSlept(PlayerSleepInBedEvent event)
     {
         try
         {
-            if (ClientProxy.MapFacade != null && ClientProxy.MapFacade.canShowBedWaypoint())
+            if (event.entityPlayer.worldObj.isRemote)
             {
-                ClientProxy.MapFacade.showBedWaypoint(event.entityPlayer.getBedLocation(), event.entityPlayer.dimension);
+                if (ClientProxy.MapFacade.canShowBedWaypoint())
+                {
+                    ClientProxy.MapFacade.showBedWaypoint(event.pos, event.entityPlayer.dimension);
+                }
             }
         }
         catch (Throwable t)

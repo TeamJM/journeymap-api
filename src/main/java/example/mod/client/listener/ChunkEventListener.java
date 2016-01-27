@@ -20,6 +20,7 @@
 
 package example.mod.client.listener;
 
+import example.mod.ExampleMod;
 import example.mod.client.ClientProxy;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -37,13 +38,23 @@ public class ChunkEventListener
     @SubscribeEvent
     public void onChunkLoadEvent(ChunkEvent.Load event)
     {
-        if (ClientProxy.MapFacade != null && ClientProxy.MapFacade.canShowSlimeChunks())
+        try
         {
-            Chunk chunk = event.getChunk();
-            if (isSlimeChunk(chunk))
+            if (event.world.isRemote)
             {
-                ClientProxy.MapFacade.showSlimeChunk(chunk.getChunkCoordIntPair(), event.world.provider.getDimensionId());
+                if (ClientProxy.MapFacade.canShowSlimeChunks())
+                {
+                    Chunk chunk = event.getChunk();
+                    if (isSlimeChunk(chunk))
+                    {
+                        ClientProxy.MapFacade.showSlimeChunk(chunk.getChunkCoordIntPair(), event.world.provider.getDimensionId());
+                    }
+                }
             }
+        }
+        catch (Throwable t)
+        {
+            ExampleMod.LOGGER.error(t.getMessage(), t);
         }
     }
 

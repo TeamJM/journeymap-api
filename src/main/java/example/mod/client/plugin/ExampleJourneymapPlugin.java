@@ -20,7 +20,10 @@
 
 package example.mod.client.plugin;
 
+import example.mod.ExampleMod;
 import example.mod.client.ClientProxy;
+import journeymap.client.api.IClientAPI;
+import journeymap.client.api.event.ClientEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -45,7 +48,7 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
      * @param api Client API implementation
      */
     @Override
-    public void initialize(final journeymap.client.api.IClientAPI api)
+    public void initialize(final IClientAPI api)
     {
         // Set ClientProxy.ExampleMapFacade with an implementation that uses the JourneyMap IClientAPI under the covers.
         ClientProxy.MapFacade = new ExampleMapFacade(api);
@@ -65,9 +68,22 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
     @Override
     public void onEvent(journeymap.client.api.event.ClientEvent event)
     {
-        if (ClientProxy.MapFacade != null && event.type == journeymap.client.api.event.ClientEvent.Type.DISPLAY_STARTED)
+        try
         {
-            ClientProxy.MapFacade.refreshMap(event.dimension);
+            ExampleMod.LOGGER.info("ClientEvent: " + event.type);
+
+            if (ClientProxy.MapFacade != null && event.type == ClientEvent.Type.DISPLAY_STARTED)
+            {
+                ClientProxy.MapFacade.refreshMap(event.dimension);
+            }
+            else
+            {
+                event.cancel();
+            }
+        }
+        catch (Throwable t)
+        {
+            ExampleMod.LOGGER.error(t.getMessage(), t);
         }
     }
 

@@ -68,7 +68,7 @@ class ExampleMapFacade implements IExampleMapFacade
             {
                 for (PolygonOverlay slimeChunkOverlay : slimeChunkOverlays.values())
                 {
-                    if (slimeChunkOverlay.getDimension() == dimension)
+                    if (slimeChunkOverlay.getDimension() == dimension && !jmClientAPI.exists(slimeChunkOverlay))
                     {
                         jmClientAPI.show(slimeChunkOverlay);
                     }
@@ -100,20 +100,25 @@ class ExampleMapFacade implements IExampleMapFacade
     {
         try
         {
-            String displayId = "slime_" + chunkCoords.toString();
+            if (!slimeChunkOverlays.containsKey(chunkCoords))
+            {
+                String displayId = "slime_" + chunkCoords.toString();
 
-            ShapeProperties shapeProps = new ShapeProperties()
-                    .setStrokeWidth(2)
-                    .setStrokeColor(0x00ff00).setStrokeOpacity(.7f)
-                    .setFillColor(0x00ff00).setFillOpacity(.4f);
+                ShapeProperties shapeProps = new ShapeProperties()
+                        .setStrokeWidth(2)
+                        .setStrokeColor(0x00ff00).setStrokeOpacity(.7f)
+                        .setFillColor(0x00ff00).setFillOpacity(.4f);
 
-            MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.chunkXPos, 0, chunkCoords.chunkZPos);
+                MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.chunkXPos, 0, chunkCoords.chunkZPos);
 
-            PolygonOverlay chunkOverlay = new PolygonOverlay(ExampleMod.MODID, displayId, dimension, shapeProps, polygon);
-            chunkOverlay.setOverlayGroupName("Slime Chunks").setTitle("Slime Chunk");
+                PolygonOverlay chunkOverlay = new PolygonOverlay(ExampleMod.MODID, displayId, dimension, shapeProps, polygon);
+                chunkOverlay.setOverlayGroupName("Slime Chunks").setTitle("Slime Chunk");
 
-            slimeChunkOverlays.put(chunkCoords, chunkOverlay);
-            jmClientAPI.show(chunkOverlay);
+                slimeChunkOverlays.put(chunkCoords, chunkOverlay);
+                jmClientAPI.show(chunkOverlay);
+
+                ExampleMod.LOGGER.info("Found a slime chunk: " + chunkCoords);
+            }
         }
         catch (Throwable t)
         {
@@ -151,10 +156,12 @@ class ExampleMapFacade implements IExampleMapFacade
         {
             if (bedWaypoint.isInDimension(dimension) || !bedWaypoint.getPoint().equals(bedLocation))
             {
-                bedWaypoint.setPoint(bedLocation).setDimensions(dimension);
+                bedWaypoint.setPoint(bedLocation).setDimensions(dimension).setPersistent(true);
 
                 // Add or update existing waypoint
                 jmClientAPI.show(bedWaypoint);
+
+                ExampleMod.LOGGER.info("Bed Waypoint: " + bedLocation);
             }
         }
         catch (Throwable t)
