@@ -22,16 +22,22 @@ For example:
 
 ```
 #!gradle
-buildscript {
-    repositories {
-        // JourneyMap API artifacts are hosted in Maven Central
-        mavenCentral()
-    }
+
+// Version of JourneyMap API to use
+journeymap_api_version = 1.8.9-1.0 // or 1.8.9-1.1-SNAPSHOT
+
+// Note: This should be outside of your buildscript block
+repositories {
+    // JourneyMap API releases are here
+    mavenCentral()
+
+    // JourneyMap API snapshots are here
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
 }
 
 dependencies {
     // Add JourneyMAP API to classpath
-    compile 'info.journeymap:journeymap-api:1.8.9-1.0'
+    compile 'info.journeymap:journeymap-api:' + project.journeymap_api_version
 }
 
 ```
