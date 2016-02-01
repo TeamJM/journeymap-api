@@ -82,9 +82,9 @@ public abstract class Displayable
     }
 
     /**
-     * Your example.mod id.
+     * Your mod id.
      *
-     * @return modId example.mod id
+     * @return modId mod id
      */
     public final String getModId()
     {

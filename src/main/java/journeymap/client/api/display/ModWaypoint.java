@@ -50,8 +50,8 @@ public final class ModWaypoint extends Displayable
     /**
      * Constructor.
      *
-     * @param modId             Your example.mod id
-     * @param displayId         Unique id for waypoint (scoped to your example.mod)
+     * @param modId             Your mod id
+     * @param displayId         Unique id for waypoint (scoped to your mod)
      * @param waypointGroupName (Optional) Group or category name for the waypoint.
      * @param waypointName      Waypoint name.
      * @param x                 World x
@@ -70,8 +70,8 @@ public final class ModWaypoint extends Displayable
     /**
      * Constructor.
      *
-     * @param modId             Your example.mod id
-     * @param displayId         Unique id for waypoint (scoped to your example.mod)
+     * @param modId             Your mod id
+     * @param displayId         Unique id for waypoint (scoped to your mod)
      * @param waypointGroupName (Optional) Group or category name for the waypoint.
      * @param color             rgb color of waypoint label
      * @param waypointName      Waypoint name.

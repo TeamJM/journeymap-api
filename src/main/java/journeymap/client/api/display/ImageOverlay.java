@@ -45,8 +45,8 @@ public final class ImageOverlay extends Overlay
     /**
      * Constructor.
      *
-     * @param modId          Your example.mod id.
-     * @param imageId        A unique id for the marker (scoped to your example.mod) which can be used to remove/update it.
+     * @param modId          Your mod id.
+     * @param imageId        A unique id for the marker (scoped to your mod) which can be used to remove/update it.
      * @param northWestPoint Location of the top-left corner of the image.
      * @param southEastPoint Location of the lower-right corner of the image.
      * @param image          The image to display as the overlay.

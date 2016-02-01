@@ -27,7 +27,7 @@ import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * Listens to Forge events, creates waypoints and overlays via this example.mod's ClientProxy.IExampleMapFacade interface
+ * Listens to Forge events, creates waypoints and overlays via this mod's ClientProxy.IExampleMapFacade interface
  * (if present). Using a facade circumvents the need to directly reference any JourneyMap API classes here.
  */
 public class ChunkEventListener
