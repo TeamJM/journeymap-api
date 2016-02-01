@@ -281,6 +281,15 @@ public final class ModWaypoint extends Displayable
         return this;
     }
 
+    /**
+     * Not specified by ModWaypoint; always returns 0.
+     */
+    @Override
+    public int getDisplayOrder()
+    {
+        return 0;
+    }
+
     @Override
     public String toString()
     {
