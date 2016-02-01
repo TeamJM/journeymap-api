@@ -43,6 +43,11 @@ public interface IClientPlugin
     void initialize(final IClientAPI api);
 
     /**
+     * Used by JourneyMap to associate your mod id with your plugin instance.
+     */
+    String getModId();
+
+    /**
      * Called by JourneyMap on the main Minecraft thread when a {@link ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p/>
