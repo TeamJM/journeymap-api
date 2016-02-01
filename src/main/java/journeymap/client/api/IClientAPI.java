@@ -24,7 +24,6 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
 
 /**
  * Definition for the JourneyMap Client API.
@@ -50,7 +49,7 @@ public interface IClientAPI
      * has been added, call this method again to ensure the maps reflect your changes.
      * <p/>
      * If an object of the same Displayable.Type
-     * from your example.mod with the same displayId has already been added, it will be replaced.
+     * from your mod with the same displayId has already been added, it will be replaced.
      * <p/>
      * Has no effect on display types not accepted by the player.
      *
@@ -124,17 +123,7 @@ public interface IClientAPI
     boolean exists(String modId, DisplayType displayType, String displayId);
 
     /**
-     * Gets a list of player displayable ids associated with your example.mod.
-     * Always returns an empty list if the display type is not accepted by the player.
-     *
-     * @param modId Mod id
-     * @return A list, possibly empty.
-     * @see #playerAccepts(String, DisplayType)
-     */
-    List<String> getShownIds(String modId, DisplayType displayType);
-
-    /**
-     * Check whether player will accept a type of Displayable from your example.mod. (Like Displayables or Overlays).
+     * Check whether player will accept a type of Displayable from your mod. (Like Displayables or Overlays).
      *
      * @param modId       Mod id
      * @param displayType Display type to check
