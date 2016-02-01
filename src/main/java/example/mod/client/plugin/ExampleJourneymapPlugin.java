@@ -41,7 +41,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlugin
 {
     /**
-     * Called by JourneyMap during the init phase of example.mod loading.  Your implementation
+     * Called by JourneyMap during the init phase of mod loading.  Your implementation
      * should retain a reference to the IClientAPI passed in, since that is what your plugin
      * will use to add overlays, etc. to JourneyMap.
      *
@@ -52,6 +52,15 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
     {
         // Set ClientProxy.ExampleMapFacade with an implementation that uses the JourneyMap IClientAPI under the covers.
         ClientProxy.MapFacade = new ExampleMapFacade(api);
+    }
+
+    /**
+     * Used by JourneyMap to associate a modId with this plugin.
+     */
+    @Override
+    public String getModId()
+    {
+        return ExampleMod.MODID;
     }
 
     /**
