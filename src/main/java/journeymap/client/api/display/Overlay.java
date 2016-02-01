@@ -45,7 +45,7 @@ public abstract class Overlay extends Displayable
     /**
      * Constructor.
      *
-     * @param modId     the example.mod id
+     * @param modId     the mod id
      * @param displayId the display id
      */
     Overlay(String modId, String displayId)
