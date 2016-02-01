@@ -36,7 +36,7 @@ public abstract class Overlay extends Displayable
     protected int dimension;
     protected int minZoom;
     protected int maxZoom;
-    protected int zIndex;
+    protected int displayOrder;
     protected boolean inMinimap = true;
     protected boolean inFullscreen = true;
     protected boolean inWebmap = true;
@@ -187,26 +187,26 @@ public abstract class Overlay extends Displayable
     }
 
     /**
-     * All features are displayed on the map in order of their screen zIndex, with higher values
+     * All features are displayed on the map in order of their screen displayOrder, with higher values
      * displaying in front of features with lower values. Default is 1000.
      *
      * @return the z index
      */
-    public int getZIndex()
+    public int getDisplayOrder()
     {
-        return zIndex;
+        return displayOrder;
     }
 
     /**
-     * All features are displayed on the map in order of their screen zIndex, with higher values
+     * All features are displayed on the map in order of their screen displayOrder, with higher values
      * displaying in front of features with lower values. Default is 1000.
      *
      * @param zIndex the z index
      * @return this
      */
-    public Overlay setZIndex(int zIndex)
+    public Overlay setDisplayOrder(int zIndex)
     {
-        this.zIndex = zIndex;
+        this.displayOrder = zIndex;
         return this;
     }
 

@@ -160,7 +160,7 @@ public final class PolygonOverlay extends Overlay
                 .add("textProperties", textProperties)
                 .add("minZoom", minZoom)
                 .add("maxZoom", maxZoom)
-                .add("zIndex", zIndex)
+                .add("displayOrder", displayOrder)
                 .add("inFullscreen", inFullscreen)
                 .add("inMinimap", inMinimap)
                 .add("inWebmap", inWebmap)
