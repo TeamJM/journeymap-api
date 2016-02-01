@@ -69,17 +69,6 @@ public interface IClientAPI
     void remove(Displayable displayable);
 
     /**
-     * Remove a displayable from the player's maps (if it exists).
-     * Has no effect on display types not accepted by the player.
-     *
-     * @param modId       Mod id
-     * @param displayType Display type to check
-     * @param displayId   The display id
-     * @see #playerAccepts(String, DisplayType)
-     */
-    void remove(String modId, DisplayType displayType, String displayId);
-
-    /**
      * Remove all displayables by DisplayType from the player's maps.
      * Has no effect on display types not accepted by the player.
      *
@@ -108,19 +97,6 @@ public interface IClientAPI
      * @see #playerAccepts(String, DisplayType)
      */
     boolean exists(Displayable displayable);
-
-    /**
-     * Check whether a displayable exists in the Client API.  A return value of true means the Client API has the
-     * indicated displayable, but not necessarily that the player has made it visible.
-     *
-     * Always returns false if the display type is not accepted by the player.
-     *
-     * @param modId       Mod id
-     * @param displayType Display type to check
-     * @param displayId   The display id
-     * @see #playerAccepts(String, DisplayType)
-     */
-    boolean exists(String modId, DisplayType displayType, String displayId);
 
     /**
      * Check whether player will accept a type of Displayable from your mod. (Like Displayables or Overlays).

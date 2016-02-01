@@ -3,22 +3,22 @@
 
 **API v1.8.9-1.1-SNAPSHOT**
 
-* Added Displayable.displayOrder.  Overlay.zIndex renamed to displayOrder.
-* Added IClientAPI.getModId(), removed IClientAPI.getShownIds()
-* Added ClientEvent.isCancellable()
-* Improvements to Example mod
+* Added `Displayable.displayOrder`. `Overlay.zIndex` renamed to `Overlay.displayOrder`.  Getters and setters updated accordingly.
+* Added `IClientAPI.getModId()`, removed `IClientAPI.getShownIds()`, removed `IClientAPI.exists(String, DisplayType, String)`, removed `IClientAPI.remove(String, DisplayType, String)`
+* Added `ClientEvent.isCancellable()`
+* Improvements to Example mod behavior
 
 **API v1.8.9-1.0**
 
 * Added constructor to Displayable that doesn't require displayId, added getGuid() and getDisplayType() methods, made several methods final.
-* IClientAPI.show() now explicitly throws Exception. Added exists(Displayable) overload, removed isVisible().
+* `IClientAPI.show()` now explicitly throws Exception. Added `IClientAPI.exists(Displayable)` overload, removed `IClientAPI.isVisible()`.
 * Jars now available in Maven Central!
 * Build of `journeymap-api-[version].jar` is still deobf, but no longer has 'deobf' in the name
 
 **API v1.8.9-0.9**
 
 * ModWaypoint now has an isEditable property
-* Example Mod's ExampleMapFacade.showBedWaypoint() now takes a BlockPos
+* Example Mod's `ExampleMapFacade.showBedWaypoint()` now takes a BlockPos
 * Bugfix in Example Mod's SleepEventListener: event.result is always null
 * Build updated to Forge 11.15.0.1712
 
