@@ -31,8 +31,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Stub implementation of the IClientAPI. Doesn't actually do anything, other than track displayIds.
@@ -113,12 +111,6 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     public boolean exists(String modId, DisplayType displayType, String displayId)
     {
         return modDisplayables.getUnchecked(modId).containsEntry(displayType, displayId);
-    }
-
-    @Override
-    public List<String> getShownIds(String modId, DisplayType displayType)
-    {
-        return new ArrayList<String>(modDisplayables.getUnchecked(modId).get(displayType));
     }
 
     @Override
