@@ -77,14 +77,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     @Override
     public void remove(Displayable displayable)
     {
-        remove(displayable.getModId(), displayable.getDisplayType(), displayable.getDisplayId());
-    }
-
-    @Override
-    public void remove(String modId, DisplayType displayType, String displayId)
-    {
-        modDisplayables.getUnchecked(modId).remove(displayType, displayId);
-        log(String.format("Removed %s:%s:%s", modId, displayType, displayId));
+        modDisplayables.getUnchecked(displayable.getModId()).remove(displayable.getDisplayType(), displayable.getDisplayId());
     }
 
     @Override
@@ -104,13 +97,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     @Override
     public boolean exists(Displayable displayable)
     {
-        return exists(displayable.getModId(), displayable.getDisplayType(), displayable.getDisplayId());
-    }
-
-    @Override
-    public boolean exists(String modId, DisplayType displayType, String displayId)
-    {
-        return modDisplayables.getUnchecked(modId).containsEntry(displayType, displayId);
+        return modDisplayables.getUnchecked(displayable.getModId()).containsEntry(displayable.getDisplayType(), displayable.getDisplayId());
     }
 
     @Override
