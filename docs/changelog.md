@@ -1,6 +1,13 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api) Changelog
 ======================================================
 
+**API v1.8.9-1.1-SNAPSHOT**
+
+* Added Displayable.displayOrder.  Overlay.zIndex renamed to displayOrder.
+* Added IClientAPI.getModId(), removed IClientAPI.getShownIds()
+* Added ClientEvent.isCancellable()
+* Improvements to Example mod
+
 **API v1.8.9-1.0**
 
 * Added constructor to Displayable that doesn't require displayId, added getGuid() and getDisplayType() methods, made several methods final.
