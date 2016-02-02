@@ -20,6 +20,7 @@
 
 package journeymap.client.api.util;
 
+import com.google.common.base.Strings;
 import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
@@ -45,7 +46,7 @@ public enum PluginHelper
     public final static String PLUGIN_ANNOTATION_NAME = ClientPlugin.class.getCanonicalName();
     public final static String PLUGIN_INTERFACE_NAME = IClientPlugin.class.getSimpleName();
 
-    protected List<IClientPlugin> plugins;
+    protected Map<String, IClientPlugin> plugins = null;
     protected boolean initialized;
 
     /**
@@ -56,14 +57,14 @@ public enum PluginHelper
      * and pass in a stub implementation, but must never do so in production code.
      *
      * @param event preInit
-     * @return list of instantiated plugins
+     * @return map of instantiated plugins, keyed by modId
      */
-    public List<IClientPlugin> preInitPlugins(FMLPreInitializationEvent event)
+    public Map<String, IClientPlugin> preInitPlugins(FMLPreInitializationEvent event)
     {
         if (plugins == null)
         {
             ASMDataTable asmDataTable = event.getAsmData();
-            List<IClientPlugin> discovered = new ArrayList<IClientPlugin>();
+            HashMap<String, IClientPlugin> discovered = new HashMap<String, IClientPlugin>();
             Set<ASMDataTable.ASMData> asmDataSet = asmDataTable.getAll(PLUGIN_ANNOTATION_NAME);
 
             for (ASMDataTable.ASMData asmData : asmDataSet)
@@ -76,7 +77,17 @@ public enum PluginHelper
                     {
                         Class<? extends IClientPlugin> interfaceImplClass = pluginClass.asSubclass(IClientPlugin.class);
                         IClientPlugin instance = interfaceImplClass.newInstance();
-                        discovered.add(instance);
+                        String modId = instance.getModId();
+                        if (Strings.isNullOrEmpty(modId))
+                        {
+                            throw new Exception("IClientPlugin.getModId() must return a non-empty, non-null value");
+                        }
+                        if (discovered.containsKey(modId))
+                        {
+                            Class otherPluginClass = discovered.get(modId).getClass();
+                            throw new Exception(String.format("Multiple plugins trying to use the same modId: %s and %s", interfaceImplClass, otherPluginClass));
+                        }
+                        discovered.put(modId, instance);
                         LOGGER.info(String.format("Found @%s: %s", PLUGIN_ANNOTATION_NAME, className));
                     }
                     else
@@ -97,7 +108,7 @@ public enum PluginHelper
                 LOGGER.info("No plugins for JourneyMap API discovered.");
             }
 
-            plugins = Collections.unmodifiableList(discovered);
+            plugins = Collections.unmodifiableMap(discovered);
         }
 
         return plugins;
@@ -113,7 +124,7 @@ public enum PluginHelper
      * @param clientAPI Client API implementation
      * @return list of initialized plugins, null if plugin discovery never occurred
      */
-    public List<IClientPlugin> initPlugins(FMLInitializationEvent event, IClientAPI clientAPI)
+    public Map<String, IClientPlugin> initPlugins(FMLInitializationEvent event, IClientAPI clientAPI)
     {
         if (plugins == null)
         {
@@ -124,8 +135,8 @@ public enum PluginHelper
         {
             LOGGER.info(String.format("Initializing plugins with Client API: %s", clientAPI.getClass().getName()));
 
-            List<IClientPlugin> discovered = new ArrayList<IClientPlugin>(plugins);
-            Iterator<IClientPlugin> iter = discovered.iterator();
+            HashMap<String, IClientPlugin> discovered = new HashMap<String, IClientPlugin>(plugins);
+            Iterator<IClientPlugin> iter = discovered.values().iterator();
             while (iter.hasNext())
             {
                 IClientPlugin plugin = iter.next();
@@ -142,7 +153,7 @@ public enum PluginHelper
             }
 
             // Finalize the list
-            plugins = Collections.unmodifiableList(discovered);
+            plugins = Collections.unmodifiableMap(discovered);
             initialized = true;
         }
         else
@@ -155,11 +166,11 @@ public enum PluginHelper
     }
 
     /**
-     * Get the list of plugins found.
+     * Get the map of plugins, keyed by modId.
      *
      * @return null if {@link #preInitPlugins(FMLPreInitializationEvent)} hasn't been called yet
      */
-    public List<IClientPlugin> getPlugins()
+    public Map<String, IClientPlugin> getPlugins()
     {
         return plugins;
     }
