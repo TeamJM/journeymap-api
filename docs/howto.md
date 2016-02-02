@@ -28,7 +28,7 @@ For example:
 // Version of JourneyMap API to use
 journeymap_api_version = 1.8.9-1.0 // or 1.8.9-1.1-SNAPSHOT
 
-// Note: This should be outside of your buildscript block
+// Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
     // JourneyMap API releases are here
     mavenCentral()
@@ -37,9 +37,13 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/groups/public/' }
 }
 
+configurations.all {
+    // Check for snapshots more frequently than Gradle's default of 1 day. 0 = every build.
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 dependencies {
-    // Add JourneyMAP API to classpath
-    compile 'info.journeymap:journeymap-api:' + project.journeymap_api_version
+    compile group: "info.journeymap", name: "journeymap-api", version: project.journeymap_api_version, changing: true
 }
 
 ```
