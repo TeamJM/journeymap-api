@@ -6,6 +6,7 @@
 * Added `Displayable.displayOrder`. `Overlay.zIndex` renamed to `Overlay.displayOrder`.  Getters and setters updated accordingly.
 * Added `IClientAPI.getModId()`, removed `IClientAPI.getShownIds()`, removed `IClientAPI.exists(String, DisplayType, String)`, removed `IClientAPI.remove(String, DisplayType, String)`
 * Added `ClientEvent.isCancellable()`
+* PluginHelper now uses a Map instead of a List, keyed by modId
 * Improvements to Example mod behavior
 
 **API v1.8.9-1.0**
