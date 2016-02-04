@@ -109,10 +109,10 @@ class ExampleMapFacade implements IExampleMapFacade
                         .setStrokeColor(0x00ff00).setStrokeOpacity(.7f)
                         .setFillColor(0x00ff00).setFillOpacity(.4f);
 
-                MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.chunkXPos, 0, chunkCoords.chunkZPos);
+                MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.chunkXPos, 70, chunkCoords.chunkZPos);
 
                 PolygonOverlay chunkOverlay = new PolygonOverlay(ExampleMod.MODID, displayId, dimension, shapeProps, polygon);
-                chunkOverlay.setOverlayGroupName("Slime Chunks").setTitle("Slime Chunk");
+                chunkOverlay.setOverlayGroupName("Slime Chunks").setLabel("Slime Chunk").setTitle(String.format("%s,%s", chunkCoords.chunkXPos, chunkCoords.chunkZPos));
 
                 slimeChunkOverlays.put(chunkCoords, chunkOverlay);
                 jmClientAPI.show(chunkOverlay);
