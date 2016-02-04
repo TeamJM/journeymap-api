@@ -22,15 +22,15 @@ package journeymap.client.api.util;
 
 import journeymap.client.api.model.MapPolygon;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 
 /**
- * Utility class related to Polygons
+ * Utility class related to Polygons.
  */
 public class PolygonHelper
 {
     /**
-     * Creates a polygon for the chunk containing worldCoords.
+     * Creates a polygon for the chunk containing worldCoords, starting with the lower-left (southwest) corner
+     * and going counter-clockwise.
      *
      * @param x world X
      * @param y world Y
@@ -44,20 +44,23 @@ public class PolygonHelper
 
 
     /**
-     * Creates a polygon for the chunk coords.
+     * Creates a polygon for the chunk coords, starting with the lower-left (southwest) corner
+     * and going counter-clockwise.
      *
      * @param chunkX  chunk x
-     * @param worldY  y
+     * @param y       block y
      * @param chunkZ  chunk z
      * @return polygon
      */
-    public static MapPolygon createChunkPolygon(int chunkX, int worldY, int chunkZ)
+    public static MapPolygon createChunkPolygon(int chunkX, int y, int chunkZ)
     {
-        BlockPos nw = new BlockPos(chunkX << 4, worldY, chunkZ << 4);
-        BlockPos ne = nw.offset(EnumFacing.EAST, 15);
-        BlockPos se = ne.offset(EnumFacing.SOUTH, 15);
-        BlockPos sw = se.offset(EnumFacing.WEST, 15);
+        int x = chunkX << 4;
+        int z = chunkZ << 4;
+        BlockPos sw = new BlockPos(x, y, z + 15);
+        BlockPos se = new BlockPos(x + 15, y, z + 15);
+        BlockPos ne = new BlockPos(x + 15, y, z);
+        BlockPos nw = new BlockPos(x, y, z);
 
-        return new MapPolygon(nw, ne, se, sw, nw);
+        return new MapPolygon(sw, se, ne, nw);
     }
 }
