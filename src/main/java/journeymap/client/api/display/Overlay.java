@@ -34,8 +34,8 @@ public abstract class Overlay extends Displayable
     protected String title;
     protected String label;
     protected int dimension;
-    protected int minZoom;
-    protected int maxZoom;
+    protected int minZoom = 0;
+    protected int maxZoom = 8;
     protected int displayOrder;
     protected boolean inMinimap = true;
     protected boolean inFullscreen = true;
