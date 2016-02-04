@@ -30,6 +30,9 @@ import journeymap.client.api.display.Displayable;
  */
 public class TextProperties
 {
+    protected boolean inMinimap = true;
+    protected boolean inFullscreen = true;
+    protected boolean inWebmap = true;
     private float scale = 1;
     private int color = 0xffffff;
     private int backgroundColor = 0x000000;
@@ -144,6 +147,72 @@ public class TextProperties
     public TextProperties setBackgroundOpacity(float backgroundOpacity)
     {
         this.backgroundOpacity = Displayable.clampOpacity(backgroundOpacity);
+        return this;
+    }
+
+    /**
+     * Whether the overlay should be displayed in the Minimap.
+     *
+     * @return the boolean
+     */
+    public boolean isInMinimap()
+    {
+        return inMinimap;
+    }
+
+    /**
+     * Sets whether the label should be displayed in the Minimap.
+     *
+     * @param inMinimap the in minimap
+     * @return this
+     */
+    public TextProperties setInMinimap(boolean inMinimap)
+    {
+        this.inMinimap = inMinimap;
+        return this;
+    }
+
+    /**
+     * Whether the label should be displayed in the Fullscreen map.
+     *
+     * @return the boolean
+     */
+    public boolean isInFullscreen()
+    {
+        return inFullscreen;
+    }
+
+    /**
+     * Sets whether the label should be displayed in the Fullscreen map.
+     *
+     * @param inFullscreen the in fullscreen
+     * @return this
+     */
+    public TextProperties setInFullscreen(boolean inFullscreen)
+    {
+        this.inFullscreen = inFullscreen;
+        return this;
+    }
+
+    /**
+     * Whether the label should be displayed in the Web map (when enabled).
+     *
+     * @return the boolean
+     */
+    public boolean isInWebmap()
+    {
+        return inWebmap;
+    }
+
+    /**
+     * Sets whether the label should be displayed in the Web map (when enabled).
+     *
+     * @param inWebmap the in webmap
+     * @return this
+     */
+    public TextProperties setInWebmap(boolean inWebmap)
+    {
+        this.inWebmap = inWebmap;
         return this;
     }
 
