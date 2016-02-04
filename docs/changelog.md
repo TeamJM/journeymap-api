@@ -3,6 +3,9 @@
 
 **API v1.8.9-1.1-SNAPSHOT**
 
+* Added `inMinimap`, `inFullscreen`, `inWebmap` fields to `TextProperties` to control label display
+* `MapPolygon` now only needs 3 points and doesn't require a redundant last point. `PolygonHelper` now starts correctly with south-west (lower-left) corner.
+* `Overlay` min/max zoom now default to 0 and 8 respectively
 * Added `Displayable.displayOrder`. `Overlay.zIndex` renamed to `Overlay.displayOrder`.  Getters and setters updated accordingly.
 * Added `IClientAPI.getModId()`, removed `IClientAPI.getShownIds()`, removed `IClientAPI.exists(String, DisplayType, String)`, removed `IClientAPI.remove(String, DisplayType, String)`
 * Added `ClientEvent.isCancellable()`
