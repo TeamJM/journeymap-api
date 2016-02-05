@@ -21,7 +21,10 @@
 package journeymap.client.api.model;
 
 import com.google.common.base.Objects;
+import journeymap.client.api.display.Context;
 import journeymap.client.api.display.Displayable;
+
+import java.util.EnumSet;
 
 /**
  * Properties defining the display of text.
@@ -30,9 +33,7 @@ import journeymap.client.api.display.Displayable;
  */
 public class TextProperties
 {
-    protected boolean inMinimap = true;
-    protected boolean inFullscreen = true;
-    protected boolean inWebmap = true;
+    protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.All);
     private float scale = 1;
     private int color = 0xffffff;
     private int backgroundColor = 0x000000;
@@ -151,68 +152,33 @@ public class TextProperties
     }
 
     /**
-     * Whether the overlay should be displayed in the Minimap.
-     *
-     * @return the boolean
+     * Returns a set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap)
+     * the text should be displayed in.  This is only checked if the overlay containing these
+     * text properties is already active.
+     * <p/>
+     * For example, this can be specified to have labels only displayed in the fullscreen map, but not the minimap.
+     * @return enumset
      */
-    public boolean isInMinimap()
+    public EnumSet<Context.UI> getActiveUIs()
     {
-        return inMinimap;
+        return activeUIs;
     }
 
     /**
-     * Sets whether the label should be displayed in the Minimap.
-     *
-     * @param inMinimap the in minimap
+     * Set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap) the text should be displayed in.
+     * This is only checked if the overlay containing these text properties is already active.
+     * <p/>
+     * For example, this can be specified to have labels only displayed in the fullscreen map, but not the minimap.
+     * @param activeUIs active UIs
      * @return this
      */
-    public TextProperties setInMinimap(boolean inMinimap)
+    public TextProperties setActiveUIs(EnumSet<Context.UI> activeUIs)
     {
-        this.inMinimap = inMinimap;
-        return this;
-    }
-
-    /**
-     * Whether the label should be displayed in the Fullscreen map.
-     *
-     * @return the boolean
-     */
-    public boolean isInFullscreen()
-    {
-        return inFullscreen;
-    }
-
-    /**
-     * Sets whether the label should be displayed in the Fullscreen map.
-     *
-     * @param inFullscreen the in fullscreen
-     * @return this
-     */
-    public TextProperties setInFullscreen(boolean inFullscreen)
-    {
-        this.inFullscreen = inFullscreen;
-        return this;
-    }
-
-    /**
-     * Whether the label should be displayed in the Web map (when enabled).
-     *
-     * @return the boolean
-     */
-    public boolean isInWebmap()
-    {
-        return inWebmap;
-    }
-
-    /**
-     * Sets whether the label should be displayed in the Web map (when enabled).
-     *
-     * @param inWebmap the in webmap
-     * @return this
-     */
-    public TextProperties setInWebmap(boolean inWebmap)
-    {
-        this.inWebmap = inWebmap;
+        if (activeUIs.contains(Context.UI.All))
+        {
+            activeUIs = EnumSet.of(Context.UI.All);
+        }
+        this.activeUIs = activeUIs;
         return this;
     }
 
@@ -228,7 +194,8 @@ public class TextProperties
             return false;
         }
         TextProperties that = (TextProperties) o;
-        return Objects.equal(scale, that.scale) &&
+        return Objects.equal(activeUIs, that.activeUIs) &&
+                Objects.equal(scale, that.scale) &&
                 Objects.equal(color, that.color) &&
                 Objects.equal(backgroundColor, that.backgroundColor) &&
                 Objects.equal(opacity, that.opacity) &&
@@ -252,6 +219,5 @@ public class TextProperties
                 .add("scale", scale)
                 .toString();
     }
-
 
 }

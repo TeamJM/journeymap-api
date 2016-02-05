@@ -20,7 +20,6 @@
 
 package journeymap.client.api.display;
 
-import com.google.common.base.Objects;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.util.BlockPos;
 
@@ -102,21 +101,9 @@ public final class MarkerOverlay extends Overlay
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
-                .add("guid", getGuid())
-                .add("dimension", dimension)
-                .add("overlayGroupName", overlayGroupName)
-                .add("title", title)
-                .add("label", label)
-                .add("textProperties", textProperties)
-                .add("minZoom", minZoom)
-                .add("maxZoom", maxZoom)
-                .add("displayOrder", displayOrder)
-                .add("inFullscreen", inFullscreen)
-                .add("inMinimap", inMinimap)
-                .add("inWebmap", inWebmap)
-                .add("point", point)
+        return toStringHelper(this)
                 .add("icon", icon)
+                .add("point", point)
                 .toString();
     }
 }
