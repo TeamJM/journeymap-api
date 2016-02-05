@@ -20,7 +20,6 @@
 
 package journeymap.client.api.display;
 
-import com.google.common.base.Objects;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.util.BlockPos;
 
@@ -124,22 +123,10 @@ public final class ImageOverlay extends Overlay
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
-                .add("guid", getGuid())
-                .add("overlayGroupName", overlayGroupName)
-                .add("dimension", dimension)
-                .add("title", title)
-                .add("label", label)
-                .add("textProperties", textProperties)
-                .add("minZoom", minZoom)
-                .add("maxZoom", maxZoom)
-                .add("displayOrder", displayOrder)
-                .add("inFullscreen", inFullscreen)
-                .add("inMinimap", inMinimap)
-                .add("inWebmap", inWebmap)
+        return toStringHelper(this)
+                .add("image", image)
                 .add("northWestPoint", northWestPoint)
                 .add("southEastPoint", southEastPoint)
-                .add("image", image)
                 .toString();
     }
 }

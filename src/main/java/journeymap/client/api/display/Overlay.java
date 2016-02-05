@@ -20,9 +20,11 @@
 
 package journeymap.client.api.display;
 
+import com.google.common.base.Objects;
 import journeymap.client.api.model.TextProperties;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.EnumSet;
 
 /**
  * Provides IDs and key information for map overlays in JourneyMap.
@@ -37,9 +39,9 @@ public abstract class Overlay extends Displayable
     protected int minZoom = 0;
     protected int maxZoom = 8;
     protected int displayOrder;
-    protected boolean inMinimap = true;
-    protected boolean inFullscreen = true;
-    protected boolean inWebmap = true;
+    protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.All);
+    protected EnumSet<Context.MapLayer> activeMapLayers = EnumSet.of(Context.MapLayer.All);
+    protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.All);
     protected TextProperties textProperties = new TextProperties();
 
     /**
@@ -160,7 +162,7 @@ public abstract class Overlay extends Displayable
      */
     public Overlay setMinZoom(int minZoom)
     {
-        this.minZoom = minZoom;
+        this.minZoom = Math.max(0, minZoom);
         return this;
     }
 
@@ -182,7 +184,7 @@ public abstract class Overlay extends Displayable
      */
     public Overlay setMaxZoom(int maxZoom)
     {
-        this.maxZoom = maxZoom;
+        this.maxZoom = Math.min(8, maxZoom);
         return this;
     }
 
@@ -211,72 +213,6 @@ public abstract class Overlay extends Displayable
     }
 
     /**
-     * Whether the overlay should be displayed in the Minimap.
-     *
-     * @return the boolean
-     */
-    public boolean isInMinimap()
-    {
-        return inMinimap;
-    }
-
-    /**
-     * Sets whether the overlay should be displayed in the Minimap.
-     *
-     * @param inMinimap the in minimap
-     * @return this
-     */
-    public Overlay setInMinimap(boolean inMinimap)
-    {
-        this.inMinimap = inMinimap;
-        return this;
-    }
-
-    /**
-     * Whether the overlay should be displayed in the Fullscreen map.
-     *
-     * @return the boolean
-     */
-    public boolean isInFullscreen()
-    {
-        return inFullscreen;
-    }
-
-    /**
-     * Sets whether the overlay should be displayed in the Fullscreen map.
-     *
-     * @param inFullscreen the in fullscreen
-     * @return this
-     */
-    public Overlay setInFullscreen(boolean inFullscreen)
-    {
-        this.inFullscreen = inFullscreen;
-        return this;
-    }
-
-    /**
-     * Whether the overlay should be displayed in the Web map (when enabled).
-     *
-     * @return the boolean
-     */
-    public boolean isInWebmap()
-    {
-        return inWebmap;
-    }
-
-    /**
-     * Sets whether the overlay should be displayed in the Web map (when enabled).
-     *
-     * @param inWebmap the in webmap
-     * @return this
-     */
-    public Overlay setInWebmap(boolean inWebmap)
-    {
-        this.inWebmap = inWebmap;
-        return this;
-    }
-
-    /**
      * Gets the text properties for the overlay.
      *
      * @return properties
@@ -298,4 +234,119 @@ public abstract class Overlay extends Displayable
         return this;
     }
 
+    /**
+     * Returns a set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap)
+     * the overlay should be active in.
+     *
+     * @return enumset
+     */
+    public EnumSet<Context.UI> getActiveUIs()
+    {
+        return activeUIs;
+    }
+
+    /**
+     * Set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap) the overlay should be active in.
+     *
+     * @param activeUIs active UIs
+     * @return this
+     */
+    public Overlay setActiveUIs(EnumSet<Context.UI> activeUIs)
+    {
+        if (activeUIs.contains(Context.UI.All))
+        {
+            activeUIs = EnumSet.of(Context.UI.All);
+        }
+        this.activeUIs = activeUIs;
+        return this;
+    }
+
+    /**
+     * Returns a set of enums indicating which map layers the (Surface, Underground) the overlay should be active in.
+     *
+     * @return enumset
+     */
+    public EnumSet<Context.MapLayer> getActiveMapLayers()
+    {
+        return activeMapLayers;
+    }
+
+    /**
+     * Set of enums indicating which JourneyMap map layers (Surface, Underground) the overlay should be active in.
+     *
+     * @param activeMapLayers active layers
+     * @return this
+     */
+    public Overlay setActiveMapLayers(EnumSet<Context.MapLayer> activeMapLayers)
+    {
+        if (activeMapLayers.contains(Context.MapLayer.All))
+        {
+            activeMapLayers = EnumSet.of(Context.MapLayer.All);
+        }
+        this.activeMapLayers = activeMapLayers;
+        return this;
+    }
+
+    /**
+     * Returns a set of enums indicating which map types (Day, Night) the overlay should be active in.
+     *
+     * @return enumset
+     */
+    public EnumSet<Context.MapType> getActiveMapTypes()
+    {
+        return activeMapTypes;
+    }
+
+    /**
+     * Set of enums indicating which JourneyMap map types (Day, Night) the overlay should be active in.
+     *
+     * @param activeMapTypes active types
+     * @return this
+     */
+    public Overlay setActiveMapTypes(EnumSet<Context.MapType> activeMapTypes)
+    {
+        if (activeMapTypes.contains(Context.MapType.All))
+        {
+            activeMapTypes = EnumSet.of(Context.MapType.All);
+        }
+        this.activeMapTypes = activeMapTypes;
+        return this;
+    }
+
+    /**
+     * Whether the overlay should be active for the given contexts.
+     *
+     * @param ui    UI
+     * @param layer Map Layer
+     * @param type  Map Type
+     * @return true if the overlay should be active
+     */
+    public boolean isActiveIn(Context.UI ui, Context.MapLayer layer, Context.MapType type)
+    {
+        return (activeUIs.contains(Context.UI.All) || activeUIs.contains(ui))
+                && (activeMapLayers.contains(Context.MapLayer.All) || activeMapLayers.contains(layer))
+                && (activeMapTypes.contains(Context.MapType.All) || activeMapTypes.contains(type));
+    }
+
+    /**
+     * Provides common output for toStringHelper() to subclasses
+     *
+     * @param instance subclass
+     * @return helper for continuing to add properties on subclass
+     */
+    protected final Objects.ToStringHelper toStringHelper(Overlay instance)
+    {
+        return Objects.toStringHelper(this)
+                .add("label", label)
+                .add("title", title)
+                .add("overlayGroupName", overlayGroupName)
+                .add("activeMapLayers", activeMapLayers)
+                .add("activeMapTypes", activeMapTypes)
+                .add("activeUIs", activeUIs)
+                .add("dimension", dimension)
+                .add("displayOrder", displayOrder)
+                .add("maxZoom", maxZoom)
+                .add("minZoom", minZoom)
+                .add("textProperties", textProperties);
+    }
 }

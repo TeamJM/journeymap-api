@@ -3,7 +3,8 @@
 
 **API v1.8.9-1.1-SNAPSHOT**
 
-* Added `inMinimap`, `inFullscreen`, `inWebmap` fields to `TextProperties` to control label display
+* `Overlay` fields inFullscreen, inMinimap, inWebmap removed. Added enumset fields activeUIs, activeMapTypes, activeMapLayers.
+* `TextProperties.activeUIs` enumset field added.
 * `MapPolygon` now only needs 3 points and doesn't require a redundant last point. `PolygonHelper` now starts correctly with south-west (lower-left) corner.
 * `Overlay` min/max zoom now default to 0 and 8 respectively
 * Added `Displayable.displayOrder`. `Overlay.zIndex` renamed to `Overlay.displayOrder`.  Getters and setters updated accordingly.
