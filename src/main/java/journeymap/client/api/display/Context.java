@@ -1,28 +1,52 @@
 package journeymap.client.api.display;
 
 /**
- * Container for enums that describe the context where Overlays should be active.
+ * Enums that describe the various display contexts in JourneyMap.
  */
-public class Context
+public interface Context
 {
-    public enum UI
+    /**
+     * Map UIs.
+     */
+    enum UI implements Context
     {
-        All,
+        /**
+         * Any UI.
+         */
+        Any,
+
+        /**
+         * The Fullscreen map UI.
+         */
         Fullscreen,
+
+        /**
+         * The Minimap UI.
+         */
         Minimap,
+
+        /**
+         * The Webmap UI.
+         */
         Webmap
     }
 
-    public enum MapLayer
+    /**
+     * Map layers.
+     */
+    enum MapLayer implements Context
     {
-        All,
+        Any,
         Surface,
         Underground
     }
 
-    public enum MapType
+    /**
+     * Map types.
+     */
+    enum MapType implements Context
     {
-        All,
+        Any,
         Day,
         Night
     }
