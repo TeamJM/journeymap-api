@@ -39,9 +39,9 @@ public abstract class Overlay extends Displayable
     protected int minZoom = 0;
     protected int maxZoom = 8;
     protected int displayOrder;
-    protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.All);
-    protected EnumSet<Context.MapLayer> activeMapLayers = EnumSet.of(Context.MapLayer.All);
-    protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.All);
+    protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.Any);
+    protected EnumSet<Context.MapLayer> activeMapLayers = EnumSet.of(Context.MapLayer.Any);
+    protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.Any);
     protected TextProperties textProperties = new TextProperties();
 
     /**
@@ -189,7 +189,7 @@ public abstract class Overlay extends Displayable
     }
 
     /**
-     * All features are displayed on the map in order of their screen displayOrder, with higher values
+     * Any features are displayed on the map in order of their screen displayOrder, with higher values
      * displaying in front of features with lower values. Default is 1000.
      *
      * @return the z index
@@ -200,7 +200,7 @@ public abstract class Overlay extends Displayable
     }
 
     /**
-     * All features are displayed on the map in order of their screen displayOrder, with higher values
+     * Any features are displayed on the map in order of their screen displayOrder, with higher values
      * displaying in front of features with lower values. Default is 1000.
      *
      * @param zIndex the z index
@@ -253,9 +253,9 @@ public abstract class Overlay extends Displayable
      */
     public Overlay setActiveUIs(EnumSet<Context.UI> activeUIs)
     {
-        if (activeUIs.contains(Context.UI.All))
+        if (activeUIs.contains(Context.UI.Any))
         {
-            activeUIs = EnumSet.of(Context.UI.All);
+            activeUIs = EnumSet.of(Context.UI.Any);
         }
         this.activeUIs = activeUIs;
         return this;
@@ -279,9 +279,9 @@ public abstract class Overlay extends Displayable
      */
     public Overlay setActiveMapLayers(EnumSet<Context.MapLayer> activeMapLayers)
     {
-        if (activeMapLayers.contains(Context.MapLayer.All))
+        if (activeMapLayers.contains(Context.MapLayer.Any))
         {
-            activeMapLayers = EnumSet.of(Context.MapLayer.All);
+            activeMapLayers = EnumSet.of(Context.MapLayer.Any);
         }
         this.activeMapLayers = activeMapLayers;
         return this;
@@ -305,9 +305,9 @@ public abstract class Overlay extends Displayable
      */
     public Overlay setActiveMapTypes(EnumSet<Context.MapType> activeMapTypes)
     {
-        if (activeMapTypes.contains(Context.MapType.All))
+        if (activeMapTypes.contains(Context.MapType.Any))
         {
-            activeMapTypes = EnumSet.of(Context.MapType.All);
+            activeMapTypes = EnumSet.of(Context.MapType.Any);
         }
         this.activeMapTypes = activeMapTypes;
         return this;
@@ -323,9 +323,9 @@ public abstract class Overlay extends Displayable
      */
     public boolean isActiveIn(Context.UI ui, Context.MapLayer layer, Context.MapType type)
     {
-        return (activeUIs.contains(Context.UI.All) || activeUIs.contains(ui))
-                && (activeMapLayers.contains(Context.MapLayer.All) || activeMapLayers.contains(layer))
-                && (activeMapTypes.contains(Context.MapType.All) || activeMapTypes.contains(type));
+        return (activeUIs.contains(Context.UI.Any) || activeUIs.contains(ui))
+                && (activeMapLayers.contains(Context.MapLayer.Any) || activeMapLayers.contains(layer))
+                && (activeMapTypes.contains(Context.MapType.Any) || activeMapTypes.contains(type));
     }
 
     /**

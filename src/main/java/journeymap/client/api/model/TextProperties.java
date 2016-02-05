@@ -33,7 +33,7 @@ import java.util.EnumSet;
  */
 public class TextProperties
 {
-    protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.All);
+    protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.Any);
     private float scale = 1;
     private int color = 0xffffff;
     private int backgroundColor = 0x000000;
@@ -197,9 +197,9 @@ public class TextProperties
      */
     public TextProperties setActiveUIs(EnumSet<Context.UI> activeUIs)
     {
-        if (activeUIs.contains(Context.UI.All))
+        if (activeUIs.contains(Context.UI.Any))
         {
-            activeUIs = EnumSet.of(Context.UI.All);
+            activeUIs = EnumSet.of(Context.UI.Any);
         }
         this.activeUIs = activeUIs;
         return this;
