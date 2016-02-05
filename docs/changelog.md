@@ -3,14 +3,17 @@
 
 **API v1.8.9-1.1-SNAPSHOT**
 
-* `Overlay` fields inFullscreen, inMinimap, inWebmap removed. Added enumset fields activeUIs, activeMapTypes, activeMapLayers.
-* `TextProperties.activeUIs` enumset field added.
-* `MapPolygon` now only needs 3 points and doesn't require a redundant last point. `PolygonHelper` now starts correctly with south-west (lower-left) corner.
-* `Overlay` min/max zoom now default to 0 and 8 respectively
-* Added `Displayable.displayOrder`. `Overlay.zIndex` renamed to `Overlay.displayOrder`.  Getters and setters updated accordingly.
+* Added `Overlay.activeUIs`, `Overlay.activeMapTypes`, and `Overlay.activeMapLayers` fields
+* Removed `Overlay.inFullscreen`, `Overlay.inMinimap`, `Overlay.inWebmap` fields.
+* Added `TextProperties.activeUIs` and `TextProperties.fontShadow` fields
+* `MapPolygon` now only needs 3 points and doesn't require a redundant last point. 
+* `PolygonHelper` now starts correctly with south-west (lower-left) corner.
+* `Overlay.minZoom` and `Overlay.maxZoom` now default to 0 and 8 respectively
+* Added `Displayable.displayOrder`.
+* `Overlay.zIndex` renamed to `Overlay.displayOrder`.
 * Added `IClientAPI.getModId()`, removed `IClientAPI.getShownIds()`, removed `IClientAPI.exists(String, DisplayType, String)`, removed `IClientAPI.remove(String, DisplayType, String)`
 * Added `ClientEvent.isCancellable()`
-* PluginHelper now uses a Map instead of a List, keyed by modId
+* `PluginHelper` refactored to uses a Map instead of a List, keyed by modId
 * Improvements to Example mod behavior
 
 **API v1.8.9-1.0**
