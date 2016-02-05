@@ -37,8 +37,9 @@ import net.minecraft.world.ChunkCoordIntPair;
 import java.util.HashMap;
 
 /**
- * Implementation of IExampleMapFacade that uses the JourneyMap API. This class should only be referenced by the
- * {@link ExampleJourneymapPlugin} so that the classloader doesn't try to find API classes if JourneyMap isn't loaded.
+ * An example mod's implementation of how it uses the JourneyMap API. This class is only directly
+ * referenced by the example mod's {@link ExampleJourneymapPlugin}, so it will never be classloaded if
+ * JourneyMap isn't loaded at runtime.
  */
 class ExampleMapFacade implements IExampleMapFacade
 {
@@ -59,6 +60,11 @@ class ExampleMapFacade implements IExampleMapFacade
         bedWaypoint = new ModWaypoint(ExampleMod.MODID, "bed_0", "Handy Locations", "Bed", 0, 0, 0, bedIcon, 0xffffff, true, Integer.MIN_VALUE);
     }
 
+    /**
+     * Refresh ExampleMod's displayables for the given dimension.
+     *
+     * @param dimension
+     */
     @Override
     public void refreshMap(int dimension)
     {
@@ -89,12 +95,23 @@ class ExampleMapFacade implements IExampleMapFacade
         }
     }
 
+    /**
+     * Whether or not ExampleMod can provide slime chunk overlays.
+     *
+     * @return true if polygon overlays accepted
+     */
     @Override
     public boolean canShowSlimeChunks()
     {
         return jmClientAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon);
     }
 
+    /**
+     * The ExampleMod will show an overlay for the chunk to indicate it is a slime chunk.
+     *
+     * @param chunkCoords
+     * @param dimension
+     */
     @Override
     public void showSlimeChunk(ChunkCoordIntPair chunkCoords, int dimension)
     {
@@ -126,6 +143,12 @@ class ExampleMapFacade implements IExampleMapFacade
         }
     }
 
+    /**
+     * The ExampleMod will remove the slime chunk overlay for the coords.
+     *
+     * @param chunkCoords
+     * @param dimension
+     */
     @Override
     public void removeSlimeChunk(ChunkCoordIntPair chunkCoords, int dimension)
     {
@@ -143,12 +166,23 @@ class ExampleMapFacade implements IExampleMapFacade
         }
     }
 
+    /**
+     * Whether or not ExampleMod can provide a bed waypoint.
+     *
+     * @return true if waypoints accepted
+     */
     @Override
     public boolean canShowBedWaypoint()
     {
         return jmClientAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint);
     }
 
+    /**
+     * ExampleMod will create a waypoint for the bed slept in at the provided coordinates.
+     *
+     * @param position
+     * @param dimension
+     */
     @Override
     public void showBedWaypoint(BlockPos bedLocation, int dimension)
     {
