@@ -23,8 +23,10 @@ package journeymap.client.api;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
+import journeymap.client.api.event.ClientEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.EnumSet;
 
 /**
  * Definition for the JourneyMap Client API.
@@ -41,6 +43,14 @@ public interface IClientAPI
      * @return true if active
      */
     boolean isActive(Enum<? extends Context>... contexts);
+
+    /**
+     * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf
+     *
+     * @param eventTypes
+     * @return
+     */
+    boolean subscribe(EnumSet<ClientEvent.Type> eventTypes);
 
     /**
      * Add (or update) a displayable object to the player's maps. If you modify a Displayable after it

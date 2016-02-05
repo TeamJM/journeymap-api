@@ -23,12 +23,14 @@ package example.mod.client.plugin;
 import example.mod.ExampleMod;
 import example.mod.client.ClientProxy;
 import journeymap.client.api.IClientAPI;
-import journeymap.client.api.event.ClientEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.EnumSet;
+
+import static journeymap.client.api.event.ClientEvent.Type.DISPLAY_STARTED;
 
 /**
- * Example plugin implementation. To prevent classloader errors if JourneyMap isn't loaded
+ * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
  * (and thus the API classes aren't loaded), this class isn't referenced anywhere directly in the mod.
  * <p/>
  * The @journeymap.client.api.ClientPlugin annotation makes this plugin class discoverable to JourneyMap,
@@ -41,9 +43,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlugin
 {
     /**
-     * Called by JourneyMap during the init phase of mod loading.  Your implementation
-     * should retain a reference to the IClientAPI passed in, since that is what your plugin
-     * will use to add overlays, etc. to JourneyMap.
+     * Called by JourneyMap during the init phase of mod loading.  The IClientAPI reference is how the mod
+     * will add overlays, etc. to JourneyMap.
      *
      * @param api Client API implementation
      */
@@ -52,6 +53,9 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
     {
         // Set ClientProxy.ExampleMapFacade with an implementation that uses the JourneyMap IClientAPI under the covers.
         ClientProxy.MapFacade = new ExampleMapFacade(api);
+
+        // Subscribe to desired ClientEvent types
+        api.subscribe(EnumSet.of(DISPLAY_STARTED));
     }
 
     /**
@@ -67,6 +71,9 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
      * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p/>
+     * You must call {@link IClientAPI#subscribe(EnumSet)} at some point to subscribe to these events, otherwise this
+     * method will never be called.
+     * <p/>
      * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_STARTED},
      * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
      * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
@@ -81,13 +88,14 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
         {
             ExampleMod.LOGGER.info("ClientEvent: " + event.type);
 
-            if (ClientProxy.MapFacade != null && event.type == ClientEvent.Type.DISPLAY_STARTED)
+            switch (event.type)
             {
-                ClientProxy.MapFacade.refreshMap(event.dimension);
-            }
-            else
-            {
-                event.cancel();
+                case DISPLAY_STARTED:
+                    ClientProxy.MapFacade.refreshMap(event.dimension);
+                    break;
+                case DEATH_WAYPOINT:
+                    // Not interested, shouldn't even happen because we didn't subscribe to it
+                    break;
             }
         }
         catch (Throwable t)

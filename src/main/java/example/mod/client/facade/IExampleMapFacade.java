@@ -44,7 +44,7 @@ public interface IExampleMapFacade
     boolean canShowSlimeChunks();
 
     /**
-     * Show an overlay for the chunk to indicate it is a slime chunk.
+     * The ExampleMod will show an overlay for the chunk to indicate it is a slime chunk.
      *
      * @param chunkCoords
      * @param dimension
@@ -52,7 +52,7 @@ public interface IExampleMapFacade
     void showSlimeChunk(ChunkCoordIntPair chunkCoords, int dimension);
 
     /**
-     * Remove the slime chunk overlay for the coords.
+     * The ExampleMod will remove the slime chunk overlay for the coords.
      *
      * @param chunkCoords
      * @param dimension
@@ -67,7 +67,7 @@ public interface IExampleMapFacade
     boolean canShowBedWaypoint();
 
     /**
-     * Create a waypoint for the bed slept in at the provided coordinates.
+     * ExampleMod will create a waypoint for the bed slept in at the provided coordinates.
      *
      * @param position
      * @param dimension

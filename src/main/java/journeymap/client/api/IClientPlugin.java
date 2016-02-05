@@ -20,10 +20,10 @@
 
 package journeymap.client.api;
 
-import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.EnumSet;
 
 /**
  * Interface used by JourneyMap to initialize client plugins and provide the Client API.
@@ -37,6 +37,9 @@ public interface IClientPlugin
      * Called by JourneyMap during the init phase of example.mod loading.  Your implementation
      * should retain a reference to the IClientAPI passed in, since that is what your plugin
      * will use to add overlays, etc. to JourneyMap.
+     * <p/>
+     * This is also a good time to call {@link IClientAPI#subscribe(EnumSet)} to subscribe to any
+     * desired ClientEvent types.
      *
      * @param api Client API implementation
      */
@@ -48,13 +51,16 @@ public interface IClientPlugin
     String getModId();
 
     /**
-     * Called by JourneyMap on the main Minecraft thread when a {@link ClientEvent} occurs.
+     * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p/>
+     * You must call {@link IClientAPI#subscribe(EnumSet)} at some point to subscribe to these events, otherwise this
+     * method will never be called.
+     * <p/>
      * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_STARTED},
-     * this is a signal to {@link journeymap.client.api.IClientAPI#show(Displayable)} all relevant
-     * Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
-     * (ModWaypoints with persisted==true will already be shown.)
+     * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
+     * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
+     * (Note: ModWaypoints with persisted==true will already be shown.)
      *
      * @param event the event
      */
