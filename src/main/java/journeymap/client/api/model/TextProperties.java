@@ -39,6 +39,7 @@ public class TextProperties
     private int backgroundColor = 0x000000;
     private float opacity = 1f;
     private float backgroundOpacity = .5f;
+    private boolean fontShadow = true;
 
     /**
      * Font scale.
@@ -148,6 +149,28 @@ public class TextProperties
     public TextProperties setBackgroundOpacity(float backgroundOpacity)
     {
         this.backgroundOpacity = Displayable.clampOpacity(backgroundOpacity);
+        return this;
+    }
+
+    /**
+     * Whether font shadow should be used.
+     *
+     * @return true if shadowed
+     */
+    public boolean hasFontShadow()
+    {
+        return fontShadow;
+    }
+
+    /**
+     * Sets whether font shadow should be used.
+     *
+     * @param fontShadow true if shadow
+     * @return this
+     */
+    public TextProperties setFontShadow(boolean fontShadow)
+    {
+        this.fontShadow = fontShadow;
         return this;
     }
 
