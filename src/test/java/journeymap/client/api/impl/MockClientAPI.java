@@ -24,6 +24,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.LinkedHashMultimap;
+import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import net.minecraftforge.fml.common.Optional;
@@ -56,8 +57,8 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
                         }
                     });
 
-    @Override
-    public boolean isActive()
+
+    public boolean isActive(Enum<? extends Context>... contexts)
     {
         return true;
     }

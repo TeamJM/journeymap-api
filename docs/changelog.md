@@ -3,6 +3,7 @@
 
 **API v1.8.9-1.1-SNAPSHOT**
 
+* `IClientAPI.isActive()` now takes Context enums as arguments
 * Added `Overlay.activeUIs`, `Overlay.activeMapTypes`, and `Overlay.activeMapLayers` fields
 * Removed `Overlay.inFullscreen`, `Overlay.inMinimap`, `Overlay.inWebmap` fields.
 * Added `TextProperties.activeUIs` and `TextProperties.fontShadow` fields
