@@ -20,6 +20,7 @@
 
 package journeymap.client.api;
 
+import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 
@@ -35,14 +36,11 @@ public interface IClientAPI
     String API_VERSION = "@API_VERSION@";
 
     /**
-     * Whether JourneyMap is active. It's good to check this before making other calls to the API.
-     * There are small delays between a player entering the world (or changing dimensions) and when JourneyMap is
-     * activated. It can also be the case that a player has disabled all functionality in JourneyMap for some reason.
-     * In either case, this method will return false and you should check again later.
+     * Whether all of the specified contexts are currently active in JourneyMap.
      *
      * @return true if active
      */
-    boolean isActive();
+    boolean isActive(Enum<? extends Context>... contexts);
 
     /**
      * Add (or update) a displayable object to the player's maps. If you modify a Displayable after it
