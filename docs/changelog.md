@@ -13,7 +13,7 @@
 * Added `Displayable.displayOrder`.
 * `Overlay.zIndex` renamed to `Overlay.displayOrder`.
 * Added `IClientAPI.getModId()`, removed `IClientAPI.getShownIds()`, removed `IClientAPI.exists(String, DisplayType, String)`, removed `IClientAPI.remove(String, DisplayType, String)`
-* Added `ClientEvent.isCancellable()`
+* `ClientEvent` refactored to use explicit value object type, `ClientEvent.Type.cancellable` and `ClientEvent.Type.valueClass` added
 * `PluginHelper` refactored to uses a Map instead of a List, keyed by modId
 * Improvements to Example mod behavior
 
