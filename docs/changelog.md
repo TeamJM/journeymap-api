@@ -3,6 +3,8 @@
 
 **API v1.8.9-1.1-SNAPSHOT**
 
+* Added `IClientAPI.subscribe()`, refactored `ClientEvent` to be a base class.  `IClientPlugin.onClient()` is now passed a subclass corresponding to the event type.  
+* Replaced `ClientEvent.Type.DISPLAY_STARTED` with `ClientEvent.Type.DISPLAY_UPDATE`.
 * Added `IClientAPI.subscribe()` to explicitly request for ClientEvent notifications.
 * `IClientAPI.isActive()` now takes Context enums as arguments
 * Added `Overlay.activeUIs`, `Overlay.activeMapTypes`, and `Overlay.activeMapLayers` fields

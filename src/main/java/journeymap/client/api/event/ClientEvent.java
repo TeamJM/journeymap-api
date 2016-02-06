@@ -20,51 +20,22 @@
 
 package journeymap.client.api.event;
 
-import journeymap.client.api.display.Displayable;
-import net.minecraft.util.BlockPos;
-
-import javax.annotation.Nullable;
-
 /**
- * Event propagated by the Client API to IClientPlugin implementations.
+ * Base class for events propagated by the Client API to IClientPlugin implementations.
  */
-public class ClientEvent<V>
+public abstract class ClientEvent
 {
     public final Type type;
     public final int dimension;
-    public final V value;
-
     private boolean cancelled;
 
     /**
      * Private constructor.
      */
-    private ClientEvent(Type type, int dimension, @Nullable V value)
+    protected ClientEvent(Type type, int dimension)
     {
         this.type = type;
         this.dimension = dimension;
-        this.value = value;
-    }
-
-    /**
-     * Factory method to generate a Display Started event.
-     *
-     * @param dimension the dimension
-     * @return new event
-     */
-    public static ClientEvent<Void> newDisplayStarted(int dimension)
-    {
-        return new ClientEvent<Void>(Type.DISPLAY_STARTED, dimension, null);
-    }
-
-    /**
-     * Factory method to generate a Death Waypoint event.
-     *
-     * @return new event
-     */
-    public static ClientEvent<BlockPos> newDeathWaypoint(int dimension, BlockPos location)
-    {
-        return new ClientEvent<BlockPos>(Type.DEATH_WAYPOINT, dimension, location);
     }
 
     /**
@@ -88,23 +59,21 @@ public class ClientEvent<V>
     }
 
     /**
-     * Event type
+     * Event type enumeration.
      */
     public enum Type
     {
         /**
-         * Signal for ClientPlugins to {@link journeymap.client.api.IClientAPI#show(Displayable)} its
-         * Displayables for the {@link #dimension} indicated. (ModWaypoints with persisted==true will already be shown.)
-         * The {@link #value} field is always null.  Cannot be cancelled.
+         * Indicates a change in the display characteristics of the specified UI.
+         * Event will be a {@link DisplayUpdateEvent}, which can not be cancelled.
          */
-        DISPLAY_STARTED(false, Void.TYPE),
+        DISPLAY_UPDATE(false),
 
         /**
-         * Signal for ClientPlugins that JourneyMap is going to create a Death Waypoint for the player.
-         * The {@link #value} field will be a {@link net.minecraft.util.BlockPos} with the
-         * appropriate coordinates set.  Event can be cancelled, preventing the Death Waypoint from being created.
+         * Indicates a Death Waypoint is about to be created for the player.
+         * Event will be a {@link DeathWaypointEvent}, which can be cancelled.
          */
-        DEATH_WAYPOINT(true, BlockPos.class);
+        DEATH_WAYPOINT(true);
 
         /**
          * Whether the type of event can be cancelled.
@@ -112,19 +81,13 @@ public class ClientEvent<V>
         public final boolean cancellable;
 
         /**
-         * The class of the expected value object. If the value is always null, this will be Class<Void>.
-         */
-        public final Class valueClass;
-
-        /**
          * Constructor
          *
          * @param cancellable true if the event type can be cancelled.
          */
-        Type(boolean cancellable, Class valueClass)
+        Type(boolean cancellable)
         {
             this.cancellable = cancellable;
-            this.valueClass = valueClass;
         }
     }
 }

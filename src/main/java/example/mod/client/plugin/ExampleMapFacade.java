@@ -46,6 +46,7 @@ class ExampleMapFacade implements IExampleMapFacade
     private final IClientAPI jmClientAPI;
     private final ModWaypoint bedWaypoint;
     private final HashMap<ChunkCoordIntPair, PolygonOverlay> slimeChunkOverlays;
+    private int lastDimension = Integer.MIN_VALUE;
 
     ExampleMapFacade(IClientAPI api)
     {
@@ -68,6 +69,15 @@ class ExampleMapFacade implements IExampleMapFacade
     @Override
     public void refreshMap(int dimension)
     {
+        if (lastDimension == dimension)
+        {
+            return;
+        }
+        else
+        {
+            lastDimension = dimension;
+        }
+
         try
         {
             if (canShowSlimeChunks())

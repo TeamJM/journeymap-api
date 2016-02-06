@@ -27,7 +27,7 @@ import journeymap.client.api.IClientAPI;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
-import static journeymap.client.api.event.ClientEvent.Type.DISPLAY_STARTED;
+import static journeymap.client.api.event.ClientEvent.Type.DISPLAY_UPDATE;
 
 /**
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
@@ -46,16 +46,16 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
      * Called by JourneyMap during the init phase of mod loading.  The IClientAPI reference is how the mod
      * will add overlays, etc. to JourneyMap.
      *
-     * @param api Client API implementation
+     * @param jmClientApi Client API implementation
      */
     @Override
-    public void initialize(final IClientAPI api)
+    public void initialize(final IClientAPI jmClientApi)
     {
         // Set ClientProxy.ExampleMapFacade with an implementation that uses the JourneyMap IClientAPI under the covers.
-        ClientProxy.MapFacade = new ExampleMapFacade(api);
+        ClientProxy.MapFacade = new ExampleMapFacade(jmClientApi);
 
         // Subscribe to desired ClientEvent types
-        api.subscribe(EnumSet.of(DISPLAY_STARTED));
+        jmClientApi.subscribe(EnumSet.of(DISPLAY_UPDATE));
     }
 
     /**
@@ -74,7 +74,7 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
      * You must call {@link IClientAPI#subscribe(EnumSet)} at some point to subscribe to these events, otherwise this
      * method will never be called.
      * <p/>
-     * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_STARTED},
+     * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
      * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
      * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
      * (Note: ModWaypoints with persisted==true will already be shown.)
@@ -90,7 +90,7 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
 
             switch (event.type)
             {
-                case DISPLAY_STARTED:
+                case DISPLAY_UPDATE:
                     ClientProxy.MapFacade.refreshMap(event.dimension);
                     break;
                 case DEATH_WAYPOINT:

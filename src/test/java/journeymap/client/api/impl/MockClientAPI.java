@@ -27,11 +27,13 @@ import com.google.common.collect.LinkedHashMultimap;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
+import journeymap.client.api.event.ClientEvent;
 import net.minecraftforge.fml.common.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.EnumSet;
 
 /**
  * Stub implementation of the IClientAPI. Doesn't actually do anything, other than track displayIds.
@@ -58,9 +60,16 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
                     });
 
 
+    @Override
     public boolean isActive(Enum<? extends Context>... contexts)
     {
         return true;
+    }
+
+    @Override
+    public void subscribe(EnumSet<ClientEvent.Type> eventTypes)
+    {
+        // Not implemented
     }
 
     @Override
