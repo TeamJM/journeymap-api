@@ -45,12 +45,13 @@ public interface IClientAPI
     boolean isActive(Enum<? extends Context>... contexts);
 
     /**
-     * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf
+     * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
+     * if no event subscriptions are needed. (This is the default).
      *
      * @param eventTypes
      * @return
      */
-    boolean subscribe(EnumSet<ClientEvent.Type> eventTypes);
+    void subscribe(EnumSet<ClientEvent.Type> eventTypes);
 
     /**
      * Add (or update) a displayable object to the player's maps. If you modify a Displayable after it
