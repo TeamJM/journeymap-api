@@ -7,7 +7,7 @@
 * Replaced `ClientEvent.Type.DISPLAY_STARTED` with `ClientEvent.Type.DISPLAY_UPDATE`.
 * Added `IClientAPI.subscribe()` to explicitly request for ClientEvent notifications.
 * `IClientAPI.isActive()` now takes Context enums as arguments
-* Added `Overlay.activeUIs`, `Overlay.activeMapTypes`, and `Overlay.activeMapLayers` fields
+* Added `Overlay.activeUIs` and `Overlay.activeMapTypes` fields
 * Removed `Overlay.inFullscreen`, `Overlay.inMinimap`, `Overlay.inWebmap` fields.
 * Added `TextProperties.activeUIs` and `TextProperties.fontShadow` fields
 * `MapPolygon` now only needs 3 points and doesn't require a redundant last point. 

@@ -40,7 +40,6 @@ public abstract class Overlay extends Displayable
     protected int maxZoom = 8;
     protected int displayOrder;
     protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.Any);
-    protected EnumSet<Context.MapLayer> activeMapLayers = EnumSet.of(Context.MapLayer.Any);
     protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.Any);
     protected TextProperties textProperties = new TextProperties();
 
@@ -262,32 +261,6 @@ public abstract class Overlay extends Displayable
     }
 
     /**
-     * Returns a set of enums indicating which map layers the (Surface, Underground) the overlay should be active in.
-     *
-     * @return enumset
-     */
-    public EnumSet<Context.MapLayer> getActiveMapLayers()
-    {
-        return activeMapLayers;
-    }
-
-    /**
-     * Set of enums indicating which JourneyMap map layers (Surface, Underground) the overlay should be active in.
-     *
-     * @param activeMapLayers active layers
-     * @return this
-     */
-    public Overlay setActiveMapLayers(EnumSet<Context.MapLayer> activeMapLayers)
-    {
-        if (activeMapLayers.contains(Context.MapLayer.Any))
-        {
-            activeMapLayers = EnumSet.of(Context.MapLayer.Any);
-        }
-        this.activeMapLayers = activeMapLayers;
-        return this;
-    }
-
-    /**
      * Returns a set of enums indicating which map types (Day, Night) the overlay should be active in.
      *
      * @return enumset
@@ -317,14 +290,12 @@ public abstract class Overlay extends Displayable
      * Whether the overlay should be active for the given contexts.
      *
      * @param ui    UI
-     * @param layer Map Layer
      * @param type  Map Type
      * @return true if the overlay should be active
      */
-    public boolean isActiveIn(Context.UI ui, Context.MapLayer layer, Context.MapType type)
+    public boolean isActiveIn(Context.UI ui, Context.MapType type)
     {
         return (activeUIs.contains(Context.UI.Any) || activeUIs.contains(ui))
-                && (activeMapLayers.contains(Context.MapLayer.Any) || activeMapLayers.contains(layer))
                 && (activeMapTypes.contains(Context.MapType.Any) || activeMapTypes.contains(type));
     }
 
@@ -340,7 +311,6 @@ public abstract class Overlay extends Displayable
                 .add("label", label)
                 .add("title", title)
                 .add("overlayGroupName", overlayGroupName)
-                .add("activeMapLayers", activeMapLayers)
                 .add("activeMapTypes", activeMapTypes)
                 .add("activeUIs", activeUIs)
                 .add("dimension", dimension)

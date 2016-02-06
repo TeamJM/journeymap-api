@@ -32,22 +32,13 @@ public interface Context
     }
 
     /**
-     * Map layers.
-     */
-    enum MapLayer implements Context
-    {
-        Any,
-        Surface,
-        Underground
-    }
-
-    /**
      * Map types.
      */
     enum MapType implements Context
     {
         Any,
         Day,
-        Night
+        Night,
+        Underground
     }
 }

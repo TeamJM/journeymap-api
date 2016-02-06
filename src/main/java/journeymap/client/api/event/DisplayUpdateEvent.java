@@ -26,11 +26,6 @@ public class DisplayUpdateEvent extends ClientEvent
     public final Context.MapType mapType;
 
     /**
-     * The current map layer of the UI.
-     */
-    public final Context.MapLayer mapLayer;
-
-    /**
      * The area of blocks displayed in the UI.
      */
     public final AxisAlignedBB blockBounds;
@@ -40,18 +35,16 @@ public class DisplayUpdateEvent extends ClientEvent
      *
      * @param ui          The UI which has been updated.
      * @param mapType     The current map type of the UI.
-     * @param mapLayer    The current map layer of the UI.
      * @param blockBounds The area of blocks displayed in the UI.
      * @param dimension   The current dimension shown in the UI.
      * @param zoom        he current zoom level of the UI.
      */
-    public DisplayUpdateEvent(Context.UI ui, Context.MapType mapType, Context.MapLayer mapLayer, AxisAlignedBB blockBounds, int dimension, int zoom)
+    public DisplayUpdateEvent(Context.UI ui, Context.MapType mapType, AxisAlignedBB blockBounds, int dimension, int zoom)
     {
         super(Type.DISPLAY_UPDATE, dimension);
         this.zoom = zoom;
         this.ui = ui;
         this.mapType = mapType;
-        this.mapLayer = mapLayer;
         this.blockBounds = blockBounds;
     }
 
@@ -60,7 +53,6 @@ public class DisplayUpdateEvent extends ClientEvent
     {
         return Objects.toStringHelper(this)
                 .add("ui", ui)
-                .add("mapLayer", mapLayer)
                 .add("mapType", mapType)
                 .add("blockBounds", blockBounds)
                 .add("zoom", zoom)
