@@ -23,6 +23,7 @@ package journeymap.client.api.display;
 import com.google.common.base.Objects;
 import journeymap.client.api.model.TextProperties;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
@@ -42,6 +43,7 @@ public abstract class Overlay extends Displayable
     protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.Any);
     protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.Any);
     protected TextProperties textProperties = new TextProperties();
+    protected IOverlayListener overlayListener;
 
     /**
      * Constructor.
@@ -300,6 +302,28 @@ public abstract class Overlay extends Displayable
     }
 
     /**
+     * Gets the listener for user events on the overlay.
+     *
+     * @return listener impl or null
+     */
+    public IOverlayListener getOverlayListener()
+    {
+        return overlayListener;
+    }
+
+    /**
+     * Sets a listener for receiving user events related to the Overlay.
+     *
+     * @param overlayListener IOverlayListener impl
+     * @return this
+     */
+    public Overlay setOverlayListener(@Nullable IOverlayListener overlayListener)
+    {
+        this.overlayListener = overlayListener;
+        return this;
+    }
+
+    /**
      * Provides common output for toStringHelper() to subclasses
      *
      * @param instance subclass
@@ -317,6 +341,7 @@ public abstract class Overlay extends Displayable
                 .add("displayOrder", displayOrder)
                 .add("maxZoom", maxZoom)
                 .add("minZoom", minZoom)
-                .add("textProperties", textProperties);
+                .add("textProperties", textProperties)
+                .add("hasOverlayListener", overlayListener!=null);
     }
 }

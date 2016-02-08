@@ -1,8 +1,7 @@
 package journeymap.client.api.event;
 
 import com.google.common.base.Objects;
-import journeymap.client.api.display.Context;
-import net.minecraft.util.AxisAlignedBB;
+import journeymap.client.api.util.MapState;
 
 /**
  * Indicates a change in the display characteristics of the specified UI.
@@ -11,51 +10,26 @@ import net.minecraft.util.AxisAlignedBB;
 public class DisplayUpdateEvent extends ClientEvent
 {
     /**
-     * The UI which has been updated.
+     * The MapState of the UI which has been updated.
      */
-    public final Context.UI ui;
-
-    /**
-     * The current zoom level of the UI
-     */
-    public final int zoom;
-
-    /**
-     * The current map type of the UI.
-     */
-    public final Context.MapType mapType;
-
-    /**
-     * The area of blocks displayed in the UI.
-     */
-    public final AxisAlignedBB blockBounds;
+    public final MapState mapState;
 
     /**
      * Constructor
      *
-     * @param ui          The UI which has been updated.
-     * @param mapType     The current map type of the UI.
-     * @param blockBounds The area of blocks displayed in the UI.
-     * @param dimension   The current dimension shown in the UI.
-     * @param zoom        he current zoom level of the UI.
+     * @param mapState    The MapState of the UI which has been updated.
      */
-    public DisplayUpdateEvent(Context.UI ui, Context.MapType mapType, AxisAlignedBB blockBounds, int dimension, int zoom)
+    public DisplayUpdateEvent(MapState mapState)
     {
-        super(Type.DISPLAY_UPDATE, dimension);
-        this.zoom = zoom;
-        this.ui = ui;
-        this.mapType = mapType;
-        this.blockBounds = blockBounds;
+        super(Type.DISPLAY_UPDATE, mapState.dimension);
+        this.mapState = mapState;
     }
 
     @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("ui", ui)
-                .add("mapType", mapType)
-                .add("blockBounds", blockBounds)
-                .add("zoom", zoom)
+                .add("mapState", mapState)
                 .toString();
     }
 }

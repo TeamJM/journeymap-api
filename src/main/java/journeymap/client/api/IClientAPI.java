@@ -24,6 +24,7 @@ import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
+import journeymap.client.api.util.MapState;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
@@ -38,11 +39,13 @@ public interface IClientAPI
     String API_VERSION = "@API_VERSION@";
 
     /**
-     * Whether all of the specified contexts are currently active in JourneyMap.
+     * Returns the MapState of the UI specified in uiContext.
      *
-     * @return true if active
+     * Note: Context.UI.Any is not a meaningful parameter value here and will just return null.
+     *
+     * @return the current MapState of the UI in question, or null if uiContext==Context.UI.Any
      */
-    boolean isActive(Enum<? extends Context>... contexts);
+    MapState getMapState(Context.UI uiContext);
 
     /**
      * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
