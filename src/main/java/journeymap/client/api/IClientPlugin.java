@@ -38,7 +38,7 @@ public interface IClientPlugin
      * should retain a reference to the IClientAPI passed in, since that is what your plugin
      * will use to add overlays, etc. to JourneyMap.
      * <p/>
-     * This is also a good time to call {@link IClientAPI#subscribe(EnumSet)} to subscribe to any
+     * This is also a good time to call {@link IClientAPI#subscribe(String, EnumSet)} to subscribe to any
      * desired ClientEvent types.
      *
      * @param jmClientApi Client API implementation
@@ -54,7 +54,7 @@ public interface IClientPlugin
      * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p/>
-     * You must call {@link IClientAPI#subscribe(EnumSet)} to subscribe to these events ( preferably during
+     * You must call {@link IClientAPI#subscribe(String, EnumSet)} to subscribe to these events ( preferably during
      * {@link #initialize(IClientAPI)} ), otherwise this method will never be called.
      * <p/>
      * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},

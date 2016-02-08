@@ -3,6 +3,7 @@
 
 **API v1.8.9-1.1-SNAPSHOT**
 
+* `IClientAPI.subscribe()` now takes modId as an argument
 * `ClientEvent.timestamp` added.  `IClientAPI.getUIState()` annotated as Nullable
 * New `IOverlayListener` provides mouse event support to `Overlay`.
 * `IClientAPI.isActive()` replaced with `IClientAPI.getUIState()`. `UIState` now used by DisplayUpdateEvent.
