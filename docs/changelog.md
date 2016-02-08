@@ -4,7 +4,7 @@
 **API v1.8.9-1.1-SNAPSHOT**
 
 * New `IOverlayListener` provides mouse event support to `Overlay`.
-* `IClientAPI.isActive()` replaced with `IClientAPI.getMapState()`. `MapState` now used by DisplayUpdateEvent.
+* `IClientAPI.isActive()` replaced with `IClientAPI.getUIState()`. `UIState` now used by DisplayUpdateEvent.
 * Added `IClientAPI.subscribe()`, refactored `ClientEvent` to be a base class.  `IClientPlugin.onClient()` is now passed a subclass corresponding to the event type.  
 * Replaced `ClientEvent.Type.DISPLAY_STARTED` with `ClientEvent.Type.DISPLAY_UPDATE`.
 * Added `IClientAPI.subscribe()` to explicitly request for ClientEvent notifications.

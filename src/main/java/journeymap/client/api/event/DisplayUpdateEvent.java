@@ -1,7 +1,7 @@
 package journeymap.client.api.event;
 
 import com.google.common.base.Objects;
-import journeymap.client.api.util.MapState;
+import journeymap.client.api.util.UIState;
 
 /**
  * Indicates a change in the display characteristics of the specified UI.
@@ -10,16 +10,16 @@ import journeymap.client.api.util.MapState;
 public class DisplayUpdateEvent extends ClientEvent
 {
     /**
-     * The MapState of the UI which has been updated.
+     * The UIState of the UI which has been updated.
      */
-    public final MapState mapState;
+    public final UIState mapState;
 
     /**
      * Constructor
      *
-     * @param mapState    The MapState of the UI which has been updated.
+     * @param mapState    The UIState of the UI which has been updated.
      */
-    public DisplayUpdateEvent(MapState mapState)
+    public DisplayUpdateEvent(UIState mapState)
     {
         super(Type.DISPLAY_UPDATE, mapState.dimension);
         this.mapState = mapState;

@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 /**
  * Provides the current state of a Map UI in JourneyMap.
  */
-public final class MapState
+public final class UIState
 {
     /**
      * The UI to which this state applies.
@@ -58,10 +58,10 @@ public final class MapState
      * @param mapCenter   The block position at the center of the UI.
      * @param blockBounds The area of blocks displayed in the UI.
      */
-    public MapState(Context.UI ui, boolean active, int dimension, int zoom,
-                    @Nullable Context.MapType mapType,
-                    @Nullable BlockPos mapCenter,
-                    @Nullable AxisAlignedBB blockBounds)
+    public UIState(Context.UI ui, boolean active, int dimension, int zoom,
+                   @Nullable Context.MapType mapType,
+                   @Nullable BlockPos mapCenter,
+                   @Nullable AxisAlignedBB blockBounds)
     {
         this.ui = ui;
         this.active = active;
@@ -97,7 +97,7 @@ public final class MapState
         {
             return false;
         }
-        MapState mapState = (MapState) o;
+        UIState mapState = (UIState) o;
         return Objects.equal(active, mapState.active) &&
                 Objects.equal(dimension, mapState.dimension) &&
                 Objects.equal(zoom, mapState.zoom) &&
