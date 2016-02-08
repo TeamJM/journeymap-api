@@ -28,7 +28,7 @@ import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
-import journeymap.client.api.util.MapState;
+import journeymap.client.api.util.UIState;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.Optional;
@@ -64,14 +64,14 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
 
 
     @Override
-    public MapState getMapState(Context.UI uiContext)
+    public UIState getUIState(Context.UI ui)
     {
-        if (uiContext == Context.UI.Any)
+        if (ui == Context.UI.Any)
         {
             return null;
         }
 
-        return new MapState(Context.UI.Fullscreen, true, 0, 1,
+        return new UIState(Context.UI.Fullscreen, true, 0, 1,
                 Context.MapType.Day,
                 new BlockPos(128, 0, 128),
                 new AxisAlignedBB(new BlockPos(0, 0, 0), new BlockPos(256, 256, 256)));

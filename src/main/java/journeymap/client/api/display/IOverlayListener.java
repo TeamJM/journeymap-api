@@ -1,6 +1,6 @@
 package journeymap.client.api.display;
 
-import journeymap.client.api.util.MapState;
+import journeymap.client.api.util.UIState;
 import net.minecraft.util.BlockPos;
 
 import java.awt.geom.Point2D;
@@ -13,34 +13,34 @@ public interface IOverlayListener
     /**
      * Called when the Overlay is actively displayed.
      *
-     * @param mapState current MapState of the UI where the overlay is active.
+     * @param mapState current UIState of the UI where the overlay is active.
      */
-    void onActivate(MapState mapState);
+    void onActivate(UIState mapState);
 
     /**
      * Called when Overlay is no longer displayed.
      *
-     * @param mapState current MapState of the UI where the overlay is inactive.
+     * @param mapState current UIState of the UI where the overlay is inactive.
      */
-    void onDeactivate(MapState mapState);
+    void onDeactivate(UIState mapState);
 
     /**
      * Called when the mouse moves within the bounds of the overlay.
      *
-     * @param mapState      current MapState of the UI where the overlay is active.
+     * @param mapState      current UIState of the UI where the overlay is active.
      * @param mousePosition screen coordinates of the mouse
      * @param blockPosition the block position under the mouse
      */
-    void onMouseOver(MapState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
+    void onMouseOver(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
 
     /**
      * Called when the mouse is clicked within the bounds of the overlay.
      *
-     * @param mapState      current MapState of the UI where the overlay is active.
+     * @param mapState      current UIState of the UI where the overlay is active.
      * @param mousePosition screen coordinates of the mouse
      * @param blockPosition the block position under the mouse
      * @param button        the mouse button clicked
      * @param doubleClick   true if the mouse button was double-clicked
      */
-    void onMouseClick(MapState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick);
+    void onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick);
 }

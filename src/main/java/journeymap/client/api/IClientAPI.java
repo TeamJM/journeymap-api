@@ -24,7 +24,7 @@ import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
-import journeymap.client.api.util.MapState;
+import journeymap.client.api.util.UIState;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
@@ -39,13 +39,13 @@ public interface IClientAPI
     String API_VERSION = "@API_VERSION@";
 
     /**
-     * Returns the MapState of the UI specified in uiContext.
+     * Returns the UIState of the UI specified in uiContext.
      *
      * Note: Context.UI.Any is not a meaningful parameter value here and will just return null.
-     *
-     * @return the current MapState of the UI in question, or null if uiContext==Context.UI.Any
+     * @param ui   Should be one of: Fullscreen, Minimap, or Webmap
+     * @return the current UIState of the UI in question, or null if uiContext==Context.UI.Any
      */
-    MapState getMapState(Context.UI uiContext);
+    UIState getUIState(Context.UI ui);
 
     /**
      * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
