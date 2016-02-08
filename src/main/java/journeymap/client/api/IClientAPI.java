@@ -40,11 +40,11 @@ public interface IClientAPI
     String API_VERSION = "@API_VERSION@";
 
     /**
-     * Returns the UIState of the UI specified in uiContext.
+     * Returns the current UIState of the UI specified.
      *
      * Note: Context.UI.Any is not a meaningful parameter value here and will just return null.
      * @param ui   Should be one of: Fullscreen, Minimap, or Webmap
-     * @return the current UIState of the UI in question, or null if uiContext==Context.UI.Any
+     * @return the current UIState of the UI specified.
      */
     @Nullable
     UIState getUIState(Context.UI ui);
@@ -53,8 +53,7 @@ public interface IClientAPI
      * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
      * if no event subscriptions are needed. (This is the default).
      *
-     * @param eventTypes
-     * @return
+     * @param eventTypes set of types
      */
     void subscribe(EnumSet<ClientEvent.Type> eventTypes);
 
