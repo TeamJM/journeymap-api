@@ -78,7 +78,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public void subscribe(EnumSet<ClientEvent.Type> eventTypes)
+    public void subscribe(String modId, EnumSet<ClientEvent.Type> eventTypes)
     {
         // Not implemented
     }

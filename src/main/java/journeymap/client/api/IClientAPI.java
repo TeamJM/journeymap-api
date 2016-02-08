@@ -53,9 +53,10 @@ public interface IClientAPI
      * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
      * if no event subscriptions are needed. (This is the default).
      *
-     * @param eventTypes set of types
+     * @param modId       Mod id
+     * @param eventTypes  set of types
      */
-    void subscribe(EnumSet<ClientEvent.Type> eventTypes);
+    void subscribe(String modId, EnumSet<ClientEvent.Type> eventTypes);
 
     /**
      * Add (or update) a displayable object to the player's maps. If you modify a Displayable after it

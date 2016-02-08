@@ -55,7 +55,7 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
         ClientProxy.MapFacade = new ExampleMapFacade(jmClientApi);
 
         // Subscribe to desired ClientEvent types
-        jmClientApi.subscribe(EnumSet.of(DISPLAY_UPDATE));
+        jmClientApi.subscribe(getModId(), EnumSet.of(DISPLAY_UPDATE));
     }
 
     /**
@@ -71,7 +71,7 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
      * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p/>
-     * You must call {@link IClientAPI#subscribe(EnumSet)} at some point to subscribe to these events, otherwise this
+     * You must call {@link IClientAPI#subscribe(String, EnumSet)} at some point to subscribe to these events, otherwise this
      * method will never be called.
      * <p/>
      * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
