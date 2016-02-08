@@ -1,0 +1,46 @@
+package journeymap.client.api.display;
+
+import journeymap.client.api.util.MapState;
+import net.minecraft.util.BlockPos;
+
+import java.awt.geom.Point2D;
+
+/**
+ * Interface for receiving user events related to an Overlay.
+ */
+public interface IOverlayListener
+{
+    /**
+     * Called when the Overlay is actively displayed.
+     *
+     * @param mapState current MapState of the UI where the overlay is active.
+     */
+    void onActivate(MapState mapState);
+
+    /**
+     * Called when Overlay is no longer displayed.
+     *
+     * @param mapState current MapState of the UI where the overlay is inactive.
+     */
+    void onDeactivate(MapState mapState);
+
+    /**
+     * Called when the mouse moves within the bounds of the overlay.
+     *
+     * @param mapState      current MapState of the UI where the overlay is active.
+     * @param mousePosition screen coordinates of the mouse
+     * @param blockPosition the block position under the mouse
+     */
+    void onMouseOver(MapState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
+
+    /**
+     * Called when the mouse is clicked within the bounds of the overlay.
+     *
+     * @param mapState      current MapState of the UI where the overlay is active.
+     * @param mousePosition screen coordinates of the mouse
+     * @param blockPosition the block position under the mouse
+     * @param button        the mouse button clicked
+     * @param doubleClick   true if the mouse button was double-clicked
+     */
+    void onMouseClick(MapState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick);
+}
