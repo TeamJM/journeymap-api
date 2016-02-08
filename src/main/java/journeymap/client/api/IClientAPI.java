@@ -26,6 +26,7 @@ import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
@@ -45,6 +46,7 @@ public interface IClientAPI
      * @param ui   Should be one of: Fullscreen, Minimap, or Webmap
      * @return the current UIState of the UI in question, or null if uiContext==Context.UI.Any
      */
+    @Nullable
     UIState getUIState(Context.UI ui);
 
     /**

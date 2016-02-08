@@ -25,8 +25,24 @@ package journeymap.client.api.event;
  */
 public abstract class ClientEvent
 {
+    /**
+     * Event type.
+     */
     public final Type type;
+
+    /**
+     * World dimension where event occurred.
+     */
     public final int dimension;
+
+    /**
+     * System millis when event was created.
+     */
+    public final long timestamp;
+
+    /**
+     * Whether event has been cancelled.
+     */
     private boolean cancelled;
 
     /**
@@ -36,6 +52,7 @@ public abstract class ClientEvent
     {
         this.type = type;
         this.dimension = dimension;
+        this.timestamp = System.currentTimeMillis();
     }
 
     /**

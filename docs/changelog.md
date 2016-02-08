@@ -3,6 +3,7 @@
 
 **API v1.8.9-1.1-SNAPSHOT**
 
+* `ClientEvent.timestamp` added.  `IClientAPI.getUIState()` annotated as Nullable
 * New `IOverlayListener` provides mouse event support to `Overlay`.
 * `IClientAPI.isActive()` replaced with `IClientAPI.getUIState()`. `UIState` now used by DisplayUpdateEvent.
 * Added `IClientAPI.subscribe()`, refactored `ClientEvent` to be a base class.  `IClientPlugin.onClient()` is now passed a subclass corresponding to the event type.  
