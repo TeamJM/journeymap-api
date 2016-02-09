@@ -27,9 +27,6 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.ModWaypoint;
 import journeymap.client.api.display.PolygonOverlay;
 import journeymap.client.api.model.MapImage;
-import journeymap.client.api.model.MapPolygon;
-import journeymap.client.api.model.ShapeProperties;
-import journeymap.client.api.util.PolygonHelper;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -62,7 +59,7 @@ class ExampleMapFacade implements IExampleMapFacade
     }
 
     /**
-     * Refresh ExampleMod's displayables for the given dimension.
+     * Refresh ExampleMod's displayables for the given dimension if needed.
      *
      * @param dimension
      */
@@ -78,6 +75,7 @@ class ExampleMapFacade implements IExampleMapFacade
             lastDimension = dimension;
         }
 
+        // Refresh pre-existing displayables from this dimension
         try
         {
             if (canShowSlimeChunks())
@@ -93,7 +91,7 @@ class ExampleMapFacade implements IExampleMapFacade
 
             if (canShowBedWaypoint())
             {
-                if (!bedWaypoint.isPersistent() && !bedWaypoint.isInDimension(dimension))
+                if (!bedWaypoint.isPersistent() && bedWaypoint.isInDimension(dimension))
                 {
                     jmClientAPI.show(bedWaypoint);
                 }
@@ -129,20 +127,9 @@ class ExampleMapFacade implements IExampleMapFacade
         {
             if (!slimeChunkOverlays.containsKey(chunkCoords))
             {
-                String displayId = "slime_" + chunkCoords.toString();
-
-                ShapeProperties shapeProps = new ShapeProperties()
-                        .setStrokeWidth(2)
-                        .setStrokeColor(0x00ff00).setStrokeOpacity(.7f)
-                        .setFillColor(0x00ff00).setFillOpacity(.4f);
-
-                MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.chunkXPos, 70, chunkCoords.chunkZPos);
-
-                PolygonOverlay chunkOverlay = new PolygonOverlay(ExampleMod.MODID, displayId, dimension, shapeProps, polygon);
-                chunkOverlay.setOverlayGroupName("Slime Chunks").setLabel("Slime Chunk").setTitle(String.format("%s,%s", chunkCoords.chunkXPos, chunkCoords.chunkZPos));
-
-                slimeChunkOverlays.put(chunkCoords, chunkOverlay);
-                jmClientAPI.show(chunkOverlay);
+                PolygonOverlay overlay = SlimeChunkOverlayFactory.create(chunkCoords, dimension);
+                slimeChunkOverlays.put(chunkCoords, overlay);
+                jmClientAPI.show(overlay);
 
                 ExampleMod.LOGGER.info("Found a slime chunk: " + chunkCoords);
             }
@@ -190,7 +177,7 @@ class ExampleMapFacade implements IExampleMapFacade
     /**
      * ExampleMod will create a waypoint for the bed slept in at the provided coordinates.
      *
-     * @param position
+     * @param bedLocation
      * @param dimension
      */
     @Override
