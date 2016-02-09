@@ -73,20 +73,6 @@ public final class UIState
     }
 
     @Override
-    public String toString()
-    {
-        return Objects.toStringHelper(this)
-                .add("active", active)
-                .add("blockBounds", blockBounds)
-                .add("dimension", dimension)
-                .add("mapCenter", mapCenter)
-                .add("mapType", mapType)
-                .add("ui", ui)
-                .add("zoom", zoom)
-                .toString();
-    }
-
-    @Override
     public boolean equals(Object o)
     {
         if (this == o)
@@ -112,4 +98,20 @@ public final class UIState
     {
         return Objects.hashCode(ui, active, dimension, zoom, mapType, mapCenter, blockBounds);
     }
+
+    @Override
+    public String toString()
+    {
+        return Objects.toStringHelper(this)
+                .add("ui", ui)
+                .add("active", active)
+                .add("mapType", mapType)
+                .add("zoom", zoom)
+                .add("dimension", dimension)
+                .add("mapCenter", mapCenter)
+                .add("blockBounds", blockBounds)
+                .toString();
+    }
+
+
 }
