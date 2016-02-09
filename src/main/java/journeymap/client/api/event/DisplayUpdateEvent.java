@@ -12,24 +12,24 @@ public class DisplayUpdateEvent extends ClientEvent
     /**
      * The UIState of the UI which has been updated.
      */
-    public final UIState mapState;
+    public final UIState uiState;
 
     /**
      * Constructor
      *
-     * @param mapState    The UIState of the UI which has been updated.
+     * @param uiState    The UIState of the UI which has been updated.
      */
-    public DisplayUpdateEvent(UIState mapState)
+    public DisplayUpdateEvent(UIState uiState)
     {
-        super(Type.DISPLAY_UPDATE, mapState.dimension);
-        this.mapState = mapState;
+        super(Type.DISPLAY_UPDATE, uiState.dimension);
+        this.uiState = uiState;
     }
 
     @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("mapState", mapState)
+                .add("uiState", uiState)
                 .toString();
     }
 }
