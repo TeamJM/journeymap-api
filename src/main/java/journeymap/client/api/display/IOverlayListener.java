@@ -31,7 +31,7 @@ public interface IOverlayListener
      * @param mousePosition screen coordinates of the mouse
      * @param blockPosition the block position under the mouse
      */
-    void onMouseOver(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
+    void onMouseMove(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
 
     /**
      * Called when the mouse is clicked within the bounds of the overlay.

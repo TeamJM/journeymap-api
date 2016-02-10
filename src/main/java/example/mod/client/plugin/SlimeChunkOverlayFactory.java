@@ -89,9 +89,9 @@ public class SlimeChunkOverlayFactory
             }
 
             @Override
-            public void onMouseOver(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
+            public void onMouseMove(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
             {
-                ExampleMod.LOGGER.info("onMouseOver " + overlay.getTitle());
+                ExampleMod.LOGGER.info("onMouseMove " + overlay.getTitle());
 
                 // Show the title
                 int color = overlay.getTextProperties().getColor();
