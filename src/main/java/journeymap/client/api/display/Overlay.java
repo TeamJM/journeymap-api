@@ -22,6 +22,7 @@ package journeymap.client.api.display;
 
 import com.google.common.base.Objects;
 import journeymap.client.api.model.TextProperties;
+import journeymap.client.api.util.UIState;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -290,14 +291,15 @@ public abstract class Overlay extends Displayable
     /**
      * Whether the overlay should be active for the given contexts.
      *
-     * @param ui    UI
-     * @param type  Map Type
+     * @param uiState    UIState
      * @return true if the overlay should be active
      */
-    public boolean isActiveIn(Context.UI ui, Context.MapType type)
+    public boolean isActiveIn(UIState uiState)
     {
-        return (activeUIs.contains(Context.UI.Any) || activeUIs.contains(ui))
-                && (activeMapTypes.contains(Context.MapType.Any) || activeMapTypes.contains(type));
+        return ((uiState.active && this.dimension == uiState.dimension)
+                && (activeUIs.contains(Context.UI.Any) || activeUIs.contains(uiState.ui))
+                && (activeMapTypes.contains(Context.MapType.Any) || activeMapTypes.contains(uiState.mapType))
+                && (this.minZoom <= uiState.zoom && this.maxZoom >= uiState.zoom));
     }
 
     /**
