@@ -34,6 +34,15 @@ public interface IOverlayListener
     void onMouseMove(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
 
     /**
+     * Called when the mouse first leaves the bounds of the overlay.
+     *
+     * @param mapState      current UIState of the UI where the overlay is active.
+     * @param mousePosition screen coordinates of the mouse
+     * @param blockPosition the block position under the mouse
+     */
+    void onMouseOut(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
+
+    /**
      * Called when the mouse is clicked within the bounds of the overlay.
      *
      * @param mapState      current UIState of the UI where the overlay is active.
@@ -41,6 +50,8 @@ public interface IOverlayListener
      * @param blockPosition the block position under the mouse
      * @param button        the mouse button clicked
      * @param doubleClick   true if the mouse button was double-clicked
+     *
+     * @return true if click event can bubble up to other overlays which occupy the same area.
      */
-    void onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick);
+    boolean onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick);
 }
