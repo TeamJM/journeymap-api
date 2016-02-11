@@ -10,7 +10,6 @@ import journeymap.client.api.util.PolygonHelper;
 import journeymap.client.api.util.UIState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.awt.geom.Point2D;
 
@@ -60,58 +59,79 @@ public class SlimeChunkOverlayFactory
                 .setTextProperties(textProps);
 
         // Add a listener for mouse events
-        IOverlayListener overlayListener = createOverlayListener(slimeChunkOverlay);
+        IOverlayListener overlayListener = new SlimeChunkListener(slimeChunkOverlay);
         slimeChunkOverlay.setOverlayListener(overlayListener);
 
         return slimeChunkOverlay;
     }
 
     /**
-     * Create a listener for events related to an overlay instance.
+     * Listener for events on a slime chunk overlay instance.
      *
-     * @param overlay the overlay
-     * @return a new event listener
      */
-    private static IOverlayListener createOverlayListener(final PolygonOverlay overlay)
+    static class SlimeChunkListener implements IOverlayListener
     {
-        return new IOverlayListener()
+        final ShapeProperties sp;
+        final int fillColor;
+        final int strokeColor;
+        final float strokeOpacity;
+
+        SlimeChunkListener(final PolygonOverlay overlay)
         {
-            @Override
-            public void onActivate(UIState mapState)
-            {
-                ExampleMod.LOGGER.info("onActivate " + overlay.getTitle());
-            }
+            sp = overlay.getShapeProperties();
+            fillColor = sp.getFillColor();
+            strokeColor = sp.getStrokeColor();
+            strokeOpacity = sp.getStrokeOpacity();
+        }
 
-            @Override
-            public void onDeactivate(UIState mapState)
-            {
-                ExampleMod.LOGGER.info("onDeactivate " + overlay.getTitle());
-            }
+        @Override
+        public void onActivate(UIState mapState)
+        {
+            // Reset
+            resetShapeProperties();
+        }
 
-            @Override
-            public void onMouseMove(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
-            {
-                ExampleMod.LOGGER.info("onMouseMove " + overlay.getTitle());
+        @Override
+        public void onDeactivate(UIState mapState)
+        {
+            // Reset
+            resetShapeProperties();
+        }
 
-                // Show the title
-                int color = overlay.getTextProperties().getColor();
-                FMLClientHandler.instance().getClient().fontRendererObj.drawString(
-                        overlay.getTitle(),
-                        (float) mousePosition.x,
-                        (float) mousePosition.y,
-                        color, true);
-            }
+        @Override
+        public void onMouseMove(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
+        {
+            // Invert the stroke and make it opaque just to prove this works
+            sp.setStrokeColor(0xFFFFFF - strokeColor);
+            sp.setStrokeOpacity(1f);
+        }
 
-            @Override
-            public void onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
-            {
-                ExampleMod.LOGGER.info("onMouseClick " + overlay.getTitle());
+        @Override
+        public void onMouseOut(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
+        {
+            // Reset
+            resetShapeProperties();
+        }
 
-                // Toggle opacity on click ... just because
-                float newOpacity = overlay.getShapeProperties().getFillOpacity() > 0f ? 0f : .5f;
-                overlay.getShapeProperties().setFillOpacity(newOpacity);
-            }
-        };
+        @Override
+        public boolean onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
+        {
+            // Toggle color on click just to prove it works.
+            sp.setFillColor(0xFFFFFF - fillColor);
+
+            // Returning false will stop the click event from being used by other overlays,
+            // including JM's invisible overlay for creating/selecting waypoints
+            return false;
+        }
+
+        /**
+         * Reset properties back to original
+         */
+        private void resetShapeProperties()
+        {
+            sp.setFillColor(fillColor);
+            sp.setStrokeColor(strokeColor);
+            sp.setStrokeOpacity(strokeOpacity);
+        }
     }
-
 }
