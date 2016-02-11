@@ -45,7 +45,7 @@ public class SlimeChunkOverlayFactory
                 .setBackgroundOpacity(.5f)
                 .setColor(0x00ff00)
                 .setOpacity(1f)
-                .setMinZoom(4)
+                .setMinZoom(2)
                 .setFontShadow(true);
 
         // Define the shape
@@ -110,7 +110,7 @@ public class SlimeChunkOverlayFactory
 
             // Update title
             String title = "%s blocks away";
-            BlockPos playerLoc = Minecraft.getMinecraft().thePlayer.playerLocation;
+            BlockPos playerLoc = Minecraft.getMinecraft().thePlayer.getPosition();
             int distance = (int) Math.sqrt(playerLoc.distanceSq(blockPosition.getX(), playerLoc.getY(), blockPosition.getZ()));
             overlay.setTitle(String.format(title, distance));
         }
