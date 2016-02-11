@@ -34,12 +34,14 @@ import java.util.EnumSet;
 public class TextProperties
 {
     protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.Any);
-    private float scale = 1;
-    private int color = 0xffffff;
-    private int backgroundColor = 0x000000;
-    private float opacity = 1f;
-    private float backgroundOpacity = .5f;
-    private boolean fontShadow = true;
+    protected float scale = 1;
+    protected int color = 0xffffff;
+    protected int backgroundColor = 0x000000;
+    protected float opacity = 1f;
+    protected float backgroundOpacity = .5f;
+    protected boolean fontShadow = true;
+    protected int minZoom = 0;
+    protected int maxZoom = 8;
 
     /**
      * Font scale.
@@ -205,42 +207,63 @@ public class TextProperties
         return this;
     }
 
-    @Override
-    public boolean equals(Object o)
+    /**
+     * The minimum zoom level (0 is lowest) where the polygon should be visible.
+     *
+     * @return the min zoom
+     */
+    public int getMinZoom()
     {
-        if (this == o)
-        {
-            return true;
-        }
-        if (!(o instanceof TextProperties))
-        {
-            return false;
-        }
-        TextProperties that = (TextProperties) o;
-        return Objects.equal(activeUIs, that.activeUIs) &&
-                Objects.equal(scale, that.scale) &&
-                Objects.equal(color, that.color) &&
-                Objects.equal(backgroundColor, that.backgroundColor) &&
-                Objects.equal(opacity, that.opacity) &&
-                Objects.equal(backgroundOpacity, that.backgroundOpacity);
+        return minZoom;
     }
 
-    @Override
-    public int hashCode()
+    /**
+     * Sets the minimum zoom level (0 is lowest) where text should be visible.
+     *
+     * @param minZoom the min zoom
+     * @return this
+     */
+    public TextProperties setMinZoom(int minZoom)
     {
-        return Objects.hashCode(scale, color, backgroundColor, opacity, backgroundOpacity);
+        this.minZoom = Math.max(0, minZoom);
+        return this;
+    }
+
+    /**
+     * The maximum zoom level (8 is highest) where text should be visible.
+     *
+     * @return the max zoom
+     */
+    public int getMaxZoom()
+    {
+        return maxZoom;
+    }
+
+    /**
+     * Sets the maximum zoom level (8 is highest) where the polygon should be visible.
+     *
+     * @param maxZoom the max zoom
+     * @return this
+     */
+    public TextProperties setMaxZoom(int maxZoom)
+    {
+        this.maxZoom = Math.min(8, maxZoom);
+        return this;
     }
 
     @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
+                .add("activeUIs", activeUIs)
                 .add("backgroundColor", backgroundColor)
                 .add("backgroundOpacity", backgroundOpacity)
                 .add("color", color)
+                .add("fontShadow", fontShadow)
+                .add("minZoom", minZoom)
+                .add("maxZoom", maxZoom)
                 .add("opacity", opacity)
                 .add("scale", scale)
                 .toString();
     }
-
 }
