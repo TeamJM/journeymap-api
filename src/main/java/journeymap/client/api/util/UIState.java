@@ -6,7 +6,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 
 import javax.annotation.Nullable;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -50,11 +49,6 @@ public final class UIState
     public final AxisAlignedBB blockBounds;
 
     /**
-     * The center pixel of the UI.  If active==false, this will be null.
-     */
-    public final Point2D.Double displayCenter;
-
-    /**
      * The screen area (pixels) used by the UI.  If active==false, this will be null.
      */
     public final Rectangle2D.Double displayBounds;
@@ -75,7 +69,6 @@ public final class UIState
                    @Nullable Context.MapType mapType,
                    @Nullable BlockPos mapCenter,
                    @Nullable AxisAlignedBB blockBounds,
-                   @Nullable Point2D.Double displayCenter,
                    @Nullable Rectangle2D.Double displayBounds)
     {
         this.ui = ui;
@@ -85,7 +78,6 @@ public final class UIState
         this.mapType = mapType;
         this.mapCenter = mapCenter;
         this.blockBounds = blockBounds;
-        this.displayCenter = displayCenter;
         this.displayBounds = displayBounds;
     }
 
@@ -95,9 +87,9 @@ public final class UIState
      * @param ui the ui
      * @return a UIState
      */
-    public static UIState inactive(Context.UI ui)
+    public UIState newInactive(Context.UI ui)
     {
-        return new UIState(ui, false, 0, 0, null, null, null, null, null);
+        return new UIState(ui, false, 0, 0, null, null, null, null);
     }
 
     @Override
@@ -117,14 +109,13 @@ public final class UIState
                 Objects.equal(zoom, mapState.zoom) &&
                 Objects.equal(ui, mapState.ui) &&
                 Objects.equal(mapType, mapState.mapType) &&
-                Objects.equal(displayCenter, mapState.displayCenter) &&
                 Objects.equal(displayBounds, mapState.displayBounds);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hashCode(ui, active, dimension, zoom, mapType, displayCenter, displayBounds);
+        return Objects.hashCode(ui, active, dimension, zoom, mapType, displayBounds);
     }
 
     @Override
@@ -138,7 +129,6 @@ public final class UIState
                 .add("dimension", dimension)
                 .add("mapCenter", mapCenter)
                 .add("blockBounds", blockBounds)
-                .add("displayCenter", displayCenter)
                 .add("displayBounds", displayBounds)
                 .toString();
     }

@@ -36,7 +36,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.EnumSet;
 
@@ -77,7 +76,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
                 Context.MapType.Day,
                 new BlockPos(128, 0, 128),
                 new AxisAlignedBB(new BlockPos(0, 0, 0), new BlockPos(256, 256, 256)),
-                new Point2D.Double(620, 480), new Rectangle2D.Double(0, 0, 1240, 960));
+                new Rectangle2D.Double(0, 0, 1240, 960));
     }
 
     @Override
