@@ -8,10 +8,12 @@ import journeymap.client.api.model.ShapeProperties;
 import journeymap.client.api.model.TextProperties;
 import journeymap.client.api.util.PolygonHelper;
 import journeymap.client.api.util.UIState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.ChunkCoordIntPair;
 
 import java.awt.geom.Point2D;
+import java.util.Random;
 
 /**
  * Factory for overlays showing chunks likely to spawn slime.
@@ -29,8 +31,7 @@ public class SlimeChunkOverlayFactory
     {
         String displayId = "slime_" + chunkCoords.toString();
         String groupName = "Slime Chunks";
-        String label = "Slime Chunk";
-        String title = String.format("%s,%s", chunkCoords.chunkXPos, chunkCoords.chunkZPos);
+        String label = String.format("Slime Chunk [%s,%s]", chunkCoords.chunkXPos, chunkCoords.chunkZPos);
 
         // Style the polygon
         ShapeProperties shapeProps = new ShapeProperties()
@@ -44,6 +45,7 @@ public class SlimeChunkOverlayFactory
                 .setBackgroundOpacity(.5f)
                 .setColor(0x00ff00)
                 .setOpacity(1f)
+                .setMinZoom(4)
                 .setFontShadow(true);
 
         // Define the shape
@@ -55,7 +57,6 @@ public class SlimeChunkOverlayFactory
         // Set the text
         slimeChunkOverlay.setOverlayGroupName(groupName)
                 .setLabel(label)
-                .setTitle(title)
                 .setTextProperties(textProps);
 
         // Add a listener for mouse events
@@ -71,6 +72,7 @@ public class SlimeChunkOverlayFactory
      */
     static class SlimeChunkListener implements IOverlayListener
     {
+        final PolygonOverlay overlay;
         final ShapeProperties sp;
         final int fillColor;
         final int strokeColor;
@@ -78,6 +80,7 @@ public class SlimeChunkOverlayFactory
 
         SlimeChunkListener(final PolygonOverlay overlay)
         {
+            this.overlay = overlay;
             sp = overlay.getShapeProperties();
             fillColor = sp.getFillColor();
             strokeColor = sp.getStrokeColor();
@@ -104,6 +107,12 @@ public class SlimeChunkOverlayFactory
             // Invert the stroke and make it opaque just to prove this works
             sp.setStrokeColor(0xFFFFFF - strokeColor);
             sp.setStrokeOpacity(1f);
+
+            // Update title
+            String title = "%s blocks away";
+            BlockPos playerLoc = Minecraft.getMinecraft().thePlayer.playerLocation;
+            int distance = (int) Math.sqrt(playerLoc.distanceSq(blockPosition.getX(), playerLoc.getY(), blockPosition.getZ()));
+            overlay.setTitle(String.format(title, distance));
         }
 
         @Override
@@ -111,13 +120,14 @@ public class SlimeChunkOverlayFactory
         {
             // Reset
             resetShapeProperties();
+            overlay.setTitle(null);
         }
 
         @Override
         public boolean onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
         {
-            // Toggle color on click just to prove it works.
-            sp.setFillColor(0xFFFFFF - fillColor);
+            // Random color on click just to prove the event works.
+            sp.setFillColor(new Random().nextInt(0xffffff));
 
             // Returning false will stop the click event from being used by other overlays,
             // including JM's invisible overlay for creating/selecting waypoints

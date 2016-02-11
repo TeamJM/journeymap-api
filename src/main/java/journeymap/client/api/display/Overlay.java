@@ -116,7 +116,7 @@ public abstract class Overlay extends Displayable
      * @param title the title
      * @return this
      */
-    public Overlay setTitle(String title)
+    public Overlay setTitle(@Nullable String title)
     {
         this.title = title;
         return this;
@@ -138,12 +138,11 @@ public abstract class Overlay extends Displayable
      * @param label the label
      * @return this
      */
-    public Overlay setLabel(String label)
+    public Overlay setLabel(@Nullable String label)
     {
         this.label = label;
         return this;
     }
-
 
     /**
      * The minimum zoom level (0 is lowest) where the polygon should be visible.
