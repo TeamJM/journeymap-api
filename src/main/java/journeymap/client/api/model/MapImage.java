@@ -29,7 +29,7 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Defines attributes needed to display an image on the map.
@@ -42,10 +42,13 @@ public final class MapImage
     private ResourceLocation imageLocation;
     private int color = 0xffffff;
     private float opacity = 1f;
-    private float anchorX;
-    private float anchorY;
+    private double anchorX;
+    private double anchorY;
+    private int textureX = 0;
+    private int textureY = 0;
     private int width;
     private int height;
+
 
     /**
      * Constructor.
@@ -56,7 +59,7 @@ public final class MapImage
      */
     public MapImage(ResourceLocation imageLocation, int width, int height)
     {
-        this(imageLocation, width, height, 0xffffff, 1f, width / 2f, height / 2f);
+        this(imageLocation, 0, 0, width, height, 0xffffff, 1f);
     }
 
     /**
@@ -65,36 +68,38 @@ public final class MapImage
      * @param imageLocation image location for texture.
      * @param width         displayed image width
      * @param height        displayed image height
-     * @param color         Sets the color (rgb) to be applied to the image.  Use white (0xffffff) to not change the image color.
+     * @param color         Sets a color tint (rgb) on the image.  Use white (0xffffff) for no tint.
      * @param opacity       opacity between 0 and 1
-     * @param anchorX       X pixel offset to move the image relative to the map point
-     * @param anchorY       Y pixel offset to move the image relative to the map point
+     * @param textureX      X coordinate in BufferedImage where image begins. Useful in sprite sheets.
+     * @param textureY      Y coordinate in BufferedImage where image begins. Useful in sprite sheets.
      */
-    public MapImage(ResourceLocation imageLocation, int width, int height, int color, float opacity, float anchorX, float anchorY)
+    public MapImage(ResourceLocation imageLocation, int textureX, int textureY, int width, int height, int color, float opacity)
     {
+        setImage(imageLocation, textureX, textureY, width, height);
         setAnchorX(anchorX);
         setAnchorY(anchorY);
-        setWidth(width);
-        setHeight(height);
-        setImageLocation(imageLocation);
         setColor(color);
         setOpacity(opacity);
     }
 
-    private static BufferedImage getImage(ResourceLocation location)
+    /**
+     * Gets a buffered image from the resource location
+     *
+     * @param location location
+     * @return image
+     */
+    private static BufferedImage resolveImage(ResourceLocation location)
     {
+        IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
         try
         {
-            IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
-            return TextureUtil.readBufferedImage(resourceManager.getResource(location).getInputStream());
+            InputStream is = resourceManager.getResource(location).getInputStream();
+            return TextureUtil.readBufferedImage(is);
         }
-        catch (IOException e)
+        catch (Exception e)
         {
-            ExampleMod.LOGGER.error("Can't read MapImage location: " + location, e);
-            BufferedImage missing = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
-            // TODO: Confirm this works
-            missing.setRGB(0,0,16,16,TextureUtil.missingTextureData,0,16);
-            return missing;
+            ExampleMod.LOGGER.error("Can't resolve image: " + location, e);
+            return new BufferedImage(32, 32, BufferedImage.TYPE_INT_RGB);
         }
     }
 
@@ -109,26 +114,55 @@ public final class MapImage
     }
 
     /**
-     * Sets image.
+     * Sets image. Image anchorX, anchorY also set to the center of the image.
      *
-     * @param imageLocation the image
+     * @param imageLocation the image location
      * @return this
      */
     public MapImage setImage(ResourceLocation imageLocation)
     {
-        this.image = getImage(imageLocation);
+        BufferedImage image = resolveImage(imageLocation);
+        setImage(image, 0, 0, image.getWidth(), image.getHeight());
         return this;
     }
 
     /**
-     * Sets image.
+     * Sets image with args useful when using a sprite sheet.
+     * Image anchorX, anchorY also set to the center of the image.
      *
-     * @param image the image
+     * @param imageLocation image location
+     * @param textureX      start x of texture within image
+     * @param textureY      start y of texture within image
+     * @param width         width of displayed texture
+     * @param height        height of displayed texture
      * @return this
      */
-    public MapImage setImage(BufferedImage image)
+    public MapImage setImage(ResourceLocation imageLocation, int textureX, int textureY, int width, int height)
     {
-        this.image = image;
+        return setImage(resolveImage(imageLocation), textureX, textureY, width, height);
+    }
+
+    /**
+     * Sets image with args useful when using a sprite sheet.
+     * Image anchorX, anchorY also set to the center of the image.
+     *
+     * @param image    image
+     * @param textureX start x of texture within image
+     * @param textureY start y of texture within image
+     * @param width    width of displayed texture
+     * @param height   height of displayed texture
+     * @return this
+     */
+    public MapImage setImage(BufferedImage image, int textureX, int textureY, int width, int height)
+    {
+        this.textureX = textureX;
+        this.textureY = textureY;
+        this.width = width;
+        this.height = height;
+        this.image = image.getSubimage(textureX, textureY, width, height);
+
+        // Centers the image on the map point
+        setAnchorX(width / 2.0).setAnchorY(height/2.0);
         return this;
     }
 
@@ -143,7 +177,7 @@ public final class MapImage
     }
 
     /**
-     * Sets color.
+     * Sets color used to tint the image.  Use 0xffffff for white (no tint).
      *
      * @param color the color
      * @return this
@@ -177,11 +211,30 @@ public final class MapImage
     }
 
     /**
+     * Gets X coordinate in BufferedImage where image begins. Useful in sprite sheets.
+     * @return textureX
+     */
+    public int getTextureX()
+    {
+        return textureX;
+    }
+
+    /**
+     * Gets Y coordinate in BufferedImage where image begins. Useful in sprite sheets.
+     *
+     * @return textureY
+     */
+    public int getTextureY()
+    {
+        return textureY;
+    }
+
+    /**
      * Gets anchor x.
      *
      * @return the anchor x
      */
-    public float getAnchorX()
+    public double getAnchorX()
     {
         return anchorX;
     }
@@ -192,7 +245,7 @@ public final class MapImage
      * @param anchorX the anchor x
      * @return this
      */
-    public MapImage setAnchorX(float anchorX)
+    public MapImage setAnchorX(double anchorX)
     {
         this.anchorX = anchorX;
         return this;
@@ -203,7 +256,7 @@ public final class MapImage
      *
      * @return the anchor y
      */
-    public float getAnchorY()
+    public double getAnchorY()
     {
         return anchorY;
     }
@@ -214,7 +267,7 @@ public final class MapImage
      * @param anchorY the anchor y
      * @return this
      */
-    public MapImage setAnchorY(float anchorY)
+    public MapImage setAnchorY(double anchorY)
     {
         this.anchorY = anchorY;
         return this;
@@ -231,18 +284,6 @@ public final class MapImage
     }
 
     /**
-     * Sets the width of the image when displayed.
-     *
-     * @param width the width
-     * @return this
-     */
-    public MapImage setWidth(int width)
-    {
-        this.width = width;
-        return this;
-    }
-
-    /**
      * Gets the image height.
      *
      * @return height
@@ -250,18 +291,6 @@ public final class MapImage
     public int getHeight()
     {
         return height;
-    }
-
-    /**
-     * Sets the height of the image when displayed.
-     *
-     * @param height the height
-     * @return this
-     */
-    public MapImage setHeight(int height)
-    {
-        this.height = height;
-        return this;
     }
 
     /**
@@ -274,19 +303,6 @@ public final class MapImage
         return imageLocation;
     }
 
-    /**
-     * Sets the image location.
-     *
-     * @param imageLocation the location
-     * @return this
-     */
-    public MapImage setImageLocation(ResourceLocation imageLocation)
-    {
-        this.image = getImage(imageLocation);
-        this.imageLocation = imageLocation;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o)
     {
@@ -294,7 +310,7 @@ public final class MapImage
         {
             return true;
         }
-        if (!(o instanceof MapImage))
+        if (o == null || getClass() != o.getClass())
         {
             return false;
         }
@@ -303,25 +319,32 @@ public final class MapImage
                 Objects.equal(opacity, mapImage.opacity) &&
                 Objects.equal(anchorX, mapImage.anchorX) &&
                 Objects.equal(anchorY, mapImage.anchorY) &&
-                Objects.equal(image, mapImage.image);
+                Objects.equal(textureX, mapImage.textureX) &&
+                Objects.equal(textureY, mapImage.textureY) &&
+                Objects.equal(width, mapImage.width) &&
+                Objects.equal(height, mapImage.height) &&
+                Objects.equal(imageLocation, mapImage.imageLocation);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hashCode(image, color, opacity, anchorX, anchorY);
+        return Objects.hashCode(imageLocation, color, opacity, anchorX, anchorY, textureX, textureY, width, height);
     }
 
     @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("height", image.getHeight())
-                .add("width", image.getWidth())
+                .add("imageLocation", imageLocation)
                 .add("anchorX", anchorX)
                 .add("anchorY", anchorY)
                 .add("color", color)
+                .add("height", height)
                 .add("opacity", opacity)
+                .add("textureX", textureX)
+                .add("textureY", textureY)
+                .add("width", width)
                 .toString();
     }
 
