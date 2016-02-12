@@ -87,7 +87,7 @@ public final class UIState
      * @param ui the ui
      * @return a UIState
      */
-    public UIState newInactive(Context.UI ui)
+    public static UIState newInactive(Context.UI ui)
     {
         return new UIState(ui, false, 0, 0, null, null, null, null);
     }
