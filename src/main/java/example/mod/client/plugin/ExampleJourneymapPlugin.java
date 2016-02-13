@@ -86,7 +86,7 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
     {
         try
         {
-            ExampleMod.LOGGER.info("ClientEvent: " + event);
+            ExampleMod.LOGGER.debug("ClientEvent: " + event);
 
             switch (event.type)
             {
