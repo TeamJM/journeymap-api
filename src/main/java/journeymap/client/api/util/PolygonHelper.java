@@ -56,9 +56,9 @@ public class PolygonHelper
     {
         int x = chunkX << 4;
         int z = chunkZ << 4;
-        BlockPos sw = new BlockPos(x, y, z + 15);
-        BlockPos se = new BlockPos(x + 15, y, z + 15);
-        BlockPos ne = new BlockPos(x + 15, y, z);
+        BlockPos sw = new BlockPos(x, y, z + 16);
+        BlockPos se = new BlockPos(x + 16, y, z + 16);
+        BlockPos ne = new BlockPos(x + 16, y, z);
         BlockPos nw = new BlockPos(x, y, z);
 
         return new MapPolygon(sw, se, ne, nw);
