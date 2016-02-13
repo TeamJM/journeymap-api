@@ -104,8 +104,8 @@ public class SlimeChunkOverlayFactory
         @Override
         public void onMouseMove(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
         {
-            // Invert the stroke and make it opaque just to prove this works
-            sp.setStrokeColor(0xFFFFFF - strokeColor);
+            // Random stroke and make it opaque just to prove this works
+            sp.setStrokeColor(new Random().nextInt(0xffffff));
             sp.setStrokeOpacity(1f);
 
             // Update title
