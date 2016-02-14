@@ -116,7 +116,7 @@ public final class MapImage
      */
     public BufferedImage getImage()
     {
-        return null;
+        return image;
     }
 
     /**
@@ -127,6 +127,7 @@ public final class MapImage
      */
     public MapImage setImage(ResourceLocation imageLocation)
     {
+        this.imageLocation = imageLocation;
         BufferedImage image = resolveImage(imageLocation);
         setImage(image, 0, 0, image.getWidth(), image.getHeight());
         return this;
@@ -145,6 +146,7 @@ public final class MapImage
      */
     public MapImage setImage(ResourceLocation imageLocation, int textureX, int textureY, int width, int height)
     {
+        this.imageLocation = imageLocation;
         return setImage(resolveImage(imageLocation), textureX, textureY, width, height);
     }
 
