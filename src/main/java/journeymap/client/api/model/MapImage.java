@@ -29,6 +29,7 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -48,6 +49,7 @@ public final class MapImage
     private int textureY = 0;
     private int width;
     private int height;
+    private float scale = 1;
 
 
     /**
@@ -94,6 +96,10 @@ public final class MapImage
         try
         {
             InputStream is = resourceManager.getResource(location).getInputStream();
+            if (is == null)
+            {
+                throw new IOException("Resource not found: " + location);
+            }
             return TextureUtil.readBufferedImage(is);
         }
         catch (Exception e)
@@ -301,6 +307,30 @@ public final class MapImage
     public ResourceLocation getImageLocation()
     {
         return imageLocation;
+    }
+
+    /**
+     * Gets the scale (multiplier of height and width)
+     * the image is drawn at.  Default is 1.
+     *
+     * @return scale
+     */
+    public float getScale()
+    {
+        return scale;
+    }
+
+    /**
+     * Sets the scale (multiplier of height and width)
+     * the image is drawn at.  Default is 1.  Range is .5f - 16f.
+     *
+     * @param scale
+     * @return
+     */
+    public MapImage setScale(float scale)
+    {
+        this.scale = Math.max(.5f, Math.min(scale, 16f));
+        return this;
     }
 
     @Override
