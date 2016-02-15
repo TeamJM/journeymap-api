@@ -50,6 +50,7 @@ public final class MapImage
     private int width;
     private int height;
     private float scale = 1;
+    private int rotation;
 
 
     /**
@@ -332,6 +333,30 @@ public final class MapImage
     public MapImage setScale(float scale)
     {
         this.scale = Math.max(.5f, Math.min(scale, 16f));
+        return this;
+    }
+
+    /**
+     * Gets the rotation in degrees the image should be oriented.
+     * Zero is the default.
+     *
+     * @return degrees
+     */
+    public int getRotation()
+    {
+        return rotation;
+    }
+
+    /**
+     * Sets the rotation in degrees the image should be oriented.
+     * Zero is the default.
+     *
+     * @param rotation in degrees
+     * @return this
+     */
+    public MapImage setRotation(int rotation)
+    {
+        this.rotation = rotation % 360;
         return this;
     }
 
