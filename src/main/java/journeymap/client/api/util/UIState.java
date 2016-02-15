@@ -53,6 +53,11 @@ public final class UIState
      */
     public final Rectangle2D.Double displayBounds;
 
+    /**
+     * The width in pixels of a single block in the UI's map at the current zoom level.
+     */
+    public final double blockSize;
+
 
     /**
      * Constructor.
@@ -79,6 +84,7 @@ public final class UIState
         this.mapCenter = mapCenter;
         this.blockBounds = blockBounds;
         this.displayBounds = displayBounds;
+        this.blockSize = Math.pow(2, zoom);
     }
 
     /**
@@ -124,12 +130,13 @@ public final class UIState
         return Objects.toStringHelper(this)
                 .add("ui", ui)
                 .add("active", active)
+                .add("dimension", dimension)
                 .add("mapType", mapType)
                 .add("zoom", zoom)
-                .add("dimension", dimension)
                 .add("mapCenter", mapCenter)
                 .add("blockBounds", blockBounds)
                 .add("displayBounds", displayBounds)
+                .add("blockSize", blockSize)
                 .toString();
     }
 
