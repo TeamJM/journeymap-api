@@ -16,9 +16,9 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 
 /**
- * Factory for overlays showing chunks likely to spawn slime.
+ * Sample factory that produces PolygonOverlays used to show which chunks likely to spawn slime.
  */
-public class SlimeChunkOverlayFactory
+public class SamplePolygonOverlayFactory
 {
     /**
      * Create an overlay for the given chunk coords.
@@ -68,7 +68,6 @@ public class SlimeChunkOverlayFactory
 
     /**
      * Listener for events on a slime chunk overlay instance.
-     *
      */
     static class SlimeChunkListener implements IOverlayListener
     {
@@ -88,21 +87,21 @@ public class SlimeChunkOverlayFactory
         }
 
         @Override
-        public void onActivate(UIState mapState)
+        public void onActivate(UIState uiState)
         {
             // Reset
             resetShapeProperties();
         }
 
         @Override
-        public void onDeactivate(UIState mapState)
+        public void onDeactivate(UIState uiState)
         {
             // Reset
             resetShapeProperties();
         }
 
         @Override
-        public void onMouseMove(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
+        public void onMouseMove(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition)
         {
             // Random stroke and make it opaque just to prove this works
             sp.setStrokeColor(new Random().nextInt(0xffffff));
@@ -116,7 +115,7 @@ public class SlimeChunkOverlayFactory
         }
 
         @Override
-        public void onMouseOut(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
+        public void onMouseOut(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition)
         {
             // Reset
             resetShapeProperties();
@@ -124,7 +123,7 @@ public class SlimeChunkOverlayFactory
         }
 
         @Override
-        public boolean onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
+        public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
         {
             // Random color on click just to prove the event works.
             sp.setFillColor(new Random().nextInt(0xffffff));
