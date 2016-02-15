@@ -86,25 +86,13 @@ public class SampleMarkerOverlayFactory
         @Override
         public void onActivate(UIState uiState)
         {
-            // Reset
-            reset();
-
-            // Lets scale the icon to only span 5 blocks, regardless of zoom level
-            double size = uiState.blockSize * 8;
-
-            // Update the display dimensions and re-center the anchors so the icon
-            // will be centered over it's BlockPos
-            overlay.getIcon()
-                    .setDisplayWidth(size)
-                    .setDisplayHeight(size)
-                    .centerAnchors();
+            refresh(uiState);
         }
 
         @Override
         public void onDeactivate(UIState uiState)
         {
-            // Reset
-            reset();
+            refresh(uiState);
         }
 
         @Override
@@ -117,16 +105,19 @@ public class SampleMarkerOverlayFactory
         @Override
         public void onMouseOut(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition)
         {
-            reset();
+            refresh(uiState);
         }
 
         @Override
         public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
         {
-            MapImage icon = overlay.getIcon();
-
-            // Random color on click just to prove the event works.
-            icon.setColor(new Random().nextInt(0xffffff));
+            // Make it bigger on each click, and random color too
+            double size = overlay.getIcon().getDisplayWidth() + uiState.blockSize;
+            overlay.getIcon()
+                    .setColor(new Random().nextInt(0xffffff))
+                    .setDisplayWidth(size)
+                    .setDisplayHeight(size)
+                    .centerAnchors();
 
             // Returning false will stop the click event from being used by other overlays,
             // including JM's invisible overlay for creating/selecting waypoints
@@ -134,15 +125,20 @@ public class SampleMarkerOverlayFactory
         }
 
         /**
-         * Reset properties back to original
+         * Reset properties back to originals, scale display size to zoom level
          */
-        private void reset()
+        private void refresh(UIState uiState)
         {
-            MapImage icon = overlay.getIcon();
-            icon.setRotation(0)
+            // Lets scale the icon to only span 8 blocks, regardless of zoom level
+            double size = uiState.blockSize * 8;
+
+            // Update the display dimensions and re-center the anchors so the icon
+            // will be centered over it's BlockPos
+            overlay.getIcon()
+                    .setRotation(0)
                     .setColor(color)
-                    .setDisplayWidth(icon.getTextureWidth())
-                    .setDisplayHeight(icon.getTextureHeight())
+                    .setDisplayWidth(size)
+                    .setDisplayHeight(size)
                     .centerAnchors();
         }
     }
