@@ -28,13 +28,13 @@ import journeymap.client.api.display.MarkerOverlay;
 import journeymap.client.api.display.ModWaypoint;
 import journeymap.client.api.display.PolygonOverlay;
 import journeymap.client.api.model.MapImage;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * An example mod's implementation of how it uses the JourneyMap API. This class is only directly
@@ -46,6 +46,8 @@ class ExampleMapFacade implements IExampleMapFacade
     private final IClientAPI jmClientAPI;
     private final ModWaypoint bedWaypoint;
     private final HashMap<ChunkCoordIntPair, PolygonOverlay> slimeChunkOverlays;
+    private List<MarkerOverlay> markerOverlays;
+
     private int lastDimension = Integer.MIN_VALUE;
 
     ExampleMapFacade(IClientAPI api)
@@ -78,40 +80,9 @@ class ExampleMapFacade implements IExampleMapFacade
             lastDimension = dimension;
         }
 
-
         try
         {
-            // Create a circle of Marker Overlays just to show how it's done.
-            if (jmClientAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
-            {
-                BlockPos center = Minecraft.getMinecraft().thePlayer.getBedLocation();
-                int points = 32;
-                double radius = 64;
-                double slice = 2 * Math.PI / points;
-                for (int i = 1; i <= points; i++)
-                {
-                    // Create a position in a circle around the center position
-                    double angle = slice * i;
-                    int newX = (int) (center.getX() + radius * Math.cos(angle));
-                    int newZ = (int) (center.getZ() + radius * Math.sin(angle));
-                    BlockPos p = new BlockPos(newX, 70, newZ);
-
-                    // Tint the cube icon using one Minecraft's map colors, give it a rotation just to prove it works.
-                    MapImage cube = new MapImage(new ResourceLocation("examplemod:images/cube.png"), 64, 64)
-                            .setColor(MapColor.mapColorArray[i].colorValue)
-                            .setRotation((int) slice);
-
-                    MarkerOverlay markerOverlay = new MarkerOverlay("journeymap", "marker" + i, p, cube);
-                    markerOverlay.setDimension(0)
-                            .setDisplayOrder(100 + i)
-                            .setTitle(String.format("x:%s,z:%s", p.getX(), p.getZ()))
-                            .setLabel("" + i);
-
-                    jmClientAPI.show(markerOverlay);
-                }
-            }
-
-            // Refresh pre-existing displayables from this dimension
+            // Refresh pre-existing PolygonOverlays from this dimension
             if (canShowSlimeChunks())
             {
                 for (PolygonOverlay slimeChunkOverlay : slimeChunkOverlays.values())
@@ -123,6 +94,7 @@ class ExampleMapFacade implements IExampleMapFacade
                 }
             }
 
+            // Show the waypoint where the player last slept, if it exists
             if (canShowBedWaypoint())
             {
                 if (!bedWaypoint.isPersistent() && bedWaypoint.isInDimension(dimension))
@@ -130,6 +102,20 @@ class ExampleMapFacade implements IExampleMapFacade
                     jmClientAPI.show(bedWaypoint);
                 }
             }
+
+            // Create a circle of Marker Overlays just to show how it's done.
+            if (jmClientAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
+            {
+                // Lets make a big circle of them around the player's last bed position, because why not.
+                BlockPos pos = Minecraft.getMinecraft().thePlayer.getBedLocation();
+                markerOverlays = SampleMarkerOverlayFactory.create(pos, 32, 48);
+
+                for (MarkerOverlay markerOverlay : markerOverlays)
+                {
+                    jmClientAPI.show(markerOverlay);
+                }
+            }
+
         }
         catch (Throwable t)
         {
@@ -161,7 +147,7 @@ class ExampleMapFacade implements IExampleMapFacade
         {
             if (!slimeChunkOverlays.containsKey(chunkCoords))
             {
-                PolygonOverlay overlay = SlimeChunkOverlayFactory.create(chunkCoords, dimension);
+                PolygonOverlay overlay = SamplePolygonOverlayFactory.create(chunkCoords, dimension);
                 slimeChunkOverlays.put(chunkCoords, overlay);
                 jmClientAPI.show(overlay);
             }
