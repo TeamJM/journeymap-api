@@ -1,5 +1,7 @@
 package example.mod.client.plugin;
 
+import example.mod.ExampleMod;
+import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.IOverlayListener;
 import journeymap.client.api.display.MarkerOverlay;
 import journeymap.client.api.model.MapImage;
@@ -11,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Sample factory that generates a list of MarkerOverlays.
@@ -27,10 +28,16 @@ public class SampleMarkerOverlayFactory
      * @param radius    distance from center
      * @return list of MarkerOverlays
      */
-    public static List<MarkerOverlay> create(BlockPos center, int points, double radius)
+    public static List<MarkerOverlay> create(IClientAPI jmClientAPI, BlockPos center, int points, double radius)
     {
         // Limiting the number of points possible so we can tint them using Minecraft's map color array
         points = Math.max(1, Math.min(points, 35));
+
+        // Use a sprite sheet to vary the icons
+        ResourceLocation sprites = new ResourceLocation("examplemod:images/sprites.png");
+        int spriteX = 0, spriteY = 0;
+        int iconSize = 64;
+        int iconColumns = 8;
 
         List<MarkerOverlay> list = new ArrayList<MarkerOverlay>(points);
 
@@ -43,16 +50,14 @@ public class SampleMarkerOverlayFactory
             int newZ = (int) (center.getZ() + radius * Math.sin(angle));
             BlockPos pos = new BlockPos(newX, 70, newZ);
 
-            // Use the white cube image, anchor it so it will center on the position
-            MapImage cube = new MapImage(new ResourceLocation("examplemod:images/cube.png"), 64, 64)
-                    .setRotation((int) slice)
+            // Lets tint the icon using one Minecraft's map colors (starting with index of 1)
+            int color = MapColor.mapColorArray[i].colorValue;
+
+            MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f)
                     .centerAnchors();
 
-            // Lets tint it using one Minecraft's map colors (starting with index of 1)
-            cube.setColor(MapColor.mapColorArray[i].colorValue);
-
-            // Finally we can build the overlay
-            MarkerOverlay markerOverlay = new MarkerOverlay("journeymap", "marker" + i, pos, cube);
+            // Build the overlay
+            MarkerOverlay markerOverlay = new MarkerOverlay(ExampleMod.MODID, "sampleMarker" + i, pos, icon);
             markerOverlay.setDimension(0)
                     .setTitle(String.format("x:%s,z:%s", pos.getX(), pos.getZ()))
                     .setLabel("" + i);
@@ -61,10 +66,28 @@ public class SampleMarkerOverlayFactory
             markerOverlay.setDisplayOrder(100 + i);
 
             // Add a listener to it
-            markerOverlay.setOverlayListener(new MarkerListener(markerOverlay));
+            markerOverlay.setOverlayListener(new MarkerListener(jmClientAPI, markerOverlay));
 
-            list.add(markerOverlay);
+            // Add to list
+            try
+            {
+                jmClientAPI.show(markerOverlay);
+                list.add(markerOverlay);
+            }
+            catch (Exception e)
+            {
+                ExampleMod.LOGGER.error("Can't add marker overlay", e);
+            }
+
+            // Set next sprite coords
+            spriteX += iconSize;
+            if (spriteX >= (iconSize * iconColumns))
+            {
+                spriteX = 0;
+                spriteY += iconSize;
+            }
         }
+
         return list;
     }
 
@@ -74,13 +97,17 @@ public class SampleMarkerOverlayFactory
      */
     static class MarkerListener implements IOverlayListener
     {
+        final IClientAPI jmClientAPI;
         final MarkerOverlay overlay;
         final int color;
+        final float opacity;
 
-        MarkerListener(final MarkerOverlay overlay)
+        MarkerListener(IClientAPI jmClientAPI, final MarkerOverlay overlay)
         {
+            this.jmClientAPI = jmClientAPI;
             this.overlay = overlay;
             this.color = overlay.getIcon().getColor();
+            this.opacity = overlay.getIcon().getOpacity();
         }
 
         @Override
@@ -98,8 +125,17 @@ public class SampleMarkerOverlayFactory
         @Override
         public void onMouseMove(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition)
         {
-            // Lets rotate it for no good reason!
-            overlay.getIcon().setRotation((int) (System.currentTimeMillis() / 100 % 360));
+            // Scale the icon larger and change color and opacity
+            double size = uiState.blockSize * 10;
+
+            // Update the display dimensions and re-center the anchors so the icon
+            // will be centered over it's BlockPos
+            overlay.getIcon()
+                    .setColor(0xffffff)
+                    .setOpacity(.5f)
+                    .setDisplayWidth(size)
+                    .setDisplayHeight(size)
+                    .centerAnchors();
         }
 
         @Override
@@ -111,17 +147,11 @@ public class SampleMarkerOverlayFactory
         @Override
         public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
         {
-            // Make it bigger on each click, and random color too
-            double size = overlay.getIcon().getDisplayWidth() + uiState.blockSize;
-            overlay.getIcon()
-                    .setColor(new Random().nextInt(0xffffff))
-                    .setDisplayWidth(size)
-                    .setDisplayHeight(size)
-                    .centerAnchors();
+            // Remove it on click
+            jmClientAPI.remove(overlay);
 
-            // Returning false will stop the click event from being used by other overlays,
-            // including JM's invisible overlay for creating/selecting waypoints
-            return false;
+            // Returning true will allow the click event to be used by other overlays
+            return true;
         }
 
         /**
@@ -135,8 +165,8 @@ public class SampleMarkerOverlayFactory
             // Update the display dimensions and re-center the anchors so the icon
             // will be centered over it's BlockPos
             overlay.getIcon()
-                    .setRotation(0)
                     .setColor(color)
+                    .setOpacity(opacity)
                     .setDisplayWidth(size)
                     .setDisplayHeight(size)
                     .centerAnchors();
