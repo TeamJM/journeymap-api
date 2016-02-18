@@ -108,12 +108,7 @@ class ExampleMapFacade implements IExampleMapFacade
             {
                 // Lets make a big circle of them around the player's last bed position, because why not.
                 BlockPos pos = Minecraft.getMinecraft().thePlayer.getBedLocation();
-                markerOverlays = SampleMarkerOverlayFactory.create(pos, 32, 48);
-
-                for (MarkerOverlay markerOverlay : markerOverlays)
-                {
-                    jmClientAPI.show(markerOverlay);
-                }
+                markerOverlays = SampleMarkerOverlayFactory.create(jmClientAPI, pos, 32, 32);
             }
 
         }
