@@ -24,7 +24,6 @@ import example.mod.ExampleMod;
 import example.mod.client.facade.IExampleMapFacade;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.DisplayType;
-import journeymap.client.api.display.MarkerOverlay;
 import journeymap.client.api.display.ModWaypoint;
 import journeymap.client.api.display.PolygonOverlay;
 import journeymap.client.api.model.MapImage;
@@ -34,7 +33,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * An example mod's implementation of how it uses the JourneyMap API. This class is only directly
@@ -46,9 +44,6 @@ class ExampleMapFacade implements IExampleMapFacade
     private final IClientAPI jmClientAPI;
     private final ModWaypoint bedWaypoint;
     private final HashMap<ChunkCoordIntPair, PolygonOverlay> slimeChunkOverlays;
-    private List<MarkerOverlay> markerOverlays;
-
-    private int lastDimension = Integer.MIN_VALUE;
 
     ExampleMapFacade(IClientAPI api)
     {
@@ -69,17 +64,8 @@ class ExampleMapFacade implements IExampleMapFacade
      * @param dimension
      */
     @Override
-    public void refreshMap(int dimension)
+    public void initializeMap(int dimension)
     {
-        if (lastDimension == dimension)
-        {
-            return;
-        }
-        else
-        {
-            lastDimension = dimension;
-        }
-
         try
         {
             // Refresh pre-existing PolygonOverlays from this dimension
@@ -103,12 +89,11 @@ class ExampleMapFacade implements IExampleMapFacade
                 }
             }
 
-            // Create a circle of Marker Overlays just to show how it's done.
+            // Create a bunch of Markers around the player just to show how it's done.
             if (jmClientAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
             {
-                // Lets make a big circle of them around the player's last bed position, because why not.
-                BlockPos pos = Minecraft.getMinecraft().thePlayer.getBedLocation();
-                markerOverlays = SampleMarkerOverlayFactory.create(jmClientAPI, pos, 32, 32);
+                BlockPos pos = Minecraft.getMinecraft().thePlayer.getPosition();
+                SampleMarkerOverlayFactory.create(jmClientAPI, pos, 64, 256);
             }
 
         }
@@ -116,6 +101,15 @@ class ExampleMapFacade implements IExampleMapFacade
         {
             ExampleMod.LOGGER.error(t.getMessage(), t);
         }
+    }
+
+    /**
+     * Remove displayables from the map
+     */
+    @Override
+    public void clearMap()
+    {
+        jmClientAPI.removeAll(ExampleMod.MODID);
     }
 
     /**

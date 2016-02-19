@@ -21,9 +21,9 @@
 package journeymap.client.api.event;
 
 /**
- * Base class for events propagated by the Client API to IClientPlugin implementations.
+ * Parent class for events propagated by the Client API to IClientPlugin implementations.
  */
-public abstract class ClientEvent
+public class ClientEvent
 {
     /**
      * Event type.
@@ -46,9 +46,9 @@ public abstract class ClientEvent
     private boolean cancelled;
 
     /**
-     * Private constructor.
+     * Constructor.
      */
-    protected ClientEvent(Type type, int dimension)
+    public ClientEvent(Type type, int dimension)
     {
         this.type = type;
         this.dimension = dimension;
@@ -90,7 +90,20 @@ public abstract class ClientEvent
          * Indicates a Death Waypoint is about to be created for the player.
          * Event will be a {@link DeathWaypointEvent}, which can be cancelled.
          */
-        DEATH_WAYPOINT(true);
+        DEATH_WAYPOINT(true),
+
+        /**
+         * Indicates JourneyMap has started mapping chunks in the dimension.
+         * Event will be a simple {@link ClientEvent}.
+         */
+        MAPPING_STARTED(false),
+
+        /**
+         * Indicates JourneyMap has stopped mapping chunks.  Usually due
+         * to player death or disconnect from world.  Event will be a
+         * simple {@link ClientEvent}.
+         */
+        MAPPING_STOPPED(false);
 
         /**
          * Whether the type of event can be cancelled.
