@@ -30,11 +30,16 @@ import net.minecraft.world.ChunkCoordIntPair;
 public interface IExampleMapFacade
 {
     /**
-     * Refresh ExampleMod's displayables for the given dimension.
+     * Initialize ExampleMod's displayables for the given dimension.
      *
      * @param dimension
      */
-    void refreshMap(int dimension);
+    void initializeMap(int dimension);
+
+    /**
+     * Remove displayables from the map
+     */
+    void clearMap();
 
     /**
      * Whether or not ExampleMod can provide slime chunk overlays.

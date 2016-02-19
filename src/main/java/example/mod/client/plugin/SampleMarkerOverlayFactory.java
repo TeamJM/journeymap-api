@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Sample factory that generates a list of MarkerOverlays.
@@ -20,50 +21,44 @@ import java.util.List;
 public class SampleMarkerOverlayFactory
 {
     /**
-     * Create a circle of MarkerOverlays around the given BlockPos.
-     * For absolutely no good reason, just showing how the pieces fit together.
+     * Generate a bunch of randomly-placed markers on the map, just to show how MarkerOverlays fit together.
      *
      * @param center    center position
-     * @param points    how many markers, up to 35
-     * @param radius    distance from center
-     * @return list of MarkerOverlays
+     * @param quantity  how many markers
+     * @return list of MarkerOverlays (already shown in the API)
      */
-    public static List<MarkerOverlay> create(IClientAPI jmClientAPI, BlockPos center, int points, double radius)
+    public static List<MarkerOverlay> create(IClientAPI jmClientAPI, BlockPos center, int quantity, int maxDistance)
     {
-        // Limiting the number of points possible so we can tint them using Minecraft's map color array
-        points = Math.max(1, Math.min(points, 35));
-
         // Use a sprite sheet to vary the icons
         ResourceLocation sprites = new ResourceLocation("examplemod:images/sprites.png");
         int spriteX = 0, spriteY = 0;
         int iconSize = 64;
         int iconColumns = 8;
+        int iconRows = 4;
 
-        List<MarkerOverlay> list = new ArrayList<MarkerOverlay>(points);
+        List<MarkerOverlay> list = new ArrayList<MarkerOverlay>();
+        Random random = new Random();
+        int minX = center.getX() - maxDistance;
+        int minZ = center.getZ() - maxDistance;
 
-        double slice = 2 * Math.PI / points;
-        for (int i = 1; i <= points; i++)
+        int colorIndex = 0;
+        for (int i = 0; i < quantity; i++)
         {
-            // Create a position in a circle around the center position
-            double angle = slice * i;
-            int newX = (int) (center.getX() + radius * Math.cos(angle));
-            int newZ = (int) (center.getZ() + radius * Math.sin(angle));
-            BlockPos pos = new BlockPos(newX, 70, newZ);
+            BlockPos pos = new BlockPos(minX + random.nextInt(maxDistance), 70, minZ + random.nextInt(maxDistance));
 
-            // Lets tint the icon using one Minecraft's map colors (starting with index of 1)
-            int color = MapColor.mapColorArray[i].colorValue;
+            // Lets tint the icon using one Minecraft's map colors (usable range is 1-35)
+            colorIndex++;
+            if (colorIndex > 35)
+            {
+                colorIndex = 1;
+            }
+            int color = MapColor.mapColorArray[colorIndex].colorValue;
 
-            MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f)
-                    .centerAnchors();
+            MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f);
 
             // Build the overlay
             MarkerOverlay markerOverlay = new MarkerOverlay(ExampleMod.MODID, "sampleMarker" + i, pos, icon);
-            markerOverlay.setDimension(0)
-                    .setTitle(String.format("x:%s,z:%s", pos.getX(), pos.getZ()))
-                    .setLabel("" + i);
-
-            // Set the display order too in case they overlap
-            markerOverlay.setDisplayOrder(100 + i);
+            markerOverlay.setDimension(0).setTitle("Marker Overlay").setLabel("" + i);
 
             // Add a listener to it
             markerOverlay.setOverlayListener(new MarkerListener(jmClientAPI, markerOverlay));
@@ -86,6 +81,11 @@ public class SampleMarkerOverlayFactory
                 spriteX = 0;
                 spriteY += iconSize;
             }
+            if (spriteY >= (iconSize * iconRows))
+            {
+                spriteY = 0;
+            }
+
         }
 
         return list;
@@ -135,7 +135,8 @@ public class SampleMarkerOverlayFactory
                     .setOpacity(.5f)
                     .setDisplayWidth(size)
                     .setDisplayHeight(size)
-                    .centerAnchors();
+                    .setAnchorX(size / 2)
+                    .setAnchorY(size);
         }
 
         @Override
@@ -169,7 +170,8 @@ public class SampleMarkerOverlayFactory
                     .setOpacity(opacity)
                     .setDisplayWidth(size)
                     .setDisplayHeight(size)
-                    .centerAnchors();
+                    .setAnchorX(size / 2)
+                    .setAnchorY(size);
         }
     }
 }

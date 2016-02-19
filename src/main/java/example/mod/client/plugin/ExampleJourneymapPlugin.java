@@ -27,7 +27,8 @@ import journeymap.client.api.IClientAPI;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
-import static journeymap.client.api.event.ClientEvent.Type.DISPLAY_UPDATE;
+import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STARTED;
+import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STOPPED;
 
 /**
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
@@ -55,7 +56,7 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
         ClientProxy.MapFacade = new ExampleMapFacade(jmClientApi);
 
         // Subscribe to desired ClientEvent types
-        jmClientApi.subscribe(getModId(), EnumSet.of(DISPLAY_UPDATE));
+        jmClientApi.subscribe(getModId(), EnumSet.of(MAPPING_STARTED, MAPPING_STOPPED));
     }
 
     /**
@@ -90,11 +91,11 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
 
             switch (event.type)
             {
-                case DISPLAY_UPDATE:
-                    ClientProxy.MapFacade.refreshMap(event.dimension);
+                case MAPPING_STARTED:
+                    ClientProxy.MapFacade.initializeMap(event.dimension);
                     break;
-                case DEATH_WAYPOINT:
-                    // Not interested, shouldn't even happen because we didn't subscribe to it
+                case MAPPING_STOPPED:
+                    ClientProxy.MapFacade.clearMap();
                     break;
             }
         }
