@@ -25,6 +25,7 @@ import journeymap.client.api.display.Displayable;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
+import java.awt.image.BufferedImage;
 
 /**
  * Defines attributes needed to display an image on the map.
@@ -37,6 +38,7 @@ import javax.annotation.Nullable;
  */
 public final class MapImage
 {
+    private BufferedImage image;
     private ResourceLocation imageLocation;
     private int color = 0xffffff;
     private float opacity = 1f;
@@ -49,6 +51,45 @@ public final class MapImage
     private double displayHeight;
     private double anchorX;
     private double anchorY;
+
+    /**
+     * Constructor.
+     * <p/>
+     * Defaults tint to white (0xffffff) and opacity to 1f.
+     * Defaults displayWidth and displayHeight to the texture dimensions.
+     *
+     * @param image Image texture
+     */
+    public MapImage(BufferedImage image)
+    {
+        this(image, 0, 0, image.getWidth(), image.getHeight(), 0xffffff, 1f);
+    }
+
+    /**
+     * Constructor.
+     * <p/>
+     * Defaults displayWidth and displayHeight to the texture dimensions.
+     *
+     * @param image         Image texture
+     * @param textureX      Start x of texture within image. Useful in sprite sheets.
+     * @param textureY      Start y of texture within image. Useful in sprite sheets.
+     * @param textureWidth  texture width
+     * @param textureHeight texture height
+     * @param color         Sets a color tint (rgb) on the image.  Use white (0xffffff) for no tint.
+     * @param opacity       opacity between 0 and 1
+     */
+    public MapImage(BufferedImage image, int textureX, int textureY, int textureWidth, int textureHeight, int color, float opacity)
+    {
+        this.image = image;
+        this.textureX = textureX;
+        this.textureY = textureY;
+        this.textureWidth = Math.max(1, textureWidth);
+        this.textureHeight = Math.max(1, textureHeight);
+        setDisplayWidth(this.textureWidth);
+        setDisplayHeight(this.textureHeight);
+        setColor(color);
+        setOpacity(opacity);
+    }
 
     /**
      * Constructor.
@@ -230,13 +271,25 @@ public final class MapImage
     }
 
     /**
-     * Gets the image location.
+     * Gets the image location, if there is one.
      *
      * @return the location
      */
+    @Nullable
     public ResourceLocation getImageLocation()
     {
         return imageLocation;
+    }
+
+    /**
+     * Gets the image, if there is one.
+     *
+     * @return the location
+     */
+    @Nullable
+    public BufferedImage getImage()
+    {
+        return image;
     }
 
     /**

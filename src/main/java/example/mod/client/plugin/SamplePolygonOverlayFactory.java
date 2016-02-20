@@ -18,7 +18,7 @@ import java.util.Random;
 /**
  * Sample factory that produces PolygonOverlays used to show which chunks likely to spawn slime.
  */
-public class SamplePolygonOverlayFactory
+class SamplePolygonOverlayFactory
 {
     /**
      * Create an overlay for the given chunk coords.
@@ -27,7 +27,7 @@ public class SamplePolygonOverlayFactory
      * @param dimension   chunk dimension
      * @return a new overlay
      */
-    public static PolygonOverlay create(ChunkCoordIntPair chunkCoords, int dimension)
+    static PolygonOverlay create(ChunkCoordIntPair chunkCoords, int dimension)
     {
         String displayId = "slime_" + chunkCoords.toString();
         String groupName = "Slime Chunks";

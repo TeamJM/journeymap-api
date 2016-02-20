@@ -18,40 +18,49 @@
  *
  */
 
-package example.mod.client.listener;
+package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import example.mod.client.ClientProxy;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import journeymap.client.api.IClientAPI;
+import journeymap.client.api.display.ModWaypoint;
+import journeymap.client.api.model.MapImage;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ResourceLocation;
 
 /**
- * Listens to sleep events, creates a waypoint for the bed location via the ClientProxy.IExampleMapFacade interface
- * (if present). Using the facade interface (unique to this example mod) prevents the need to directly reference
- * any JourneyMap API classes here.
+ * Sample factory that creates a waypoint.
  */
-public class SleepEventListener
+class SampleModWaypointFactory
 {
     /**
-     * Listen for Forge PlayerSleepInBedEvents, create a waypoint for the bed if ClientProxy.MapFacade is set.
-     * This is just a quick example, and doesn't take into account whether the player successfully slept.
+     * ExampleMod will create a waypoint for the bed slept in at the provided coordinates.
+     *
+     * @param bedLocation
+     * @param dimension
      */
-    @SubscribeEvent
-    public void onPlayerSlept(PlayerSleepInBedEvent event)
+    static ModWaypoint createBedWaypoint(IClientAPI jmAPI, BlockPos bedLocation, int dimension)
     {
+        ModWaypoint bedWaypoint = null;
         try
         {
-            if (event.entityPlayer.worldObj.isRemote)
-            {
-                if (ClientProxy.MapFacade.canShowBedWaypoint())
-                {
-                    ClientProxy.MapFacade.showBedWaypoint(event.pos, event.entityPlayer.dimension);
-                }
-            }
+            // Icon for waypoint
+            MapImage bedIcon = new MapImage(new ResourceLocation("examplemod:images/bed.png"), 32, 32)
+                    .setAnchorX(16)
+                    .setAnchorY(32);
+
+            // Waypoint itself
+            bedWaypoint = new ModWaypoint(ExampleMod.MODID, "bed_" + dimension, "Handy Locations", "Bed",
+                    bedLocation, bedIcon, 0xffffff, true, Integer.MIN_VALUE);
+
+            // Add or update
+            jmAPI.show(bedWaypoint);
+
         }
         catch (Throwable t)
         {
             ExampleMod.LOGGER.error(t.getMessage(), t);
         }
+
+        return bedWaypoint;
     }
 }

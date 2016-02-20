@@ -3,25 +3,7 @@
 
 **API v1.8.9-1.1-SNAPSHOT**
 
-* `IClientAPI.subscribe()` now takes modId as an argument
-* `ClientEvent.timestamp` added.  `IClientAPI.getUIState()` annotated as Nullable
-* New `IOverlayListener` provides mouse event support to `Overlay`.
-* `IClientAPI.isActive()` replaced with `IClientAPI.getUIState()`. `UIState` now used by DisplayUpdateEvent.
-* Added `IClientAPI.subscribe()`, refactored `ClientEvent` to be a base class.  `IClientPlugin.onClient()` is now passed a subclass corresponding to the event type.  
-* Replaced `ClientEvent.Type.DISPLAY_STARTED` with `ClientEvent.Type.DISPLAY_UPDATE`.
-* Added `IClientAPI.subscribe()` to explicitly request for ClientEvent notifications.
-* Added `Overlay.activeUIs` and `Overlay.activeMapTypes` fields
-* Removed `Overlay.inFullscreen`, `Overlay.inMinimap`, `Overlay.inWebmap` fields.
-* Added `TextProperties.activeUIs` and `TextProperties.fontShadow` fields
-* `MapPolygon` now only needs 3 points and doesn't require a redundant last point. 
-* `PolygonHelper` now starts correctly with south-west (lower-left) corner.
-* `Overlay.minZoom` and `Overlay.maxZoom` now default to 0 and 8 respectively
-* Added `Displayable.displayOrder`.
-* `Overlay.zIndex` renamed to `Overlay.displayOrder`.
-* Added `IClientAPI.getModId()`, removed `IClientAPI.getShownIds()`, removed `IClientAPI.exists(String, DisplayType, String)`, removed `IClientAPI.remove(String, DisplayType, String)`
-* `ClientEvent` refactored to use explicit value object type, `ClientEvent.Type.cancellable` and `ClientEvent.Type.valueClass` added
-* `PluginHelper` refactored to uses a Map instead of a List, keyed by modId
-* Improvements to Example mod behavior
+* Too many changes to be worth listing, since 1.0 wasn't ever used. Look at commits if you care to.
 
 **API v1.8.9-1.0**
 

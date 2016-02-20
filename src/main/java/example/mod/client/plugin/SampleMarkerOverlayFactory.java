@@ -18,7 +18,7 @@ import java.util.Random;
 /**
  * Sample factory that generates a list of MarkerOverlays.
  */
-public class SampleMarkerOverlayFactory
+class SampleMarkerOverlayFactory
 {
     /**
      * Generate a bunch of randomly-placed markers on the map, just to show how MarkerOverlays fit together.
@@ -27,7 +27,7 @@ public class SampleMarkerOverlayFactory
      * @param quantity  how many markers
      * @return list of MarkerOverlays (already shown in the API)
      */
-    public static List<MarkerOverlay> create(IClientAPI jmClientAPI, BlockPos center, int quantity, int maxDistance)
+    static List<MarkerOverlay> create(IClientAPI jmAPI, BlockPos center, int quantity, int maxDistance)
     {
         // Use a sprite sheet to vary the icons
         ResourceLocation sprites = new ResourceLocation("examplemod:images/sprites.png");
@@ -61,12 +61,12 @@ public class SampleMarkerOverlayFactory
             markerOverlay.setDimension(0).setTitle("Marker Overlay").setLabel("" + i);
 
             // Add a listener to it
-            markerOverlay.setOverlayListener(new MarkerListener(jmClientAPI, markerOverlay));
+            markerOverlay.setOverlayListener(new MarkerListener(jmAPI, markerOverlay));
 
             // Add to list
             try
             {
-                jmClientAPI.show(markerOverlay);
+                jmAPI.show(markerOverlay);
                 list.add(markerOverlay);
             }
             catch (Exception e)
@@ -97,14 +97,14 @@ public class SampleMarkerOverlayFactory
      */
     static class MarkerListener implements IOverlayListener
     {
-        final IClientAPI jmClientAPI;
+        final IClientAPI jmAPI;
         final MarkerOverlay overlay;
         final int color;
         final float opacity;
 
-        MarkerListener(IClientAPI jmClientAPI, final MarkerOverlay overlay)
+        MarkerListener(IClientAPI jmAPI, final MarkerOverlay overlay)
         {
-            this.jmClientAPI = jmClientAPI;
+            this.jmAPI = jmAPI;
             this.overlay = overlay;
             this.color = overlay.getIcon().getColor();
             this.opacity = overlay.getIcon().getOpacity();
@@ -149,7 +149,7 @@ public class SampleMarkerOverlayFactory
         public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
         {
             // Remove it on click
-            jmClientAPI.remove(overlay);
+            jmAPI.remove(overlay);
 
             // Returning true will allow the click event to be used by other overlays
             return true;
