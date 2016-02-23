@@ -136,7 +136,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Image))
         {
             BlockPos pos = Minecraft.getMinecraft().thePlayer.getPosition();
-            SampleImageOverlayFactory.create(jmAPI, pos, 3, 256, 128);
+            SampleImageOverlayFactory.create(jmAPI, pos, 5, 256, 128);
         }
 
         // Create a bunch of random Marker Overlays around the player
