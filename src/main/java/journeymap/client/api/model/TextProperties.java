@@ -23,6 +23,7 @@ package journeymap.client.api.model;
 import com.google.common.base.Objects;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.Displayable;
+import journeymap.client.api.util.UIState;
 
 import java.util.EnumSet;
 
@@ -34,6 +35,7 @@ import java.util.EnumSet;
 public class TextProperties
 {
     protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.Any);
+    protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.Any);
     protected float scale = 1;
     protected int color = 0xffffff;
     protected int backgroundColor = 0x000000;
@@ -42,6 +44,8 @@ public class TextProperties
     protected boolean fontShadow = true;
     protected int minZoom = 0;
     protected int maxZoom = 8;
+    protected int offsetX = 0;
+    protected int offsetY = 0;
 
     /**
      * Font scale.
@@ -208,6 +212,46 @@ public class TextProperties
     }
 
     /**
+     * Returns a set of enums indicating which map types (Day, Night) the text should be active in.
+     *
+     * @return enumset
+     */
+    public EnumSet<Context.MapType> getActiveMapTypes()
+    {
+        return activeMapTypes;
+    }
+
+    /**
+     * Set of enums indicating which JourneyMap map types (Day, Night) the text should be active in.
+     *
+     * @param activeMapTypes active types
+     * @return this
+     */
+    public TextProperties setActiveMapTypes(EnumSet<Context.MapType> activeMapTypes)
+    {
+        if (activeMapTypes.contains(Context.MapType.Any))
+        {
+            activeMapTypes = EnumSet.of(Context.MapType.Any);
+        }
+        this.activeMapTypes = activeMapTypes;
+        return this;
+    }
+
+    /**
+     * Whether the overlay should be active for the given contexts.
+     *
+     * @param uiState UIState
+     * @return true if the overlay should be active
+     */
+    public boolean isActiveIn(UIState uiState)
+    {
+        return uiState.active
+                && (activeUIs.contains(Context.UI.Any) || activeUIs.contains(uiState.ui))
+                && (activeMapTypes.contains(Context.MapType.Any) || activeMapTypes.contains(uiState.mapType))
+                && (this.minZoom <= uiState.zoom && this.maxZoom >= uiState.zoom);
+    }
+
+    /**
      * The minimum zoom level (0 is lowest) where the polygon should be visible.
      *
      * @return the min zoom
@@ -251,18 +295,73 @@ public class TextProperties
         return this;
     }
 
+    /**
+     * Gets how many horizontal pixels to shift the center of the label from the center of the overlay.
+     * (For MarkerOverlays, the "center" is directly over MarkerOverlay.getPoint(), regardless of how
+     * it's icon is placed.)
+     *
+     * @return pixels to offset
+     */
+    public int getOffsetX()
+    {
+        return offsetX;
+    }
+
+    /**
+     * Sets how many horizontal pixels to shift the center of the label from the center of the overlay.
+     * (For MarkerOverlays, the "center" is directly over MarkerOverlay.getPoint(), regardless of how
+     * it's icon is placed.)
+     *
+     * @param offsetX
+     * @return this
+     */
+    public TextProperties setOffsetX(int offsetX)
+    {
+        this.offsetX = offsetX;
+        return this;
+    }
+
+    /**
+     * Gets how many vertical pixels to shift the center of the label from the center of the overlay.
+     * (For MarkerOverlays, the "center" is directly over MarkerOverlay.getPoint(), regardless of how
+     * it's icon is placed.)
+     *
+     * @return pixels to offset
+     */
+    public int getOffsetY()
+    {
+        return offsetY;
+    }
+
+    /**
+     * Sets how many vertical pixels to shift the center of the label from the center of the overlay.
+     * (For MarkerOverlays, the "center" is directly over MarkerOverlay.getPoint(), regardless of how
+     * it's icon is placed.)
+     *
+     * @param offsetY
+     * @return this
+     */
+    public TextProperties setOffsetY(int offsetY)
+    {
+        this.offsetY = offsetY;
+        return this;
+    }
+
     @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
+                .add("activeMapTypes", activeMapTypes)
                 .add("activeUIs", activeUIs)
                 .add("backgroundColor", backgroundColor)
                 .add("backgroundOpacity", backgroundOpacity)
                 .add("color", color)
-                .add("fontShadow", fontShadow)
-                .add("minZoom", minZoom)
-                .add("maxZoom", maxZoom)
                 .add("opacity", opacity)
+                .add("fontShadow", fontShadow)
+                .add("maxZoom", maxZoom)
+                .add("minZoom", minZoom)
+                .add("offsetX", offsetX)
+                .add("offsetY", offsetY)
                 .add("scale", scale)
                 .toString();
     }
