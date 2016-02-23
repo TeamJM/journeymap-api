@@ -42,8 +42,8 @@ class SampleImageOverlayFactory
             for (int i = 0; i < quantity; i++)
             {
                 BlockPos pos = start.add(random.nextInt(maxDistance), 0, random.nextInt(maxDistance));
-                int width = Math.max(16, random.nextInt(maxSize));
-                int height = Math.max(16, random.nextInt(maxSize));
+                int width = Math.max(32, random.nextInt(maxSize));
+                int height = Math.max(32, random.nextInt(maxSize));
                 ImageOverlay overlay = createOverlay(jmAPI, pos, width, height);
                 jmAPI.show(overlay);
                 list.add(overlay);
@@ -78,7 +78,12 @@ class SampleImageOverlayFactory
         String displayId = String.format("image%s,%s,%s,%s", upperLeft.getX(), upperLeft.getZ(), blocksWide, blocksTall);
 
         ImageOverlay imageOverlay = new ImageOverlay(ExampleMod.MODID, displayId, upperLeft, lowerRight, image);
-        imageOverlay.setLabel("Image Overlay").setTitle(displayId).setOverlayListener(new ImageListener(jmAPI, imageOverlay));
+
+        imageOverlay.getImage().setOpacity(.8f);
+
+        imageOverlay.setLabel("Image Overlay")
+                .setTitle(displayId)
+                .setOverlayListener(new ImageListener(jmAPI, imageOverlay));
 
         return imageOverlay;
     }
@@ -96,12 +101,12 @@ class SampleImageOverlayFactory
         Graphics2D g = bufferedImage.createGraphics();
 
         // Garish background
-        g.setPaint(new GradientPaint(0, 0, Color.white, 64, 64, Color.red));
-        g.fillRect(0, 0, bufferedImage.getHeight(), bufferedImage.getWidth());
+        g.setPaint(new GradientPaint(0, 0, new Color(255, 255, 255, 100), width, height, Color.red));
+        g.fillRect(0, 0, 16, 16);
 
         // Draw some text, for grins
-        Font font = new Font(Font.MONOSPACED, Font.BOLD, 24);
-        String text = String.format("%sx%s blocks", width, height);
+        Font font = new Font(Font.MONOSPACED, Font.BOLD, 9);
+        String text = String.format("%sx%s", width, height);
         Rectangle2D fontBounds = font.getStringBounds(text, g.getFontRenderContext());
         float x = (float) (bufferedImage.getWidth() - fontBounds.getWidth()) / 2f;
         float y = (float) (fontBounds.getHeight() + (bufferedImage.getHeight() - fontBounds.getHeight()) / 2f);
@@ -111,6 +116,16 @@ class SampleImageOverlayFactory
         g.setColor(new Color(0, 0, 0, 0));
         g.setFont(font);
         g.drawString(text, x, y);
+
+        // Stroke
+        g.setColor(new Color(200, 0, 0, 0));
+        final BasicStroke dashed =
+                new BasicStroke(1.5f,
+                        BasicStroke.CAP_BUTT,
+                        BasicStroke.JOIN_MITER,
+                        10.0f, new float[]{4f}, 0.0f);
+        g.setStroke(dashed);
+        g.draw(new Rectangle2D.Double(x, y, width, height));
 
         g.dispose();
 
