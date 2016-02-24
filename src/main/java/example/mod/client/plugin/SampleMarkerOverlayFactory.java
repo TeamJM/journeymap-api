@@ -138,7 +138,7 @@ class SampleMarkerOverlayFactory
                         .setDisplayWidth(size)
                         .setDisplayHeight(size)
                         .setAnchorX(size / 2)
-                        .setAnchorY(size);
+                        .setAnchorY(size * .9);
 
                 // Use sparingly
                 overlay.flagForRerender();
@@ -177,7 +177,7 @@ class SampleMarkerOverlayFactory
                     .setDisplayWidth(size)
                     .setDisplayHeight(size)
                     .setAnchorX(size / 2)
-                    .setAnchorY(size);
+                    .setAnchorY(size * .9);
 
             // Use sparingly
             overlay.flagForRerender();

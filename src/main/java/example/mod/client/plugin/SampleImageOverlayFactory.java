@@ -101,15 +101,15 @@ class SampleImageOverlayFactory
         Graphics2D g = bufferedImage.createGraphics();
 
         // Garish background
-        g.setPaint(new GradientPaint(0, 0, new Color(255, 255, 255, 100), width, height, Color.red));
-        g.fillRect(0, 0, 16, 16);
+        g.setPaint(new GradientPaint(0, 0, new Color(255, 255, 255, 100), width, height, new Color(0, 0, 200, 200)));
+        g.fillRect(0, 0, width, height);
 
         // Draw some text, for grins
-        Font font = new Font(Font.MONOSPACED, Font.BOLD, 9);
+        Font font = new Font(Font.MONOSPACED, Font.BOLD, 8);
         String text = String.format("%sx%s", width, height);
         Rectangle2D fontBounds = font.getStringBounds(text, g.getFontRenderContext());
-        float x = (float) (bufferedImage.getWidth() - fontBounds.getWidth()) / 2f;
-        float y = (float) (fontBounds.getHeight() + (bufferedImage.getHeight() - fontBounds.getHeight()) / 2f);
+        final float x = (float) (bufferedImage.getWidth() - fontBounds.getWidth()) / 2f;
+        final float y = (float) (fontBounds.getHeight() + (bufferedImage.getHeight() - fontBounds.getHeight()) / 2f);
 
         // Text will be transparent
         g.setComposite(AlphaComposite.Src);
@@ -117,16 +117,14 @@ class SampleImageOverlayFactory
         g.setFont(font);
         g.drawString(text, x, y);
 
-        // Stroke
-        g.setColor(new Color(200, 0, 0, 0));
-        final BasicStroke dashed =
-                new BasicStroke(1.5f,
-                        BasicStroke.CAP_BUTT,
-                        BasicStroke.JOIN_MITER,
-                        10.0f, new float[]{4f}, 0.0f);
+        // Stroke the perimeter
+        float strokeWidth = 1f;
+        g.setColor(new Color(0, 0, 0, 0));
+        final BasicStroke dashed = new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[]{2f}, 0.0f);
         g.setStroke(dashed);
-        g.draw(new Rectangle2D.Double(x, y, width, height));
+        g.draw(new Rectangle2D.Double(0, 0, width - strokeWidth, height - strokeWidth));
 
+        // Done
         g.dispose();
 
         return bufferedImage;
