@@ -45,6 +45,7 @@ public abstract class Overlay extends Displayable
     protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.Any);
     protected TextProperties textProperties = new TextProperties();
     protected IOverlayListener overlayListener;
+    protected boolean needsRerender = true;
 
     /**
      * Constructor.
@@ -322,6 +323,34 @@ public abstract class Overlay extends Displayable
     {
         this.overlayListener = overlayListener;
         return this;
+    }
+
+    /**
+     * Indicate the overlay needs to be re-rendered. Typically you don't need to use this unless you
+     * are updating an overlay dynamically and the chances aren't shown until the map is panned
+     * or zoomed. For example within and IOverlayListener. Overusing this can cause performance problems.
+     */
+    public void flagForRerender()
+    {
+        needsRerender = true;
+    }
+
+    /**
+     * Used by JourneyMap after the overlay has been re-rendered.
+     */
+    public void clearFlagForRerender()
+    {
+        needsRerender = false;
+    }
+
+    /**
+     * Gets whether the overlay needs to be re-rendered.
+     *
+     * @return
+     */
+    public boolean getNeedsRerender()
+    {
+        return needsRerender;
     }
 
     /**

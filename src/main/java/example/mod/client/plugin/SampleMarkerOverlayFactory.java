@@ -128,15 +128,21 @@ class SampleMarkerOverlayFactory
             // Scale the icon larger and change color and opacity
             double size = uiState.blockSize * 10;
 
-            // Update the display dimensions and re-center the anchors so the icon
-            // will be centered over it's BlockPos
-            overlay.getIcon()
-                    .setColor(0xffffff)
-                    .setOpacity(.5f)
-                    .setDisplayWidth(size)
-                    .setDisplayHeight(size)
-                    .setAnchorX(size / 2)
-                    .setAnchorY(size);
+            if (overlay.getIcon().getDisplayWidth() != size)
+            {
+                // Update the display dimensions and re-center the anchors so the icon
+                // will be centered over it's BlockPos
+                overlay.getIcon()
+                        .setColor(0xffffff)
+                        .setOpacity(.5f)
+                        .setDisplayWidth(size)
+                        .setDisplayHeight(size)
+                        .setAnchorX(size / 2)
+                        .setAnchorY(size);
+
+                // Use sparingly
+                overlay.flagForRerender();
+            }
         }
 
         @Override
@@ -172,6 +178,9 @@ class SampleMarkerOverlayFactory
                     .setDisplayHeight(size)
                     .setAnchorX(size / 2)
                     .setAnchorY(size);
+
+            // Use sparingly
+            overlay.flagForRerender();
         }
     }
 }
