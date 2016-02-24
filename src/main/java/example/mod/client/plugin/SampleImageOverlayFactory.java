@@ -101,8 +101,8 @@ class SampleImageOverlayFactory
         Graphics2D g = bufferedImage.createGraphics();
 
         // Garish background
-        g.setPaint(new GradientPaint(0, 0, new Color(255, 255, 255, 100), width, height, Color.red));
-        g.fillRect(0, 0, 16, 16);
+        g.setPaint(new GradientPaint(0, 0, new Color(255, 255, 255, 100), 16, 16, Color.red));
+        g.fillRect(0, 0, width, height);
 
         // Draw some text, for grins
         Font font = new Font(Font.MONOSPACED, Font.BOLD, 9);
@@ -120,7 +120,7 @@ class SampleImageOverlayFactory
         // Stroke
         g.setColor(new Color(200, 0, 0, 0));
         final BasicStroke dashed =
-                new BasicStroke(1.5f,
+                new BasicStroke(2f,
                         BasicStroke.CAP_BUTT,
                         BasicStroke.JOIN_MITER,
                         10.0f, new float[]{4f}, 0.0f);
