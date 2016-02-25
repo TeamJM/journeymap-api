@@ -1,9 +1,9 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api) Changelog
 ======================================================
 
-**API v1.8.9-1.1-SNAPSHOT**
+**API v1.8.9-1.1**
 
-* Too many changes to be worth listing, since 1.0 wasn't ever used. Look at commits if you care to.
+* Too many changes to be worth listing, since 1.0 wasn't ever implemented. Look at commits if you care to.
 
 **API v1.8.9-1.0**
 

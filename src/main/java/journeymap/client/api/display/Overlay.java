@@ -346,7 +346,7 @@ public abstract class Overlay extends Displayable
     /**
      * Gets whether the overlay needs to be re-rendered.
      *
-     * @return
+     * @return true if rerender needed
      */
     public boolean getNeedsRerender()
     {

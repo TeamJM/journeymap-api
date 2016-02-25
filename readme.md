@@ -10,6 +10,7 @@ to read the [License Information](docs/license.md).
 
 News
 ============================================================
+* **25 Feb 2016**: Version 1.1 of the API design is complete. Basic support of the API is functional in a currently-unreleased build of JourneyMap. Contact Techbrew on Espernet IRC #journeymap if you would like a copy of the build prior to release.
 
 * **26 Jan 2016**: Version 1.0 of the API design is complete, and Techbrew has begun writing the implementation for it in JourneyMap. Watch
 this site or follow @JourneyMapMod on Twitter for news about releases that support this API.
