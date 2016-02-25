@@ -133,12 +133,10 @@ class SampleMarkerOverlayFactory
                 // Update the display dimensions and re-center the anchors so the icon
                 // will be centered over it's BlockPos
                 overlay.getIcon()
-                        .setColor(0xffffff)
-                        .setOpacity(.5f)
                         .setDisplayWidth(size)
                         .setDisplayHeight(size)
                         .setAnchorX(size / 2)
-                        .setAnchorY(size * .9);
+                        .setAnchorY(size);
 
                 // Use sparingly
                 overlay.flagForRerender();
@@ -177,7 +175,7 @@ class SampleMarkerOverlayFactory
                     .setDisplayWidth(size)
                     .setDisplayHeight(size)
                     .setAnchorX(size / 2)
-                    .setAnchorY(size * .9);
+                    .setAnchorY(size);
 
             // Use sparingly
             overlay.flagForRerender();
