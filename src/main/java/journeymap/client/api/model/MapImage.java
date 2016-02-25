@@ -21,18 +21,18 @@
 package journeymap.client.api.model;
 
 import com.google.common.base.Objects;
-import example.mod.ExampleMod;
 import journeymap.client.api.display.Displayable;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Defines attributes needed to display an image on the map.
+ * <p/>
+ * Note that the default anchorX and anchorY will cause the top left of the image to be placed at an associated BlockPos.
+ * To center the image on a BlockPos, use:
+ * <code>mapImage.setAnchorX(mapImage.getDisplayWidth()/2.0).setAnchorY(mapImage.getDisplayHeight()/2.0);</code>
  * <p/>
  * Setters use the Builder pattern so they can be chained.
  */
@@ -42,94 +42,94 @@ public final class MapImage
     private ResourceLocation imageLocation;
     private int color = 0xffffff;
     private float opacity = 1f;
-    private float anchorX;
-    private float anchorY;
-    private int width;
-    private int height;
+    private int textureX = 0;
+    private int textureY = 0;
+    private int textureWidth;
+    private int textureHeight;
+    private int rotation;
+    private double displayWidth;
+    private double displayHeight;
+    private double anchorX;
+    private double anchorY;
 
     /**
      * Constructor.
+     * <p/>
+     * Defaults tint to white (0xffffff) and opacity to 1f.
+     * Defaults displayWidth and displayHeight to the texture dimensions.
      *
-     * @param imageLocation image location for image.
-     * @param width         displayed image width
-     * @param height        displayed image height
+     * @param image Image texture
      */
-    public MapImage(ResourceLocation imageLocation, int width, int height)
+    public MapImage(BufferedImage image)
     {
-        this(imageLocation, width, height, 0xffffff, 1f, width / 2f, height / 2f);
+        this(image, 0, 0, image.getWidth(), image.getHeight(), 0xffffff, 1f);
     }
 
     /**
      * Constructor.
+     * <p/>
+     * Defaults displayWidth and displayHeight to the texture dimensions.
      *
-     * @param imageLocation image location for texture.
-     * @param width         displayed image width
-     * @param height        displayed image height
-     * @param color         Sets the color (rgb) to be applied to the image.  Use white (0xffffff) to not change the image color.
+     * @param image         Image texture
+     * @param textureX      Start x of texture within image. Useful in sprite sheets.
+     * @param textureY      Start y of texture within image. Useful in sprite sheets.
+     * @param textureWidth  texture width
+     * @param textureHeight texture height
+     * @param color         Sets a color tint (rgb) on the image.  Use white (0xffffff) for no tint.
      * @param opacity       opacity between 0 and 1
-     * @param anchorX       X pixel offset to move the image relative to the map point
-     * @param anchorY       Y pixel offset to move the image relative to the map point
      */
-    public MapImage(ResourceLocation imageLocation, int width, int height, int color, float opacity, float anchorX, float anchorY)
+    public MapImage(BufferedImage image, int textureX, int textureY, int textureWidth, int textureHeight, int color, float opacity)
     {
-        setAnchorX(anchorX);
-        setAnchorY(anchorY);
-        setWidth(width);
-        setHeight(height);
-        setImageLocation(imageLocation);
+        this.image = image;
+        this.textureX = textureX;
+        this.textureY = textureY;
+        this.textureWidth = Math.max(1, textureWidth);
+        this.textureHeight = Math.max(1, textureHeight);
+        setDisplayWidth(this.textureWidth);
+        setDisplayHeight(this.textureHeight);
         setColor(color);
         setOpacity(opacity);
     }
 
-    private static BufferedImage getImage(ResourceLocation location)
+    /**
+     * Constructor.
+     *
+     * Defaults tint to white (0xffffff) and opacity to 1f.
+     * Defaults displayWidth and displayHeight to the texture dimensions.
+     *
+     * @param imageLocation     location for image
+     * @param textureWidth      width of texture
+     * @param textureHeight     height of texture
+     */
+    public MapImage(ResourceLocation imageLocation, int textureWidth, int textureHeight)
     {
-        try
-        {
-            IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
-            return TextureUtil.readBufferedImage(resourceManager.getResource(location).getInputStream());
-        }
-        catch (IOException e)
-        {
-            ExampleMod.LOGGER.error("Can't read MapImage location: " + location, e);
-            BufferedImage missing = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
-            // TODO: Confirm this works
-            missing.setRGB(0,0,16,16,TextureUtil.missingTextureData,0,16);
-            return missing;
-        }
+        this(imageLocation, 0, 0, textureWidth, textureHeight, 0xffffff, 1f);
     }
 
     /**
-     * Gets image.
+     * Constructor.
      *
-     * @return the image
-     */
-    public BufferedImage getImage()
-    {
-        return null;
-    }
-
-    /**
-     * Sets image.
+     * Defaults displayWidth and displayHeight to the texture dimensions.
      *
-     * @param imageLocation the image
-     * @return this
+     * @param imageLocation Resource location for texture image.
+     * @param textureX      Start x of texture within image. Useful in sprite sheets.
+     * @param textureY      Start y of texture within image. Useful in sprite sheets.
+     * @param textureWidth  texture width
+     * @param textureHeight texture height
+     * @param color         Sets a color tint (rgb) on the image.  Use white (0xffffff) for no tint.
+     * @param opacity       opacity between 0 and 1
      */
-    public MapImage setImage(ResourceLocation imageLocation)
+    public MapImage(ResourceLocation imageLocation, int textureX, int textureY, int textureWidth, int textureHeight, int color, float opacity)
     {
-        this.image = getImage(imageLocation);
-        return this;
-    }
-
-    /**
-     * Sets image.
-     *
-     * @param image the image
-     * @return this
-     */
-    public MapImage setImage(BufferedImage image)
-    {
-        this.image = image;
-        return this;
+        this.imageLocation = imageLocation;
+        this.textureX = textureX;
+        this.textureY = textureY;
+        this.textureWidth = Math.max(1, textureWidth);
+        this.textureHeight = Math.max(1, textureHeight);
+        setDisplayWidth(this.textureWidth);
+        setDisplayHeight(this.textureHeight);
+        setColor(color);
+        setOpacity(opacity);
     }
 
     /**
@@ -143,7 +143,7 @@ public final class MapImage
     }
 
     /**
-     * Sets color.
+     * Sets color used to tint the image.  Use 0xffffff for white (no tint).
      *
      * @param color the color
      * @return this
@@ -177,11 +177,30 @@ public final class MapImage
     }
 
     /**
+     * Gets X coordinate in BufferedImage where image begins. Useful in sprite sheets.
+     * @return textureX
+     */
+    public int getTextureX()
+    {
+        return textureX;
+    }
+
+    /**
+     * Gets Y coordinate in BufferedImage where image begins. Useful in sprite sheets.
+     *
+     * @return textureY
+     */
+    public int getTextureY()
+    {
+        return textureY;
+    }
+
+    /**
      * Gets anchor x.
      *
      * @return the anchor x
      */
-    public float getAnchorX()
+    public double getAnchorX()
     {
         return anchorX;
     }
@@ -192,7 +211,7 @@ public final class MapImage
      * @param anchorX the anchor x
      * @return this
      */
-    public MapImage setAnchorX(float anchorX)
+    public MapImage setAnchorX(double anchorX)
     {
         this.anchorX = anchorX;
         return this;
@@ -203,7 +222,7 @@ public final class MapImage
      *
      * @return the anchor y
      */
-    public float getAnchorY()
+    public double getAnchorY()
     {
         return anchorY;
     }
@@ -214,87 +233,143 @@ public final class MapImage
      * @param anchorY the anchor y
      * @return this
      */
-    public MapImage setAnchorY(float anchorY)
+    public MapImage setAnchorY(double anchorY)
     {
         this.anchorY = anchorY;
         return this;
     }
 
     /**
-     * Gets the image width.
-     *
-     * @return width
-     */
-    public int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Sets the width of the image when displayed.
-     *
-     * @param width the width
+     * Centers the image on the associated position.
      * @return this
      */
-    public MapImage setWidth(int width)
+    public MapImage centerAnchors()
     {
-        this.width = width;
+        setAnchorX(this.displayWidth / 2.0);
+        setAnchorY(this.displayHeight / 2.0);
         return this;
     }
 
     /**
-     * Gets the image height.
+     * Gets the image textureWidth.
      *
-     * @return height
+     * @return textureWidth
      */
-    public int getHeight()
+    public int getTextureWidth()
     {
-        return height;
+        return textureWidth;
     }
 
     /**
-     * Sets the height of the image when displayed.
+     * Gets the image textureHeight.
      *
-     * @param height the height
-     * @return this
+     * @return textureHeight
      */
-    public MapImage setHeight(int height)
+    public int getTextureHeight()
     {
-        this.height = height;
-        return this;
+        return textureHeight;
     }
 
     /**
-     * Gets the image location.
+     * Gets the image location, if there is one.
      *
      * @return the location
      */
+    @Nullable
     public ResourceLocation getImageLocation()
     {
         return imageLocation;
     }
 
     /**
-     * Sets the image location.
+     * Gets the image, if there is one.
      *
-     * @param imageLocation the location
+     * @return the location
+     */
+    @Nullable
+    public BufferedImage getImage()
+    {
+        return image;
+    }
+
+    /**
+     * Gets the rotation in degrees the image should be oriented.
+     * Zero is the default.
+     *
+     * @return degrees
+     */
+    public int getRotation()
+    {
+        return rotation;
+    }
+
+    /**
+     * Sets the rotation in degrees the image should be oriented.
+     * Zero is the default.
+     *
+     * @param rotation in degrees
      * @return this
      */
-    public MapImage setImageLocation(ResourceLocation imageLocation)
+    public MapImage setRotation(int rotation)
     {
-        this.image = getImage(imageLocation);
-        this.imageLocation = imageLocation;
+        this.rotation = rotation % 360;
+        return this;
+    }
+
+    /**
+     * Gets the display width in pixels when rendered.
+     * Default value is the texture width itself.
+     *
+     * @return display width
+     */
+    public double getDisplayWidth()
+    {
+        return displayWidth;
+    }
+
+    /**
+     * Sets the image width in pixels when rendered, allowing the image
+     * to be scaled if needed.
+     *
+     * @return this
+     */
+    public MapImage setDisplayWidth(double displayWidth)
+    {
+        this.displayWidth = displayWidth;
+        return this;
+    }
+
+    /**
+     * Gets the image height in pixels when rendered.
+     * Default value is the texture width itself.
+     *
+     * @return display width
+     */
+    public double getDisplayHeight()
+    {
+        return displayHeight;
+    }
+
+    /**
+     * Sets the image height in pixels when rendered, allowing the image
+     * to be scaled if needed.
+     *
+     * @return this
+     */
+    public MapImage setDisplayHeight(double displayHeight)
+    {
+        this.displayHeight = displayHeight;
         return this;
     }
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(@Nullable Object o)
     {
         if (this == o)
         {
             return true;
         }
-        if (!(o instanceof MapImage))
+        if (o == null || getClass() != o.getClass())
         {
             return false;
         }
@@ -303,25 +378,32 @@ public final class MapImage
                 Objects.equal(opacity, mapImage.opacity) &&
                 Objects.equal(anchorX, mapImage.anchorX) &&
                 Objects.equal(anchorY, mapImage.anchorY) &&
-                Objects.equal(image, mapImage.image);
+                Objects.equal(textureX, mapImage.textureX) &&
+                Objects.equal(textureY, mapImage.textureY) &&
+                Objects.equal(textureWidth, mapImage.textureWidth) &&
+                Objects.equal(textureHeight, mapImage.textureHeight) &&
+                Objects.equal(imageLocation, mapImage.imageLocation);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hashCode(image, color, opacity, anchorX, anchorY);
+        return Objects.hashCode(imageLocation, color, opacity, anchorX, anchorY, textureX, textureY, textureWidth, textureHeight);
     }
 
     @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("height", image.getHeight())
-                .add("width", image.getWidth())
+                .add("imageLocation", imageLocation)
                 .add("anchorX", anchorX)
                 .add("anchorY", anchorY)
                 .add("color", color)
+                .add("textureHeight", textureHeight)
                 .add("opacity", opacity)
+                .add("textureX", textureX)
+                .add("textureY", textureY)
+                .add("textureWidth", textureWidth)
                 .toString();
     }
 

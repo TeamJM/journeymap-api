@@ -21,7 +21,11 @@
 package journeymap.client.api.model;
 
 import com.google.common.base.Objects;
+import journeymap.client.api.display.Context;
 import journeymap.client.api.display.Displayable;
+import journeymap.client.api.util.UIState;
+
+import java.util.EnumSet;
 
 /**
  * Properties defining the display of text.
@@ -30,11 +34,18 @@ import journeymap.client.api.display.Displayable;
  */
 public class TextProperties
 {
-    private float scale = 1;
-    private int color = 0xffffff;
-    private int backgroundColor = 0x000000;
-    private float opacity = 1f;
-    private float backgroundOpacity = .5f;
+    protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.Any);
+    protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.Any);
+    protected float scale = 1;
+    protected int color = 0xffffff;
+    protected int backgroundColor = 0x000000;
+    protected float opacity = 1f;
+    protected float backgroundOpacity = .5f;
+    protected boolean fontShadow = true;
+    protected int minZoom = 0;
+    protected int maxZoom = 8;
+    protected int offsetX = 0;
+    protected int offsetY = 0;
 
     /**
      * Font scale.
@@ -147,42 +158,211 @@ public class TextProperties
         return this;
     }
 
-    @Override
-    public boolean equals(Object o)
+    /**
+     * Whether font shadow should be used.
+     *
+     * @return true if shadowed
+     */
+    public boolean hasFontShadow()
     {
-        if (this == o)
-        {
-            return true;
-        }
-        if (!(o instanceof TextProperties))
-        {
-            return false;
-        }
-        TextProperties that = (TextProperties) o;
-        return Objects.equal(scale, that.scale) &&
-                Objects.equal(color, that.color) &&
-                Objects.equal(backgroundColor, that.backgroundColor) &&
-                Objects.equal(opacity, that.opacity) &&
-                Objects.equal(backgroundOpacity, that.backgroundOpacity);
+        return fontShadow;
     }
 
-    @Override
-    public int hashCode()
+    /**
+     * Sets whether font shadow should be used.
+     *
+     * @param fontShadow true if shadow
+     * @return this
+     */
+    public TextProperties setFontShadow(boolean fontShadow)
     {
-        return Objects.hashCode(scale, color, backgroundColor, opacity, backgroundOpacity);
+        this.fontShadow = fontShadow;
+        return this;
+    }
+
+    /**
+     * Returns a set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap)
+     * the text should be displayed in.  This is only checked if the overlay containing these
+     * text properties is already active.
+     * <p/>
+     * For example, this can be specified to have labels only displayed in the fullscreen map, but not the minimap.
+     * @return enumset
+     */
+    public EnumSet<Context.UI> getActiveUIs()
+    {
+        return activeUIs;
+    }
+
+    /**
+     * Set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap) the text should be displayed in.
+     * This is only checked if the overlay containing these text properties is already active.
+     * <p/>
+     * For example, this can be specified to have labels only displayed in the fullscreen map, but not the minimap.
+     * @param activeUIs active UIs
+     * @return this
+     */
+    public TextProperties setActiveUIs(EnumSet<Context.UI> activeUIs)
+    {
+        if (activeUIs.contains(Context.UI.Any))
+        {
+            activeUIs = EnumSet.of(Context.UI.Any);
+        }
+        this.activeUIs = activeUIs;
+        return this;
+    }
+
+    /**
+     * Returns a set of enums indicating which map types (Day, Night) the text should be active in.
+     *
+     * @return enumset
+     */
+    public EnumSet<Context.MapType> getActiveMapTypes()
+    {
+        return activeMapTypes;
+    }
+
+    /**
+     * Set of enums indicating which JourneyMap map types (Day, Night) the text should be active in.
+     *
+     * @param activeMapTypes active types
+     * @return this
+     */
+    public TextProperties setActiveMapTypes(EnumSet<Context.MapType> activeMapTypes)
+    {
+        if (activeMapTypes.contains(Context.MapType.Any))
+        {
+            activeMapTypes = EnumSet.of(Context.MapType.Any);
+        }
+        this.activeMapTypes = activeMapTypes;
+        return this;
+    }
+
+    /**
+     * Whether the overlay should be active for the given contexts.
+     *
+     * @param uiState UIState
+     * @return true if the overlay should be active
+     */
+    public boolean isActiveIn(UIState uiState)
+    {
+        return uiState.active
+                && (activeUIs.contains(Context.UI.Any) || activeUIs.contains(uiState.ui))
+                && (activeMapTypes.contains(Context.MapType.Any) || activeMapTypes.contains(uiState.mapType))
+                && (this.minZoom <= uiState.zoom && this.maxZoom >= uiState.zoom);
+    }
+
+    /**
+     * The minimum zoom level (0 is lowest) where the polygon should be visible.
+     *
+     * @return the min zoom
+     */
+    public int getMinZoom()
+    {
+        return minZoom;
+    }
+
+    /**
+     * Sets the minimum zoom level (0 is lowest) where text should be visible.
+     *
+     * @param minZoom the min zoom
+     * @return this
+     */
+    public TextProperties setMinZoom(int minZoom)
+    {
+        this.minZoom = Math.max(0, minZoom);
+        return this;
+    }
+
+    /**
+     * The maximum zoom level (8 is highest) where text should be visible.
+     *
+     * @return the max zoom
+     */
+    public int getMaxZoom()
+    {
+        return maxZoom;
+    }
+
+    /**
+     * Sets the maximum zoom level (8 is highest) where the polygon should be visible.
+     *
+     * @param maxZoom the max zoom
+     * @return this
+     */
+    public TextProperties setMaxZoom(int maxZoom)
+    {
+        this.maxZoom = Math.min(8, maxZoom);
+        return this;
+    }
+
+    /**
+     * Gets how many horizontal pixels to shift the center of the label from the center of the overlay.
+     * (For MarkerOverlays, the "center" is directly over MarkerOverlay.getPoint(), regardless of how
+     * it's icon is placed.)
+     *
+     * @return pixels to offset
+     */
+    public int getOffsetX()
+    {
+        return offsetX;
+    }
+
+    /**
+     * Sets how many horizontal pixels to shift the center of the label from the center of the overlay.
+     * (For MarkerOverlays, the "center" is directly over MarkerOverlay.getPoint(), regardless of how
+     * it's icon is placed.)
+     *
+     * @param offsetX
+     * @return this
+     */
+    public TextProperties setOffsetX(int offsetX)
+    {
+        this.offsetX = offsetX;
+        return this;
+    }
+
+    /**
+     * Gets how many vertical pixels to shift the center of the label from the center of the overlay.
+     * (For MarkerOverlays, the "center" is directly over MarkerOverlay.getPoint(), regardless of how
+     * it's icon is placed.)
+     *
+     * @return pixels to offset
+     */
+    public int getOffsetY()
+    {
+        return offsetY;
+    }
+
+    /**
+     * Sets how many vertical pixels to shift the center of the label from the center of the overlay.
+     * (For MarkerOverlays, the "center" is directly over MarkerOverlay.getPoint(), regardless of how
+     * it's icon is placed.)
+     *
+     * @param offsetY
+     * @return this
+     */
+    public TextProperties setOffsetY(int offsetY)
+    {
+        this.offsetY = offsetY;
+        return this;
     }
 
     @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
+                .add("activeMapTypes", activeMapTypes)
+                .add("activeUIs", activeUIs)
                 .add("backgroundColor", backgroundColor)
                 .add("backgroundOpacity", backgroundOpacity)
                 .add("color", color)
                 .add("opacity", opacity)
+                .add("fontShadow", fontShadow)
+                .add("maxZoom", maxZoom)
+                .add("minZoom", minZoom)
+                .add("offsetX", offsetX)
+                .add("offsetY", offsetY)
                 .add("scale", scale)
                 .toString();
     }
-
-
 }

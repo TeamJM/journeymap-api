@@ -24,15 +24,20 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.LinkedHashMultimap;
+import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
+import journeymap.client.api.event.ClientEvent;
+import journeymap.client.api.util.UIState;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.geom.Rectangle2D;
+import java.util.EnumSet;
 
 /**
  * Stub implementation of the IClientAPI. Doesn't actually do anything, other than track displayIds.
@@ -58,10 +63,26 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
                         }
                     });
 
+
     @Override
-    public boolean isActive()
+    public UIState getUIState(Context.UI ui)
     {
-        return true;
+        if (ui == Context.UI.Any)
+        {
+            return null;
+        }
+
+        return new UIState(ui, true, 0, 1,
+                Context.MapType.Day,
+                new BlockPos(128, 0, 128),
+                new AxisAlignedBB(new BlockPos(0, 0, 0), new BlockPos(256, 256, 256)),
+                new Rectangle2D.Double(0, 0, 1240, 960));
+    }
+
+    @Override
+    public void subscribe(String modId, EnumSet<ClientEvent.Type> eventTypes)
+    {
+        // Not implemented
     }
 
     @Override
@@ -79,14 +100,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     @Override
     public void remove(Displayable displayable)
     {
-        remove(displayable.getModId(), displayable.getDisplayType(), displayable.getDisplayId());
-    }
-
-    @Override
-    public void remove(String modId, DisplayType displayType, String displayId)
-    {
-        modDisplayables.getUnchecked(modId).remove(displayType, displayId);
-        log(String.format("Removed %s:%s:%s", modId, displayType, displayId));
+        modDisplayables.getUnchecked(displayable.getModId()).remove(displayable.getDisplayType(), displayable.getDisplayId());
     }
 
     @Override
@@ -106,19 +120,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     @Override
     public boolean exists(Displayable displayable)
     {
-        return exists(displayable.getModId(), displayable.getDisplayType(), displayable.getDisplayId());
-    }
-
-    @Override
-    public boolean exists(String modId, DisplayType displayType, String displayId)
-    {
-        return modDisplayables.getUnchecked(modId).containsEntry(displayType, displayId);
-    }
-
-    @Override
-    public List<String> getShownIds(String modId, DisplayType displayType)
-    {
-        return new ArrayList<String>(modDisplayables.getUnchecked(modId).get(displayType));
+        return modDisplayables.getUnchecked(displayable.getModId()).containsEntry(displayable.getDisplayType(), displayable.getDisplayId());
     }
 
     @Override

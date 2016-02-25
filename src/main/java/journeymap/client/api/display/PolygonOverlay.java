@@ -20,7 +20,6 @@
 
 package journeymap.client.api.display;
 
-import com.google.common.base.Objects;
 import journeymap.client.api.model.MapPolygon;
 import journeymap.client.api.model.ShapeProperties;
 
@@ -48,8 +47,8 @@ public final class PolygonOverlay extends Overlay
     /**
      * Constructor.
      *
-     * @param modId     Your example.mod id.
-     * @param displayId A unique id for the polygon (scoped within your example.mod) which can be used to remove/update it.
+     * @param modId     Your mod id.
+     * @param displayId A unique id for the polygon (scoped within your mod) which can be used to remove/update it.
      * @param outerArea A polygon of the outer area to be displayed.
      */
     public PolygonOverlay(String modId, String displayId, int dimension, ShapeProperties shapeProperties, MapPolygon outerArea)
@@ -60,8 +59,8 @@ public final class PolygonOverlay extends Overlay
     /**
      * Constructor.
      *
-     * @param modId     Your example.mod id.
-     * @param displayId A unique id for the polygon (scoped within your example.mod) which can be used to remove/update it.
+     * @param modId     Your mod id.
+     * @param displayId A unique id for the polygon (scoped within your mod) which can be used to remove/update it.
      * @param outerArea A polygon of the outer area to be displayed.
      * @param holes     (Optional) A list of polygons treated as holes inside the outerArea
      */
@@ -150,20 +149,7 @@ public final class PolygonOverlay extends Overlay
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
-                .add("modId", modId)
-                .add("displayId", displayId)
-                .add("dimension", dimension)
-                .add("overlayGroupName", overlayGroupName)
-                .add("title", title)
-                .add("label", label)
-                .add("textProperties", textProperties)
-                .add("minZoom", minZoom)
-                .add("maxZoom", maxZoom)
-                .add("zIndex", zIndex)
-                .add("inFullscreen", inFullscreen)
-                .add("inMinimap", inMinimap)
-                .add("inWebmap", inWebmap)
+        return toStringHelper(this)
                 .add("holes", holes)
                 .add("outerArea", outerArea)
                 .add("shapeProperties", shapeProperties)

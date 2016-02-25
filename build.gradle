@@ -131,44 +131,48 @@ signing {
     sign configurations.archives
 }
 
-/* Sonatype Central Maven Deployment */
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+/* Central Maven Deployment (only used by TeamJM) */
+afterEvaluate { project ->
+    if (project.hasProperty("sonatypeUsername")) {
+        uploadArchives {
+            repositories {
+                mavenDeployer {
+                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
-
-            pom.project {
-                name = project.title
-                description = project.description
-                url = project.git_website
-                packaging = 'jar'
-
-                scm {
-                    connection project.gir_scm
-                    developerConnection project.gir_scm
-                    url project.git_url
-                }
-
-                licenses {
-                    license {
-                        name 'Copyright'
-                        url project.license_url
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                        authentication(userName: sonatypeUsername, password: sonatypePassword)
                     }
-                }
 
-                developers {
-                    developer {
-                        id 'techbrew'
-                        name 'Techbrew'
-                        email 'techbrew@journeymap.info'
+                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                        authentication(userName: sonatypeUsername, password: sonatypePassword)
+                    }
+
+                    pom.project {
+                        name = project.title
+                        description = project.description
+                        url = project.git_website
+                        packaging = 'jar'
+
+                        scm {
+                            connection project.gir_scm
+                            developerConnection project.gir_scm
+                            url project.git_url
+                        }
+
+                        licenses {
+                            license {
+                                name 'Copyright'
+                                url project.license_url
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id 'techbrew'
+                                name 'Techbrew'
+                                email 'techbrew@journeymap.info'
+                            }
+                        }
                     }
                 }
             }

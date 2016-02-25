@@ -21,14 +21,22 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import example.mod.client.ClientProxy;
 import journeymap.client.api.IClientAPI;
+import journeymap.client.api.IClientPlugin;
+import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.event.ClientEvent;
+import journeymap.client.api.event.DeathWaypointEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.EnumSet;
+
+import static journeymap.client.api.event.ClientEvent.Type.*;
 
 /**
- * Example plugin implementation. To prevent classloader errors if JourneyMap isn't loaded
+ * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
  * (and thus the API classes aren't loaded), this class isn't referenced anywhere directly in the mod.
  * <p/>
  * The @journeymap.client.api.ClientPlugin annotation makes this plugin class discoverable to JourneyMap,
@@ -38,27 +46,53 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 @ParametersAreNonnullByDefault
 @journeymap.client.api.ClientPlugin
-public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlugin
+public class ExampleJourneymapPlugin implements IClientPlugin
 {
+    // API reference
+    private IClientAPI jmAPI = null;
+
+    // Forge listener reference
+    private ForgeEventListener forgeEventListener;
+    
     /**
-     * Called by JourneyMap during the init phase of example.mod loading.  Your implementation
-     * should retain a reference to the IClientAPI passed in, since that is what your plugin
-     * will use to add overlays, etc. to JourneyMap.
+     * Called by JourneyMap during the init phase of mod loading.  The IClientAPI reference is how the mod
+     * will add overlays, etc. to JourneyMap.
      *
-     * @param api Client API implementation
+     * @param jmAPI     Client API implementation
      */
     @Override
-    public void initialize(final IClientAPI api)
+    public void initialize(final IClientAPI jmAPI)
     {
-        // Set ClientProxy.ExampleMapFacade with an implementation that uses the JourneyMap IClientAPI under the covers.
-        ClientProxy.MapFacade = new ExampleMapFacade(api);
+        // Set ClientProxy.SampleModWaypointFactory with an implementation that uses the JourneyMap IClientAPI under the covers.
+        this.jmAPI = jmAPI;
+
+        // Register listener for forge events
+        forgeEventListener = new ForgeEventListener(jmAPI);
+        MinecraftForge.EVENT_BUS.register(forgeEventListener);
+
+        // Subscribe to desired ClientEvent types from JourneyMap
+        this.jmAPI.subscribe(getModId(), EnumSet.of(DEATH_WAYPOINT, MAPPING_STARTED, MAPPING_STOPPED));
+
+        ExampleMod.LOGGER.info("Initialized " + getClass().getName());
+    }
+
+    /**
+     * Used by JourneyMap to associate a modId with this plugin.
+     */
+    @Override
+    public String getModId()
+    {
+        return ExampleMod.MODID;
     }
 
     /**
      * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p/>
-     * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_STARTED},
+     * You must call {@link IClientAPI#subscribe(String, EnumSet)} at some point to subscribe to these events, otherwise this
+     * method will never be called.
+     * <p/>
+     * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
      * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
      * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
      * (Note: ModWaypoints with persisted==true will already be shown.)
@@ -66,25 +100,82 @@ public class ExampleJourneymapPlugin implements journeymap.client.api.IClientPlu
      * @param event the event
      */
     @Override
-    public void onEvent(journeymap.client.api.event.ClientEvent event)
+    public void onEvent(ClientEvent event)
     {
         try
         {
-            ExampleMod.LOGGER.info("ClientEvent: " + event.type);
+            switch (event.type)
+            {
+                case MAPPING_STARTED:
+                    onMappingStarted(event);
+                    break;
 
-            if (ClientProxy.MapFacade != null && event.type == ClientEvent.Type.DISPLAY_STARTED)
-            {
-                ClientProxy.MapFacade.refreshMap(event.dimension);
-            }
-            else
-            {
-                event.cancel();
+                case MAPPING_STOPPED:
+                    onMappingStopped(event);
+                    break;
+
+                case DEATH_WAYPOINT:
+                    onDeathpoint((DeathWaypointEvent) event);
+                    break;
             }
         }
         catch (Throwable t)
         {
             ExampleMod.LOGGER.error(t.getMessage(), t);
         }
+    }
+
+    /**
+     * When mapping has started, generate a bunch of random overlays.
+     *
+     * @param event client event
+     */
+    void onMappingStarted(ClientEvent event)
+    {
+        // Create a bunch of random Image Overlays around the player
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Image))
+        {
+            BlockPos pos = Minecraft.getMinecraft().thePlayer.getPosition();
+            SampleImageOverlayFactory.create(jmAPI, pos, 5, 256, 128);
+        }
+
+        // Create a bunch of random Marker Overlays around the player
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
+        {
+            BlockPos pos = Minecraft.getMinecraft().thePlayer.getPosition();
+            SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
+        }
+
+        // Create a waypoint for the player's bed location.  The ForgeEventListener
+        // will keep it updated if the player sleeps elsewhere.
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
+        {
+            BlockPos pos = Minecraft.getMinecraft().thePlayer.getBedLocation();
+            SampleModWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
+        }
+
+        // Slime chunk Polygon Overlays are created by the ForgeEventListener
+        // as chunks load, so no need to do anything here.
+    }
+
+    /**
+     * When mapping has stopped, remove all overlays
+     *
+     * @param event client event
+     */
+    void onMappingStopped(ClientEvent event)
+    {
+        // Clear everything
+        jmAPI.removeAll(ExampleMod.MODID);
+    }
+
+    /**
+     * Do something when JourneyMap is about to create a Deathpoint.
+     */
+    void onDeathpoint(DeathWaypointEvent event)
+    {
+        // Could cancel the event, which would prevent the Deathpoint from actually being created.
+        // For now, don't do anything.
     }
 
 }

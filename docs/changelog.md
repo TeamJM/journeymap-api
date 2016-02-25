@@ -1,17 +1,21 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api) Changelog
 ======================================================
 
+**API v1.8.9-1.1-SNAPSHOT**
+
+* Too many changes to be worth listing, since 1.0 wasn't ever used. Look at commits if you care to.
+
 **API v1.8.9-1.0**
 
 * Added constructor to Displayable that doesn't require displayId, added getGuid() and getDisplayType() methods, made several methods final.
-* IClientAPI.show() now explicitly throws Exception. Added exists(Displayable) overload, removed isVisible().
+* `IClientAPI.show()` now explicitly throws Exception. Added `IClientAPI.exists(Displayable)` overload, removed `IClientAPI.isVisible()`.
 * Jars now available in Maven Central!
 * Build of `journeymap-api-[version].jar` is still deobf, but no longer has 'deobf' in the name
 
 **API v1.8.9-0.9**
 
 * ModWaypoint now has an isEditable property
-* Example Mod's ExampleMapFacade.showBedWaypoint() now takes a BlockPos
+* Example Mod's `ExampleMapFacade.showBedWaypoint()` now takes a BlockPos
 * Bugfix in Example Mod's SleepEventListener: event.result is always null
 * Build updated to Forge 11.15.0.1712
 

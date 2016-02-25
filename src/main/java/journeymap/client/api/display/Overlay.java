@@ -20,9 +20,13 @@
 
 package journeymap.client.api.display;
 
+import com.google.common.base.Objects;
 import journeymap.client.api.model.TextProperties;
+import journeymap.client.api.util.UIState;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.EnumSet;
 
 /**
  * Provides IDs and key information for map overlays in JourneyMap.
@@ -34,18 +38,19 @@ public abstract class Overlay extends Displayable
     protected String title;
     protected String label;
     protected int dimension;
-    protected int minZoom;
-    protected int maxZoom;
-    protected int zIndex;
-    protected boolean inMinimap = true;
-    protected boolean inFullscreen = true;
-    protected boolean inWebmap = true;
+    protected int minZoom = 0;
+    protected int maxZoom = 8;
+    protected int displayOrder;
+    protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.Any);
+    protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.Any);
     protected TextProperties textProperties = new TextProperties();
+    protected IOverlayListener overlayListener;
+    protected boolean needsRerender = true;
 
     /**
      * Constructor.
      *
-     * @param modId     the example.mod id
+     * @param modId     the mod id
      * @param displayId the display id
      */
     Overlay(String modId, String displayId)
@@ -113,7 +118,7 @@ public abstract class Overlay extends Displayable
      * @param title the title
      * @return this
      */
-    public Overlay setTitle(String title)
+    public Overlay setTitle(@Nullable String title)
     {
         this.title = title;
         return this;
@@ -135,12 +140,11 @@ public abstract class Overlay extends Displayable
      * @param label the label
      * @return this
      */
-    public Overlay setLabel(String label)
+    public Overlay setLabel(@Nullable String label)
     {
         this.label = label;
         return this;
     }
-
 
     /**
      * The minimum zoom level (0 is lowest) where the polygon should be visible.
@@ -160,7 +164,7 @@ public abstract class Overlay extends Displayable
      */
     public Overlay setMinZoom(int minZoom)
     {
-        this.minZoom = minZoom;
+        this.minZoom = Math.max(0, minZoom);
         return this;
     }
 
@@ -182,97 +186,31 @@ public abstract class Overlay extends Displayable
      */
     public Overlay setMaxZoom(int maxZoom)
     {
-        this.maxZoom = maxZoom;
+        this.maxZoom = Math.min(8, maxZoom);
         return this;
     }
 
     /**
-     * All features are displayed on the map in order of their screen zIndex, with higher values
+     * Any features are displayed on the map in order of their screen displayOrder, with higher values
      * displaying in front of features with lower values. Default is 1000.
      *
      * @return the z index
      */
-    public int getZIndex()
+    public int getDisplayOrder()
     {
-        return zIndex;
+        return displayOrder;
     }
 
     /**
-     * All features are displayed on the map in order of their screen zIndex, with higher values
+     * Any features are displayed on the map in order of their screen displayOrder, with higher values
      * displaying in front of features with lower values. Default is 1000.
      *
      * @param zIndex the z index
      * @return this
      */
-    public Overlay setZIndex(int zIndex)
+    public Overlay setDisplayOrder(int zIndex)
     {
-        this.zIndex = zIndex;
-        return this;
-    }
-
-    /**
-     * Whether the overlay should be displayed in the Minimap.
-     *
-     * @return the boolean
-     */
-    public boolean isInMinimap()
-    {
-        return inMinimap;
-    }
-
-    /**
-     * Sets whether the overlay should be displayed in the Minimap.
-     *
-     * @param inMinimap the in minimap
-     * @return this
-     */
-    public Overlay setInMinimap(boolean inMinimap)
-    {
-        this.inMinimap = inMinimap;
-        return this;
-    }
-
-    /**
-     * Whether the overlay should be displayed in the Fullscreen map.
-     *
-     * @return the boolean
-     */
-    public boolean isInFullscreen()
-    {
-        return inFullscreen;
-    }
-
-    /**
-     * Sets whether the overlay should be displayed in the Fullscreen map.
-     *
-     * @param inFullscreen the in fullscreen
-     * @return this
-     */
-    public Overlay setInFullscreen(boolean inFullscreen)
-    {
-        this.inFullscreen = inFullscreen;
-        return this;
-    }
-
-    /**
-     * Whether the overlay should be displayed in the Web map (when enabled).
-     *
-     * @return the boolean
-     */
-    public boolean isInWebmap()
-    {
-        return inWebmap;
-    }
-
-    /**
-     * Sets whether the overlay should be displayed in the Web map (when enabled).
-     *
-     * @param inWebmap the in webmap
-     * @return this
-     */
-    public Overlay setInWebmap(boolean inWebmap)
-    {
-        this.inWebmap = inWebmap;
+        this.displayOrder = zIndex;
         return this;
     }
 
@@ -298,4 +236,142 @@ public abstract class Overlay extends Displayable
         return this;
     }
 
+    /**
+     * Returns a set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap)
+     * the overlay should be active in.
+     *
+     * @return enumset
+     */
+    public EnumSet<Context.UI> getActiveUIs()
+    {
+        return activeUIs;
+    }
+
+    /**
+     * Set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap) the overlay should be active in.
+     *
+     * @param activeUIs active UIs
+     * @return this
+     */
+    public Overlay setActiveUIs(EnumSet<Context.UI> activeUIs)
+    {
+        if (activeUIs.contains(Context.UI.Any))
+        {
+            activeUIs = EnumSet.of(Context.UI.Any);
+        }
+        this.activeUIs = activeUIs;
+        return this;
+    }
+
+    /**
+     * Returns a set of enums indicating which map types (Day, Night) the overlay should be active in.
+     *
+     * @return enumset
+     */
+    public EnumSet<Context.MapType> getActiveMapTypes()
+    {
+        return activeMapTypes;
+    }
+
+    /**
+     * Set of enums indicating which JourneyMap map types (Day, Night) the overlay should be active in.
+     *
+     * @param activeMapTypes active types
+     * @return this
+     */
+    public Overlay setActiveMapTypes(EnumSet<Context.MapType> activeMapTypes)
+    {
+        if (activeMapTypes.contains(Context.MapType.Any))
+        {
+            activeMapTypes = EnumSet.of(Context.MapType.Any);
+        }
+        this.activeMapTypes = activeMapTypes;
+        return this;
+    }
+
+    /**
+     * Whether the overlay should be active for the given contexts.
+     *
+     * @param uiState    UIState
+     * @return true if the overlay should be active
+     */
+    public boolean isActiveIn(UIState uiState)
+    {
+        return ((uiState.active && this.dimension == uiState.dimension)
+                && (activeUIs.contains(Context.UI.Any) || activeUIs.contains(uiState.ui))
+                && (activeMapTypes.contains(Context.MapType.Any) || activeMapTypes.contains(uiState.mapType))
+                && (this.minZoom <= uiState.zoom && this.maxZoom >= uiState.zoom));
+    }
+
+    /**
+     * Gets the listener for user events on the overlay.
+     *
+     * @return listener impl or null
+     */
+    public IOverlayListener getOverlayListener()
+    {
+        return overlayListener;
+    }
+
+    /**
+     * Sets a listener for receiving user events related to the Overlay.
+     *
+     * @param overlayListener IOverlayListener impl
+     * @return this
+     */
+    public Overlay setOverlayListener(@Nullable IOverlayListener overlayListener)
+    {
+        this.overlayListener = overlayListener;
+        return this;
+    }
+
+    /**
+     * Indicate the overlay needs to be re-rendered. Typically you don't need to use this unless you
+     * are updating an overlay dynamically and the chances aren't shown until the map is panned
+     * or zoomed. For example within and IOverlayListener. Overusing this can cause performance problems.
+     */
+    public void flagForRerender()
+    {
+        needsRerender = true;
+    }
+
+    /**
+     * Used by JourneyMap after the overlay has been re-rendered.
+     */
+    public void clearFlagForRerender()
+    {
+        needsRerender = false;
+    }
+
+    /**
+     * Gets whether the overlay needs to be re-rendered.
+     *
+     * @return
+     */
+    public boolean getNeedsRerender()
+    {
+        return needsRerender;
+    }
+
+    /**
+     * Provides common output for toStringHelper() to subclasses
+     *
+     * @param instance subclass
+     * @return helper for continuing to add properties on subclass
+     */
+    protected final Objects.ToStringHelper toStringHelper(Overlay instance)
+    {
+        return Objects.toStringHelper(this)
+                .add("label", label)
+                .add("title", title)
+                .add("overlayGroupName", overlayGroupName)
+                .add("activeMapTypes", activeMapTypes)
+                .add("activeUIs", activeUIs)
+                .add("dimension", dimension)
+                .add("displayOrder", displayOrder)
+                .add("maxZoom", maxZoom)
+                .add("minZoom", minZoom)
+                .add("textProperties", textProperties)
+                .add("hasOverlayListener", overlayListener!=null);
+    }
 }

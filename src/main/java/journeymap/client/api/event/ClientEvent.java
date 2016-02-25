@@ -20,38 +20,48 @@
 
 package journeymap.client.api.event;
 
-import journeymap.client.api.display.Displayable;
-
 /**
- * Event propagated by the Client API to IClientPlugin implementations.
+ * Parent class for events propagated by the Client API to IClientPlugin implementations.
  */
 public class ClientEvent
 {
+    /**
+     * Event type.
+     */
     public final Type type;
-    public int dimension;
-    public Object value;
+
+    /**
+     * World dimension where event occurred.
+     */
+    public final int dimension;
+
+    /**
+     * System millis when event was created.
+     */
+    public final long timestamp;
+
+    /**
+     * Whether event has been cancelled.
+     */
     private boolean cancelled;
 
+    /**
+     * Constructor.
+     */
     public ClientEvent(Type type, int dimension)
     {
         this.type = type;
         this.dimension = dimension;
+        this.timestamp = System.currentTimeMillis();
     }
 
-    public ClientEvent(Type type, int dimension, Object value)
-    {
-        this.type = type;
-        this.dimension = dimension;
-    }
-
+    /**
+     * Whether the event has been cancelled.
+     * @return true if cancelled
+     */
     public boolean isCancelled()
     {
         return cancelled;
-    }
-
-    public boolean isCancellable()
-    {
-        return type.cancellable;
     }
 
     /**
@@ -65,24 +75,46 @@ public class ClientEvent
         }
     }
 
+    /**
+     * Event type enumeration.
+     */
     public enum Type
     {
         /**
-         * Signal for ClientPlugins to {@link journeymap.client.api.IClientAPI#show(Displayable)} its
-         * Displayables for the {@link #dimension} indicated. (ModWaypoints with persisted==true will already be shown.)
-         * The {@link #value} field is always null.  Cannot be cancelled.
+         * Indicates a change in the display characteristics of the specified UI.
+         * Event will be a {@link DisplayUpdateEvent}, which can not be cancelled.
          */
-        DISPLAY_STARTED(false),
+        DISPLAY_UPDATE(false),
 
         /**
-         * Signal for ClientPlugins that JourneyMap is going to create a Death Waypoint for the player.
-         * The {@link #value} field will be a {@link net.minecraft.util.BlockPos} with the
-         * appropriate coordinates set.  Event can be cancelled, preventing the Death Waypoint from being created.
+         * Indicates a Death Waypoint is about to be created for the player.
+         * Event will be a {@link DeathWaypointEvent}, which can be cancelled.
          */
-        DEATH_WAYPOINT(true);
+        DEATH_WAYPOINT(true),
 
-        boolean cancellable;
+        /**
+         * Indicates JourneyMap has started mapping chunks in the dimension.
+         * Event will be a simple {@link ClientEvent}.
+         */
+        MAPPING_STARTED(false),
 
+        /**
+         * Indicates JourneyMap has stopped mapping chunks.  Usually due
+         * to player death or disconnect from world.  Event will be a
+         * simple {@link ClientEvent}.
+         */
+        MAPPING_STOPPED(false);
+
+        /**
+         * Whether the type of event can be cancelled.
+         */
+        public final boolean cancellable;
+
+        /**
+         * Constructor
+         *
+         * @param cancellable true if the event type can be cancelled.
+         */
         Type(boolean cancellable)
         {
             this.cancellable = cancellable;

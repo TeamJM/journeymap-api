@@ -20,7 +20,6 @@
 
 package journeymap.client.api.display;
 
-import com.google.common.base.Objects;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.util.BlockPos;
 
@@ -45,8 +44,8 @@ public final class ImageOverlay extends Overlay
     /**
      * Constructor.
      *
-     * @param modId          Your example.mod id.
-     * @param imageId        A unique id for the marker (scoped to your example.mod) which can be used to remove/update it.
+     * @param modId          Your mod id.
+     * @param imageId        A unique id for the marker (scoped to your mod) which can be used to remove/update it.
      * @param northWestPoint Location of the top-left corner of the image.
      * @param southEastPoint Location of the lower-right corner of the image.
      * @param image          The image to display as the overlay.
@@ -124,22 +123,10 @@ public final class ImageOverlay extends Overlay
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
-                .add("guid", getGuid())
-                .add("overlayGroupName", overlayGroupName)
-                .add("dimension", dimension)
-                .add("title", title)
-                .add("label", label)
-                .add("textProperties", textProperties)
-                .add("minZoom", minZoom)
-                .add("maxZoom", maxZoom)
-                .add("zIndex", zIndex)
-                .add("inFullscreen", inFullscreen)
-                .add("inMinimap", inMinimap)
-                .add("inWebmap", inWebmap)
+        return toStringHelper(this)
+                .add("image", image)
                 .add("northWestPoint", northWestPoint)
                 .add("southEastPoint", southEastPoint)
-                .add("image", image)
                 .toString();
     }
 }

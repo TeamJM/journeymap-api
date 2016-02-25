@@ -30,7 +30,7 @@ import java.util.UUID;
  * Base class for Overlays and Waypoints.
  */
 @ParametersAreNonnullByDefault
-public abstract class Displayable
+public abstract class Displayable implements Comparable<Displayable>
 {
     protected final String modId;
     protected final String displayId;
@@ -82,9 +82,15 @@ public abstract class Displayable
     }
 
     /**
-     * Your example.mod id.
+     * Used to determine display order, lower first.
+     * @return order
+     */
+    public abstract int getDisplayOrder();
+
+    /**
+     * Your mod id.
      *
-     * @return modId example.mod id
+     * @return modId mod id
      */
     public final String getModId()
     {
@@ -148,5 +154,23 @@ public abstract class Displayable
     public int hashCode()
     {
         return Objects.hashCode(modId, displayType, displayId);
+    }
+
+    /**
+     * Compares this object with the specified object for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     *
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
+     * @throws ClassCastException   if the specified object's type prevents it
+     *                              from being compared to this object.
+     */
+    @Override
+    public int compareTo(Displayable o)
+    {
+        return Integer.compare(getDisplayOrder(), o.getDisplayOrder());
     }
 }
