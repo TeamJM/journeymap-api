@@ -3,6 +3,7 @@
 
 **API v1.8.9-1.1**
 
+* Basic support implemented in [JourneyMap 5.1.5 for Minecraft 1.8.9](http://minecraft.curseforge.com/projects/journeymap-32274/files/2285371)
 * Too many changes to be worth listing, since 1.0 wasn't ever implemented. Look at commits if you care to.
 
 **API v1.8.9-1.0**
