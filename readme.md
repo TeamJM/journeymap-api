@@ -10,7 +10,9 @@ to read the [License Information](docs/license.md).
 
 News
 ============================================================
-* **25 Feb 2016**: Version 1.1 of the API design is complete. Basic support of the API is functional in a currently-unreleased build of JourneyMap. Contact Techbrew on Espernet IRC #journeymap if you would like a copy of the build prior to release.
+* **4 March 2016**: Version 1.1 of the API has basic support implemented in [JourneyMap 5.1.5 for Minecraft 1.8.9](http://minecraft.curseforge.com/projects/journeymap-32274/files/2285371).
+
+* **25 Feb 2016**: Version 1.1 of the API design is complete.
 
 * **26 Jan 2016**: Version 1.0 of the API design is complete, and Techbrew has begun writing the implementation for it in JourneyMap. Watch
 this site or follow @JourneyMapMod on Twitter for news about releases that support this API.

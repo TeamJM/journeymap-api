@@ -1,8 +1,6 @@
 How to use the [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api)
 =============================
 
-**Remember: There is not a release of JourneyMap that implements the API yet. It's coming soon.**
-
 To hook into JourneyMap from your mod, you'll write a plugin class that handles all interactions with JourneyMap
 via the API interfaces in this repository.
 
@@ -63,7 +61,6 @@ to see the Example Mod code in action.  To get the examplemod.jar, download it f
 
 *Note that the examplemod.jar is built with re-obfuscated code so that it can be used like a normal mod.*
 
-
 III. Write your Plugin
 =============================
 
@@ -78,6 +75,6 @@ IV. Test your Plugin
 
 **Remember: There is not a release of JourneyMap that implements the API yet. It's coming soon.**
 
-1. [Download JourneyMap](http://journeymap.info/Download) and place it in your runtime mods directory (usually `/run/mods`). 
+1. [Download JourneyMap](http://journeymap.info/Download) 5.1.5 or later and place it in your runtime mods directory (usually `/run/mods`).
 You don't need a "dev" or "deobf" version of JourneyMap; Forge 1.8-11.14.3.1503 or later now handles automatic deobfuscation for you.
 2. Run Minecraft in your development environment.  Forge will load JourneyMap and your mod, and the JourneyMap API will activate your plugin.
