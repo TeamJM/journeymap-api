@@ -10,7 +10,9 @@ to read the [License Information](docs/license.md).
 
 News
 ============================================================
-* **4 March 2016**: Version 1.1 of the API has basic support implemented in [JourneyMap 5.1.5 for Minecraft 1.8.9](http://minecraft.curseforge.com/projects/journeymap-32274/files/2285371).
+* **18 March 2016**: Version 1.9-1.2-SNAPSHOT has been pushed to Maven
+
+* **4 March 2016**: Version 1.8.9-1.1 of the API is in Maven, has basic support implemented in [JourneyMap 5.1.5 for Minecraft 1.8.9](http://minecraft.curseforge.com/projects/journeymap-32274/files/2285371).
 
 * **25 Feb 2016**: Version 1.1 of the API design is complete.
 
