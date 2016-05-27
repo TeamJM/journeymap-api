@@ -72,7 +72,7 @@ class ForgeEventListener
                         ChunkCoordIntPair chunkCoords = chunk.getChunkCoordIntPair();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
-                            int dimension = event.world.provider.getDimension();
+                            int dimension = event.world.provider.getDimensionId();
                             PolygonOverlay overlay = SamplePolygonOverlayFactory.create(chunkCoords, dimension);
                             slimeChunkOverlays.put(chunkCoords, overlay);
                             jmAPI.show(overlay);

@@ -24,8 +24,8 @@ import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.ModWaypoint;
 import journeymap.client.api.model.MapImage;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 
 /**
  * Sample factory that creates a waypoint.

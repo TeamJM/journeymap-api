@@ -1,6 +1,9 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api) Changelog
 ======================================================
 
+**API v1.8.9-1.2**
+* Minor documentation updates to stay in sync with v1.9.1-1.2
+
 **API v1.8.9-1.1**
 
 * Basic support implemented in [JourneyMap 5.1.5 for Minecraft 1.8.9](http://minecraft.curseforge.com/projects/journeymap-32274/files/2285371)

@@ -21,7 +21,7 @@
 package journeymap.client.api.util;
 
 import journeymap.client.api.model.MapPolygon;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockPos;
 
 /**
  * Utility class related to Polygons.

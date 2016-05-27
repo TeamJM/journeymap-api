@@ -7,8 +7,8 @@ import journeymap.client.api.display.MarkerOverlay;
 import journeymap.client.api.model.MapImage;
 import journeymap.client.api.util.UIState;
 import net.minecraft.block.material.MapColor;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;

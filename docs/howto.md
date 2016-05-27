@@ -15,6 +15,9 @@ This page describes the recommended approach to writing a plugin for the Journey
 I. Add the API Dependency
 =============================
 
+To find out which API version to use, run Minecraft with JourneyMap. Open the Options manager or any other dialog in JourneyMap,
+and you'll see the API version in the corner of the screen.  The mod info dialog also displays this information.
+
 1. Add [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api) to your list of repositories
 2. Add a compile dependency on 'info.journeymap:journeymap-api:#version'
 
@@ -24,7 +27,7 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version = 1.8.9-1.1 // or 1.8.9-1.2-SNAPSHOT
+journeymap_api_version = 1.8.9-1.2 // or 1.8.9-x-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
@@ -72,8 +75,6 @@ III. Write your Plugin
     
 IV. Test your Plugin
 =============================
-
-**Remember: There is not a release of JourneyMap that implements the API yet. It's coming soon.**
 
 1. [Download JourneyMap](http://journeymap.info/Download) 5.1.5 or later and place it in your runtime mods directory (usually `/run/mods`).
 You don't need a "dev" or "deobf" version of JourneyMap; Forge 1.8-11.14.3.1503 or later now handles automatic deobfuscation for you.

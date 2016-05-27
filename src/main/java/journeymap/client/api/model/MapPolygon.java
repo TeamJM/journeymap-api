@@ -21,7 +21,7 @@
 package journeymap.client.api.model;
 
 import com.google.common.base.Objects;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockPos;
 
 import java.util.Arrays;
 import java.util.Collections;
