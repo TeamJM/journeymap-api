@@ -2,8 +2,8 @@ package journeymap.client.api.util;
 
 import com.google.common.base.Objects;
 import journeymap.client.api.display.Context;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 import java.awt.geom.Rectangle2D;
