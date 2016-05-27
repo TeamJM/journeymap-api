@@ -40,11 +40,11 @@ class ForgeEventListener
     {
         try
         {
-            if (event.entityPlayer.worldObj.isRemote)
+            if (event.getEntity().worldObj.isRemote)
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
                 {
-                    SampleModWaypointFactory.createBedWaypoint(jmAPI, event.pos, event.entityPlayer.dimension);
+                    SampleModWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().dimension);
                 }
             }
         }
@@ -62,7 +62,7 @@ class ForgeEventListener
     {
         try
         {
-            if (event.world.isRemote)
+            if (event.getWorld().isRemote)
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
                 {
@@ -72,7 +72,7 @@ class ForgeEventListener
                         ChunkCoordIntPair chunkCoords = chunk.getChunkCoordIntPair();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
-                            int dimension = event.world.provider.getDimension();
+                            int dimension = event.getWorld().provider.getDimension();
                             PolygonOverlay overlay = SamplePolygonOverlayFactory.create(chunkCoords, dimension);
                             slimeChunkOverlays.put(chunkCoords, overlay);
                             jmAPI.show(overlay);
@@ -93,7 +93,7 @@ class ForgeEventListener
     @SubscribeEvent
     public void onChunkUnloadEvent(ChunkEvent.Unload event)
     {
-        if (event.world.isRemote)
+        if (event.getWorld().isRemote)
         {
             if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
             {
