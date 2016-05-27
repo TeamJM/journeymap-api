@@ -27,7 +27,7 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.DeathWaypointEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.ParametersAreNonnullByDefault;

@@ -22,7 +22,7 @@ package journeymap.client.api.display;
 
 import com.google.common.base.Objects;
 import journeymap.client.api.model.MapImage;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;

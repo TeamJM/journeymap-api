@@ -1,7 +1,7 @@
 package journeymap.client.api.event;
 
 import com.google.common.base.Objects;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Indicates a Death Waypoint is about to be created.
