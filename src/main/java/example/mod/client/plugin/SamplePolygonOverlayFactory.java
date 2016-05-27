@@ -10,7 +10,7 @@ import journeymap.client.api.util.PolygonHelper;
 import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -27,7 +27,7 @@ class SamplePolygonOverlayFactory
      * @param dimension   chunk dimension
      * @return a new overlay
      */
-    static PolygonOverlay create(ChunkCoordIntPair chunkCoords, int dimension)
+    static PolygonOverlay create(ChunkPos chunkCoords, int dimension)
     {
         String displayId = "slime_" + chunkCoords.toString();
         String groupName = "Slime Chunks";
