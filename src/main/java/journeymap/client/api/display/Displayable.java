@@ -61,13 +61,14 @@ public abstract class Displayable implements Comparable<Displayable>
 
     /**
      * Clamps an rgb int value to the allowable range.
+     * If an ARGB value is passed in, alpha is masked to FF.
      *
      * @param rgb color
      * @return clamped color
      */
     public static int clampRGB(int rgb)
     {
-        return Math.max(0x000000, Math.min(rgb, 0xffffff));
+        return 0xff000000 | rgb;
     }
 
     /**

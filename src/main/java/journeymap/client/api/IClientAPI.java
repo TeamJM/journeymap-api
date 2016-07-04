@@ -25,10 +25,14 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.awt.image.BufferedImage;
 import java.util.EnumSet;
+import java.util.concurrent.Future;
 
 /**
  * Definition for the JourneyMap Client API.
@@ -121,4 +125,22 @@ public interface IClientAPI
      * @see DisplayType
      */
     boolean playerAccepts(String modId, DisplayType displayType);
+
+    /**
+     * Note:  This is not currently supported for all mods.  Talk to Techbrew if you need to use this
+     * function.
+     * <p/>
+     * Asynchonrously request a BufferedImage map tile (512x512px) from JourneyMap. Abusing this can have
+     * severe performance implications.  Requests may be throttled, so use sparingly.
+     *
+     * @param world      The world
+     * @param dimension  The dimension
+     * @param mapType    The map type
+     * @param startCoord The NW coordinates of the tile.  Y is ignored.
+     * @param chunkY     The vertical chunk (slice) if the maptype isn't day/night/topo
+     * @param zoom       The zoom level
+     * @param showGrid   Whether to include to include the chunk grid overlay
+     * @return a Future which will provide a BufferedImage when/if available.  If it returns null, then no image available.
+     */
+    Future<BufferedImage> requestMapTile(final World world, final int dimension, final Context.MapType mapType, final ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid);
 }

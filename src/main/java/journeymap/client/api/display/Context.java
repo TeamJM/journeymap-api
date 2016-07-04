@@ -39,6 +39,7 @@ public interface Context
         Any,
         Day,
         Night,
-        Underground
+        Underground,
+        Topo
     }
 }

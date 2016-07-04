@@ -31,13 +31,20 @@ import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.EnumSet;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 /**
  * Stub implementation of the IClientAPI. Doesn't actually do anything, other than track displayIds.
@@ -127,6 +134,24 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     public boolean playerAccepts(String modId, DisplayType displayType)
     {
         return true;
+    }
+
+    @Override
+    public Future<BufferedImage> requestMapTile(World world, int dimension, Context.MapType mapType, ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid)
+    {
+        return new FutureTask<BufferedImage>(new Callable<BufferedImage>()
+        {
+            @Override
+            public BufferedImage call() throws Exception
+            {
+                BufferedImage image = new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = image.createGraphics();
+                g.setColor(Color.cyan);
+                g.fillRect(0, 0, 512, 512);
+                g.dispose();
+                return image;
+            }
+        });
     }
 
     /**

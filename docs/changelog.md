@@ -1,6 +1,11 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api) Changelog
 ======================================================
 
+**API v1.9.4-1.3-SNAPSHOT**
+
+* Support for Topo maps
+* Experimental support for IClientAPI.requestMapTile()
+
 **API v1.8.9-1.2, API v1.9-1.2**
 * Minor documentation updates to stay in sync
 
