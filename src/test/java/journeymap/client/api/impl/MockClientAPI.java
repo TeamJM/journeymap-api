@@ -32,7 +32,6 @@ import journeymap.client.api.util.UIState;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -137,7 +136,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public Future<BufferedImage> requestMapTile(World world, int dimension, Context.MapType mapType, ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid)
+    public Future<BufferedImage> requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid)
     {
         return new FutureTask<BufferedImage>(new Callable<BufferedImage>()
         {
