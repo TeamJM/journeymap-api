@@ -26,7 +26,6 @@ import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -133,7 +132,7 @@ public interface IClientAPI
      * Asynchonrously request a BufferedImage map tile (512x512px) from JourneyMap. Abusing this can have
      * severe performance implications.  Requests may be throttled, so use sparingly.
      *
-     * @param world      The world
+     * @param modId      Mod id
      * @param dimension  The dimension
      * @param mapType    The map type
      * @param startCoord The NW coordinates of the tile.  Y is ignored.
@@ -142,5 +141,5 @@ public interface IClientAPI
      * @param showGrid   Whether to include to include the chunk grid overlay
      * @return a Future which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
-    Future<BufferedImage> requestMapTile(final World world, final int dimension, final Context.MapType mapType, final ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid);
+    Future<BufferedImage> requestMapTile(String modId, final int dimension, final Context.MapType mapType, final ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid);
 }
