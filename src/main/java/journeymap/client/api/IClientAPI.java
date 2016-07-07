@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
-import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 /**
  * Definition for the JourneyMap Client API.
@@ -139,7 +139,7 @@ public interface IClientAPI
      * @param chunkY     The vertical chunk (slice) if the maptype isn't day/night/topo
      * @param zoom       The zoom level
      * @param showGrid   Whether to include to include the chunk grid overlay
-     * @return a Future which will provide a BufferedImage when/if available.  If it returns null, then no image available.
+     * @return a FutureTask which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
-    Future<BufferedImage> requestMapTile(String modId, final int dimension, final Context.MapType mapType, final ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid);
+    FutureTask<BufferedImage> requestMapTile(String modId, final int dimension, final Context.MapType mapType, final ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid);
 }

@@ -42,7 +42,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 /**
@@ -136,7 +135,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public Future<BufferedImage> requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid)
+    public FutureTask<BufferedImage> requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid)
     {
         return new FutureTask<BufferedImage>(new Callable<BufferedImage>()
         {
