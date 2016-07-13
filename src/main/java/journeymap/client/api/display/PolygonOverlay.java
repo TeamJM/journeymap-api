@@ -30,9 +30,9 @@ import java.util.List;
 
 /**
  * A polygon overlay displays a geometric area on a map.  For example: An area of claimed chunks.
- * <p/>
+ * <p>
  * Setters use the Builder pattern so they can be chained.
- * <p/>
+ * <p>
  * Note that like all Displayables, simply changing this object doesn't guarantee the player will get the changes.
  * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.

@@ -38,10 +38,10 @@ import static journeymap.client.api.event.ClientEvent.Type.*;
 /**
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
  * (and thus the API classes aren't loaded), this class isn't referenced anywhere directly in the mod.
- * <p/>
+ * <p>
  * The @journeymap.client.api.ClientPlugin annotation makes this plugin class discoverable to JourneyMap,
  * which will create an instance of it and then call initialize on it.
- * <p/>
+ * <p>
  * The
  */
 @ParametersAreNonnullByDefault
@@ -88,10 +88,10 @@ public class ExampleJourneymapPlugin implements IClientPlugin
     /**
      * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
-     * <p/>
+     * <p>
      * You must call {@link IClientAPI#subscribe(String, EnumSet)} at some point to subscribe to these events, otherwise this
      * method will never be called.
-     * <p/>
+     * <p>
      * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
      * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
      * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.

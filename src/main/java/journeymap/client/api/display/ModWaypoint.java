@@ -29,9 +29,9 @@ import java.util.Arrays;
 
 /**
  * Definition for a waypoint that is offered to a player.
- * <p/>
+ * <p>
  * Setters use the Builder pattern so they can be chained.
- * <p/>
+ * <p>
  * Note that like all Displayables, simply changing this object doesn't guarantee the player will get the changes.
  * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.

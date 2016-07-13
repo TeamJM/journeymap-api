@@ -29,6 +29,7 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -36,13 +37,13 @@ import net.minecraftforge.fml.common.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
-import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
+import java.util.function.Consumer;
 
 /**
  * Stub implementation of the IClientAPI. Doesn't actually do anything, other than track displayIds.
@@ -135,19 +136,20 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public FutureTask<BufferedImage> requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid)
+    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startCoord,
+                               @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback)
     {
-        return new FutureTask<BufferedImage>(new Callable<BufferedImage>()
+        Minecraft.getMinecraft().addScheduledTask(new Runnable()
         {
             @Override
-            public BufferedImage call() throws Exception
+            public void run()
             {
                 BufferedImage image = new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g = image.createGraphics();
                 g.setColor(Color.cyan);
                 g.fillRect(0, 0, 512, 512);
                 g.dispose();
-                return image;
+                callback.accept(image);
             }
         });
     }

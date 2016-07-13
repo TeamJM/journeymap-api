@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 
 /**
  * Used by JourneyMap to discover and classload plugin classes.
- * <p/>
+ * <p>
  * Classes with this annotation must have a no-arg constructor
  * and must also implement the {@link IClientPlugin} interface.
  */

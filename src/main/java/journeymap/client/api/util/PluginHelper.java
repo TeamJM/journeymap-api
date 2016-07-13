@@ -52,7 +52,7 @@ public enum PluginHelper
     /**
      * Called by JourneyMap during it's preInitialization phase to find plugin classes
      * included in other mods and then instantiate them.
-     * <p/>
+     * <p>
      * Mods which are testing integration can also call this in a dev environment
      * and pass in a stub implementation, but must never do so in production code.
      *
@@ -116,7 +116,7 @@ public enum PluginHelper
 
     /**
      * Called by JourneyMap during its initialization phase.  Can only be called once per runtime.
-     * <p/>
+     * <p>
      * Mods which are testing integration can also call this in a dev environment
      * and pass in a stub implementation, but must never do so in production code.
      *

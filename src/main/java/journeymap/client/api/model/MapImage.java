@@ -29,11 +29,11 @@ import java.awt.image.BufferedImage;
 
 /**
  * Defines attributes needed to display an image on the map.
- * <p/>
+ * <p>
  * Note that the default anchorX and anchorY will cause the top left of the image to be placed at an associated BlockPos.
  * To center the image on a BlockPos, use:
  * <code>mapImage.setAnchorX(mapImage.getDisplayWidth()/2.0).setAnchorY(mapImage.getDisplayHeight()/2.0);</code>
- * <p/>
+ * <p>
  * Setters use the Builder pattern so they can be chained.
  */
 public final class MapImage
@@ -54,7 +54,7 @@ public final class MapImage
 
     /**
      * Constructor.
-     * <p/>
+     * <p>
      * Defaults tint to white (0xffffff) and opacity to 1f.
      * Defaults displayWidth and displayHeight to the texture dimensions.
      *
@@ -67,7 +67,7 @@ public final class MapImage
 
     /**
      * Constructor.
-     * <p/>
+     * <p>
      * Defaults displayWidth and displayHeight to the texture dimensions.
      *
      * @param image         Image texture

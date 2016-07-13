@@ -29,7 +29,7 @@ import java.util.EnumSet;
 
 /**
  * Properties defining the display of text.
- * <p/>
+ * <p>
  * Setters use the Builder pattern so they can be chained.
  */
 public class TextProperties
@@ -184,7 +184,7 @@ public class TextProperties
      * Returns a set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap)
      * the text should be displayed in.  This is only checked if the overlay containing these
      * text properties is already active.
-     * <p/>
+     * <p>
      * For example, this can be specified to have labels only displayed in the fullscreen map, but not the minimap.
      * @return enumset
      */
@@ -196,7 +196,7 @@ public class TextProperties
     /**
      * Set of enums indicating which JourneyMap UIs (Fullscreen, Minimap, Webmap) the text should be displayed in.
      * This is only checked if the overlay containing these text properties is already active.
-     * <p/>
+     * <p>
      * For example, this can be specified to have labels only displayed in the fullscreen map, but not the minimap.
      * @param activeUIs active UIs
      * @return this

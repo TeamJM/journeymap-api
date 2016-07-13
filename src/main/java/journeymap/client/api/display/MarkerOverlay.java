@@ -28,9 +28,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 /**
  * A Marker overlay shows a geographical point on the map with an icon and a label.
  * For example: A pushpin shown at the world spawn point.
- * <p/>
+ * <p>
  * Setters use the Builder pattern so they can be chained.
- * <p/>
+ * <p>
  * Note that like all Displayables, simply changing this object doesn't guarantee the player will get the changes.
  * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.

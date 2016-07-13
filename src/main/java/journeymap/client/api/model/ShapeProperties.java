@@ -25,7 +25,7 @@ import journeymap.client.api.display.Displayable;
 
 /**
  * Properties defining the display of a shape.
- * <p/>
+ * <p>
  * Setters use the Builder pattern so they can be chained.
  */
 public class ShapeProperties

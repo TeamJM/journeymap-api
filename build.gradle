@@ -40,6 +40,10 @@ apply plugin: 'signing'
 /* Artifact Version */
 version = project.minecraft_version + '-' + project.api_version
 
+/* Java 8 */
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 /* ForgeGradle spec for Minecraft */
 minecraft {
     version = project.minecraft_version + "-" + project.forge_version

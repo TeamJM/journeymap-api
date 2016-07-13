@@ -27,7 +27,7 @@ import java.util.EnumSet;
 
 /**
  * Interface used by JourneyMap to initialize client plugins and provide the Client API.
- * <p/>
+ * <p>
  * Implementation classes must have a no-arg constructor and also have the {@link ClientPlugin} annotation.
  */
 @ParametersAreNonnullByDefault
@@ -37,7 +37,7 @@ public interface IClientPlugin
      * Called by JourneyMap during the init phase of Forge mod loading.  Your implementation
      * should retain a reference to the IClientAPI passed in, since that is what your plugin
      * will use to add overlays, etc. to JourneyMap.
-     * <p/>
+     * <p>
      * This is also a good time to call {@link IClientAPI#subscribe(String, EnumSet)} to subscribe to any
      * desired ClientEvent types.
      *
@@ -53,10 +53,10 @@ public interface IClientPlugin
     /**
      * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
-     * <p/>
+     * <p>
      * You must call {@link IClientAPI#subscribe(String, EnumSet)} to subscribe to these events ( preferably during
      * {@link #initialize(IClientAPI)} ), otherwise this method will never be called.
-     * <p/>
+     * <p>
      * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
      * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
      * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.

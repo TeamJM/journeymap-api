@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
-import java.util.concurrent.FutureTask;
+import java.util.function.Consumer;
 
 /**
  * Definition for the JourneyMap Client API.
@@ -64,10 +64,10 @@ public interface IClientAPI
     /**
      * Add (or update) a displayable object to the player's maps. If you modify a Displayable after it
      * has been added, call this method again to ensure the maps reflect your changes.
-     * <p/>
+     * <p>
      * If an object of the same Displayable.Type
      * from your mod with the same displayId has already been added, it will be replaced.
-     * <p/>
+     * <p>
      * Has no effect on display types not accepted by the player.
      *
      * @param displayable The object to display.
@@ -107,7 +107,7 @@ public interface IClientAPI
     /**
      * Check whether a displayable exists in the Client API.  A return value of true means the Client API has the
      * indicated displayable, but not necessarily that the player has made it visible.
-     * <p/>
+     * <p>
      * Always returns false if the display type is not accepted by the player.
      *
      * @param displayable the object
@@ -128,7 +128,7 @@ public interface IClientAPI
     /**
      * Note:  This is not currently supported for all mods.  Talk to Techbrew if you need to use this
      * function.
-     * <p/>
+     * <p>
      * Asynchonrously request a BufferedImage map tile (512x512px) from JourneyMap. Abusing this can have
      * severe performance implications.  Requests may be throttled, so use sparingly.
      *
@@ -139,7 +139,8 @@ public interface IClientAPI
      * @param chunkY     The vertical chunk (slice) if the maptype isn't day/night/topo
      * @param zoom       The zoom level
      * @param showGrid   Whether to include to include the chunk grid overlay
-     * @return a FutureTask which will provide a BufferedImage when/if available.  If it returns null, then no image available.
+     * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
-    FutureTask<BufferedImage> requestMapTile(String modId, final int dimension, final Context.MapType mapType, final ChunkPos startCoord, Integer chunkY, int zoom, boolean showGrid);
+    void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startCoord,
+                        @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback);
 }

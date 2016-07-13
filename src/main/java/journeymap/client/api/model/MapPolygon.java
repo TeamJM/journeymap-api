@@ -32,11 +32,11 @@ import java.util.List;
  * A MapPolygon is a sequence of at least 3 BlockPos. The first point must be the
  * LOWER-LEFT (or SouthEast) point in the sequence, and should be ordered
  * counterclockwise.  The last point will be connected to the first when rendered.
- * <p/>
+ * <p>
  * Note that the actual list passed into the constructor isn't retained; the points
  * are copied into an unmodifiable list. If you need to update the points, pass in a new
  * list entirely.
- * <p/>
+ * <p>
  * Setters use the Builder pattern so they can be chained.
  */
 public final class MapPolygon
