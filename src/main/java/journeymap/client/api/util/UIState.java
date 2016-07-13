@@ -2,6 +2,7 @@ package journeymap.client.api.util;
 
 import com.google.common.base.Objects;
 import journeymap.client.api.display.Context;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
@@ -19,27 +20,32 @@ public final class UIState
     public final Context.UI ui;
 
     /**
-     * Whether the UI is active or not.
+     * Whether the UI is active or not. If false, other values reflect the
+     * state of the display when it was last used.
      */
     public final boolean active;
 
     /**
-     * The dimension displayed in the UI.  If active==false, this value is meaningless.
+     * The dimension displayed in the UI.  If active==false and the display
+     * has never been used, this will default to 0.
      */
     public final int dimension;
 
     /**
-     * The current zoom level of the UI. If active==false, this value is meaningless.
+     * The current zoom level of the UI. If active==false and the display
+     * has never been used, this will default to 0.
      */
     public final int zoom;
 
     /**
-     * The current map type of the UI. If active==false, this will be null.
+     * The current map type of the UI. If active==false and the display
+     * has never been used, this will default to Context.MapType.Day.
      */
     public final Context.MapType mapType;
 
     /**
-     * The block position at the center of the UI. If active==false, this will be null.
+     * The block position at the center of the UI. If active==false and the display
+     * has never been used, this will default to the world spawnpoint.
      */
     public final BlockPos mapCenter;
 
@@ -93,9 +99,22 @@ public final class UIState
      * @param ui the ui
      * @return a UIState
      */
-    public static UIState newInactive(Context.UI ui)
+    public static UIState newInactive(Context.UI ui, Minecraft minecraft)
     {
-        return new UIState(ui, false, 0, 0, null, null, null, null);
+        BlockPos center = minecraft.theWorld == null ? new BlockPos(0, 68, 0) : minecraft.theWorld.getSpawnPoint();
+        return new UIState(ui, false, 0, 0, Context.MapType.Day, center, null, null);
+    }
+
+    /**
+     * Convenience factory method to create an inactive UIState.
+     *
+     * @param priorState the prior UIState
+     * @return a UIState
+     */
+    public static UIState newInactive(UIState priorState)
+    {
+        return new UIState(priorState.ui, false, priorState.dimension, priorState.zoom, priorState.mapType,
+                priorState.mapCenter, priorState.blockBounds, priorState.displayBounds);
     }
 
     @Override
