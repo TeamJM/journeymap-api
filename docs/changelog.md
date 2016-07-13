@@ -3,6 +3,7 @@
 
 **API v1.9.4-1.3-SNAPSHOT**
 
+* Java 8 required
 * Support for Topo maps
 * Experimental support for IClientAPI.requestMapTile()
 
