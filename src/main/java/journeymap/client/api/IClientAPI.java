@@ -126,18 +126,18 @@ public interface IClientAPI
     boolean playerAccepts(String modId, DisplayType displayType);
 
     /**
-     * Note:  This is not currently supported for all mods.  Talk to Techbrew if you need to use this
-     * function.
+     * Note:  This method IS NOT SUPPORTED for most mods. Misuse will lead to severe performance issues.
+     * Talk to Techbrew if you need to use this function.
      * <p>
-     * Asynchonrously request a BufferedImage map tile (512x512px) from JourneyMap. Abusing this can have
-     * severe performance implications.  Requests may be throttled, so use sparingly.
+     * Asynchonrously request a BufferedImage map tile from JourneyMap. Requests may be throttled, so use sparingly.
+     * The largest image size that will be returned is 512x512 px.
      *
      * @param modId      Mod id
      * @param dimension  The dimension
      * @param mapType    The map type
      * @param startCoord The NW coordinates of the tile.  Y is ignored.
      * @param chunkY     The vertical chunk (slice) if the maptype isn't day/night/topo
-     * @param zoom       The zoom level
+     * @param zoom       The zoom level (0-8)
      * @param showGrid   Whether to include to include the chunk grid overlay
      * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */

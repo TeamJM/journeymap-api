@@ -80,7 +80,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
 
         return new UIState(ui, true, 0, 1,
                 Context.MapType.Day,
-                new BlockPos(128, 0, 128),
+                new BlockPos(128, 0, 128), null,
                 new AxisAlignedBB(new BlockPos(0, 0, 0), new BlockPos(256, 256, 256)),
                 new Rectangle2D.Double(0, 0, 1240, 960));
     }

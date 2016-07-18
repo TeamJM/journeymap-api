@@ -50,6 +50,11 @@ public final class UIState
     public final BlockPos mapCenter;
 
     /**
+     * For underground/cave/nether/end maps, the vertical slice (chunk y) displayed.
+     */
+    public final Integer chunkY;
+
+    /**
      * The area of blocks displayed in the UI. If active==false, this will be null.
      */
     public final AxisAlignedBB blockBounds;
@@ -79,6 +84,7 @@ public final class UIState
     public UIState(Context.UI ui, boolean active, int dimension, int zoom,
                    @Nullable Context.MapType mapType,
                    @Nullable BlockPos mapCenter,
+                   @Nullable Integer chunkY,
                    @Nullable AxisAlignedBB blockBounds,
                    @Nullable Rectangle2D.Double displayBounds)
     {
@@ -88,6 +94,7 @@ public final class UIState
         this.zoom = zoom;
         this.mapType = mapType;
         this.mapCenter = mapCenter;
+        this.chunkY = chunkY;
         this.blockBounds = blockBounds;
         this.displayBounds = displayBounds;
         this.blockSize = Math.pow(2, zoom);
@@ -102,7 +109,7 @@ public final class UIState
     public static UIState newInactive(Context.UI ui, Minecraft minecraft)
     {
         BlockPos center = minecraft.theWorld == null ? new BlockPos(0, 68, 0) : minecraft.theWorld.getSpawnPoint();
-        return new UIState(ui, false, 0, 0, Context.MapType.Day, center, null, null);
+        return new UIState(ui, false, 0, 0, Context.MapType.Day, center, null, null, null);
     }
 
     /**
@@ -114,7 +121,7 @@ public final class UIState
     public static UIState newInactive(UIState priorState)
     {
         return new UIState(priorState.ui, false, priorState.dimension, priorState.zoom, priorState.mapType,
-                priorState.mapCenter, priorState.blockBounds, priorState.displayBounds);
+                priorState.mapCenter, priorState.chunkY, priorState.blockBounds, priorState.displayBounds);
     }
 
     @Override
@@ -153,6 +160,7 @@ public final class UIState
                 .add("mapType", mapType)
                 .add("zoom", zoom)
                 .add("mapCenter", mapCenter)
+                .add("chunkY", chunkY)
                 .add("blockBounds", blockBounds)
                 .add("displayBounds", displayBounds)
                 .add("blockSize", blockSize)
