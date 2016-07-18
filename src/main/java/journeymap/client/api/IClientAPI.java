@@ -135,12 +135,14 @@ public interface IClientAPI
      * @param modId      Mod id
      * @param dimension  The dimension
      * @param mapType    The map type
-     * @param startCoord The NW coordinates of the tile.  Y is ignored.
+     * @param startChunk The NW chunk of the tile.
+     * @param endChunk   The SW chunk of the tile.
      * @param chunkY     The vertical chunk (slice) if the maptype isn't day/night/topo
      * @param zoom       The zoom level (0-8)
      * @param showGrid   Whether to include to include the chunk grid overlay
      * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
-    void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startCoord,
+    void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
                         @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback);
+
 }

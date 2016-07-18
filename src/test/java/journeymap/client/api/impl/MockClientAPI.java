@@ -43,6 +43,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
+import java.util.Random;
 import java.util.function.Consumer;
 
 /**
@@ -136,22 +137,33 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startCoord,
+    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
                                @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback)
     {
-        Minecraft.getMinecraft().addScheduledTask(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                BufferedImage image = new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g = image.createGraphics();
-                g.setColor(Color.cyan);
-                g.fillRect(0, 0, 512, 512);
-                g.dispose();
-                callback.accept(image);
-            }
-        });
+        // Determine chunks for coordinates at zoom level
+        final int scale = (int) Math.pow(2, zoom);
+        final int chunkSize = 32 / scale;
+        final int pixels = chunkSize * 16;
+        final int width = Math.min(512, (endChunk.chunkXPos - startChunk.chunkXPos) * pixels);
+        final int height = Math.min(512, (endChunk.chunkZPos - startChunk.chunkZPos) * pixels);
+
+        Minecraft.getMinecraft().addScheduledTask(() -> callback.accept(createFakeImage(width, height)));
+    }
+
+    /**
+     * Create a randomly-colored image
+     *
+     * @return
+     */
+    private BufferedImage createFakeImage(int width, int height)
+    {
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics();
+        int color = new Random().nextInt(0xffffff);
+        g.setColor(new Color(color));
+        g.fillRect(0, 0, 512, 512);
+        g.dispose();
+        return image;
     }
 
     /**
