@@ -1,7 +1,7 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api) Changelog
 ======================================================
 
-**API v1.9.4-1.3-SNAPSHOT**
+**API v1.9.4**
 
 * Java 8 required
 * Support for Topo maps
