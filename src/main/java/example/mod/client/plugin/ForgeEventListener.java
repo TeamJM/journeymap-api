@@ -40,7 +40,7 @@ class ForgeEventListener
     {
         try
         {
-            if (event.getEntity().worldObj.isRemote)
+            if (event.getEntity().getEntityWorld().isRemote)
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
                 {
