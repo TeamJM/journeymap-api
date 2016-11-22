@@ -10,6 +10,8 @@ to read the [License Information](docs/license.md).
 
 News
 ============================================================
+* **22 Nov 2016**: Version 1.9.4-1.3 and 1.10.2-1.3 have been pushed to Maven
+
 * **27 May 2016**: Version 1.9-1.2 and 1.9.4-1.2 have been pushed to Maven
 
 * **26 May 2016**: Version 1.8.9-1.2 has been pushed to Maven
