@@ -1,5 +1,6 @@
 package journeymap.client.api.util;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import journeymap.client.api.display.Context;
 import net.minecraft.client.Minecraft;
@@ -153,7 +154,7 @@ public final class UIState
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("ui", ui)
                 .add("active", active)
                 .add("dimension", dimension)

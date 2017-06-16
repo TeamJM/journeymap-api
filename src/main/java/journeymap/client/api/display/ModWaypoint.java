@@ -20,7 +20,7 @@
 
 package journeymap.client.api.display;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.util.math.BlockPos;
 
@@ -293,7 +293,7 @@ public final class ModWaypoint extends Displayable
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("guid", getGuid())
                 .add("waypointName", waypointName)
                 .add("waypointGroupName", waypointGroupName)

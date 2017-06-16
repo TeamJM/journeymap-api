@@ -144,8 +144,8 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
         final int scale = (int) Math.pow(2, zoom);
         final int chunkSize = 32 / scale;
         final int pixels = chunkSize * 16;
-        final int width = Math.min(512, (endChunk.chunkXPos - startChunk.chunkXPos) * pixels);
-        final int height = Math.min(512, (endChunk.chunkZPos - startChunk.chunkZPos) * pixels);
+        final int width = Math.min(512, (endChunk.x - startChunk.x) * pixels);
+        final int height = Math.min(512, (endChunk.z - startChunk.z) * pixels);
 
         Minecraft.getMinecraft().addScheduledTask(() -> callback.accept(createFakeImage(width, height)));
     }

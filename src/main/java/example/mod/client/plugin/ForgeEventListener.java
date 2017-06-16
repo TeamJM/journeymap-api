@@ -69,7 +69,7 @@ class ForgeEventListener
                     Chunk chunk = event.getChunk();
                     if (isSlimeChunk(chunk))
                     {
-                        ChunkPos chunkCoords = chunk.getChunkCoordIntPair();
+                        ChunkPos chunkCoords = chunk.getPos();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
                             int dimension = event.getWorld().provider.getDimension();
@@ -97,7 +97,7 @@ class ForgeEventListener
         {
             if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
             {
-                ChunkPos chunkCoords = event.getChunk().getChunkCoordIntPair();
+                ChunkPos chunkCoords = event.getChunk().getPos();
                 if (!slimeChunkOverlays.containsKey(chunkCoords))
                 {
                     PolygonOverlay overlay = slimeChunkOverlays.remove(chunkCoords);
