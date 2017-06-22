@@ -39,7 +39,7 @@ import java.util.Arrays;
 public final class ModWaypoint extends Displayable
 {
     private int dim;
-    private BlockPos point;
+    private BlockPos position;
     private MapImage icon;
     private String waypointGroupName;
     private String waypointName;
@@ -78,17 +78,17 @@ public final class ModWaypoint extends Displayable
      * @param waypointGroupName (Optional) Group or category name for the waypoint.
      * @param color             rgb color of waypoint label
      * @param waypointName      Waypoint name.
-     * @param point             Waypoint location.
+     * @param position          Waypoint location.
      * @param icon              (Optional) Icon to display at the point.
      * @param displayDimensions Dimension ids where waypoint should be displayed.
      */
     public ModWaypoint(String modId, String waypointId, String waypointGroupName, String waypointName,
-                       int dimension, BlockPos point, @Nullable MapImage icon, int color, boolean persistent, int... displayDimensions)
+                       int dimension, BlockPos position, @Nullable MapImage icon, int color, boolean persistent, int... displayDimensions)
     {
         super(modId, waypointId);
         setWaypointGroupName(waypointGroupName);
         setWaypointName(waypointName);
-        setPoint(dimension, point);
+        setPosition(dimension, position);
         if (icon != null)
         {
             setIcon(icon);
@@ -154,21 +154,21 @@ public final class ModWaypoint extends Displayable
     /**
      * Waypoint location.
      */
-    public BlockPos getPoint()
+    public BlockPos getPosition()
     {
-        return point;
+        return position;
     }
 
     /**
      * Sets the waypoint location.
      *
-     * @param point the point
+     * @param position the BlockPos
      * @return this
      */
-    public ModWaypoint setPoint(int dimension, BlockPos point)
+    public ModWaypoint setPosition(int dimension, BlockPos position)
     {
         this.dim = dimension;
-        this.point = point;
+        this.position = position;
         return this;
     }
 
@@ -222,7 +222,7 @@ public final class ModWaypoint extends Displayable
     /**
      * Dimensions where waypoint should be displayed.
      */
-    public int[] getDimensions()
+    public int[] getDisplayDimensions()
     {
         return displayDims;
     }
@@ -243,7 +243,7 @@ public final class ModWaypoint extends Displayable
      * Whether the waypoint is shown in the dimension.
      *
      * @param dimension dim id
-     * @return true if dim id is in getDimensions()
+     * @return true if dim id is in getDisplayDimensions()
      */
     public boolean isVisibleInDimension(int dimension)
     {
@@ -357,7 +357,7 @@ public final class ModWaypoint extends Displayable
                 .add("iconName", getIconName())
                 .add("displayDims", displayDims)
                 .add("dim", dim)
-                .add("point", point)
+                .add("position", position)
                 .toString();
     }
 }
