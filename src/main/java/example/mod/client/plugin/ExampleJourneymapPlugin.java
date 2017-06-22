@@ -135,14 +135,14 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         // Create a bunch of random Image Overlays around the player
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Image))
         {
-            BlockPos pos = Minecraft.getMinecraft().player.getPosition();
+            BlockPos pos = Minecraft.getMinecraft().thePlayer.getPosition();
             SampleImageOverlayFactory.create(jmAPI, pos, 5, 256, 128);
         }
 
         // Create a bunch of random Marker Overlays around the player
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
         {
-            BlockPos pos = Minecraft.getMinecraft().player.getPosition();
+            BlockPos pos = Minecraft.getMinecraft().thePlayer.getPosition();
             SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
         }
 
@@ -150,7 +150,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         // will keep it updated if the player sleeps elsewhere.
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
         {
-            BlockPos pos = Minecraft.getMinecraft().player.getBedLocation();
+            BlockPos pos = Minecraft.getMinecraft().thePlayer.getBedLocation();
             SampleModWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
         }
 

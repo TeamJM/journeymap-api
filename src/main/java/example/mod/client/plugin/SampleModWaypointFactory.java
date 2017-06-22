@@ -50,7 +50,7 @@ class SampleModWaypointFactory
 
             // Waypoint itself
             bedWaypoint = new ModWaypoint(ExampleMod.MODID, "bed_" + dimension, "Handy Locations", "Bed",
-                    bedLocation, bedIcon, 0xffffff, true, Integer.MIN_VALUE);
+                    dimension, bedLocation, bedIcon, 0xffffff, true);
 
             // Add or update
             jmAPI.show(bedWaypoint);

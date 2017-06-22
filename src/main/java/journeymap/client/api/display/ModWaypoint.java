@@ -38,12 +38,14 @@ import java.util.Arrays;
  */
 public final class ModWaypoint extends Displayable
 {
+    private int dim;
     private BlockPos point;
     private MapImage icon;
     private String waypointGroupName;
     private String waypointName;
-    private int[] dimensions;
+    private int[] displayDims;
     private int color;
+    private int bgColor;
     private boolean persistent;
     private boolean editable;
 
@@ -51,44 +53,62 @@ public final class ModWaypoint extends Displayable
      * Constructor.
      *
      * @param modId             Your mod id
-     * @param displayId         Unique id for waypoint (scoped to your mod)
+     * @param waypointId        Unique id for waypoint (scoped to your mod)
      * @param waypointGroupName (Optional) Group or category name for the waypoint.
      * @param waypointName      Waypoint name.
+     * @param dimension         Dimension id where waypoint should be displayed.
      * @param x                 World x
      * @param y                 World y
      * @param z                 World z
      * @param color             rgb color of waypoint label
      * @param icon              (Optional) Icon to display at the point.
-     * @param dimension         Dimension id where waypoint should be displayed.
+
      */
-    public ModWaypoint(String modId, String displayId, String waypointGroupName, String waypointName,
-                       int x, int y, int z, @Nullable MapImage icon, int color, boolean persistent, int dimension)
+    public ModWaypoint(String modId, String waypointId, String waypointGroupName, String waypointName, int dimension,
+                       int x, int y, int z, @Nullable MapImage icon, int color, boolean persistent)
     {
-        this(modId, displayId, waypointGroupName, waypointName, new BlockPos(x, y, z), icon, color, persistent, dimension);
+        this(modId, waypointId, waypointGroupName, waypointName, dimension, new BlockPos(x, y, z), icon, color, persistent);
     }
 
     /**
      * Constructor.
      *
      * @param modId             Your mod id
-     * @param displayId         Unique id for waypoint (scoped to your mod)
+     * @param waypointId         Unique id for waypoint (scoped to your mod)
      * @param waypointGroupName (Optional) Group or category name for the waypoint.
      * @param color             rgb color of waypoint label
      * @param waypointName      Waypoint name.
      * @param point             Waypoint location.
      * @param icon              (Optional) Icon to display at the point.
-     * @param dimensions        Dimension ids where waypoint should be displayed.
+     * @param displayDimensions Dimension ids where waypoint should be displayed.
      */
-    public ModWaypoint(String modId, String displayId, String waypointGroupName, String waypointName,
-                       BlockPos point, @Nullable MapImage icon, int color, boolean persistent, int... dimensions)
+    public ModWaypoint(String modId, String waypointId, String waypointGroupName, String waypointName,
+                       int dimension, BlockPos point, @Nullable MapImage icon, int color, boolean persistent, int... displayDimensions)
     {
-        super(modId, displayId);
+        super(modId, waypointId);
         setWaypointGroupName(waypointGroupName);
         setWaypointName(waypointName);
-        setPoint(point);
-        setIcon(icon);
+        setPoint(dimension, point);
+        if (icon != null)
+        {
+            setIcon(icon);
+        }
         setColor(color);
-        setDimensions(dimensions);
+        setBackgroundColor(0x000000);
+        setPersistent(persistent);
+        if (displayDimensions.length > 0)
+        {
+            setDisplayDimensions(displayDimensions);
+        }
+        else
+        {
+            setDisplayDimensions(dimension);
+        }
+    }
+
+    public String getWaypointId()
+    {
+        return getDisplayId();
     }
 
     /**
@@ -145,8 +165,9 @@ public final class ModWaypoint extends Displayable
      * @param point the point
      * @return this
      */
-    public ModWaypoint setPoint(BlockPos point)
+    public ModWaypoint setPoint(int dimension, BlockPos point)
     {
+        this.dim = dimension;
         this.point = point;
         return this;
     }
@@ -175,22 +196,46 @@ public final class ModWaypoint extends Displayable
     }
 
     /**
+     * Background color for waypoint label.
+     *
+     * @return rgb int
+     */
+    public int getBackgroundColor()
+    {
+        return bgColor;
+    }
+
+
+    /**
+     * Sets the rgb color (between 0x000000 - 0xffffff) of the
+     * waypoint name's background.
+     *
+     * @param bgColor the color
+     * @return this
+     */
+    public ModWaypoint setBackgroundColor(int bgColor)
+    {
+        this.bgColor = clampRGB(bgColor);
+        return this;
+    }
+
+    /**
      * Dimensions where waypoint should be displayed.
      */
     public int[] getDimensions()
     {
-        return dimensions;
+        return displayDims;
     }
 
     /**
-     * Sets the dimensions in which the waypoint should appear.
+     * Sets the displayDims in which the waypoint should appear.
      *
-     * @param dimensions the dimensions
+     * @param dimensions the displayDims
      * @return this
      */
-    public ModWaypoint setDimensions(int... dimensions)
+    public ModWaypoint setDisplayDimensions(int... dimensions)
     {
-        this.dimensions = dimensions;
+        this.displayDims = dimensions;
         return this;
     }
 
@@ -200,9 +245,9 @@ public final class ModWaypoint extends Displayable
      * @param dimension dim id
      * @return true if dim id is in getDimensions()
      */
-    public boolean isInDimension(int dimension)
+    public boolean isVisibleInDimension(int dimension)
     {
-        return Arrays.binarySearch(dimensions, dimension) > -1;
+        return Arrays.binarySearch(displayDims, dimension) > -1;
     }
 
     /**
@@ -234,12 +279,19 @@ public final class ModWaypoint extends Displayable
      */
     public String getIconName()
     {
-        return getIcon().getImageLocation().getResourcePath();
+        if (icon != null && icon.getImageLocation() != null)
+        {
+            return getIcon().getImageLocation().getResourcePath();
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
      * Whether or not the waypoint should be persisted (saved to file)
-     * after the player disconnects from the world or changes dimensions.
+     * after the player disconnects from the world or changes displayDims.
      *
      * @return true if persistent
      */
@@ -250,7 +302,7 @@ public final class ModWaypoint extends Displayable
 
     /**
      * Sets whether or not the waypoint should be persisted (saved to file)
-     * after the player disconnects from the world or changes dimensions.
+     * after the player disconnects from the world or changes displayDims.
      *
      * @param persistent true if save to file
      * @return this
@@ -298,10 +350,13 @@ public final class ModWaypoint extends Displayable
                 .add("waypointName", waypointName)
                 .add("waypointGroupName", waypointGroupName)
                 .add("editable", editable)
+                .add("persistent", persistent)
                 .add("color", color)
-                .add("dimensions", dimensions)
+                .add("bgColor", bgColor)
                 .add("icon", icon)
                 .add("iconName", getIconName())
+                .add("displayDims", displayDims)
+                .add("dim", dim)
                 .add("point", point)
                 .toString();
     }

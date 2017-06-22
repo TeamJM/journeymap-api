@@ -108,7 +108,7 @@ public final class UIState
      */
     public static UIState newInactive(Context.UI ui, Minecraft minecraft)
     {
-        BlockPos center = minecraft.world == null ? new BlockPos(0, 68, 0) : minecraft.world.getSpawnPoint();
+        BlockPos center = minecraft.theWorld == null ? new BlockPos(0, 68, 0) : minecraft.theWorld.getSpawnPoint();
         return new UIState(ui, false, 0, 0, Context.MapType.Day, center, null, null, null);
     }
 
