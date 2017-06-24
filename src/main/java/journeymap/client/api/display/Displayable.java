@@ -22,7 +22,9 @@ package journeymap.client.api.display;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
@@ -36,6 +38,13 @@ public abstract class Displayable implements Comparable<Displayable>
     protected final String displayId;
     protected final DisplayType displayType;
 
+    protected Displayable()
+    {
+        modId = null;
+        displayId = null;
+        displayType = null;
+    }
+
     /**
      * Constructor which will generate a GUID display id.
      *
@@ -43,7 +52,7 @@ public abstract class Displayable implements Comparable<Displayable>
      */
     Displayable(String modId)
     {
-        this(modId, UUID.randomUUID().toString());
+        this(modId, UUID.randomUUID().toString(), null);
     }
 
     /**
@@ -54,9 +63,30 @@ public abstract class Displayable implements Comparable<Displayable>
      */
     Displayable(String modId, String displayId)
     {
+        this(modId, displayId, null);
+    }
+
+    /**
+     * Constructor with explicit display id and type.
+     * Warning: Mods should not subclass Displayable nor use this constructor.
+     *
+     * @param modId       the mod id
+     * @param displayId   the display id
+     * @param displayType displayType
+     */
+    Displayable(String modId, String displayId, @Nullable DisplayType displayType)
+    {
+        if (Strings.isNullOrEmpty(modId))
+        {
+            throw new IllegalArgumentException("modId may not be blank");
+        }
+        if (Strings.isNullOrEmpty(displayId))
+        {
+            throw new IllegalArgumentException("displayId may not be blank");
+        }
         this.modId = modId;
         this.displayId = displayId;
-        this.displayType = DisplayType.of(getClass());
+        this.displayType = displayType == null ? DisplayType.of(getClass()) : displayType;
     }
 
     /**
@@ -103,7 +133,7 @@ public abstract class Displayable implements Comparable<Displayable>
      *
      * @return displayId display id
      */
-    public final String getDisplayId()
+    public final String getId()
     {
         return displayId;
     }

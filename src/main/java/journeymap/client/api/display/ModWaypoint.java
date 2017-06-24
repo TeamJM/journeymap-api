@@ -21,8 +21,10 @@
 package journeymap.client.api.display;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.util.math.BlockPos;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -36,13 +38,14 @@ import java.util.Arrays;
  * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.
  */
-public final class ModWaypoint extends Displayable
+public class ModWaypoint extends Displayable
 {
+    protected transient boolean dirty;
     private int dim;
-    private BlockPos position;
+    private BlockPos pos;
     private MapImage icon;
-    private String waypointGroupName;
-    private String waypointName;
+    private String groupName;
+    private String name;
     private int[] displayDims;
     private int color;
     private int bgColor;
@@ -70,6 +73,12 @@ public final class ModWaypoint extends Displayable
         this(modId, waypointId, waypointGroupName, waypointName, dimension, new BlockPos(x, y, z), icon, color, persistent);
     }
 
+    public ModWaypoint(String modId, String waypointId, @Nullable String waypointGroupName, String waypointName,
+                       int dimension, BlockPos position, @Nullable MapImage icon, int color, boolean persistent)
+    {
+        this(modId, waypointId, waypointGroupName, waypointName, dimension, position, icon, color, persistent, new int[]{dimension});
+    }
+
     /**
      * Constructor.
      *
@@ -82,12 +91,16 @@ public final class ModWaypoint extends Displayable
      * @param icon              (Optional) Icon to display at the point.
      * @param displayDimensions Dimension ids where waypoint should be displayed.
      */
-    public ModWaypoint(String modId, String waypointId, String waypointGroupName, String waypointName,
-                       int dimension, BlockPos position, @Nullable MapImage icon, int color, boolean persistent, int... displayDimensions)
+    public ModWaypoint(String modId, String waypointId, @Nullable String waypointGroupName, String waypointName,
+                       int dimension, BlockPos position, @Nullable MapImage icon, int color, boolean persistent, int[] displayDimensions)
     {
-        super(modId, waypointId);
-        setWaypointGroupName(waypointGroupName);
-        setWaypointName(waypointName);
+        super(modId, waypointId, DisplayType.Waypoint);
+        setPersistent(persistent);
+        if (!Strings.isNullOrEmpty(waypointGroupName))
+        {
+            setGroupName(waypointGroupName);
+        }
+        setName(waypointName);
         setPosition(dimension, position);
         if (icon != null)
         {
@@ -95,48 +108,35 @@ public final class ModWaypoint extends Displayable
         }
         setColor(color);
         setBackgroundColor(0x000000);
-        setPersistent(persistent);
-        if (displayDimensions.length > 0)
-        {
-            setDisplayDimensions(displayDimensions);
-        }
-        else
-        {
-            setDisplayDimensions(dimension);
-        }
-    }
-
-    public String getWaypointId()
-    {
-        return getDisplayId();
+        setDisplayDimensions(displayDimensions);
     }
 
     /**
      * (Optional) Group or category name for the waypoint.
      */
-    public String getWaypointGroupName()
+    public final String getGroupName()
     {
-        return waypointGroupName;
+        return groupName;
     }
 
     /**
      * Sets the waypoint group name.
      *
-     * @param waypointGroupName the name
+     * @param groupName the name
      * @return this
      */
-    public ModWaypoint setWaypointGroupName(String waypointGroupName)
+    public ModWaypoint setGroupName(String groupName)
     {
-        this.waypointGroupName = waypointGroupName;
-        return this;
+        this.groupName = groupName;
+        return setDirty();
     }
 
     /**
      * Waypoint name.
      */
-    public String getWaypointName()
+    public final String getName()
     {
-        return waypointName;
+        return name;
     }
 
     /**
@@ -145,18 +145,23 @@ public final class ModWaypoint extends Displayable
      * @param waypointName the name
      * @return this
      */
-    public ModWaypoint setWaypointName(String waypointName)
+    public final ModWaypoint setName(String waypointName)
     {
-        this.waypointName = waypointName;
-        return this;
+        this.name = waypointName;
+        return setDirty();
+    }
+
+    public final int getDimension()
+    {
+        return dim;
     }
 
     /**
      * Waypoint location.
      */
-    public BlockPos getPosition()
+    public final BlockPos getPosition()
     {
-        return position;
+        return pos;
     }
 
     /**
@@ -168,8 +173,8 @@ public final class ModWaypoint extends Displayable
     public ModWaypoint setPosition(int dimension, BlockPos position)
     {
         this.dim = dimension;
-        this.position = position;
-        return this;
+        this.pos = position;
+        return setDirty();
     }
 
     /**
@@ -177,7 +182,7 @@ public final class ModWaypoint extends Displayable
      *
      * @return rgb int
      */
-    public int getColor()
+    public final int getColor()
     {
         return color;
     }
@@ -189,10 +194,10 @@ public final class ModWaypoint extends Displayable
      * @param color the color
      * @return this
      */
-    public ModWaypoint setColor(int color)
+    public final ModWaypoint setColor(int color)
     {
         this.color = clampRGB(color);
-        return this;
+        return setDirty();
     }
 
     /**
@@ -200,7 +205,7 @@ public final class ModWaypoint extends Displayable
      *
      * @return rgb int
      */
-    public int getBackgroundColor()
+    public final int getBackgroundColor()
     {
         return bgColor;
     }
@@ -213,16 +218,16 @@ public final class ModWaypoint extends Displayable
      * @param bgColor the color
      * @return this
      */
-    public ModWaypoint setBackgroundColor(int bgColor)
+    public final ModWaypoint setBackgroundColor(int bgColor)
     {
         this.bgColor = clampRGB(bgColor);
-        return this;
+        return setDirty();
     }
 
     /**
      * Dimensions where waypoint should be displayed.
      */
-    public int[] getDisplayDimensions()
+    public final int[] getDisplayDimensions()
     {
         return displayDims;
     }
@@ -233,10 +238,28 @@ public final class ModWaypoint extends Displayable
      * @param dimensions the displayDims
      * @return this
      */
-    public ModWaypoint setDisplayDimensions(int... dimensions)
+    public final ModWaypoint setDisplayDimensions(int... dimensions)
     {
         this.displayDims = dimensions;
-        return this;
+        return setDirty();
+    }
+
+    /**
+     * Sets whether to display in a given dimension.
+     *
+     * @param dimension dim id
+     * @param displayed true to display
+     */
+    public void setDisplayed(int dimension, boolean displayed)
+    {
+        if (displayed && !isDisplayed(dimension))
+        {
+            setDisplayDimensions(ArrayUtils.add(getDisplayDimensions(), dimension));
+        }
+        else if (!displayed && isDisplayed(dimension))
+        {
+            setDisplayDimensions(ArrayUtils.removeElement(getDisplayDimensions(), dimension));
+        }
     }
 
     /**
@@ -245,7 +268,7 @@ public final class ModWaypoint extends Displayable
      * @param dimension dim id
      * @return true if dim id is in getDisplayDimensions()
      */
-    public boolean isVisibleInDimension(int dimension)
+    public final boolean isDisplayed(int dimension)
     {
         return Arrays.binarySearch(displayDims, dimension) > -1;
     }
@@ -266,10 +289,10 @@ public final class ModWaypoint extends Displayable
      * @param icon the icon
      * @return this
      */
-    public ModWaypoint setIcon(MapImage icon)
+    public final ModWaypoint setIcon(MapImage icon)
     {
         this.icon = icon;
-        return this;
+        return setDirty();
     }
 
     /**
@@ -277,7 +300,7 @@ public final class ModWaypoint extends Displayable
      *
      * @return icon filename
      */
-    public String getIconName()
+    public final String getIconName()
     {
         if (icon != null && icon.getImageLocation() != null)
         {
@@ -295,7 +318,7 @@ public final class ModWaypoint extends Displayable
      *
      * @return true if persistent
      */
-    public boolean isPersistent()
+    public final boolean isPersistent()
     {
         return this.persistent;
     }
@@ -307,29 +330,65 @@ public final class ModWaypoint extends Displayable
      * @param persistent true if save to file
      * @return this
      */
-    public ModWaypoint setPersistent(boolean persistent)
+    public final ModWaypoint setPersistent(boolean persistent)
     {
         this.persistent = persistent;
-        return this;
+        if (!persistent)
+        {
+            dirty = false;
+        }
+        return setDirty();
     }
 
     /**
      * Whether the player can edit the waypoint.
+     *
      * @return true if editable
      */
-    public boolean isEditable()
+    public final boolean isEditable()
     {
         return editable;
     }
 
     /**
      * Sets whether the player can edit the waypoint.
+     *
      * @param editable is editable
      * @return this
      */
-    public ModWaypoint setEditable(boolean editable)
+    public final ModWaypoint setEditable(boolean editable)
     {
         this.editable = editable;
+        return setDirty();
+    }
+
+    /**
+     * Sets dirty.
+     *
+     * @return the dirty
+     */
+    public ModWaypoint setDirty()
+    {
+        return setDirty(true);
+    }
+
+    public boolean isDirty()
+    {
+        return persistent && dirty;
+    }
+
+    /**
+     * Sets dirty.
+     *
+     * @param dirty the dirty
+     * @return the dirty
+     */
+    public ModWaypoint setDirty(boolean dirty)
+    {
+        if (persistent)
+        {
+            this.dirty = dirty;
+        }
         return this;
     }
 
@@ -343,21 +402,57 @@ public final class ModWaypoint extends Displayable
     }
 
     @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(o))
+        {
+            return false;
+        }
+        ModWaypoint that = (ModWaypoint) o;
+        return dim == that.dim &&
+                getColor() == that.getColor() &&
+                bgColor == that.bgColor &&
+                isPersistent() == that.isPersistent() &&
+                isEditable() == that.isEditable() &&
+                isDirty() == that.isDirty() &&
+                Objects.equal(pos, that.pos) &&
+                Objects.equal(getIcon(), that.getIcon()) &&
+                Objects.equal(getGroupName(), that.getGroupName()) &&
+                Objects.equal(getName(), that.getName()) &&
+                Objects.equal(displayDims, that.displayDims);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(super.hashCode(), dim, pos, getIcon(), getGroupName(), getName(), displayDims, getColor(), bgColor, isPersistent(), isEditable(), isDirty());
+    }
+
+    @Override
     public String toString()
     {
         return Objects.toStringHelper(this)
-                .add("guid", getGuid())
-                .add("waypointName", waypointName)
-                .add("waypointGroupName", waypointGroupName)
-                .add("editable", editable)
-                .add("persistent", persistent)
-                .add("color", color)
                 .add("bgColor", bgColor)
-                .add("icon", icon)
-                .add("iconName", getIconName())
-                .add("displayDims", displayDims)
+                .add("color", color)
                 .add("dim", dim)
-                .add("position", position)
+                .add("dirty", dirty)
+                .add("displayDims", displayDims)
+                .add("editable", editable)
+                .add("groupName", groupName)
+                .add("icon", icon)
+                .add("name", name)
+                .add("persistent", persistent)
+                .add("pos", pos)
                 .toString();
     }
+
+
 }
