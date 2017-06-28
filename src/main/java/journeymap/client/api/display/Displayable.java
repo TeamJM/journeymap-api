@@ -23,25 +23,34 @@ package journeymap.client.api.display;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.gson.annotations.Since;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
 /**
  * Base class for Overlays and Waypoints.
+ * Mods should not extend this class directly.  Use one of the provided implementations.
  */
 @ParametersAreNonnullByDefault
 public abstract class Displayable implements Comparable<Displayable>
 {
+    @Since(1.1)
     protected final String modId;
-    protected final String displayId;
+
+    @Since(1.1)
+    protected final String id;
+
+    @Since(1.1)
     protected final DisplayType displayType;
 
-    protected Displayable()
+    /**
+     * Needed for GSON deserialization.
+     */
+    private Displayable()
     {
         modId = null;
-        displayId = null;
+        id = null;
         displayType = null;
     }
 
@@ -50,31 +59,18 @@ public abstract class Displayable implements Comparable<Displayable>
      *
      * @param modId     the mod id
      */
-    Displayable(String modId)
+    protected Displayable(String modId)
     {
-        this(modId, UUID.randomUUID().toString(), null);
+        this(modId, UUID.randomUUID().toString());
     }
 
     /**
      * Constructor with explicit display id.
      *
-     * @param modId     the mod id
-     * @param displayId the display id
-     */
-    Displayable(String modId, String displayId)
-    {
-        this(modId, displayId, null);
-    }
-
-    /**
-     * Constructor with explicit display id and type.
-     * Warning: Mods should not subclass Displayable nor use this constructor.
-     *
      * @param modId       the mod id
      * @param displayId   the display id
-     * @param displayType displayType
      */
-    Displayable(String modId, String displayId, @Nullable DisplayType displayType)
+    protected Displayable(String modId, String displayId)
     {
         if (Strings.isNullOrEmpty(modId))
         {
@@ -85,8 +81,8 @@ public abstract class Displayable implements Comparable<Displayable>
             throw new IllegalArgumentException("displayId may not be blank");
         }
         this.modId = modId;
-        this.displayId = displayId;
-        this.displayType = displayType == null ? DisplayType.of(getClass()) : displayType;
+        this.id = displayId;
+        this.displayType = DisplayType.of(getClass());
     }
 
     /**
@@ -135,7 +131,7 @@ public abstract class Displayable implements Comparable<Displayable>
      */
     public final String getId()
     {
-        return displayId;
+        return id;
     }
 
     /**
@@ -155,7 +151,7 @@ public abstract class Displayable implements Comparable<Displayable>
      */
     public final String getGuid()
     {
-        return Joiner.on(":").join(modId, displayType, displayId);
+        return Joiner.on(":").join(modId, displayType, id);
     }
 
     /**
@@ -178,13 +174,13 @@ public abstract class Displayable implements Comparable<Displayable>
         Displayable that = (Displayable) o;
         return Objects.equal(modId, that.modId) &&
                 Objects.equal(displayType, that.displayType) &&
-                Objects.equal(displayId, that.displayId);
+                Objects.equal(id, that.id);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hashCode(modId, displayType, displayId);
+        return Objects.hashCode(modId, displayType, id);
     }
 
     /**

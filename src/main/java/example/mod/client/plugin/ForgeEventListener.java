@@ -44,7 +44,7 @@ class ForgeEventListener
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
                 {
-                    SampleModWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().dimension);
+                    SampleWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().dimension);
                 }
             }
         }

@@ -22,7 +22,7 @@ package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
-import journeymap.client.api.display.ModWaypoint;
+import journeymap.client.api.display.Waypoint;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -30,7 +30,7 @@ import net.minecraft.util.math.BlockPos;
 /**
  * Sample factory that creates a waypoint.
  */
-class SampleModWaypointFactory
+class SampleWaypointFactory
 {
     /**
      * ExampleMod will create a waypoint for the bed slept in at the provided coordinates.
@@ -38,9 +38,9 @@ class SampleModWaypointFactory
      * @param bedLocation
      * @param dimension
      */
-    static ModWaypoint createBedWaypoint(IClientAPI jmAPI, BlockPos bedLocation, int dimension)
+    static Waypoint createBedWaypoint(IClientAPI jmAPI, BlockPos bedLocation, int dimension)
     {
-        ModWaypoint bedWaypoint = null;
+        Waypoint bedWaypoint = null;
         try
         {
             // Icon for waypoint
@@ -49,8 +49,9 @@ class SampleModWaypointFactory
                     .setAnchorY(32);
 
             // Waypoint itself
-            bedWaypoint = new ModWaypoint(ExampleMod.MODID, "bed_" + dimension, "Handy Locations", "Bed",
-                    dimension, bedLocation, bedIcon, 0xffffff, true);
+            bedWaypoint = new Waypoint(ExampleMod.MODID, "bed_" + dimension, "Bed", dimension, bedLocation)
+                    .setColor(0x00ffff)
+                    .setIcon(bedIcon);
 
             // Add or update
             jmAPI.show(bedWaypoint);
