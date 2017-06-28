@@ -7,9 +7,9 @@ import journeymap.client.api.model.MapImage;
  */
 public interface IWaypointDisplay
 {
-    int getColor();
+    Integer getColor();
 
-    int getBackgroundColor();
+    Integer getBackgroundColor();
 
     int[] getDisplayDimensions();
 

@@ -17,8 +17,6 @@ public class WaypointGroup extends WaypointBase<WaypointGroup>
     @Since(1.4)
     protected final double version = VERSION;
     @Since(1.4)
-    protected String name;
-    @Since(1.4)
     protected int order;
     protected transient IWaypointDisplay defaultDisplay;
 
@@ -101,14 +99,13 @@ public class WaypointGroup extends WaypointBase<WaypointGroup>
             return false;
         }
         WaypointGroup that = (WaypointGroup) o;
-        return Double.compare(that.version, version) == 0 &&
-                Objects.equal(getName(), that.getName());
+        return order == that.order && Double.compare(that.version, version) == 0;
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hashCode(super.hashCode(), getName());
+        return Objects.hashCode(super.hashCode(), version);
     }
 }
 

@@ -41,13 +41,11 @@ import java.util.Arrays;
  */
 public class Waypoint extends WaypointBase<Waypoint>
 {
-    /**
-     * Wayoint specification version.
-     */
     public static final double VERSION = 1.4;
+
+    protected final transient CachedDimPosition cachedDimPosition = new CachedDimPosition();
     @Since(1.4)
     protected final double version = VERSION;
-    protected final transient CachedDimPosition cachedDimPosition = new CachedDimPosition();
     @Since(1.4)
     protected int dim;
     @Since(1.4)
@@ -314,7 +312,7 @@ public class Waypoint extends WaypointBase<Waypoint>
     @Override
     public int hashCode()
     {
-        return Objects.hashCode(super.hashCode(), getDimension(), getPosition());
+        return Objects.hashCode(super.hashCode(), getName());
     }
 
     @Override
@@ -328,7 +326,7 @@ public class Waypoint extends WaypointBase<Waypoint>
                 .add("icon", icon)
                 .add("color", color)
                 .add("bgColor", bgColor)
-                .add("displayDims", Ints.asList(displayDims))
+                .add("displayDims", displayDims == null ? null : Ints.asList(displayDims))
                 .add("editable", editable)
                 .add("persistent", persistent)
                 .add("dirty", dirty)

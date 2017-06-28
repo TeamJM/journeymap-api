@@ -35,8 +35,6 @@ import java.util.Arrays;
  */
 public abstract class WaypointBase<T extends WaypointBase> extends Displayable implements IWaypointDisplay
 {
-    public static final double VERSION = 1.4;
-
     @Since(1.4)
     protected String name;
 
@@ -48,9 +46,6 @@ public abstract class WaypointBase<T extends WaypointBase> extends Displayable i
 
     @Since(1.4)
     protected MapImage icon;
-
-    @Since(1.4)
-    protected double version = VERSION;
 
     @Since(1.4)
     protected int[] displayDims;
@@ -126,7 +121,7 @@ public abstract class WaypointBase<T extends WaypointBase> extends Displayable i
      *
      * @return rgb int
      */
-    public final int getColor()
+    public final Integer getColor()
     {
         if (color == null && hasDelegate())
         {
@@ -164,7 +159,7 @@ public abstract class WaypointBase<T extends WaypointBase> extends Displayable i
      *
      * @return rgb int
      */
-    public final int getBackgroundColor()
+    public final Integer getBackgroundColor()
     {
         if (bgColor == null && hasDelegate())
         {
@@ -397,32 +392,10 @@ public abstract class WaypointBase<T extends WaypointBase> extends Displayable i
             return false;
         }
         WaypointBase<?> that = (WaypointBase<?>) o;
-        return getColor() == that.getColor() &&
-                bgColor == that.bgColor &&
-                Double.compare(that.version, version) == 0 &&
-                isDirty() == that.isDirty() &&
-                Objects.equal(getName(), that.getName()) &&
+        return Objects.equal(getName(), that.getName()) &&
                 Objects.equal(getIcon(), that.getIcon()) &&
-                Objects.equal(displayDims, that.displayDims);
+                Objects.equal(getColor(), that.getColor()) &&
+                Objects.equal(getBackgroundColor(), that.getBackgroundColor()) &&
+                Arrays.equals(getDisplayDimensions(), that.getDisplayDimensions());
     }
-
-    @Override
-    public int hashCode()
-    {
-        return Objects.hashCode(super.hashCode(), getName());
-    }
-
-    @Override
-    public String toString()
-    {
-        return Objects.toStringHelper(this)
-                .add("bgColor", bgColor)
-                .add("color", color)
-                .add("dirty", dirty)
-                .add("displayDims", displayDims)
-                .add("name", name)
-                .toString();
-    }
-
-
 }
