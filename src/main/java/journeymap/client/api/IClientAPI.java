@@ -145,4 +145,52 @@ public interface IClientAPI
     void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
                         @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback);
 
+    /**
+     * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
+     * <p>
+     * This call can be used to enable or disable map types and UIs in a specific dimension or all dimensions.
+     *
+     * @param dimension The dimension. Use null for all dimensions.
+     * @param mapType   The map type
+     * @param mapUI     The map UI
+     * @param enable    True to enable, false to disable.
+     */
+    void toggleDisplay(@Nullable Integer dimension, Context.MapType mapType, Context.UI mapUI, boolean enable);
+
+    /**
+     * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
+     * <p>
+     * This call can be used to enable or disable the use of waypoints in a specific dimension or all dimensions.
+     *
+     * @param dimension The dimension. Use null for all dimensions.
+     * @param mapType   The map type
+     * @param mapUI     The map UI
+     * @param enable    True to enable, false to disable.
+     */
+    void toggleWaypoints(@Nullable Integer dimension, Context.MapType mapType, Context.UI mapUI, boolean enable);
+
+    /**
+     * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
+     * <p>
+     * This call can be used to check if a map type and UI are enabled in a specific dimension or all dimensions.
+     *
+     * @param dimension The dimension. Use null for all dimensions.
+     * @param mapType   The map type
+     * @param mapUI     The map UI
+     * @return true if enabled
+     */
+    boolean isDisplayEnabled(@Nullable Integer dimension, Context.MapType mapType, Context.UI mapUI);
+
+    /**
+     * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
+     * <p>
+     * This call can be used to check if waypoints are enabled in a specific dimension or all dimensions.
+     *
+     * @param dimension The dimension. Use null for all dimensions.
+     * @param mapType   The map type
+     * @param mapUI     The map UI
+     * @return true if enabled
+     */
+    boolean isWaypointsEnabled(@Nullable Integer dimension, Context.MapType mapType, Context.UI mapUI);
+
 }
