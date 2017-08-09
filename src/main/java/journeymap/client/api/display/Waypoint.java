@@ -20,6 +20,7 @@
 
 package journeymap.client.api.display;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.primitives.Ints;
 import com.google.gson.annotations.Since;
@@ -318,7 +319,7 @@ public class Waypoint extends WaypointBase<Waypoint>
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("name", name)
                 .add("dim", dim)
                 .add("pos", pos)
