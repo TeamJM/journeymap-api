@@ -31,7 +31,8 @@ public enum DisplayType
     Image(ImageOverlay.class),
     Marker(MarkerOverlay.class),
     Polygon(PolygonOverlay.class),
-    Waypoint(ModWaypoint.class);
+    Waypoint(Waypoint.class),
+    WaypointGroup(journeymap.client.api.display.WaypointGroup.class);
 
     private static HashMap<Class<? extends Displayable>, DisplayType> reverseLookup;
     private final Class<? extends Displayable> implClass;

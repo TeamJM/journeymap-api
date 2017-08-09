@@ -22,6 +22,7 @@ package journeymap.client.api.model;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.gson.annotations.Since;
 import journeymap.client.api.display.Displayable;
 import net.minecraft.util.ResourceLocation;
 
@@ -39,20 +40,44 @@ import java.awt.image.BufferedImage;
  */
 public final class MapImage
 {
-    private BufferedImage image;
-    private ResourceLocation imageLocation;
-    private int color = 0xffffff;
-    private float opacity = 1f;
-    private int textureX = 0;
-    private int textureY = 0;
-    private int textureWidth;
-    private int textureHeight;
-    private int rotation;
-    private double displayWidth;
-    private double displayHeight;
-    private double anchorX;
-    private double anchorY;
+    @Since(1.1)
+    private transient BufferedImage image;
 
+    @Since(1.1)
+    private ResourceLocation imageLocation;
+
+    @Since(1.1)
+    private Integer color = 0xffffff;
+
+    @Since(1.1)
+    private Float opacity = 1f;
+
+    @Since(1.1)
+    private Integer textureX = 0;
+
+    @Since(1.1)
+    private Integer textureY = 0;
+
+    @Since(1.1)
+    private Integer textureWidth;
+
+    @Since(1.1)
+    private Integer textureHeight;
+
+    @Since(1.1)
+    private Integer rotation;
+
+    @Since(1.1)
+    private Double displayWidth;
+
+    @Since(1.1)
+    private Double displayHeight;
+
+    @Since(1.1)
+    private Double anchorX;
+
+    @Since(1.1)
+    private Double anchorY;
     /**
      * Constructor.
      * <p>

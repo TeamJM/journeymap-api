@@ -63,7 +63,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
     @Override
     public void initialize(final IClientAPI jmAPI)
     {
-        // Set ClientProxy.SampleModWaypointFactory with an implementation that uses the JourneyMap IClientAPI under the covers.
+        // Set ClientProxy.SampleWaypointFactory with an implementation that uses the JourneyMap IClientAPI under the covers.
         this.jmAPI = jmAPI;
 
         // Register listener for forge events
@@ -151,7 +151,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
         {
             BlockPos pos = Minecraft.getMinecraft().player.getBedLocation();
-            SampleModWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
+            SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
         }
 
         // Slime chunk Polygon Overlays are created by the ForgeEventListener

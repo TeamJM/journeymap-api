@@ -95,7 +95,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     @Override
     public void show(Displayable displayable)
     {
-        showDisplayable(displayable.getModId(), displayable.getDisplayType(), displayable.getDisplayId());
+        showDisplayable(displayable.getModId(), displayable.getDisplayType(), displayable.getId());
     }
 
     private void showDisplayable(String modId, DisplayType displayType, String displayId)
@@ -107,7 +107,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     @Override
     public void remove(Displayable displayable)
     {
-        modDisplayables.getUnchecked(displayable.getModId()).remove(displayable.getDisplayType(), displayable.getDisplayId());
+        modDisplayables.getUnchecked(displayable.getModId()).remove(displayable.getDisplayType(), displayable.getId());
     }
 
     @Override
@@ -127,7 +127,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     @Override
     public boolean exists(Displayable displayable)
     {
-        return modDisplayables.getUnchecked(displayable.getModId()).containsEntry(displayable.getDisplayType(), displayable.getDisplayId());
+        return modDisplayables.getUnchecked(displayable.getModId()).containsEntry(displayable.getDisplayType(), displayable.getId());
     }
 
     @Override
@@ -148,6 +148,30 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
         final int height = Math.min(512, (endChunk.z - startChunk.z) * pixels);
 
         Minecraft.getMinecraft().addScheduledTask(() -> callback.accept(createFakeImage(width, height)));
+    }
+
+    @Override
+    public void toggleDisplay(@Nullable Integer dimension, Context.MapType mapType, Context.UI mapUI, boolean enable)
+    {
+        log(String.format("Toggled display in %s:%s:%s:%s", dimension, mapType, mapUI, enable));
+    }
+
+    @Override
+    public void toggleWaypoints(@Nullable Integer dimension, Context.MapType mapType, Context.UI mapUI, boolean enable)
+    {
+        log(String.format("Toggled waypoints in %s:%s:%s:%s", dimension, mapType, mapUI, enable));
+    }
+
+    @Override
+    public boolean isDisplayEnabled(@Nullable Integer dimension, Context.MapType mapType, Context.UI mapUI)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isWaypointsEnabled(@Nullable Integer dimension, Context.MapType mapType, Context.UI mapUI)
+    {
+        return false;
     }
 
     /**
