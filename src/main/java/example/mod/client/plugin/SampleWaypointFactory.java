@@ -25,7 +25,7 @@ import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.Waypoint;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockPos;
 
 /**
  * Sample factory that creates a waypoint.

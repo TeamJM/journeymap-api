@@ -23,9 +23,10 @@ package journeymap.client.api.display;
 import com.google.common.base.Objects;
 import com.google.common.primitives.Ints;
 import com.google.gson.annotations.Since;
+import com.sun.javafx.geom.Vec3d;
 import journeymap.client.api.model.WaypointBase;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -370,7 +371,8 @@ public class Waypoint extends WaypointBase<Waypoint>
                 this.cachedDim = dimension;
                 this.cachedPos = Waypoint.this.getInternalPosition(dimension);
                 this.cachedVec = new Vec3d(this.cachedPos.getX(), this.cachedPos.getY(), this.cachedPos.getZ());
-                this.cachedCenteredVec = this.cachedVec.addVector(.5, .5, .5);
+                this.cachedCenteredVec = new Vec3d(.5, .5, .5);
+                this.cachedCenteredVec.add(this.cachedVec);
             }
             return this;
         }
