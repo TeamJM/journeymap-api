@@ -25,7 +25,7 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ChunkCoordIntPair;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -142,7 +142,7 @@ public interface IClientAPI
      * @param showGrid   Whether to include to include the chunk grid overlay
      * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
-    void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
+    void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkCoordIntPair startChunk, ChunkCoordIntPair endChunk,
                         @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback);
 
     /**

@@ -4,7 +4,7 @@ import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.PolygonOverlay;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 class ForgeEventListener
 {
     IClientAPI jmAPI;
-    HashMap<ChunkPos, PolygonOverlay> slimeChunkOverlays;
+    HashMap<ChunkCoordIntPair, PolygonOverlay> slimeChunkOverlays;
 
     /**
      * Constructor.
@@ -28,7 +28,7 @@ class ForgeEventListener
     ForgeEventListener(IClientAPI jmAPI)
     {
         this.jmAPI = jmAPI;
-        this.slimeChunkOverlays = new HashMap<ChunkPos, PolygonOverlay>();
+        this.slimeChunkOverlays = new HashMap<ChunkCoordIntPair, PolygonOverlay>();
     }
 
     /**
@@ -69,7 +69,7 @@ class ForgeEventListener
                     Chunk chunk = event.getChunk();
                     if (isSlimeChunk(chunk))
                     {
-                        ChunkPos chunkCoords = chunk.getChunkCoordIntPair();
+                        ChunkCoordIntPair chunkCoords = chunk.getChunkCoordIntPair();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
                             int dimension = event.getWorld().provider.getDimension();
@@ -97,7 +97,7 @@ class ForgeEventListener
         {
             if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
             {
-                ChunkPos chunkCoords = event.getChunk().getChunkCoordIntPair();
+                ChunkCoordIntPair chunkCoords = event.getChunk().getChunkCoordIntPair();
                 if (!slimeChunkOverlays.containsKey(chunkCoords))
                 {
                     PolygonOverlay overlay = slimeChunkOverlays.remove(chunkCoords);

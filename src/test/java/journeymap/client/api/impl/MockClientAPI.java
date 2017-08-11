@@ -32,7 +32,7 @@ import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.fml.common.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -137,7 +137,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
+    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkCoordIntPair startChunk, ChunkCoordIntPair endChunk,
                                @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback)
     {
         // Determine chunks for coordinates at zoom level
