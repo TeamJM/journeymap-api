@@ -3,6 +3,7 @@
 
 **API v1.9-1.4, v1.9.4-1.4, v1.10.2-1.4. v1.11.2-1.4, v1.12-1.4**
 
+* Implemented in JourneyMap 5.5.0
 * Java 8 required
 * Waypoint-related refactoring and bugfixes
 * Unified API for 1.9 through 1.12
@@ -18,7 +19,7 @@
 
 **API v1.8.9-1.1**
 
-* Basic support implemented in [JourneyMap 5.1.5 for Minecraft 1.8.9](http://minecraft.curseforge.com/projects/journeymap-32274/files/2285371)
+* Basic support implemented in [JourneyMap 5.1.5 for Minecraft 1.8.9](http://minecraft.curseforge.com/projects/journeymap/files/2285371)
 * Too many changes to be worth listing, since 1.0 wasn't ever implemented. Look at commits if you care to.
 
 **API v1.8.9-1.0**
