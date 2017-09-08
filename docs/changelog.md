@@ -1,6 +1,12 @@
 [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api) Changelog
 ======================================================
 
+**API v1.9-1.4, v1.9.4-1.4, v1.10.2-1.4. v1.11.2-1.4, v1.12-1.4**
+
+* Java 8 required
+* Waypoint-related refactoring and bugfixes
+* Unified API for 1.9 through 1.12
+
 **API v1.9.4-1.3, v1.10.2-1.3**
 
 * Java 8 required
