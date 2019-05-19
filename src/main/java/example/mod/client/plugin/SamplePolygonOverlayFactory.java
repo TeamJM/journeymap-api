@@ -9,8 +9,8 @@ import journeymap.client.api.model.TextProperties;
 import journeymap.client.api.util.PolygonHelper;
 import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -27,11 +27,11 @@ class SamplePolygonOverlayFactory
      * @param dimension   chunk dimension
      * @return a new overlay
      */
-    static PolygonOverlay create(ChunkCoordIntPair chunkCoords, int dimension)
+    static PolygonOverlay create(ChunkPos chunkCoords, int dimension)
     {
         String displayId = "slime_" + chunkCoords.toString();
         String groupName = "Slime Chunks";
-        String label = String.format("Slime Chunk [%s,%s]", chunkCoords.chunkXPos, chunkCoords.chunkZPos);
+        String label = String.format("Slime Chunk [%s,%s]", chunkCoords.x, chunkCoords.z);
 
         // Style the polygon
         ShapeProperties shapeProps = new ShapeProperties()
@@ -49,7 +49,7 @@ class SamplePolygonOverlayFactory
                 .setFontShadow(true);
 
         // Define the shape
-        MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.chunkXPos, 70, chunkCoords.chunkZPos);
+        MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.x, 70, chunkCoords.z);
 
         // Create the overlay
         PolygonOverlay slimeChunkOverlay = new PolygonOverlay(ExampleMod.MODID, displayId, dimension, shapeProps, polygon);
@@ -109,7 +109,7 @@ class SamplePolygonOverlayFactory
 
             // Update title
             String title = "%s blocks away";
-            BlockPos playerLoc = Minecraft.getMinecraft().thePlayer.getPosition();
+            BlockPos playerLoc = Minecraft.getInstance().player.getPosition();
             int distance = (int) Math.sqrt(playerLoc.distanceSq(blockPosition.getX(), playerLoc.getY(), blockPosition.getZ()));
             overlay.setTitle(String.format(title, distance));
         }

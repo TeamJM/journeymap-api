@@ -21,30 +21,60 @@
 package example.mod.server;
 
 import example.mod.CommonProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 /**
  * Server-sided proxy.  Currently unused.
  */
-@SideOnly(Side.SERVER)
-public class ServerProxy extends CommonProxy
+
+public class ServerProxy implements CommonProxy
 {
+
     @Override
-    public void preInit(FMLPreInitializationEvent event)
+    public void commonSetupEvent(FMLCommonSetupEvent event)
     {
+
     }
 
     @Override
-    public void init(FMLInitializationEvent event)
+    public void imcEnqueue(InterModEnqueueEvent event)
     {
+
     }
 
     @Override
-    public void postInit(FMLPostInitializationEvent event)
+    public void imcHandle(InterModProcessEvent event)
     {
+
+    }
+
+    @Override
+    public void loadCompleteEvent(FMLLoadCompleteEvent event)
+    {
+
+    }
+
+    @Override
+    public void clientSetupEvent(FMLClientSetupEvent event)
+    {
+
+    }
+
+    @Override
+    public void serverStartingEvent(FMLServerStartingEvent event)
+    {
+
+    }
+
+    @Override
+    public void dedicatedServerSetupEvent(FMLDedicatedServerSetupEvent event)
+    {
+
     }
 }

@@ -21,7 +21,7 @@
 package journeymap.client.api.util;
 
 import journeymap.client.api.model.MapPolygon;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Utility class related to Polygons.
@@ -47,9 +47,9 @@ public class PolygonHelper
      * Creates a polygon for the chunk coords, starting with the lower-left (southwest) corner
      * and going counter-clockwise.
      *
-     * @param chunkX  chunk x
-     * @param y       block y
-     * @param chunkZ  chunk z
+     * @param chunkX chunk x
+     * @param y      block y
+     * @param chunkZ chunk z
      * @return polygon
      */
     public static MapPolygon createChunkPolygon(int chunkX, int y, int chunkZ)

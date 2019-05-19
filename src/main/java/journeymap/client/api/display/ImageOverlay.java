@@ -21,7 +21,7 @@
 package journeymap.client.api.display;
 
 import journeymap.client.api.model.MapImage;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

@@ -20,13 +20,13 @@
 
 package journeymap.client.api.display;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.primitives.Ints;
 import com.google.gson.annotations.Since;
 import com.sun.javafx.geom.Vec3d;
 import journeymap.client.api.model.WaypointBase;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -319,7 +319,7 @@ public class Waypoint extends WaypointBase<Waypoint>
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("name", name)
                 .add("dim", dim)
                 .add("pos", pos)

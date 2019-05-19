@@ -1,5 +1,6 @@
 package journeymap.client.api.event;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import journeymap.client.api.util.UIState;
 
@@ -28,7 +29,7 @@ public class DisplayUpdateEvent extends ClientEvent
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("uiState", uiState)
                 .toString();
     }

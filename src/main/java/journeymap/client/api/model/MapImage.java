@@ -20,6 +20,7 @@
 
 package journeymap.client.api.model;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.gson.annotations.Since;
 import journeymap.client.api.display.Displayable;
@@ -419,7 +420,7 @@ public final class MapImage
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("imageLocation", imageLocation)
                 .add("anchorX", anchorX)
                 .add("anchorY", anchorY)

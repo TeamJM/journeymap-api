@@ -1,10 +1,11 @@
 package journeymap.client.api.util;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import journeymap.client.api.display.Context;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 import java.awt.geom.Rectangle2D;
@@ -108,7 +109,7 @@ public final class UIState
      */
     public static UIState newInactive(Context.UI ui, Minecraft minecraft)
     {
-        BlockPos center = minecraft.theWorld == null ? new BlockPos(0, 68, 0) : minecraft.theWorld.getSpawnPoint();
+        BlockPos center = minecraft.world == null ? new BlockPos(0, 68, 0) : minecraft.world.getSpawnPoint();
         return new UIState(ui, false, 0, 0, Context.MapType.Day, center, null, null, null);
     }
 
@@ -153,7 +154,7 @@ public final class UIState
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("ui", ui)
                 .add("active", active)
                 .add("dimension", dimension)

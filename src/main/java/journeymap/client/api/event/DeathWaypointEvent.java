@@ -1,7 +1,7 @@
 package journeymap.client.api.event;
 
-import com.google.common.base.Objects;
-import net.minecraft.util.BlockPos;
+import com.google.common.base.MoreObjects;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Indicates a Death Waypoint is about to be created.
@@ -26,7 +26,7 @@ public class DeathWaypointEvent extends ClientEvent
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("location", location)
                 .toString();
     }

@@ -20,6 +20,7 @@
 
 package journeymap.client.api.model;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import journeymap.client.api.display.Displayable;
 
@@ -174,7 +175,7 @@ public class ShapeProperties
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("fillColor", fillColor)
                 .add("fillOpacity", fillOpacity)
                 .add("strokeColor", strokeColor)

@@ -20,48 +20,96 @@
 
 package example.mod;
 
+import example.mod.client.ClientProxy;
+import example.mod.server.ServerProxy;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Example mod showing how to use the JourneyMap API.
  */
-@Mod(modid = ExampleMod.MODID, version = ExampleMod.VERSION)
+@Mod(ExampleMod.MODID)
+@Mod.EventBusSubscriber(modid = ExampleMod.MODID)
 public class ExampleMod
 {
     public static final String MODID = "examplemod-jm";
-    public static final String VERSION = "@API_VERSION@";
-    public static final Logger LOGGER  = LogManager.getFormatterLogger(MODID);
+    public static final String VERSION = "1.5";
+    public static final Logger LOGGER = LogManager.getFormatterLogger(MODID);
 
-    @Mod.Instance(ExampleMod.MODID)
-    public static ExampleMod instance;
 
-    @SidedProxy(clientSide = "example.mod.client.ClientProxy", serverSide = "example.mod.server.ServerProxy")
-    public static CommonProxy proxy;
+    /**
+     * The constant proxy.
+     */
+    public static final CommonProxy proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
+    public ExampleMod()
     {
-        proxy.preInit(event);
-        LOGGER.info("ExampleMod preInit done");
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetupEvent);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadCompleteEvent);
+        });
+        // First Event
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetupEvent);
+        // Second Events -> Sided
+
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::dedicatedServerSetupEvent);
+        // IMC Events third
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcEnqueue);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcHandle);
+        // Last Events fourth
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverStartingEvent);
     }
 
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
+    public void commonSetupEvent(FMLCommonSetupEvent event)
     {
-        proxy.init(event);
-        LOGGER.info("ExampleMod init done");
+        proxy.commonSetupEvent(event);
+        LOGGER.info("ExampleMod commonSetupEvent done");
     }
 
-    @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
+    public void imcEnqueue(InterModEnqueueEvent event)
     {
-        proxy.postInit(event);
-        LOGGER.info("ExampleMod postInit done");
+        proxy.imcEnqueue(event);
+        LOGGER.info("ExampleMod imcEnqueue done");
+    }
+
+    public void imcHandle(InterModProcessEvent event)
+    {
+        proxy.imcHandle(event);
+        LOGGER.info("ExampleMod imcHandle done");
+    }
+
+    public void loadCompleteEvent(FMLLoadCompleteEvent event)
+    {
+        proxy.loadCompleteEvent(event);
+        LOGGER.info("ExampleMod loadCompleteEvent done");
+    }
+
+    public void clientSetupEvent(FMLClientSetupEvent event)
+    {
+        proxy.clientSetupEvent(event);
+        LOGGER.info("ExampleMod clientSetupEvent done");
+    }
+
+    public void serverStartingEvent(FMLServerStartingEvent event)
+    {
+        proxy.serverStartingEvent(event);
+        LOGGER.info("ExampleMod serverStartingEvent done");
+    }
+
+    public void dedicatedServerSetupEvent(FMLDedicatedServerSetupEvent event)
+    {
+        proxy.dedicatedServerSetupEvent(event);
+        LOGGER.info("ExampleMod dedicatedServerSetupEvent done");
     }
 }

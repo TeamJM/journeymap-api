@@ -25,7 +25,7 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -40,13 +40,14 @@ import java.util.function.Consumer;
 public interface IClientAPI
 {
     String API_OWNER = "journeymap";
-    String API_VERSION = "@API_VERSION@";
+    String API_VERSION = "1.5-SNAPSHOT";
 
     /**
      * Returns the current UIState of the UI specified.
-     *
+     * <p>
      * Note: Context.UI.Any is not a meaningful parameter value here and will just return null.
-     * @param ui   Should be one of: Fullscreen, Minimap, or Webmap
+     *
+     * @param ui Should be one of: Fullscreen, Minimap, or Webmap
      * @return the current UIState of the UI specified.
      */
     @Nullable
@@ -56,8 +57,8 @@ public interface IClientAPI
      * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
      * if no event subscriptions are needed. (This is the default).
      *
-     * @param modId       Mod id
-     * @param eventTypes  set of types
+     * @param modId      Mod id
+     * @param eventTypes set of types
      */
     void subscribe(String modId, EnumSet<ClientEvent.Type> eventTypes);
 
@@ -142,7 +143,7 @@ public interface IClientAPI
      * @param showGrid   Whether to include to include the chunk grid overlay
      * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
-    void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkCoordIntPair startChunk, ChunkCoordIntPair endChunk,
+    void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
                         @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback);
 
     /**

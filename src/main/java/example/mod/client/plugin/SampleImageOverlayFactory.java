@@ -6,7 +6,7 @@ import journeymap.client.api.display.IOverlayListener;
 import journeymap.client.api.display.ImageOverlay;
 import journeymap.client.api.model.MapImage;
 import journeymap.client.api.util.UIState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
