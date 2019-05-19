@@ -30,10 +30,9 @@ import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.fml.common.Optional;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,7 +48,7 @@ import java.util.function.Consumer;
 /**
  * Stub implementation of the IClientAPI. Doesn't actually do anything, other than track displayIds.
  */
-@Optional.Interface(iface = "journeymap.client.api.IClientAPI", modid = "journeymap")
+//@Optional.Interface(iface = "journeymap.client.api.IClientAPI", modid = "journeymap")
 @ParametersAreNonnullByDefault
 enum MockClientAPI implements journeymap.client.api.IClientAPI
 {
@@ -137,17 +136,17 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkCoordIntPair startChunk, ChunkCoordIntPair endChunk,
+    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
                                @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback)
     {
         // Determine chunks for coordinates at zoom level
         final int scale = (int) Math.pow(2, zoom);
         final int chunkSize = 32 / scale;
         final int pixels = chunkSize * 16;
-        final int width = Math.min(512, (endChunk.chunkXPos - startChunk.chunkXPos) * pixels);
-        final int height = Math.min(512, (endChunk.chunkZPos - startChunk.chunkZPos) * pixels);
+        final int width = Math.min(512, (endChunk.x - startChunk.x) * pixels);
+        final int height = Math.min(512, (endChunk.z - startChunk.z) * pixels);
 
-        Minecraft.getMinecraft().addScheduledTask(() -> callback.accept(createFakeImage(width, height)));
+        Minecraft.getInstance().addScheduledTask(() -> callback.accept(createFakeImage(width, height)));
     }
 
     @Override

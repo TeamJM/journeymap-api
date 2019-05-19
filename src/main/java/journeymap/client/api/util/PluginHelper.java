@@ -20,10 +20,12 @@
 
 package journeymap.client.api.util;
 
+import com.google.common.base.Strings;
 import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,10 +61,11 @@ public enum PluginHelper
      * @param event preInit
      * @return map of instantiated plugins, keyed by modId
      */
-    public Map<String, IClientPlugin> preInitPlugins(/*FMLPreInitializationEvent*/Object event)
+    public Map<String, IClientPlugin> preInitPlugins(FMLCommonSetupEvent event)
     {
         if (plugins == null)
         {
+
 //            ASMDataTable asmDataTable = event.getAsmData();
 //            HashMap<String, IClientPlugin> discovered = new HashMap<String, IClientPlugin>();
 //            Set<ASMDataTable.ASMData> asmDataSet = asmDataTable.getAll(PLUGIN_ANNOTATION_NAME);
@@ -102,7 +105,7 @@ public enum PluginHelper
 //                            PLUGIN_ANNOTATION_NAME, className, e.getMessage()), e);
 //                }
 //            }
-//
+
 //            if(discovered.isEmpty())
 //            {
 //                LOGGER.info("No plugins for JourneyMap API discovered.");
@@ -129,7 +132,7 @@ public enum PluginHelper
         if (plugins == null)
         {
             // Exception used just to show a trace back to whoever shouldn't have called this.
-            LOGGER.warn("Plugin discovery never occurred.", new IllegalStateException());
+            LOGGER.warn("Plugin discovery never occurred."/*, new IllegalStateException()*/);
         }
         else if (!initialized)
         {
@@ -168,7 +171,7 @@ public enum PluginHelper
     /**
      * Get the map of plugins, keyed by modId.
      *
-     * @return null if {@link #preInitPlugins(Object)} hasn't been called yet
+     * @return null if {@link #preInitPlugins(FMLCommonSetupEvent)} hasn't been called yet
      */
     public Map<String, IClientPlugin> getPlugins()
     {
