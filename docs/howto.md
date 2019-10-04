@@ -55,7 +55,7 @@ stepping through a debugger in your development environment.*
 II. Look at the Example Code
 =============================
 
-* Look in the [example package](src/main/java/example) for a complete 
+* Look in the [example package](https://bitbucket.org/TeamJM/journeymap-api/src/1.8.9/src/main/java/example/mod) for a complete 
 example of a mod that has implemented a plugin for the JourneyMap API.
 
 * You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
