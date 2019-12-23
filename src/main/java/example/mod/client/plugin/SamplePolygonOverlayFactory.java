@@ -110,7 +110,7 @@ class SamplePolygonOverlayFactory
             // Update title
             String title = "%s blocks away";
             BlockPos playerLoc = Minecraft.getInstance().player.getPosition();
-            int distance = (int) Math.sqrt(playerLoc.distanceSq(blockPosition.getX(), playerLoc.getY(), blockPosition.getZ()));
+            int distance = (int) Math.sqrt(playerLoc.distanceSq(blockPosition));
             overlay.setTitle(String.format(title, distance));
         }
 

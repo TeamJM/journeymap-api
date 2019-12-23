@@ -24,16 +24,24 @@ import com.google.common.base.Strings;
 import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.forgespi.language.ModFileScanData;
+import net.minecraftforge.registries.ObjectHolderRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static net.minecraftforge.forgespi.locating.IModFile.Type.MOD;
 
 /**
  * Enum singleton used by JourneyMap to load and initialize plugins.  A plugin class must be annotated with
@@ -65,53 +73,54 @@ public enum PluginHelper
     {
         if (plugins == null)
         {
+            HashMap<String, IClientPlugin> discovered = new HashMap<String, IClientPlugin>();
+            List<ModFileScanData.AnnotationData> annotations = ModList.get().getAllScanData().stream()
+                    .map(ModFileScanData::getAnnotations)
+                    .flatMap(Collection::stream)
+                    .filter(annotationData -> PLUGIN_ANNOTATION_NAME.equalsIgnoreCase(annotationData.getMemberName()))
+                    .collect(Collectors.toList());
+            for (ModFileScanData.AnnotationData entry : annotations)
+            {
+                String className = entry.getClassType().getClassName();
+                try
+                {
+                    Class<?> pluginClass = Class.forName(className);
+                    if (IClientPlugin.class.isAssignableFrom(pluginClass))
+                    {
+                        Class<? extends IClientPlugin> interfaceImplClass = pluginClass.asSubclass(IClientPlugin.class);
+                        IClientPlugin instance = interfaceImplClass.newInstance();
+                        String modId = instance.getModId();
+                        if (Strings.isNullOrEmpty(modId))
+                        {
+                            throw new Exception("IClientPlugin.getModId() must return a non-empty, non-null value");
+                        }
+                        if (discovered.containsKey(modId))
+                        {
+                            Class otherPluginClass = discovered.get(modId).getClass();
+                            throw new Exception(String.format("Multiple plugins trying to use the same modId: %s and %s", interfaceImplClass, otherPluginClass));
+                        }
+                        discovered.put(modId, instance);
+                        LOGGER.info(String.format("Found @%s: %s", PLUGIN_ANNOTATION_NAME, className));
+                    }
+                    else
+                    {
+                        LOGGER.error(String.format("Found @%s: %s, but it doesn't implement %s",
+                                PLUGIN_ANNOTATION_NAME, className, PLUGIN_INTERFACE_NAME));
+                    }
+                }
+                catch (Exception e)
+                {
+                    LOGGER.error(String.format("Found @%s: %s, but failed to instantiate it: %s",
+                            PLUGIN_ANNOTATION_NAME, className, e.getMessage()), e);
+                }
+            }
 
-//            ASMDataTable asmDataTable = event.getAsmData();
-//            HashMap<String, IClientPlugin> discovered = new HashMap<String, IClientPlugin>();
-//            Set<ASMDataTable.ASMData> asmDataSet = asmDataTable.getAll(PLUGIN_ANNOTATION_NAME);
-//
-//            for (ASMDataTable.ASMData asmData : asmDataSet)
-//            {
-//                String className = asmData.getClassName();
-//                try
-//                {
-//                    Class<?> pluginClass = Class.forName(className);
-//                    if (IClientPlugin.class.isAssignableFrom(pluginClass))
-//                    {
-//                        Class<? extends IClientPlugin> interfaceImplClass = pluginClass.asSubclass(IClientPlugin.class);
-//                        IClientPlugin instance = interfaceImplClass.newInstance();
-//                        String modId = instance.getModId();
-//                        if (Strings.isNullOrEmpty(modId))
-//                        {
-//                            throw new Exception("IClientPlugin.getModId() must return a non-empty, non-null value");
-//                        }
-//                        if (discovered.containsKey(modId))
-//                        {
-//                            Class otherPluginClass = discovered.get(modId).getClass();
-//                            throw new Exception(String.format("Multiple plugins trying to use the same modId: %s and %s", interfaceImplClass, otherPluginClass));
-//                        }
-//                        discovered.put(modId, instance);
-//                        LOGGER.info(String.format("Found @%s: %s", PLUGIN_ANNOTATION_NAME, className));
-//                    }
-//                    else
-//                    {
-//                        LOGGER.error(String.format("Found @%s: %s, but it doesn't implement %s",
-//                                PLUGIN_ANNOTATION_NAME, className, PLUGIN_INTERFACE_NAME));
-//                    }
-//                }
-//                catch (Exception e)
-//                {
-//                    LOGGER.error(String.format("Found @%s: %s, but failed to instantiate it: %s",
-//                            PLUGIN_ANNOTATION_NAME, className, e.getMessage()), e);
-//                }
-//            }
+            if(discovered.isEmpty())
+            {
+                LOGGER.info("No plugins for JourneyMap API discovered.");
+            }
 
-//            if(discovered.isEmpty())
-//            {
-//                LOGGER.info("No plugins for JourneyMap API discovered.");
-//            }
-//
-//            plugins = Collections.unmodifiableMap(discovered);
+            plugins = Collections.unmodifiableMap(discovered);
         }
 
         return plugins;
