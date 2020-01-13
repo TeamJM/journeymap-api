@@ -1,4 +1,4 @@
-[JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api)
+[JourneyMap API](https://github.com/TeamJM/journeymap-api)
 ============================================================
 
 A plugin-style (soft dependency) API allowing other mods to create waypoints and show overlays and markers 

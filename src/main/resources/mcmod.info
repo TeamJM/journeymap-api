@@ -5,7 +5,7 @@
   "description": "Example mod showing how to write a plugin for the JourneyMap API.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://bitbucket.org/TeamJM/journeymap-api/",
+  "url": "https://github.com/TeamJM/journeymap-api/",
   "updateUrl": "",
   "authorList": ["TechBrew"],
   "credits": "TeamJM",

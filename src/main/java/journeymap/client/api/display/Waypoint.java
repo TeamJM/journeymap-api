@@ -1,6 +1,6 @@
 /*
  * JourneyMap API (http://journeymap.info)
- * http://bitbucket.org/TeamJM/journeymap-api
+ * http://github.com/TeamJM/journeymap-api
  *
  * Copyright (c) 2011-2016 Techbrew.  All Rights Reserved.
  * The following limited rights are granted to you:

@@ -1,4 +1,4 @@
-How to use the [JourneyMap API](https://bitbucket.org/TeamJM/journeymap-api)
+How to use the [JourneyMap API](https://github.com/TeamJM/journeymap-api)
 =============================
 
 To hook into JourneyMap from your mod, you'll write a plugin class that handles all interactions with JourneyMap
