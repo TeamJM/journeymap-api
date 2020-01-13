@@ -50,7 +50,6 @@ public interface IOverlayListener
      * @param blockPosition the block position under the mouse
      * @param button        the mouse button clicked
      * @param doubleClick   true if the mouse button was double-clicked
-     *
      * @return true if click event can bubble up to other overlays which occupy the same area.
      */
     boolean onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick);

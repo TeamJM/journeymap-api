@@ -6,7 +6,7 @@ import journeymap.client.api.display.IOverlayListener;
 import journeymap.client.api.display.MarkerOverlay;
 import journeymap.client.api.model.MapImage;
 import journeymap.client.api.util.UIState;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
@@ -23,8 +23,8 @@ class SampleMarkerOverlayFactory
     /**
      * Generate a bunch of randomly-placed markers on the map, just to show how MarkerOverlays fit together.
      *
-     * @param center    center position
-     * @param quantity  how many markers
+     * @param center   center position
+     * @param quantity how many markers
      * @return list of MarkerOverlays (already shown in the API)
      */
     static List<MarkerOverlay> create(IClientAPI jmAPI, BlockPos center, int quantity, int maxDistance)
@@ -52,7 +52,7 @@ class SampleMarkerOverlayFactory
             {
                 colorIndex = 1;
             }
-            int color = MapColor.COLORS[colorIndex].colorValue;
+            int color = MaterialColor.COLORS[colorIndex].colorValue;
 
             MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f);
 
@@ -93,7 +93,6 @@ class SampleMarkerOverlayFactory
 
     /**
      * Listener for events on a MarkerOverlay instance.
-     *
      */
     static class MarkerListener implements IOverlayListener
     {

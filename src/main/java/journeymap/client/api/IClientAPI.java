@@ -40,13 +40,14 @@ import java.util.function.Consumer;
 public interface IClientAPI
 {
     String API_OWNER = "journeymap";
-    String API_VERSION = "@API_VERSION@";
+    String API_VERSION = "1.5-SNAPSHOT";
 
     /**
      * Returns the current UIState of the UI specified.
-     *
+     * <p>
      * Note: Context.UI.Any is not a meaningful parameter value here and will just return null.
-     * @param ui   Should be one of: Fullscreen, Minimap, or Webmap
+     *
+     * @param ui Should be one of: Fullscreen, Minimap, or Webmap
      * @return the current UIState of the UI specified.
      */
     @Nullable
@@ -56,8 +57,8 @@ public interface IClientAPI
      * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
      * if no event subscriptions are needed. (This is the default).
      *
-     * @param modId       Mod id
-     * @param eventTypes  set of types
+     * @param modId      Mod id
+     * @param eventTypes set of types
      */
     void subscribe(String modId, EnumSet<ClientEvent.Type> eventTypes);
 

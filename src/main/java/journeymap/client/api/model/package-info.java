@@ -23,9 +23,8 @@
  *
  * @author techbrew
  */
-@API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api-model")
-@ParametersAreNonnullByDefault package journeymap.client.api.model;
-
-import net.minecraftforge.fml.common.API;
+//@API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api-model")
+@ParametersAreNonnullByDefault
+package journeymap.client.api.model;
 
 import javax.annotation.ParametersAreNonnullByDefault;

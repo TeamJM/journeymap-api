@@ -20,18 +20,30 @@
 
 package example.mod;
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 /**
  * Base class for sided proxies.
  */
-public abstract class CommonProxy
+public interface CommonProxy
 {
-    public abstract void preInit(FMLPreInitializationEvent event);
+    void commonSetupEvent(FMLCommonSetupEvent event);
 
-    public abstract void init(FMLInitializationEvent event);
+    void imcEnqueue(InterModEnqueueEvent event);
 
-    public abstract void postInit(FMLPostInitializationEvent event);
+    void imcHandle(InterModProcessEvent event);
+
+    void loadCompleteEvent(FMLLoadCompleteEvent event);
+
+    void clientSetupEvent(FMLClientSetupEvent event);
+
+    void serverStartingEvent(FMLServerStartingEvent event);
+
+    void dedicatedServerSetupEvent(FMLDedicatedServerSetupEvent event);
 }

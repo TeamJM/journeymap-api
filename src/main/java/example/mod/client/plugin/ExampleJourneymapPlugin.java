@@ -33,7 +33,9 @@ import net.minecraftforge.common.MinecraftForge;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
-import static journeymap.client.api.event.ClientEvent.Type.*;
+import static journeymap.client.api.event.ClientEvent.Type.DEATH_WAYPOINT;
+import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STARTED;
+import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STOPPED;
 
 /**
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
@@ -53,12 +55,12 @@ public class ExampleJourneymapPlugin implements IClientPlugin
 
     // Forge listener reference
     private ForgeEventListener forgeEventListener;
-    
+
     /**
      * Called by JourneyMap during the init phase of mod loading.  The IClientAPI reference is how the mod
      * will add overlays, etc. to JourneyMap.
      *
-     * @param jmAPI     Client API implementation
+     * @param jmAPI Client API implementation
      */
     @Override
     public void initialize(final IClientAPI jmAPI)
@@ -135,14 +137,14 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         // Create a bunch of random Image Overlays around the player
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Image))
         {
-            BlockPos pos = Minecraft.getMinecraft().player.getPosition();
+            BlockPos pos = Minecraft.getInstance().player.getPosition();
             SampleImageOverlayFactory.create(jmAPI, pos, 5, 256, 128);
         }
 
         // Create a bunch of random Marker Overlays around the player
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
         {
-            BlockPos pos = Minecraft.getMinecraft().player.getPosition();
+            BlockPos pos = Minecraft.getInstance().player.getPosition();
             SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
         }
 
@@ -150,8 +152,8 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         // will keep it updated if the player sleeps elsewhere.
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
         {
-            BlockPos pos = Minecraft.getMinecraft().player.getBedLocation();
-            SampleModWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
+            BlockPos pos = Minecraft.getInstance().player.getBedLocation();
+            SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
         }
 
         // Slime chunk Polygon Overlays are created by the ForgeEventListener

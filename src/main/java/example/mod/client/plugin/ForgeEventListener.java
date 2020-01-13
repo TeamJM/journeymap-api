@@ -4,11 +4,12 @@ import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.PolygonOverlay;
+import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
 
@@ -40,11 +41,11 @@ class ForgeEventListener
     {
         try
         {
-            if (event.getEntity().getEntityWorld().isRemote)
+            if (event.getEntityLiving().getEntityWorld().isRemote)
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
                 {
-                    SampleModWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().dimension);
+                    SampleWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().dimension.getId());
                 }
             }
         }
@@ -62,17 +63,17 @@ class ForgeEventListener
     {
         try
         {
-            if (event.getWorld().isRemote)
+            if (event.getWorld().isRemote())
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
                 {
-                    Chunk chunk = event.getChunk();
+                    Chunk chunk = (Chunk) event.getChunk();
                     if (isSlimeChunk(chunk))
                     {
-                        ChunkPos chunkCoords = chunk.getChunkCoordIntPair();
+                        ChunkPos chunkCoords = chunk.getPos();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
-                            int dimension = event.getWorld().provider.getDimension();
+                            int dimension = event.getWorld().getDimension().getType().getId();
                             PolygonOverlay overlay = SamplePolygonOverlayFactory.create(chunkCoords, dimension);
                             slimeChunkOverlays.put(chunkCoords, overlay);
                             jmAPI.show(overlay);
@@ -93,11 +94,11 @@ class ForgeEventListener
     @SubscribeEvent
     public void onChunkUnloadEvent(ChunkEvent.Unload event)
     {
-        if (event.getWorld().isRemote)
+        if (event.getWorld().isRemote())
         {
             if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
             {
-                ChunkPos chunkCoords = event.getChunk().getChunkCoordIntPair();
+                ChunkPos chunkCoords = event.getChunk().getPos();
                 if (!slimeChunkOverlays.containsKey(chunkCoords))
                 {
                     PolygonOverlay overlay = slimeChunkOverlays.remove(chunkCoords);
@@ -118,6 +119,6 @@ class ForgeEventListener
      */
     private boolean isSlimeChunk(Chunk chunk)
     {
-        return chunk.getRandomWithSeed(987234911L).nextInt(10) == 0;
+        return SharedSeedRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getWorld().getSeed(), 987234911L).nextInt(10) == 0;
     }
 }

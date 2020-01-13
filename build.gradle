@@ -26,14 +26,18 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
 
 /* Gradle Plugins */
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
@@ -46,31 +50,52 @@ targetCompatibility = 1.8
 
 /* ForgeGradle spec for Minecraft */
 minecraft {
-    version = project.minecraft_version + "-" + project.forge_version
-    runDir = "run"
-    mappings = project.mappings
-    replace '@API_VERSION@', project.api_version
-    replace '@MC_VERSION@', project.minecraft_version
-}
+//    version = project.minecraft_version + "-" + project.forge_version
+//    runDir = "run"
+    mappings channel: 'snapshot', version: project.mappings
+//    replace '@API_VERSION@', project.api_version
+//    replace '@MC_VERSION@', project.minecraft_version
 
+    runs {
+        client = {
+            // recommended logging data for a userdev environment
+            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
+            // recommended logging level for the console
+            properties 'forge.logging.console.level': 'info'
+            workingDirectory project.file('run/client').canonicalPath
+            source sourceSets.main
+        }
+        server = {
+            // recommended logging data for a userdev environment
+            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
+            // recommended logging level for the console
+            properties 'forge.logging.console.level': 'debug'
+            workingDirectory project.file('run').canonicalPath
+            source sourceSets.main
+        }
+    }
+}
+dependencies {
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+}
 /* Replace tokens in resources files */
 processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+        {
+            // this will ensure that this task is redone when the versions change.
+            inputs.property "version", project.version
+            inputs.property "mcversion", project.minecraft_version
 
-    // replace stuff in mcmod.info on copy
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
+            // replace stuff in mcmod.info on copy
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
+                expand 'version':project.version, 'mcversion':project.minecraft_version
+            }
 
-    // copy everything else
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
+            // copy everything else
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
 
 /* Reobfuscated jar for just the Example Mod */
 jar {

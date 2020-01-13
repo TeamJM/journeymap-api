@@ -1,6 +1,6 @@
 package journeymap.client.api.event;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import net.minecraft.util.math.BlockPos;
 
 /**
@@ -26,7 +26,7 @@ public class DeathWaypointEvent extends ClientEvent
     @Override
     public String toString()
     {
-        return Objects.toStringHelper(this)
+        return MoreObjects.toStringHelper(this)
                 .add("location", location)
                 .toString();
     }
