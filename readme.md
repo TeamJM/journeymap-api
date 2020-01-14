@@ -1,6 +1,8 @@
 [JourneyMap API](https://github.com/TeamJM/journeymap-api)
 ============================================================
 
+[![JavaDocs](https://javadoc.io/badge2/info.journeymap/journeymap-api/javadoc.svg)](https://javadoc.io/doc/info.journeymap/journeymap-api) 
+
 A plugin-style (soft dependency) API allowing other mods to create waypoints and show overlays and markers 
 within [JourneyMap for Minecraft](http://journeymap.info) 1.8.9+.
 
