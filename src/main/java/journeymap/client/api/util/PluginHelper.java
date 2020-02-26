@@ -28,7 +28,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.forgespi.language.ModFileScanData;
-import net.minecraftforge.registries.ObjectHolderRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,8 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static net.minecraftforge.forgespi.locating.IModFile.Type.MOD;
 
 /**
  * Enum singleton used by JourneyMap to load and initialize plugins.  A plugin class must be annotated with
@@ -115,7 +112,7 @@ public enum PluginHelper
                 }
             }
 
-            if(discovered.isEmpty())
+            if (discovered.isEmpty())
             {
                 LOGGER.info("No plugins for JourneyMap API discovered.");
             }

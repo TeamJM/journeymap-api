@@ -1,7 +1,6 @@
 package journeymap.client.api.event;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import journeymap.client.api.util.UIState;
 
 /**

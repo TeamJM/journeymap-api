@@ -21,7 +21,6 @@
 package journeymap.client.api.model;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.util.UIState;
