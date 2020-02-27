@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Java Set-Up
+      # Java 8 by default, doesn't really matter for us
+      uses: olafurpg/setup-scala@v6
+
+    - name: Gradle Build
+      run: /bin/sh ./gradlew build

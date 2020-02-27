@@ -32,14 +32,19 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
     }
 }
 
 /* Gradle Plugins */
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
+
+group 'info.journeymap'
 
 /* Artifact Version */
 version = project.minecraft_version + '-' + project.api_version
@@ -155,56 +160,48 @@ artifacts {
     archives sourcesJar
 }
 
-/* Jar signing (http://central.sonatype.org/pages/gradle.html) */
-signing {
-    sign configurations.archives
+def bintrayUser = project.findProperty("bintray.user") ?: System.getenv("BINTRAY_USER")
+def bintrayKey = project.findProperty("bintray.password") ?: System.getenv("BINTRAY_PASSWORD")
+
+if (project.hasProperty("production")) {
+    // Bintray is _only_ for releases, not snapshots
+    bintray {
+        user = bintrayUser
+        key = bintrayKey
+
+        pkg {
+            name = "api"
+            repo = "JourneyMap"
+            userOrg = "teamjm"
+
+            publications = ["maven"]
+
+            version {
+                name = project.version
+                released = new Date()
+            }
+        }
+    }
 }
 
-/* Central Maven Deployment (only used by TeamJM) */
-afterEvaluate { project ->
-    if (project.hasProperty("sonatypeUsername")) {
-        uploadArchives {
-            repositories {
-                mavenDeployer {
-                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+publishing {
+    repositories {
+        maven {
+            name = "JourneyMap"
+            url = uri("https://jm.gserv.me/repository/maven-snapshots/")
 
-                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                        authentication(userName: sonatypeUsername, password: sonatypePassword)
-                    }
-
-                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                        authentication(userName: sonatypeUsername, password: sonatypePassword)
-                    }
-
-                    pom.project {
-                        name = project.title
-                        description = project.description
-                        url = project.git_website
-                        packaging = 'jar'
-
-                        scm {
-                            connection project.gir_scm
-                            developerConnection project.gir_scm
-                            url project.git_url
-                        }
-
-                        licenses {
-                            license {
-                                name 'Copyright'
-                                url project.license_url
-                            }
-                        }
-
-                        developers {
-                            developer {
-                                id 'techbrew'
-                                name 'Techbrew'
-                                email 'techbrew@journeymap.info'
-                            }
-                        }
-                    }
-                }
+            credentials {
+                username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
+                password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
             }
+
+            version = project.version
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
         }
     }
 }
