@@ -40,7 +40,6 @@ buildscript {
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -106,6 +105,21 @@ processResources
 jar {
     dependsOn classes
     from sourceSets.main.output
+    include 'journeymap/**'
+    manifest {
+        attributes = [
+                "Manifest-Version"      : "1.0",
+                "Implementation-Title"  : project.title,
+                "Implementation-Version": project.version,
+                "Implementation-URL"    : project.git_website
+        ]
+    }
+}
+
+/* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
+task modJar(type: Jar, dependsOn: classes) {
+    mustRunAfter = ['jar']
+    from sourceSets.main.output
     classifier = 'examplemod'
     include 'example/**'
     include 'mcmod.info'
@@ -114,21 +128,6 @@ jar {
         attributes = [
                 "Manifest-Version": "1.0",
                 "Implementation-Title": project.title_example,
-                "Implementation-Version": project.version,
-                "Implementation-URL"  : project.git_website
-        ]
-    }
-}
-
-/* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
-task deobfJar(type: Jar, dependsOn: classes) {
-    mustRunAfter = ['jar']
-    from sourceSets.main.output
-    include 'journeymap/**'
-    manifest {
-        attributes = [
-                "Manifest-Version": "1.0",
-                "Implementation-Title": project.title,
                 "Implementation-Version": project.version,
                 "Implementation-URL"  : project.git_website
         ]
@@ -155,7 +154,7 @@ task sourcesJar(type: Jar) {
 /* Additional artifacts produced by build task */
 artifacts {
     archives jar
-    archives deobfJar
+    archives modJar
     archives javadocJar
     archives sourcesJar
 }
