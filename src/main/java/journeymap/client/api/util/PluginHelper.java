@@ -25,8 +25,8 @@ import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -133,12 +133,12 @@ public enum PluginHelper
      * @param clientAPI Client API implementation
      * @return list of initialized plugins, null if plugin discovery never occurred
      */
-    public Map<String, IClientPlugin> initPlugins(FMLClientSetupEvent event, IClientAPI clientAPI)
+    public Map<String, IClientPlugin> initPlugins(FMLLoadCompleteEvent event, IClientAPI clientAPI)
     {
         if (plugins == null)
         {
             // Exception used just to show a trace back to whoever shouldn't have called this.
-            LOGGER.warn("Plugin discovery never occurred."/*, new IllegalStateException()*/);
+            LOGGER.warn("Plugin discovery never occurred.", new IllegalStateException());
         }
         else if (!initialized)
         {
