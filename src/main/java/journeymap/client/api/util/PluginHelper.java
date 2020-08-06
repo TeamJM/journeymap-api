@@ -30,6 +30,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.objectweb.asm.Type;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collection;
@@ -38,6 +39,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -50,7 +52,7 @@ public enum PluginHelper
     INSTANCE;
 
     public final static Logger LOGGER = LogManager.getLogger("journeymap");
-    public final static String PLUGIN_ANNOTATION_NAME = ClientPlugin.class.getCanonicalName();
+    public final static Type PLUGIN_ANNOTATION_NAME = Type.getType(ClientPlugin.class);
     public final static String PLUGIN_INTERFACE_NAME = IClientPlugin.class.getSimpleName();
 
     protected Map<String, IClientPlugin> plugins = null;
@@ -71,14 +73,15 @@ public enum PluginHelper
         if (plugins == null)
         {
             HashMap<String, IClientPlugin> discovered = new HashMap<String, IClientPlugin>();
-            List<ModFileScanData.AnnotationData> annotations = ModList.get().getAllScanData().stream()
+            List<String> annotations = ModList.get().getAllScanData().stream()
                     .map(ModFileScanData::getAnnotations)
                     .flatMap(Collection::stream)
-                    .filter(annotationData -> PLUGIN_ANNOTATION_NAME.equalsIgnoreCase(annotationData.getMemberName()))
+                    .filter(annotationData -> Objects.equals(annotationData.getAnnotationType(), PLUGIN_ANNOTATION_NAME))
+                    .map(ModFileScanData.AnnotationData::getMemberName)
                     .collect(Collectors.toList());
-            for (ModFileScanData.AnnotationData entry : annotations)
+
+            for (String className : annotations)
             {
-                String className = entry.getClassType().getClassName();
                 try
                 {
                     Class<?> pluginClass = Class.forName(className);
