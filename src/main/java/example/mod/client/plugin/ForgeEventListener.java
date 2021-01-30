@@ -4,8 +4,10 @@ import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.PolygonOverlay;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -45,7 +47,7 @@ class ForgeEventListener
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
                 {
-                    SampleWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().dimension.getId());
+                    SampleWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().world.getDimensionKey());
                 }
             }
         }
@@ -73,7 +75,7 @@ class ForgeEventListener
                         ChunkPos chunkCoords = chunk.getPos();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
-                            int dimension = event.getWorld().getDimension().getType().getId();
+                            RegistryKey<World> dimension = ((World) event.getWorld()).getDimensionKey();
                             PolygonOverlay overlay = SamplePolygonOverlayFactory.create(chunkCoords, dimension);
                             slimeChunkOverlays.put(chunkCoords, overlay);
                             jmAPI.show(overlay);
@@ -119,6 +121,10 @@ class ForgeEventListener
      */
     private boolean isSlimeChunk(Chunk chunk)
     {
-        return SharedSeedRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getWorld().getSeed(), 987234911L).nextInt(10) == 0;
+        if (!chunk.getWorld().isRemote())
+        {
+            return SharedSeedRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getWorld().getServer().getServerConfiguration().getDimensionGeneratorSettings().getSeed(), 987234911L).nextInt(10) == 0;
+        }
+        return false;
     }
 }

@@ -152,7 +152,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         // will keep it updated if the player sleeps elsewhere.
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
         {
-            BlockPos pos = Minecraft.getInstance().player.getBedLocation();
+            BlockPos pos = Minecraft.getInstance().player.getBedPosition().orElse(new BlockPos(0,0,0));
             SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
         }
 

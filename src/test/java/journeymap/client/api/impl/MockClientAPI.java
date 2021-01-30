@@ -33,6 +33,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -78,7 +79,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
             return null;
         }
 
-        return new UIState(ui, true, 0, 1,
+        return new UIState(ui, true, World.OVERWORLD, 1,
                 Context.MapType.Day,
                 new BlockPos(128, 0, 128), null,
                 new AxisAlignedBB(new BlockPos(0, 0, 0), new BlockPos(256, 256, 256)),

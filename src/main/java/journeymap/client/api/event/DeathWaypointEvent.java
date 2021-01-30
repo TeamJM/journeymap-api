@@ -1,7 +1,9 @@
 package journeymap.client.api.event;
 
 import com.google.common.base.MoreObjects;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * Indicates a Death Waypoint is about to be created.
@@ -17,7 +19,7 @@ public class DeathWaypointEvent extends ClientEvent
      * @param location  The location of the waypoint.
      * @param dimension The dimension of the waypoint.
      */
-    public DeathWaypointEvent(BlockPos location, int dimension)
+    public DeathWaypointEvent(BlockPos location, RegistryKey<World> dimension)
     {
         super(Type.DEATH_WAYPOINT, dimension);
         this.location = location;
