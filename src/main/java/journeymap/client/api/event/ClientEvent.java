@@ -20,6 +20,9 @@
 
 package journeymap.client.api.event;
 
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.World;
+
 /**
  * Parent class for events propagated by the Client API to IClientPlugin implementations.
  */
@@ -33,7 +36,7 @@ public class ClientEvent
     /**
      * World dimension where event occurred.
      */
-    public final int dimension;
+    public final RegistryKey<World> dimension;
 
     /**
      * System millis when event was created.
@@ -48,7 +51,7 @@ public class ClientEvent
     /**
      * Constructor.
      */
-    public ClientEvent(Type type, int dimension)
+    public ClientEvent(Type type, RegistryKey<World> dimension)
     {
         this.type = type;
         this.dimension = dimension;

@@ -22,11 +22,14 @@ package journeymap.client.api.display;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import com.google.gson.annotations.Since;
 import journeymap.client.api.model.WaypointBase;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -48,7 +51,7 @@ public class Waypoint extends WaypointBase<Waypoint>
     @Since(1.4)
     protected final double version = VERSION;
     @Since(1.4)
-    protected int dim;
+    protected String dim;
     @Since(1.4)
     protected BlockPos pos;
     @Since(1.4)
@@ -64,10 +67,10 @@ public class Waypoint extends WaypointBase<Waypoint>
      * @param modId Your mod id
      * @param name  Waypoint name
      */
-    public Waypoint(String modId, String name, int dimension, BlockPos position)
+    public Waypoint(String modId, String name, RegistryKey<World> dimension, BlockPos position)
     {
         super(modId, name);
-        setPosition(dimension, position);
+        setPosition(dimension.getLocation().getPath(), position);
     }
 
     /**
@@ -76,12 +79,45 @@ public class Waypoint extends WaypointBase<Waypoint>
      * @param modId Your mod id
      * @param id    Unique id scoped to mod
      * @param name  Waypoint name
+     * @param dimension Dimension
+     * @param position position
      */
-    public Waypoint(String modId, String id, String name, int dimension, BlockPos position)
+    public Waypoint(String modId, String id, String name, RegistryKey<World> dimension, BlockPos position)
+    {
+        super(modId, id, name);
+        setPosition(dimension.getLocation().getPath(), position);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param modId Your mod id
+     * @param id    Unique id scoped to mod
+     * @param name  Waypoint name
+     * @param dimension Dimension name
+     * @param position position
+     */
+    public Waypoint(String modId, String id, String name, String dimension, BlockPos position)
     {
         super(modId, id, name);
         setPosition(dimension, position);
     }
+
+    /**
+     * Constructor.
+     *
+     * @param modId Your mod id
+     * @param name  Waypoint name
+     * @param dimension Dimension name
+     * @param position position
+     */
+    public Waypoint(String modId, String name, String dimension, BlockPos position)
+    {
+        super(modId, name);
+        setPosition(dimension, position);
+    }
+
+
 
     /**
      * (Optional) Group or category name for the waypoint.
@@ -103,7 +139,7 @@ public class Waypoint extends WaypointBase<Waypoint>
         return setDirty();
     }
 
-    public final int getDimension()
+    public final String getDimension()
     {
         return dim;
     }
@@ -121,7 +157,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      *
      * @return the block pos
      */
-    public BlockPos getPosition(int targetDimension)
+    public BlockPos getPosition(String targetDimension)
     {
         return cachedDimPosition.getPosition(targetDimension);
     }
@@ -131,16 +167,16 @@ public class Waypoint extends WaypointBase<Waypoint>
      *
      * @return the block pos
      */
-    private BlockPos getInternalPosition(int targetDimension)
+    private BlockPos getInternalPosition(String targetDimension)
     {
-        if (this.dim != targetDimension)
+        if (!this.dim.equalsIgnoreCase(targetDimension))
         {
-            if (this.dim == -1)
+            if (this.dim.equalsIgnoreCase(World.THE_NETHER.getLocation().getPath()))
             {
                 // Convert coords to 8x horizontal scale outside of the Nether
                 pos = new BlockPos(pos.getX() * 8, pos.getY(), pos.getZ() * 8);
             }
-            else if (targetDimension == -1)
+            else if (targetDimension.equalsIgnoreCase(World.THE_NETHER.getLocation().getPath()))
             {
                 // Convert coords to 1/8 horizontal scale for display in the Nether
                 pos = new BlockPos(pos.getX() / 8.0, pos.getY(), pos.getZ() / 8.0);
@@ -155,7 +191,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      * @param position the BlockPos
      * @return this
      */
-    public Waypoint setPosition(int dimension, BlockPos position)
+    public Waypoint setPosition(String dimension, BlockPos position)
     {
         if (position == null)
         {
@@ -173,7 +209,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      *
      * @return the position
      */
-    public Vec3d getVec(int dimension)
+    public Vector3d getVec(String dimension)
     {
         return this.cachedDimPosition.getVec(dimension);
     }
@@ -183,7 +219,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      *
      * @return the position
      */
-    public Vec3d getCenteredVec(int dimension)
+    public Vector3d getCenteredVec(String dimension)
     {
         return this.cachedDimPosition.getCenteredVec(dimension);
     }
@@ -243,7 +279,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      *
      * @return true if yes
      */
-    public final boolean isTeleportReady(int targetDimension)
+    public final boolean isTeleportReady(String targetDimension)
     {
         BlockPos pos = getPosition(targetDimension);
         return pos != null && pos.getY() >= 0;
@@ -267,9 +303,9 @@ public class Waypoint extends WaypointBase<Waypoint>
      * specified.
      */
     @Override
-    public int[] getDisplayDimensions()
+    public String[] getDisplayDimensions()
     {
-        int[] dims = super.getDisplayDimensions();
+        String[] dims = super.getDisplayDimensions();
         if (dims == null)
         {
             setDisplayDimensions(dim);
@@ -327,7 +363,7 @@ public class Waypoint extends WaypointBase<Waypoint>
                 .add("icon", icon)
                 .add("color", color)
                 .add("bgColor", bgColor)
-                .add("displayDims", displayDims == null ? null : Ints.asList(displayDims))
+                .add("displayDims", displayDims == null ? null : Lists.newArrayList(displayDims))
                 .add("editable", editable)
                 .add("persistent", persistent)
                 .add("dirty", dirty)
@@ -340,10 +376,10 @@ public class Waypoint extends WaypointBase<Waypoint>
      */
     class CachedDimPosition
     {
-        Integer cachedDim;
+        String cachedDim;
         BlockPos cachedPos;
-        Vec3d cachedVec;
-        Vec3d cachedCenteredVec;
+        Vector3d cachedVec;
+        Vector3d cachedCenteredVec;
 
         CachedDimPosition()
         {
@@ -364,14 +400,14 @@ public class Waypoint extends WaypointBase<Waypoint>
         /**
          * Ensure cached values are relative to the requested dimension.
          */
-        private CachedDimPosition ensure(int dimension)
+        private CachedDimPosition ensure(String dimension)
         {
             if (this.cachedDim != dimension)
             {
                 this.cachedDim = dimension;
                 this.cachedPos = Waypoint.this.getInternalPosition(dimension);
-                this.cachedVec = new Vec3d(this.cachedPos.getX(), this.cachedPos.getY(), this.cachedPos.getZ());
-                this.cachedCenteredVec = new Vec3d(.5, .5, .5);
+                this.cachedVec = new Vector3d(this.cachedPos.getX(), this.cachedPos.getY(), this.cachedPos.getZ());
+                this.cachedCenteredVec = new Vector3d(.5, .5, .5);
                 this.cachedCenteredVec.add(this.cachedVec);
             }
             return this;
@@ -383,7 +419,7 @@ public class Waypoint extends WaypointBase<Waypoint>
          * @param dimension targetDimension
          * @return position
          */
-        public BlockPos getPosition(int dimension)
+        public BlockPos getPosition(String dimension)
         {
             return ensure(dimension).cachedPos;
         }
@@ -394,7 +430,7 @@ public class Waypoint extends WaypointBase<Waypoint>
          * @param dimension targetDimension
          * @return position
          */
-        public Vec3d getVec(int dimension)
+        public Vector3d getVec(String dimension)
         {
             return ensure(dimension).cachedVec;
         }
@@ -404,7 +440,7 @@ public class Waypoint extends WaypointBase<Waypoint>
          *
          * @return the position
          */
-        public Vec3d getCenteredVec(int dimension)
+        public Vector3d getCenteredVec(String dimension)
         {
             return ensure(dimension).cachedCenteredVec;
         }

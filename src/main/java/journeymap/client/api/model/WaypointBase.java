@@ -48,7 +48,7 @@ public abstract class WaypointBase<T extends WaypointBase> extends Displayable i
     protected MapImage icon;
 
     @Since(1.4)
-    protected int[] displayDims;
+    protected String[] displayDims;
 
     @Since(1.4)
     protected transient boolean dirty;
@@ -196,7 +196,7 @@ public abstract class WaypointBase<T extends WaypointBase> extends Displayable i
     /**
      * Dimensions where this should be displayed.
      */
-    public int[] getDisplayDimensions()
+    public String[] getDisplayDimensions()
     {
         if (displayDims == null && hasDelegate())
         {
@@ -211,7 +211,7 @@ public abstract class WaypointBase<T extends WaypointBase> extends Displayable i
      * @param dimensions the displayDims
      * @return this
      */
-    public final T setDisplayDimensions(int... dimensions)
+    public final T setDisplayDimensions(String... dimensions)
     {
         this.displayDims = dimensions;
         return setDirty();
@@ -235,7 +235,7 @@ public abstract class WaypointBase<T extends WaypointBase> extends Displayable i
      * @param dimension dim id
      * @param displayed true to display
      */
-    public void setDisplayed(int dimension, boolean displayed)
+    public void setDisplayed(String dimension, boolean displayed)
     {
         if (displayed && !isDisplayed(dimension))
         {
@@ -253,7 +253,7 @@ public abstract class WaypointBase<T extends WaypointBase> extends Displayable i
      * @param dimension dim id
      * @return true if dim id is in getDisplayDimensions()
      */
-    public final boolean isDisplayed(int dimension)
+    public final boolean isDisplayed(String dimension)
     {
         return Arrays.binarySearch(getDisplayDimensions(), dimension) > -1;
     }
