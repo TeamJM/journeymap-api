@@ -9,6 +9,7 @@ import journeymap.client.api.util.UIState;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ class SampleMarkerOverlayFactory
 
             // Build the overlay
             MarkerOverlay markerOverlay = new MarkerOverlay(ExampleMod.MODID, "sampleMarker" + i, pos, icon);
-            markerOverlay.setDimension(0).setTitle("Marker Overlay").setLabel("" + i);
+            markerOverlay.setDimension(World.OVERWORLD).setTitle("Marker Overlay").setLabel("" + i);
 
             // Add a listener to it
             markerOverlay.setOverlayListener(new MarkerListener(jmAPI, markerOverlay));

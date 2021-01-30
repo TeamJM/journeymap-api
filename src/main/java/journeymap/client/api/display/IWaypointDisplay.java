@@ -11,7 +11,7 @@ public interface IWaypointDisplay
 
     Integer getBackgroundColor();
 
-    int[] getDisplayDimensions();
+    String[] getDisplayDimensions();
 
     MapImage getIcon();
 }

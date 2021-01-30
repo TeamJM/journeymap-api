@@ -22,7 +22,8 @@ package example.mod;
 
 import example.mod.client.ClientProxy;
 import example.mod.server.ServerProxy;
-import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -32,7 +33,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,69 +44,63 @@ import org.apache.logging.log4j.Logger;
 public class ExampleMod
 {
     public static final String MODID = "examplemod-jm";
-    public static final String VERSION = "1.5";
+    public static final String VERSION = "1.6";
     public static final Logger LOGGER = LogManager.getFormatterLogger(MODID);
 
 
     /**
      * The constant proxy.
      */
-    public static final CommonProxy proxy = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+    public static final CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 
     public ExampleMod()
     {
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetupEvent);
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadCompleteEvent);
-        });
-        // First Event
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetupEvent);
-        // Second Events -> Sided
-
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::dedicatedServerSetupEvent);
-        // IMC Events third
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcEnqueue);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcHandle);
-        // Last Events fourth
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverStartingEvent);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
+    @SubscribeEvent
     public void commonSetupEvent(FMLCommonSetupEvent event)
     {
         proxy.commonSetupEvent(event);
         LOGGER.info("ExampleMod commonSetupEvent done");
     }
 
+    @SubscribeEvent
     public void imcEnqueue(InterModEnqueueEvent event)
     {
         proxy.imcEnqueue(event);
         LOGGER.info("ExampleMod imcEnqueue done");
     }
 
+    @SubscribeEvent
     public void imcHandle(InterModProcessEvent event)
     {
         proxy.imcHandle(event);
         LOGGER.info("ExampleMod imcHandle done");
     }
 
+    @SubscribeEvent
     public void loadCompleteEvent(FMLLoadCompleteEvent event)
     {
         proxy.loadCompleteEvent(event);
         LOGGER.info("ExampleMod loadCompleteEvent done");
     }
 
+    @SubscribeEvent
     public void clientSetupEvent(FMLClientSetupEvent event)
     {
         proxy.clientSetupEvent(event);
         LOGGER.info("ExampleMod clientSetupEvent done");
     }
 
+    @SubscribeEvent
     public void serverStartingEvent(FMLServerStartingEvent event)
     {
         proxy.serverStartingEvent(event);
         LOGGER.info("ExampleMod serverStartingEvent done");
     }
 
+    @SubscribeEvent
     public void dedicatedServerSetupEvent(FMLDedicatedServerSetupEvent event)
     {
         proxy.dedicatedServerSetupEvent(event);
