@@ -30,6 +30,7 @@ import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -137,7 +138,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public void requestMapTile(String modId, String dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
+    public void requestMapTile(String modId, RegistryKey<World> dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
                                @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback)
     {
         // Determine chunks for coordinates at zoom level
@@ -151,25 +152,25 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public void toggleDisplay(@Nullable String dimension, Context.MapType mapType, Context.UI mapUI, boolean enable)
+    public void toggleDisplay(@Nullable RegistryKey<World> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable)
     {
         log(String.format("Toggled display in %s:%s:%s:%s", dimension, mapType, mapUI, enable));
     }
 
     @Override
-    public void toggleWaypoints(@Nullable String dimension, Context.MapType mapType, Context.UI mapUI, boolean enable)
+    public void toggleWaypoints(@Nullable RegistryKey<World> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable)
     {
         log(String.format("Toggled waypoints in %s:%s:%s:%s", dimension, mapType, mapUI, enable));
     }
 
     @Override
-    public boolean isDisplayEnabled(@Nullable String dimension, Context.MapType mapType, Context.UI mapUI)
+    public boolean isDisplayEnabled(@Nullable RegistryKey<World> dimension, Context.MapType mapType, Context.UI mapUI)
     {
         return false;
     }
 
     @Override
-    public boolean isWaypointsEnabled(@Nullable String dimension, Context.MapType mapType, Context.UI mapUI)
+    public boolean isWaypointsEnabled(@Nullable RegistryKey<World> dimension, Context.MapType mapType, Context.UI mapUI)
     {
         return false;
     }
