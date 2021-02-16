@@ -42,7 +42,7 @@ import java.util.function.Consumer;
 public interface IClientAPI
 {
     String API_OWNER = "journeymap";
-    String API_VERSION = "1.5-SNAPSHOT";
+    String API_VERSION = "1.6-SNAPSHOT";
 
     /**
      * Returns the current UIState of the UI specified.
