@@ -24,23 +24,16 @@ import com.google.common.base.Strings;
 import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Enum singleton used by JourneyMap to load and initialize plugins.  A plugin class must be annotated with
@@ -65,22 +58,15 @@ public enum PluginHelper
      * Mods which are testing integration can also call this in a dev environment
      * and pass in a stub implementation, but must never do so in production code.
      *
-     * @param event preInit
      * @return map of instantiated plugins, keyed by modId
      */
-    public Map<String, IClientPlugin> preInitPlugins(FMLCommonSetupEvent event)
+    public Map<String, IClientPlugin> preInitPlugins(List<String> pluginList)
     {
         if (plugins == null)
         {
             HashMap<String, IClientPlugin> discovered = new HashMap<String, IClientPlugin>();
-            List<String> annotations = ModList.get().getAllScanData().stream()
-                    .map(ModFileScanData::getAnnotations)
-                    .flatMap(Collection::stream)
-                    .filter(annotationData -> Objects.equals(annotationData.getAnnotationType(), PLUGIN_ANNOTATION_NAME))
-                    .map(ModFileScanData.AnnotationData::getMemberName)
-                    .collect(Collectors.toList());
 
-            for (String className : annotations)
+            for (String className : pluginList)
             {
                 try
                 {
@@ -132,11 +118,10 @@ public enum PluginHelper
      * Mods which are testing integration can also call this in a dev environment
      * and pass in a stub implementation, but must never do so in production code.
      *
-     * @param event     init event
      * @param clientAPI Client API implementation
      * @return list of initialized plugins, null if plugin discovery never occurred
      */
-    public Map<String, IClientPlugin> initPlugins(FMLLoadCompleteEvent event, IClientAPI clientAPI)
+    public Map<String, IClientPlugin> initPlugins(IClientAPI clientAPI)
     {
         if (plugins == null)
         {
@@ -180,7 +165,7 @@ public enum PluginHelper
     /**
      * Get the map of plugins, keyed by modId.
      *
-     * @return null if {@link #preInitPlugins(FMLCommonSetupEvent)} hasn't been called yet
+     * @return null if {@link #preInitPlugins(List)} hasn't been called yet
      */
     public Map<String, IClientPlugin> getPlugins()
     {
