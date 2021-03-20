@@ -92,7 +92,7 @@ processResources
             // replace stuff in mcmod.info on copy
             from(sourceSets.main.resources.srcDirs) {
                 include 'mcmod.info'
-                expand 'version':project.version, 'mcversion':project.minecraft_version
+                expand 'version': project.version, 'mcversion': project.minecraft_version
             }
 
             // copy everything else
@@ -109,6 +109,7 @@ jar {
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
+                "FMLModType"            : "LIBRARY",
                 "Implementation-Title"  : project.title,
                 "Implementation-Version": project.version,
                 "Implementation-URL"    : project.git_website
@@ -126,11 +127,12 @@ task modJar(type: Jar, dependsOn: classes) {
     include 'assets/**'
     manifest {
         attributes = [
-                "Manifest-Version": "1.0",
-                "Implementation-Title": project.title_example,
+                "Manifest-Version"      : "1.0",
+                "FMLModType"            : "LIBRARY",
+                "Implementation-Title"  : project.title_example,
                 "Implementation-Version": project.version,
-                "Implementation-URL"  : project.git_website,
-                "FMLModType": LIBRARY
+                "Implementation-URL"    : project.git_website
+
         ]
     }
 }
