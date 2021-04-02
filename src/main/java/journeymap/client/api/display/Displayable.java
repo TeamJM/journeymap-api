@@ -145,7 +145,7 @@ public abstract class Displayable implements Comparable<Displayable>
     }
 
     /**
-     * Colon-delimited GUID for the display object in the form of "modid-displayType-displayId".
+     * Dash-delimited GUID for the display object in the form of "modid-displayType-displayId".
      *
      * @return the guid
      */
