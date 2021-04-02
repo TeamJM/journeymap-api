@@ -26,7 +26,9 @@ import com.google.common.base.Strings;
 import com.google.gson.annotations.Since;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Locale;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * Base class for Overlays and Waypoints.
@@ -44,6 +46,8 @@ public abstract class Displayable implements Comparable<Displayable>
     @Since(1.1)
     protected final DisplayType displayType;
 
+    protected static Pattern illegalChars = Pattern.compile("[^a-zA-Z0-9.\\-]");
+
     /**
      * Needed for GSON deserialization.
      */
@@ -57,7 +61,7 @@ public abstract class Displayable implements Comparable<Displayable>
     /**
      * Constructor which will generate a GUID display id.
      *
-     * @param modId     the mod id
+     * @param modId the mod id
      */
     protected Displayable(String modId)
     {
@@ -67,8 +71,8 @@ public abstract class Displayable implements Comparable<Displayable>
     /**
      * Constructor with explicit display id.
      *
-     * @param modId       the mod id
-     * @param displayId   the display id
+     * @param modId     the mod id
+     * @param displayId the display id
      */
     protected Displayable(String modId, String displayId)
     {
@@ -110,6 +114,7 @@ public abstract class Displayable implements Comparable<Displayable>
 
     /**
      * Used to determine display order, lower first.
+     *
      * @return order
      */
     public abstract int getDisplayOrder();
@@ -151,7 +156,10 @@ public abstract class Displayable implements Comparable<Displayable>
      */
     public final String getGuid()
     {
-        return Joiner.on("-").join(modId, displayType, id);
+        // force lower case due to mc restrictions.
+        String guid = Joiner.on("-").join(modId, displayType, id).toLowerCase(Locale.ROOT);
+        // remove all illegal characters as a protection.
+        return illegalChars.matcher(guid).replaceAll("~");
     }
 
     /**
