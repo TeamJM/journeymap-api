@@ -65,7 +65,7 @@ public final class MapImage
     private Integer textureHeight;
 
     @Since(1.1)
-    private Integer rotation;
+    private Integer rotation = 0;
 
     @Since(1.1)
     private Double displayWidth;
