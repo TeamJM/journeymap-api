@@ -8,7 +8,12 @@ import journeymap.client.api.model.MapImage;
 import journeymap.client.api.util.UIState;
 import net.minecraft.util.math.BlockPos;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -36,12 +41,12 @@ class SampleImageOverlayFactory
         List<ImageOverlay> list = new ArrayList<ImageOverlay>();
         try
         {
-            BlockPos start = center.add(-maxDistance / 2, 0, -maxDistance / 2);
+            BlockPos start = center.offset(-maxDistance / 2, 0, -maxDistance / 2);
 
             Random random = new Random();
             for (int i = 0; i < quantity; i++)
             {
-                BlockPos pos = start.add(random.nextInt(maxDistance), 0, random.nextInt(maxDistance));
+                BlockPos pos = start.offset(random.nextInt(maxDistance), 0, random.nextInt(maxDistance));
                 int width = Math.max(32, random.nextInt(maxSize));
                 int height = Math.max(32, random.nextInt(maxSize));
                 ImageOverlay overlay = createOverlay(jmAPI, pos, width, height);
@@ -69,7 +74,7 @@ class SampleImageOverlayFactory
      */
     static ImageOverlay createOverlay(IClientAPI jmAPI, BlockPos upperLeft, int blocksWide, int blocksTall)
     {
-        BlockPos lowerRight = upperLeft.add(blocksWide, 0, blocksTall);
+        BlockPos lowerRight = upperLeft.offset(blocksWide, 0, blocksTall);
 
         // For this example, we'll generate a BufferedImage, but using a pre-existing ResourceLocation works too.
         MapImage image = new MapImage(createImage(blocksWide, blocksTall));

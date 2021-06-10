@@ -56,7 +56,7 @@ targetCompatibility = 1.8
 minecraft {
 //    version = project.minecraft_version + "-" + project.forge_version
 //    runDir = "run"
-    mappings channel: 'snapshot', version: project.mappings
+    mappings channel: project.channel, version: project.mappings
 //    replace '@API_VERSION@', project.api_version
 //    replace '@MC_VERSION@', project.minecraft_version
 

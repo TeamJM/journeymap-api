@@ -53,7 +53,7 @@ class SampleMarkerOverlayFactory
             {
                 colorIndex = 1;
             }
-            int color = MaterialColor.COLORS[colorIndex].colorValue;
+            int color = MaterialColor.MATERIAL_COLORS[colorIndex].col;
 
             MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f);
 
