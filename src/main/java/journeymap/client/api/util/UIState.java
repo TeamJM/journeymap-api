@@ -111,7 +111,7 @@ public final class UIState
      */
     public static UIState newInactive(Context.UI ui, Minecraft minecraft)
     {
-        BlockPos center = minecraft.world == null ? new BlockPos(0, 68, 0) : minecraft.world.func_239140_u_(); //func_239140_u_() == getSpawnPoint()
+        BlockPos center = minecraft.level == null ? new BlockPos(0, 68, 0) : minecraft.level.getSharedSpawnPos(); //getSharedSpawnPos() == getSpawnPoint()
         return new UIState(ui, false, World.OVERWORLD, 0, Context.MapType.Day, center, null, null, null);
     }
 

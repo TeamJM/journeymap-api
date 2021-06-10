@@ -40,7 +40,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
@@ -148,7 +149,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
         final int width = Math.min(512, (endChunk.x - startChunk.x) * pixels);
         final int height = Math.min(512, (endChunk.z - startChunk.z) * pixels);
 
-        Minecraft.getInstance().deferTask(() -> callback.accept(createFakeImage(width, height)));
+        Minecraft.getInstance().submit(() -> callback.accept(createFakeImage(width, height)));
     }
 
     @Override

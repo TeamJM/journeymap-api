@@ -43,11 +43,11 @@ class ForgeEventListener
     {
         try
         {
-            if (event.getEntityLiving().getEntityWorld().isRemote)
+            if (event.getEntityLiving().getCommandSenderWorld().isClientSide)
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
                 {
-                    SampleWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().world.getDimensionKey());
+                    SampleWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().level.dimension());
                 }
             }
         }
@@ -65,7 +65,7 @@ class ForgeEventListener
     {
         try
         {
-            if (event.getWorld().isRemote())
+            if (event.getWorld().isClientSide())
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
                 {
@@ -75,7 +75,7 @@ class ForgeEventListener
                         ChunkPos chunkCoords = chunk.getPos();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
-                            RegistryKey<World> dimension = ((World) event.getWorld()).getDimensionKey();
+                            RegistryKey<World> dimension = ((World) event.getWorld()).dimension();
                             PolygonOverlay overlay = SamplePolygonOverlayFactory.create(chunkCoords, dimension);
                             slimeChunkOverlays.put(chunkCoords, overlay);
                             jmAPI.show(overlay);
@@ -96,7 +96,7 @@ class ForgeEventListener
     @SubscribeEvent
     public void onChunkUnloadEvent(ChunkEvent.Unload event)
     {
-        if (event.getWorld().isRemote())
+        if (event.getWorld().isClientSide())
         {
             if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
             {
@@ -121,9 +121,9 @@ class ForgeEventListener
      */
     private boolean isSlimeChunk(Chunk chunk)
     {
-        if (!chunk.getWorld().isRemote())
+        if (!chunk.getLevel().isClientSide())
         {
-            return SharedSeedRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getWorld().getServer().getServerConfiguration().getDimensionGeneratorSettings().getSeed(), 987234911L).nextInt(10) == 0;
+            return SharedSeedRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getLevel().getServer().getWorldData().worldGenSettings().seed(), 987234911L).nextInt(10) == 0;
         }
         return false;
     }
