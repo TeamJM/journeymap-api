@@ -69,7 +69,7 @@ public class Waypoint extends WaypointBase<Waypoint>
     public Waypoint(String modId, String name, RegistryKey<World> dimension, BlockPos position)
     {
         super(modId, name);
-        setPosition(dimension.location().getPath(), position);
+        setPosition(dimension.location().toString(), position);
     }
 
     /**
@@ -84,7 +84,7 @@ public class Waypoint extends WaypointBase<Waypoint>
     public Waypoint(String modId, String id, String name, RegistryKey<World> dimension, BlockPos position)
     {
         super(modId, id, name);
-        setPosition(dimension.location().getPath(), position);
+        setPosition(dimension.location().toString(), position);
     }
 
     /**
@@ -170,12 +170,12 @@ public class Waypoint extends WaypointBase<Waypoint>
     {
         if (!this.dim.equalsIgnoreCase(targetDimension))
         {
-            if (this.dim.equalsIgnoreCase(World.NETHER.location().getPath()))
+            if (this.dim.equalsIgnoreCase(World.NETHER.location().toString()))
             {
                 // Convert coords to 8x horizontal scale outside of the Nether
                 pos = new BlockPos(pos.getX() * 8, pos.getY(), pos.getZ() * 8);
             }
-            else if (targetDimension.equalsIgnoreCase(World.NETHER.location().getPath()))
+            else if (targetDimension.equalsIgnoreCase(World.NETHER.location().toString()))
             {
                 // Convert coords to 1/8 horizontal scale for display in the Nether
                 pos = new BlockPos(pos.getX() / 8.0, pos.getY(), pos.getZ() / 8.0);
