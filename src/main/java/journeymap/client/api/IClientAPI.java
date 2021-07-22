@@ -25,9 +25,9 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -42,7 +42,7 @@ import java.util.function.Consumer;
 public interface IClientAPI
 {
     String API_OWNER = "journeymap";
-    String API_VERSION = "1.6-SNAPSHOT";
+    String API_VERSION = "1.7-SNAPSHOT";
 
     /**
      * Returns the current UIState of the UI specified.
@@ -145,7 +145,7 @@ public interface IClientAPI
      * @param showGrid   Whether to include to include the chunk grid overlay
      * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
-    void requestMapTile(String modId, RegistryKey<World> dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
+    void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, ChunkPos startChunk, net.minecraft.world.level.ChunkPos endChunk,
                         @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback);
 
     /**
@@ -158,7 +158,7 @@ public interface IClientAPI
      * @param mapUI     The map UI
      * @param enable    True to enable, false to disable.
      */
-    void toggleDisplay(@Nullable RegistryKey<World> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable);
+    void toggleDisplay(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable);
 
     /**
      * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
@@ -170,7 +170,7 @@ public interface IClientAPI
      * @param mapUI     The map UI
      * @param enable    True to enable, false to disable.
      */
-    void toggleWaypoints(@Nullable RegistryKey<World> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable);
+    void toggleWaypoints(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable);
 
     /**
      * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
@@ -182,7 +182,7 @@ public interface IClientAPI
      * @param mapUI     The map UI
      * @return true if enabled
      */
-    boolean isDisplayEnabled(@Nullable RegistryKey<World> dimension, Context.MapType mapType, Context.UI mapUI);
+    boolean isDisplayEnabled(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI);
 
     /**
      * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
@@ -194,6 +194,6 @@ public interface IClientAPI
      * @param mapUI     The map UI
      * @return true if enabled
      */
-    boolean isWaypointsEnabled(@Nullable RegistryKey<World> dimension, Context.MapType mapType, Context.UI mapUI);
+    boolean isWaypointsEnabled(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI);
 
 }

@@ -1,7 +1,7 @@
 package journeymap.client.api.display;
 
 import journeymap.client.api.util.UIState;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 import java.awt.geom.Point2D;
 
@@ -40,7 +40,7 @@ public interface IOverlayListener
      * @param mousePosition screen coordinates of the mouse
      * @param blockPosition the block position under the mouse
      */
-    void onMouseOut(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
+    void onMouseOut(UIState mapState, Point2D.Double mousePosition, net.minecraft.core.BlockPos blockPosition);
 
     /**
      * Called when the mouse is clicked within the bounds of the overlay.

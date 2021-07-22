@@ -24,7 +24,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.gson.annotations.Since;
 import journeymap.client.api.display.Displayable;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
@@ -44,7 +44,7 @@ public final class MapImage
     private transient BufferedImage image;
 
     @Since(1.1)
-    private ResourceLocation imageLocation;
+    private net.minecraft.resources.ResourceLocation imageLocation;
 
     @Since(1.1)
     private Integer color = 0xffffff;
@@ -127,7 +127,7 @@ public final class MapImage
      * @param textureWidth      width of texture
      * @param textureHeight     height of texture
      */
-    public MapImage(ResourceLocation imageLocation, int textureWidth, int textureHeight)
+    public MapImage(net.minecraft.resources.ResourceLocation imageLocation, int textureWidth, int textureHeight)
     {
         this(imageLocation, 0, 0, textureWidth, textureHeight, 0xffffff, 1f);
     }
@@ -302,7 +302,7 @@ public final class MapImage
      * @return the location
      */
     @Nullable
-    public ResourceLocation getImageLocation()
+    public net.minecraft.resources.ResourceLocation getImageLocation()
     {
         return imageLocation;
     }

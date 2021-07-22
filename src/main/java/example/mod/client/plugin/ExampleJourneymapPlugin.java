@@ -27,7 +27,7 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.DeathWaypointEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -144,7 +144,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         // Create a bunch of random Marker Overlays around the player
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
         {
-            BlockPos pos = Minecraft.getInstance().player.blockPosition();
+            net.minecraft.core.BlockPos pos = Minecraft.getInstance().player.blockPosition();
             SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
         }
 

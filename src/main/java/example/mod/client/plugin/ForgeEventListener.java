@@ -4,11 +4,11 @@ import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.PolygonOverlay;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -69,13 +69,13 @@ class ForgeEventListener
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
                 {
-                    Chunk chunk = (Chunk) event.getChunk();
+                    LevelChunk chunk = (LevelChunk) event.getChunk();
                     if (isSlimeChunk(chunk))
                     {
                         ChunkPos chunkCoords = chunk.getPos();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
-                            RegistryKey<World> dimension = ((World) event.getWorld()).dimension();
+                            ResourceKey<Level> dimension = ((Level) event.getWorld()).dimension();
                             PolygonOverlay overlay = SamplePolygonOverlayFactory.create(chunkCoords, dimension);
                             slimeChunkOverlays.put(chunkCoords, overlay);
                             jmAPI.show(overlay);
@@ -119,11 +119,11 @@ class ForgeEventListener
      * @param chunk the chunk
      * @return true if it's a slime chunk
      */
-    private boolean isSlimeChunk(Chunk chunk)
+    private boolean isSlimeChunk(LevelChunk chunk)
     {
         if (!chunk.getLevel().isClientSide())
         {
-            return SharedSeedRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getLevel().getServer().getWorldData().worldGenSettings().seed(), 987234911L).nextInt(10) == 0;
+            return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getLevel().getServer().getWorldData().worldGenSettings().seed(), 987234911L).nextInt(10) == 0;
         }
         return false;
     }

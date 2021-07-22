@@ -6,7 +6,7 @@ import journeymap.client.api.display.IOverlayListener;
 import journeymap.client.api.display.ImageOverlay;
 import journeymap.client.api.model.MapImage;
 import journeymap.client.api.util.UIState;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -36,12 +36,12 @@ class SampleImageOverlayFactory
      * @param maxSize     largest size in blocks an overlay should cover
      * @return list.
      */
-    static List<ImageOverlay> create(IClientAPI jmAPI, BlockPos center, int quantity, int maxDistance, int maxSize)
+    static List<ImageOverlay> create(IClientAPI jmAPI, net.minecraft.core.BlockPos center, int quantity, int maxDistance, int maxSize)
     {
         List<ImageOverlay> list = new ArrayList<ImageOverlay>();
         try
         {
-            BlockPos start = center.offset(-maxDistance / 2, 0, -maxDistance / 2);
+            net.minecraft.core.BlockPos start = center.offset(-maxDistance / 2, 0, -maxDistance / 2);
 
             Random random = new Random();
             for (int i = 0; i < quantity; i++)
@@ -74,7 +74,7 @@ class SampleImageOverlayFactory
      */
     static ImageOverlay createOverlay(IClientAPI jmAPI, BlockPos upperLeft, int blocksWide, int blocksTall)
     {
-        BlockPos lowerRight = upperLeft.offset(blocksWide, 0, blocksTall);
+        net.minecraft.core.BlockPos lowerRight = upperLeft.offset(blocksWide, 0, blocksTall);
 
         // For this example, we'll generate a BufferedImage, but using a pre-existing ResourceLocation works too.
         MapImage image = new MapImage(createImage(blocksWide, blocksTall));
@@ -176,7 +176,7 @@ class SampleImageOverlayFactory
         }
 
         @Override
-        public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
+        public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, net.minecraft.core.BlockPos blockPosition, int button, boolean doubleClick)
         {
             // Remove it on click
             jmAPI.remove(overlay);

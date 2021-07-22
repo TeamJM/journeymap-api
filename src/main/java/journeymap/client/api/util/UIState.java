@@ -4,10 +4,10 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import journeymap.client.api.display.Context;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nullable;
 import java.awt.geom.Rectangle2D;
@@ -32,7 +32,7 @@ public final class UIState
      * The dimension displayed in the UI.  If active==false and the display
      * has never been used, this will default to 0.
      */
-    public final RegistryKey<World> dimension;
+    public final ResourceKey<Level> dimension;
 
     /**
      * The current zoom level of the UI. If active==false and the display
@@ -60,7 +60,7 @@ public final class UIState
     /**
      * The area of blocks displayed in the UI. If active==false, this will be null.
      */
-    public final AxisAlignedBB blockBounds;
+    public final AABB blockBounds;
 
     /**
      * The screen area (pixels) used by the UI.  If active==false, this will be null.
@@ -84,11 +84,11 @@ public final class UIState
      * @param mapCenter   The block position at the center of the UI.
      * @param blockBounds The area of blocks displayed in the UI.
      */
-    public UIState(Context.UI ui, boolean active, RegistryKey<World> dimension, int zoom,
+    public UIState(Context.UI ui, boolean active, ResourceKey<Level> dimension, int zoom,
                    @Nullable Context.MapType mapType,
                    @Nullable BlockPos mapCenter,
                    @Nullable Integer chunkY,
-                   @Nullable AxisAlignedBB blockBounds,
+                   @Nullable AABB blockBounds,
                    @Nullable Rectangle2D.Double displayBounds)
     {
         this.ui = ui;
@@ -111,8 +111,8 @@ public final class UIState
      */
     public static UIState newInactive(Context.UI ui, Minecraft minecraft)
     {
-        BlockPos center = minecraft.level == null ? new BlockPos(0, 68, 0) : minecraft.level.getSharedSpawnPos(); //getSharedSpawnPos() == getSpawnPoint()
-        return new UIState(ui, false, World.OVERWORLD, 0, Context.MapType.Day, center, null, null, null);
+        net.minecraft.core.BlockPos center = minecraft.level == null ? new net.minecraft.core.BlockPos(0, 68, 0) : minecraft.level.getSharedSpawnPos(); //getSharedSpawnPos() == getSpawnPoint()
+        return new UIState(ui, false, Level.OVERWORLD, 0, Context.MapType.Day, center, null, null, null);
     }
 
     /**

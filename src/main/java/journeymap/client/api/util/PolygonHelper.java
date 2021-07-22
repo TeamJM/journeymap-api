@@ -21,7 +21,7 @@
 package journeymap.client.api.util;
 
 import journeymap.client.api.model.MapPolygon;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 /**
  * Utility class related to Polygons.
@@ -56,10 +56,10 @@ public class PolygonHelper
     {
         int x = chunkX << 4;
         int z = chunkZ << 4;
-        BlockPos sw = new BlockPos(x, y, z + 16);
-        BlockPos se = new BlockPos(x + 16, y, z + 16);
-        BlockPos ne = new BlockPos(x + 16, y, z);
-        BlockPos nw = new BlockPos(x, y, z);
+        net.minecraft.core.BlockPos sw = new net.minecraft.core.BlockPos(x, y, z + 16);
+        net.minecraft.core.BlockPos se = new BlockPos(x + 16, y, z + 16);
+        net.minecraft.core.BlockPos ne = new net.minecraft.core.BlockPos(x + 16, y, z);
+        net.minecraft.core.BlockPos nw = new net.minecraft.core.BlockPos(x, y, z);
 
         return new MapPolygon(sw, se, ne, nw);
     }

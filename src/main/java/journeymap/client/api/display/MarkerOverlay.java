@@ -21,7 +21,7 @@
 package journeymap.client.api.display;
 
 import journeymap.client.api.model.MapImage;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -49,7 +49,7 @@ public final class MarkerOverlay extends Overlay
      * @param point    Location of the marker.
      * @param icon     The icon to display as the marker.
      */
-    public MarkerOverlay(String modId, String markerId, BlockPos point, MapImage icon)
+    public MarkerOverlay(String modId, String markerId, net.minecraft.core.BlockPos point, MapImage icon)
     {
         super(modId, markerId);
         setPoint(point);
@@ -59,7 +59,7 @@ public final class MarkerOverlay extends Overlay
     /**
      * Location of the marker.
      */
-    public BlockPos getPoint()
+    public net.minecraft.core.BlockPos getPoint()
     {
         return point;
     }
@@ -70,7 +70,7 @@ public final class MarkerOverlay extends Overlay
      * @param point location
      * @return this
      */
-    public MarkerOverlay setPoint(BlockPos point)
+    public MarkerOverlay setPoint(net.minecraft.core.BlockPos point)
     {
         this.point = point;
         return this;
