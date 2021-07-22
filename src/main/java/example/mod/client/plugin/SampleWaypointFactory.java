@@ -24,10 +24,10 @@ import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.Waypoint;
 import journeymap.client.api.model.MapImage;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 /**
  * Sample factory that creates a waypoint.
@@ -40,7 +40,7 @@ class SampleWaypointFactory
      * @param bedLocation
      * @param dimension
      */
-    static Waypoint createBedWaypoint(IClientAPI jmAPI, BlockPos bedLocation, RegistryKey<World> dimension)
+    static Waypoint createBedWaypoint(IClientAPI jmAPI, BlockPos bedLocation, ResourceKey<Level> dimension)
     {
         Waypoint bedWaypoint = null;
         try

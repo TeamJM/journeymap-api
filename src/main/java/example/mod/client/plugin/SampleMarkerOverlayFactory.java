@@ -6,10 +6,10 @@ import journeymap.client.api.display.IOverlayListener;
 import journeymap.client.api.display.MarkerOverlay;
 import journeymap.client.api.model.MapImage;
 import journeymap.client.api.util.UIState;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.MaterialColor;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -28,10 +28,10 @@ class SampleMarkerOverlayFactory
      * @param quantity how many markers
      * @return list of MarkerOverlays (already shown in the API)
      */
-    static List<MarkerOverlay> create(IClientAPI jmAPI, BlockPos center, int quantity, int maxDistance)
+    static List<MarkerOverlay> create(IClientAPI jmAPI, net.minecraft.core.BlockPos center, int quantity, int maxDistance)
     {
         // Use a sprite sheet to vary the icons
-        ResourceLocation sprites = new ResourceLocation("examplemod:images/sprites.png");
+        ResourceLocation sprites = new net.minecraft.resources.ResourceLocation("examplemod:images/sprites.png");
         int spriteX = 0, spriteY = 0;
         int iconSize = 64;
         int iconColumns = 8;
@@ -59,7 +59,7 @@ class SampleMarkerOverlayFactory
 
             // Build the overlay
             MarkerOverlay markerOverlay = new MarkerOverlay(ExampleMod.MODID, "sampleMarker" + i, pos, icon);
-            markerOverlay.setDimension(World.OVERWORLD).setTitle("Marker Overlay").setLabel("" + i);
+            markerOverlay.setDimension(Level.OVERWORLD).setTitle("Marker Overlay").setLabel("" + i);
 
             // Add a listener to it
             markerOverlay.setOverlayListener(new MarkerListener(jmAPI, markerOverlay));
@@ -150,7 +150,7 @@ class SampleMarkerOverlayFactory
         }
 
         @Override
-        public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
+        public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, net.minecraft.core.BlockPos blockPosition, int button, boolean doubleClick)
         {
             // Remove it on click
             jmAPI.remove(overlay);

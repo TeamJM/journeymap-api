@@ -22,8 +22,8 @@ package journeymap.client.api.display;
 
 import journeymap.client.api.model.MapPolygon;
 import journeymap.client.api.model.ShapeProperties;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -53,7 +53,7 @@ public final class PolygonOverlay extends Overlay
      * @param displayId A unique id for the polygon (scoped within your mod) which can be used to remove/update it.
      * @param outerArea A polygon of the outer area to be displayed.
      */
-    public PolygonOverlay(String modId, String displayId, RegistryKey<World> dimension, ShapeProperties shapeProperties, MapPolygon outerArea)
+    public PolygonOverlay(String modId, String displayId, ResourceKey<Level> dimension, ShapeProperties shapeProperties, MapPolygon outerArea)
     {
         this(modId, displayId, dimension, shapeProperties, outerArea, null);
     }
@@ -66,7 +66,7 @@ public final class PolygonOverlay extends Overlay
      * @param outerArea A polygon of the outer area to be displayed.
      * @param holes     (Optional) A list of polygons treated as holes inside the outerArea
      */
-    public PolygonOverlay(String modId, String displayId, RegistryKey<World> dimension, ShapeProperties shapeProperties, MapPolygon outerArea, @Nullable List<MapPolygon> holes)
+    public PolygonOverlay(String modId, String displayId, ResourceKey<Level> dimension, ShapeProperties shapeProperties, MapPolygon outerArea, @Nullable List<MapPolygon> holes)
     {
         super(modId, displayId);
         setDimension(dimension);

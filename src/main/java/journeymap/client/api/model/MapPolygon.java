@@ -21,7 +21,7 @@
 package journeymap.client.api.model;
 
 import com.google.common.base.MoreObjects;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,7 +41,7 @@ import java.util.List;
  */
 public final class MapPolygon
 {
-    private List<BlockPos> points;
+    private List<net.minecraft.core.BlockPos> points;
 
     /**
      * Constructor.
@@ -49,7 +49,7 @@ public final class MapPolygon
      * @param points See class description for details on ordering.
      * @throws IllegalArgumentException if conditions for a proper polygon aren't met.
      */
-    public MapPolygon(BlockPos... points)
+    public MapPolygon(net.minecraft.core.BlockPos... points)
     {
         this(Arrays.asList(points));
     }
@@ -75,7 +75,7 @@ public final class MapPolygon
         return points;
     }
 
-    public MapPolygon setPoints(List<BlockPos> points)
+    public MapPolygon setPoints(List<net.minecraft.core.BlockPos> points)
     {
         if (points.size() < 3)
         {
@@ -91,7 +91,7 @@ public final class MapPolygon
      *
      * @return iterator
      */
-    public Iterator<BlockPos> iterator()
+    public Iterator<net.minecraft.core.BlockPos> iterator()
     {
         return points.iterator();
     }

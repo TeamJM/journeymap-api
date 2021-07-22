@@ -21,7 +21,7 @@
 package journeymap.client.api.display;
 
 import journeymap.client.api.model.MapImage;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -37,7 +37,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public final class ImageOverlay extends Overlay
 {
-    private BlockPos northWestPoint;
+    private net.minecraft.core.BlockPos northWestPoint;
     private BlockPos southEastPoint;
     private MapImage image;
 
@@ -50,7 +50,7 @@ public final class ImageOverlay extends Overlay
      * @param southEastPoint Location of the lower-right corner of the image.
      * @param image          The image to display as the overlay.
      */
-    public ImageOverlay(String modId, String imageId, BlockPos northWestPoint, BlockPos southEastPoint, MapImage image)
+    public ImageOverlay(String modId, String imageId, BlockPos northWestPoint, net.minecraft.core.BlockPos southEastPoint, MapImage image)
     {
         super(modId, imageId);
         setNorthWestPoint(northWestPoint);
@@ -61,7 +61,7 @@ public final class ImageOverlay extends Overlay
     /**
      * Top-left location of the image overlay.
      */
-    public BlockPos getNorthWestPoint()
+    public net.minecraft.core.BlockPos getNorthWestPoint()
     {
         return northWestPoint;
     }

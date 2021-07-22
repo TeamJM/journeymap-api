@@ -9,10 +9,10 @@ import journeymap.client.api.model.TextProperties;
 import journeymap.client.api.util.PolygonHelper;
 import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -29,7 +29,7 @@ class SamplePolygonOverlayFactory
      * @param dimension   chunk dimension
      * @return a new overlay
      */
-    static PolygonOverlay create(ChunkPos chunkCoords, RegistryKey<World> dimension)
+    static PolygonOverlay create(ChunkPos chunkCoords, ResourceKey<Level> dimension)
     {
         String displayId = "slime_" + chunkCoords.toString();
         String groupName = "Slime Chunks";
@@ -111,13 +111,13 @@ class SamplePolygonOverlayFactory
 
             // Update title
             String title = "%s blocks away";
-            BlockPos playerLoc = Minecraft.getInstance().player.blockPosition();
+            net.minecraft.core.BlockPos playerLoc = Minecraft.getInstance().player.blockPosition();
             int distance = (int) Math.sqrt(playerLoc.distSqr(blockPosition));
             overlay.setTitle(String.format(title, distance));
         }
 
         @Override
-        public void onMouseOut(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition)
+        public void onMouseOut(UIState uiState, Point2D.Double mousePosition, net.minecraft.core.BlockPos blockPosition)
         {
             // Reset
             resetShapeProperties();
@@ -125,7 +125,7 @@ class SamplePolygonOverlayFactory
         }
 
         @Override
-        public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
+        public boolean onMouseClick(UIState uiState, Point2D.Double mousePosition, net.minecraft.core.BlockPos blockPosition, int button, boolean doubleClick)
         {
             // Random color on click just to prove the event works.
             sp.setFillColor(new Random().nextInt(0xffffff));
