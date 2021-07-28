@@ -7,7 +7,7 @@ A plugin-style (soft dependency) API allowing other mods to create waypoints and
 within [JourneyMap for Minecraft](http://journeymap.info) 1.8.9+.
 
 If you have suggestions or improvements to the API structure, feel free to make Pull Requests. Chatting with the TeamJM
-developers in Espernet IRC #journeymapapi is highly suggested.  Before you change anything or submit code, however, be sure
+developers in Espernet IRC #journeymap is highly suggested.  Before you change anything or submit code, however, be sure
 to read the [License Information](docs/license.md).
 
 News

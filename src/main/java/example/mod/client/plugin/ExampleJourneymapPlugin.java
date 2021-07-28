@@ -21,11 +21,11 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import journeymapapi.client.api.IClientAPI;
-import journeymapapi.client.api.IClientPlugin;
-import journeymapapi.client.api.display.DisplayType;
-import journeymapapi.client.api.event.ClientEvent;
-import journeymapapi.client.api.event.DeathWaypointEvent;
+import journeymap.client.api.IClientAPI;
+import journeymap.client.api.IClientPlugin;
+import journeymap.client.api.display.DisplayType;
+import journeymap.client.api.event.ClientEvent;
+import journeymap.client.api.event.DeathWaypointEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,9 +33,9 @@ import net.minecraftforge.common.MinecraftForge;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
-import static journeymapapi.client.api.event.ClientEvent.Type.DEATH_WAYPOINT;
-import static journeymapapi.client.api.event.ClientEvent.Type.MAPPING_STARTED;
-import static journeymapapi.client.api.event.ClientEvent.Type.MAPPING_STOPPED;
+import static journeymap.client.api.event.ClientEvent.Type.DEATH_WAYPOINT;
+import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STARTED;
+import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STOPPED;
 
 /**
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
@@ -47,7 +47,7 @@ import static journeymapapi.client.api.event.ClientEvent.Type.MAPPING_STOPPED;
  * The
  */
 @ParametersAreNonnullByDefault
-@journeymapapi.client.api.ClientPlugin
+@journeymap.client.api.ClientPlugin
 public class ExampleJourneymapPlugin implements IClientPlugin
 {
     // API reference
@@ -88,15 +88,15 @@ public class ExampleJourneymapPlugin implements IClientPlugin
     }
 
     /**
-     * Called by JourneyMap on the main Minecraft thread when a {@link journeymapapi.client.api.event.ClientEvent} occurs.
+     * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p>
      * You must call {@link IClientAPI#subscribe(String, EnumSet)} at some point to subscribe to these events, otherwise this
      * method will never be called.
      * <p>
-     * If the event type is {@link journeymapapi.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
-     * this is a signal to {@link journeymapapi.client.api.IClientAPI#show(journeymapapi.client.api.display.Displayable)}
-     * all relevant Displayables for the {@link journeymapapi.client.api.event.ClientEvent#dimension} indicated.
+     * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
+     * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
+     * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
      * (Note: ModWaypoints with persisted==true will already be shown.)
      *
      * @param event the event

@@ -21,9 +21,9 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import journeymapapi.client.api.IClientAPI;
-import journeymapapi.client.api.display.Waypoint;
-import journeymapapi.client.api.model.MapImage;
+import journeymap.client.api.IClientAPI;
+import journeymap.client.api.display.Waypoint;
+import journeymap.client.api.model.MapImage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
