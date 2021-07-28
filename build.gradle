@@ -42,7 +42,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-group 'info.journeymapapi'
+group 'info.journeymap'
 
 /* Artifact Version */
 version = project.minecraft_version + '-' + project.api_version
