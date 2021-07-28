@@ -1,13 +1,13 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import journeymap.client.api.display.IOverlayListener;
-import journeymap.client.api.display.PolygonOverlay;
-import journeymap.client.api.model.MapPolygon;
-import journeymap.client.api.model.ShapeProperties;
-import journeymap.client.api.model.TextProperties;
-import journeymap.client.api.util.PolygonHelper;
-import journeymap.client.api.util.UIState;
+import journeymapapi.client.api.display.IOverlayListener;
+import journeymapapi.client.api.display.PolygonOverlay;
+import journeymapapi.client.api.model.MapPolygon;
+import journeymapapi.client.api.model.ShapeProperties;
+import journeymapapi.client.api.model.TextProperties;
+import journeymapapi.client.api.util.PolygonHelper;
+import journeymapapi.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;

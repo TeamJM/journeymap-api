@@ -1,11 +1,11 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import journeymap.client.api.IClientAPI;
-import journeymap.client.api.display.IOverlayListener;
-import journeymap.client.api.display.ImageOverlay;
-import journeymap.client.api.model.MapImage;
-import journeymap.client.api.util.UIState;
+import journeymapapi.client.api.IClientAPI;
+import journeymapapi.client.api.display.IOverlayListener;
+import journeymapapi.client.api.display.ImageOverlay;
+import journeymapapi.client.api.model.MapImage;
+import journeymapapi.client.api.util.UIState;
 import net.minecraft.core.BlockPos;
 
 import java.awt.AlphaComposite;

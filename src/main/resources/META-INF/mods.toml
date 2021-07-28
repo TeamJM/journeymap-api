@@ -19,11 +19,11 @@ version="1.5" #mandatory
  # A display name for the mod
 displayName="Example for JourneyMap API" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
-#updateJSONURL="https://api.cfwidget.com/minecraft/mc-mods/journeymap" #optional
+#updateJSONURL="https://api.cfwidget.com/minecraft/mc-mods/journeymapapi" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="http://journeymap.info" #optional
+displayURL="http://journeymapapi.info" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="assets/journeymap/ui/img/ico/journeymap.png" #optional
+#logoFile="assets/journeymapapi/ui/img/ico/journeymapapi.png" #optional
 # A text field displayed in the mod UI
 credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI

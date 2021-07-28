@@ -1,7 +1,7 @@
 [JourneyMap API](https://github.com/TeamJM/journeymap-api) License Information
 ==========================================================
 
-**All code in this journeymap-api repository is Copyright (C) Techbrew. All Rights Reserved.**
+**All code in this journeymapapi-api repository is Copyright (C) Techbrew. All Rights Reserved.**
 
 *However, the following limited rights are granted to you:*
 

@@ -1,9 +1,9 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import journeymap.client.api.IClientAPI;
-import journeymap.client.api.display.DisplayType;
-import journeymap.client.api.display.PolygonOverlay;
+import journeymapapi.client.api.IClientAPI;
+import journeymapapi.client.api.display.DisplayType;
+import journeymapapi.client.api.display.PolygonOverlay;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
