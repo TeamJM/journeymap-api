@@ -42,7 +42,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-group 'info.journeymap'
+group 'info.journeymapapi'
 
 /* Artifact Version */
 version = project.minecraft_version + '-' + project.api_version
@@ -106,7 +106,7 @@ processResources
 jar {
     dependsOn classes
     from sourceSets.main.output
-    include 'journeymap/**'
+    include 'journeymapapi/**'
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
