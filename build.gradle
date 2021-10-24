@@ -110,7 +110,7 @@ jar {
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
-                "FMLModType"            : "LIBRARY",
+                "FMLModType"            : "GAMELIBRARY",
                 "Implementation-Title"  : project.title,
                 "Implementation-Version": project.version,
                 "Implementation-URL"    : project.git_website
@@ -129,7 +129,7 @@ task modJar(type: Jar, dependsOn: classes) {
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
-                "FMLModType"            : "LIBRARY",
+                "FMLModType"            : "GAMELIBRARY",
                 "Implementation-Title"  : project.title_example,
                 "Implementation-Version": project.version,
                 "Implementation-URL"    : project.git_website
