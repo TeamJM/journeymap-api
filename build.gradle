@@ -21,7 +21,6 @@
 /* Repos */
 buildscript {
     repositories {
-        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
