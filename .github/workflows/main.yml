@@ -17,7 +17,7 @@ jobs:
     - name: Set up Java
       uses: actions/setup-java@v1
       with:
-        version: 1.8
+        version: 16
 
     - name: Gradle Build
       run: /bin/sh ./gradlew build
