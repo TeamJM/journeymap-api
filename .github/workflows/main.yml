@@ -4,6 +4,7 @@ on:
   push:
     branches-ignore:
       - 'master'
+      - '1.16.5_1.6'
 
   pull_request:
 
