@@ -22,6 +22,7 @@ package example.mod.client;
 
 import example.mod.CommonProxy;
 import example.mod.ExampleMod;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -29,7 +30,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 
 /**
  * Client-sided proxy. No reference to ExampleJourneymapPlugin is here;
@@ -71,7 +71,7 @@ public class ClientProxy implements CommonProxy
     }
 
     @Override
-    public void serverStartingEvent(FMLServerStartingEvent event)
+    public void serverStartingEvent(ServerStartingEvent event)
     {
 
     }

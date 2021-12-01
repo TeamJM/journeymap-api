@@ -23,6 +23,7 @@ package example.mod;
 import example.mod.client.ClientProxy;
 import example.mod.server.ServerProxy;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -32,7 +33,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -94,7 +94,7 @@ public class ExampleMod
     }
 
     @SubscribeEvent
-    public void serverStartingEvent(FMLServerStartingEvent event)
+    public void serverStartingEvent(ServerStartingEvent event)
     {
         proxy.serverStartingEvent(event);
         LOGGER.info("ExampleMod serverStartingEvent done");
