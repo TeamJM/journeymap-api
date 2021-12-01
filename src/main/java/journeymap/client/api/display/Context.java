@@ -40,6 +40,7 @@ public interface Context
         Day,
         Night,
         Underground,
-        Topo
+        Topo,
+        Biome
     }
 }
