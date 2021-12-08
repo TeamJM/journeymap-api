@@ -36,7 +36,7 @@ public class ClientEvent
     /**
      * World dimension where event occurred.
      */
-    public final ResourceKey<Level> dimension;
+    public final ResourceKey<Level> level;
 
     /**
      * System millis when event was created.
@@ -51,15 +51,16 @@ public class ClientEvent
     /**
      * Constructor.
      */
-    public ClientEvent(Type type, ResourceKey<Level> dimension)
+    public ClientEvent(Type type, ResourceKey<Level> level)
     {
         this.type = type;
-        this.dimension = dimension;
+        this.level = level;
         this.timestamp = System.currentTimeMillis();
     }
 
     /**
      * Whether the event has been cancelled.
+     *
      * @return true if cancelled
      */
     public boolean isCancelled()
@@ -72,7 +73,7 @@ public class ClientEvent
      */
     public void cancel()
     {
-        if(type.cancellable)
+        if (type.cancellable)
         {
             this.cancelled = true;
         }
@@ -106,7 +107,18 @@ public class ClientEvent
          * to player death or disconnect from world.  Event will be a
          * simple {@link ClientEvent}.
          */
-        MAPPING_STOPPED(false);
+        MAPPING_STOPPED(false),
+
+        /**
+         * Indicates that the fullscreen map is going to have a mouse click
+         * {@link FullscreenMapEvent.Pre}, which can be cancelled.
+         */
+        MAP_CLICKED_PRE(true),
+        /**
+         * Indicates that the fullscreen map is going to have a mouse click
+         * {@link FullscreenMapEvent.Post}, which can not be cancelled.
+         */
+        MAP_CLICKED_POST(false);
 
         /**
          * Whether the type of event can be cancelled.
