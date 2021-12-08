@@ -36,7 +36,7 @@ public class ClientEvent
     /**
      * World dimension where event occurred.
      */
-    public final RegistryKey<World> dimension;
+    public final RegistryKey<World> level;
 
     /**
      * System millis when event was created.
@@ -51,15 +51,16 @@ public class ClientEvent
     /**
      * Constructor.
      */
-    public ClientEvent(Type type, RegistryKey<World> dimension)
+    public ClientEvent(Type type, RegistryKey<World> level)
     {
         this.type = type;
-        this.dimension = dimension;
+        this.level = level;
         this.timestamp = System.currentTimeMillis();
     }
 
     /**
      * Whether the event has been cancelled.
+     *
      * @return true if cancelled
      */
     public boolean isCancelled()
@@ -72,7 +73,7 @@ public class ClientEvent
      */
     public void cancel()
     {
-        if(type.cancellable)
+        if (type.cancellable)
         {
             this.cancelled = true;
         }
@@ -106,7 +107,35 @@ public class ClientEvent
          * to player death or disconnect from world.  Event will be a
          * simple {@link ClientEvent}.
          */
-        MAPPING_STOPPED(false);
+        MAPPING_STOPPED(false),
+
+        /**
+         * Indicates that the fullscreen map is going to have a mouse click
+         * {@link FullscreenMapEvent.ClickEvent.Pre}, which can be cancelled.
+         */
+        MAP_CLICKED_PRE(true),
+        /**
+         * Indicates that the fullscreen map is going to have a mouse click
+         * {@link FullscreenMapEvent.ClickEvent.Post}, which can not be cancelled.
+         */
+        MAP_CLICKED_POST(false),
+
+        /**
+         * Indicates the start of the mouse dragging.
+         * {@link FullscreenMapEvent.MouseDraggedEvent.Pre}, which can be cancelled.
+         */
+        MAP_DRAGGED_PRE(true),
+        /**
+         * Indicates the end of the mouse dragging, fired when the user releases the mouse button.
+         * {@link FullscreenMapEvent.MouseDraggedEvent.Post}, which can be cancelled.
+         */
+        MAP_DRAGGED_POST(false),
+
+        /**
+         * Indicates moving of the mouse, gets block info where the cursor is pointing.
+         * {@link FullscreenMapEvent.MouseMoveEvent}, which can not be cancelled.
+         */
+        MAP_MOUSE_MOVED(false);
 
         /**
          * Whether the type of event can be cancelled.
