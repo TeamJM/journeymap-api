@@ -90,7 +90,7 @@ public class FullscreenMapEvent extends ClientEvent
         public static class Pre extends ClickEvent
         {
 
-            private Pre(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
+            public Pre(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
             {
                 super(Type.MAP_CLICKED_PRE, location, level, mousePosition, button);
             }
@@ -102,7 +102,7 @@ public class FullscreenMapEvent extends ClientEvent
         public static class Post extends ClickEvent
         {
 
-            private Post(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
+            public Post(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
             {
                 super(Type.MAP_CLICKED_POST, location, level, mousePosition, button);
             }
@@ -160,7 +160,7 @@ public class FullscreenMapEvent extends ClientEvent
         public static class Pre extends MouseDraggedEvent
         {
 
-            private Pre(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
+            public Pre(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
             {
                 super(Type.MAP_DRAGGED_PRE, location, level, mousePosition, button);
             }
@@ -172,7 +172,7 @@ public class FullscreenMapEvent extends ClientEvent
         public static class Post extends MouseDraggedEvent
         {
 
-            private Post(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
+            public Post(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
             {
                 super(Type.MAP_DRAGGED_POST, location, level, mousePosition, button);
             }
@@ -194,7 +194,7 @@ public class FullscreenMapEvent extends ClientEvent
          * @param info  - The BlockInfo.
          * @param level - The dimension.
          */
-        private MouseMoveEvent(ResourceKey<Level> level, IBlockInfo info, Point2D.Double mousePosition)
+        public MouseMoveEvent(ResourceKey<Level> level, IBlockInfo info, Point2D.Double mousePosition)
         {
             super(Type.MAP_MOUSE_MOVED, info.getBlockPos(), level);
             this.mousePosition = mousePosition;
