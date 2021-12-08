@@ -74,7 +74,7 @@ public enum PluginHelper
                     if (IClientPlugin.class.isAssignableFrom(pluginClass))
                     {
                         Class<? extends IClientPlugin> interfaceImplClass = pluginClass.asSubclass(IClientPlugin.class);
-                        IClientPlugin instance = interfaceImplClass.newInstance();
+                        IClientPlugin instance = interfaceImplClass.getDeclaredConstructor().newInstance();
                         String modId = instance.getModId();
                         if (Strings.isNullOrEmpty(modId))
                         {
