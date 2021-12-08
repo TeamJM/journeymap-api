@@ -111,14 +111,31 @@ public class ClientEvent
 
         /**
          * Indicates that the fullscreen map is going to have a mouse click
-         * {@link FullscreenMapEvent.Pre}, which can be cancelled.
+         * {@link FullscreenMapEvent.ClickEvent.Pre}, which can be cancelled.
          */
         MAP_CLICKED_PRE(true),
         /**
          * Indicates that the fullscreen map is going to have a mouse click
-         * {@link FullscreenMapEvent.Post}, which can not be cancelled.
+         * {@link FullscreenMapEvent.ClickEvent.Post}, which can not be cancelled.
          */
-        MAP_CLICKED_POST(false);
+        MAP_CLICKED_POST(false),
+
+        /**
+         * Indicates the start of the mouse dragging.
+         * {@link FullscreenMapEvent.MouseDraggedEvent.Pre}, which can be cancelled.
+         */
+        MAP_DRAGGED_PRE(true),
+        /**
+         * Indicates the end of the mouse dragging, fired when the user releases the mouse button.
+         * {@link FullscreenMapEvent.MouseDraggedEvent.Post}, which can be cancelled.
+         */
+        MAP_DRAGGED_POST(false),
+
+        /**
+         * Indicates moving of the mouse, gets block info where the cursor is pointing.
+         * {@link FullscreenMapEvent.MouseMoveEvent}, which can not be cancelled.
+         */
+        MAP_MOUSE_MOVED(false);
 
         /**
          * Whether the type of event can be cancelled.
