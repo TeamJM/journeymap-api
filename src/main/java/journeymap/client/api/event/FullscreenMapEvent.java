@@ -35,7 +35,7 @@ public class FullscreenMapEvent extends ClientEvent
 
     public RegistryKey<World> getLevel()
     {
-        return level;
+        return dimension;
     }
 
 
