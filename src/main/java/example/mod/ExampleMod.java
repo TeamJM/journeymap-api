@@ -43,7 +43,7 @@ import org.apache.logging.log4j.Logger;
 @Mod.EventBusSubscriber(modid = ExampleMod.MODID)
 public class ExampleMod
 {
-    public static final String MODID = "examplemodjm";
+    public static final String MODID = "examplemod-jm";
     public static final String VERSION = "1.8";
     public static final Logger LOGGER = LogManager.getFormatterLogger(MODID);
 
