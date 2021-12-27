@@ -156,6 +156,13 @@ public class ExampleJourneymapPlugin implements IClientPlugin
             SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
         }
 
+        // Create some random complex polygon overlays
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
+        {
+            BlockPos pos = Minecraft.getInstance().player.blockPosition();
+            SampleComplexPolygonOverlayFactory.create(jmAPI, pos, event.dimension, 256);
+        }
+
         // Slime chunk Polygon Overlays are created by the ForgeEventListener
         // as chunks load, so no need to do anything here.
     }

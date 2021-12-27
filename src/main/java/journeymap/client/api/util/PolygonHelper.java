@@ -77,7 +77,30 @@ public class PolygonHelper
     }
 
     /**
-     * Given a collection of chunks, creates an Area that covers them.
+     * Creates a polygon for the block coords, starting with the lower-left (southwest) corner
+     * and going counter-clockwise.  The supplied coordinates don't need to be in order, just opposite.
+     *
+     * @param corner1 One corner of the desired rectangle
+     * @param corner2 The opposite corner
+     * @return polygon
+     */
+    public static MapPolygon createBlockRect(final BlockPos corner1, final BlockPos corner2)
+    {
+        final int minX = Math.min(corner1.getX(), corner2.getX());
+        final int maxX = Math.max(corner1.getX(), corner2.getX());
+        final int minZ = Math.min(corner1.getZ(), corner2.getZ());
+        final int maxZ = Math.max(corner1.getZ(), corner2.getZ());
+
+        final BlockPos sw = new BlockPos(minX, corner1.getY(), maxZ);
+        final BlockPos se = new BlockPos(maxX, corner1.getY(), maxZ);
+        final BlockPos ne = new BlockPos(maxX, corner2.getY(), minZ);
+        final BlockPos nw = new BlockPos(minX, corner2.getY(), minZ);
+
+        return new MapPolygon(sw, se, ne, nw);
+    }
+
+    /**
+     * Given a collection of chunks, creates an {@link Area} that covers them.
      *
      * @param chunks The set of chunks.
      * @return An Area of the corresponding block coordinates.
@@ -91,6 +114,20 @@ public class PolygonHelper
             area.add(new Area(new Rectangle(chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), 16, 16)));
         }
         return area;
+    }
+
+    /**
+     * Given a collection of chunks, creates one or more {@link MapPolygonWithHoles} that covers them.
+     * (Just a convenience wrapper for the {@link Area}-based methods.)
+     *
+     * @param chunks The set of chunks.
+     * @param y The y-coordinate for the resulting polygons.
+     * @return One or more polygons that cover the specified chunks.
+     */
+    @Nonnull
+    public static List<MapPolygonWithHoles> createChunksPolygon(@Nonnull final Collection<ChunkPos> chunks, final int y)
+    {
+        return createPolygonFromArea(createChunksArea(chunks), y);
     }
 
     /**
