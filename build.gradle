@@ -78,8 +78,14 @@ minecraft {
         }
     }
 }
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    runtimeOnly fg.deobf("flat:journeymap:${project.minecraft_version}-${project.journeymap_version}")
 }
 /* Replace tokens in resources files */
 processResources

@@ -145,7 +145,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
         {
             BlockPos pos = Minecraft.getInstance().player.blockPosition();
-            SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
+            //SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
         }
 
         // Create a waypoint for the player's bed location.  The ForgeEventListener
