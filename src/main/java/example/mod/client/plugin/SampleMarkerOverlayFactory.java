@@ -4,6 +4,7 @@ import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.IOverlayListener;
 import journeymap.client.api.display.MarkerOverlay;
+import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.model.MapImage;
 import journeymap.client.api.util.UIState;
 import net.minecraft.block.material.MaterialColor;
@@ -157,6 +158,12 @@ class SampleMarkerOverlayFactory
 
             // Returning true will allow the click event to be used by other overlays
             return true;
+        }
+
+        @Override
+        public void onOverlayMenuPopup(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, ModPopupMenu modPopupMenu)
+        {
+            modPopupMenu.addMenuItem("Delete", (b) -> jmAPI.remove(overlay));
         }
 
         /**
