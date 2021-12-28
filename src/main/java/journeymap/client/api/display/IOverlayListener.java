@@ -53,4 +53,14 @@ public interface IOverlayListener
      * @return true if click event can bubble up to other overlays which occupy the same area.
      */
     boolean onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick);
+
+    /**
+     * Called when the popup menu is displayed on an overlay.
+     *
+     * @param mapState      current UIState of the UI where the overlay is active.
+     * @param mousePosition screen coordinates of the mouse
+     * @param blockPosition the block position under the mouse
+     * @param modPopupMenu  the modMenuPopup
+     */
+    void onOverlayMenuPopup(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, ModPopupMenu modPopupMenu);
 }

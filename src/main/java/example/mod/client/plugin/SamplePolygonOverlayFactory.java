@@ -2,6 +2,7 @@ package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
 import journeymap.client.api.display.IOverlayListener;
+import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.display.PolygonOverlay;
 import journeymap.client.api.model.MapPolygon;
 import journeymap.client.api.model.ShapeProperties;
@@ -133,6 +134,12 @@ class SamplePolygonOverlayFactory
             // Returning false will stop the click event from being used by other overlays,
             // including JM's invisible overlay for creating/selecting waypoints
             return false;
+        }
+
+        @Override
+        public void onOverlayMenuPopup(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, ModPopupMenu modPopupMenu)
+        {
+            modPopupMenu.addMenuItem("Reset", (b) -> resetShapeProperties());
         }
 
         /**
