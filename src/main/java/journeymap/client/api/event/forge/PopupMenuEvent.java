@@ -4,7 +4,7 @@ import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.display.Waypoint;
 import journeymap.client.api.model.IFullscreen;
 import journeymap.client.api.util.UIState;
-import net.minecraft.core.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 

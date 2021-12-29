@@ -1,6 +1,8 @@
 modLoader="javafml"
-loaderVersion="[37,)"
+loaderVersion="[36,)"
 issueTrackerURL="http://my.issue.tracker/" #optional
+license="All rights reserved"
+
 [[mods]]
 modId="examplemodjm" #mandatory
 version="1.8" #mandatory

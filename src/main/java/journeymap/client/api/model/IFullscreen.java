@@ -3,12 +3,13 @@ package journeymap.client.api.model;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.World;
+
 
 public interface IFullscreen
 {
-    void updateMapType(Context.MapType mapType, Integer vSlice, ResourceKey<Level> dimension);
+    void updateMapType(Context.MapType mapType, Integer vSlice, RegistryKey<World> dimension);
 
     void toggleMapType();
 

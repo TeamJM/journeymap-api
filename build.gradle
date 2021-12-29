@@ -21,16 +21,17 @@
 /* Repos */
 buildscript {
     repositories {
+        mavenCentral()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net"
         }
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
     }
 }
@@ -50,6 +51,12 @@ version = project.minecraft_version + '-' + project.api_version
 /* Java 8 */
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+repositories {
+    maven {
+        url "https://www.cursemaven.com"
+    }
+}
 
 /* ForgeGradle spec for Minecraft */
 minecraft {
@@ -80,10 +87,12 @@ minecraft {
 }
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
 }
 /* Replace tokens in resources files */
 processResources
         {
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
             // this will ensure that this task is redone when the versions change.
             inputs.property "version", project.version
             inputs.property "mcversion", project.minecraft_version

@@ -61,7 +61,7 @@ public class FullscreenMapEvent extends ClientEvent
          * @param mousePosition - The precalculated scaled mouse position.
          * @param button        - The mouse button.
          */
-        public ClickEvent(Stage stage, BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
+        public ClickEvent(Stage stage, BlockPos location, RegistryKey<World> level, Point2D.Double mousePosition, int button)
         {
             super(MAP_CLICKED, location, level);
             this.stage = stage;
@@ -144,7 +144,7 @@ public class FullscreenMapEvent extends ClientEvent
          * @param mousePosition - The precalculated scaled mouse position.
          * @param button        - The mouse button.
          */
-        public MouseDraggedEvent(Stage stage, BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
+        public MouseDraggedEvent(Stage stage, BlockPos location, RegistryKey<World> level, Point2D.Double mousePosition, int button)
         {
             super(MAP_DRAGGED, location, level);
             this.stage = stage;

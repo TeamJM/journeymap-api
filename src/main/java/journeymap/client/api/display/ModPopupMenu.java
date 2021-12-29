@@ -1,7 +1,7 @@
 package journeymap.client.api.display;
 
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.math.BlockPos;
 
 public interface ModPopupMenu
 {
