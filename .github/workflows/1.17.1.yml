@@ -3,7 +3,7 @@ name: 1.17.1
 on:
   push:
     branches:
-      - '1.17.1_1.7'
+      - '1.17.1_1.8'
 
 jobs:
   build:

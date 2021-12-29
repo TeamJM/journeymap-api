@@ -52,6 +52,13 @@ java {
         languageVersion = JavaLanguageVersion.of(16)
     }
 }
+
+repositories {
+    maven {
+        url "https://www.cursemaven.com"
+    }
+}
+
 /* ForgeGradle spec for Minecraft */
 minecraft {
 //    version = project.minecraft_version + "-" + project.forge_version
@@ -81,6 +88,7 @@ minecraft {
 }
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
 }
 /* Replace tokens in resources files */
 processResources
