@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Enum singleton used by JourneyMap to load and initialize plugins.  A plugin class must be annotated with
@@ -47,10 +48,15 @@ public enum PluginHelper
     public final static Logger LOGGER = LogManager.getLogger("journeymap");
     public final static Type PLUGIN_ANNOTATION_NAME = Type.getType(ClientPlugin.class);
     public final static String PLUGIN_INTERFACE_NAME = IClientPlugin.class.getSimpleName();
+    public static final Pattern PATTERN_WITH_UNICODE = Pattern.compile("[^\\w\\s\\p{L}]+", Pattern.UNICODE_CHARACTER_CLASS);
 
     protected Map<String, IClientPlugin> plugins = null;
     protected boolean initialized;
 
+    public static String cleanString(String text)
+    {
+        return text.replaceAll(PATTERN_WITH_UNICODE.pattern(), "-");
+    }
 
     /**
      * Called by JourneyMap during it's preInitialization phase to find plugin classes
