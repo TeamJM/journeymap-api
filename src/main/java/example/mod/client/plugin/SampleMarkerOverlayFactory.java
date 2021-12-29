@@ -57,7 +57,7 @@ class SampleMarkerOverlayFactory
             int color = MaterialColor.MATERIAL_COLORS[colorIndex].col;
 
             MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f);
-
+            icon.centerAnchors();
             // Build the overlay
             MarkerOverlay markerOverlay = new MarkerOverlay(ExampleMod.MODID, "sampleMarker" + i, pos, icon);
             markerOverlay.setDimension(Level.OVERWORLD).setTitle("Marker Overlay").setLabel("" + i);

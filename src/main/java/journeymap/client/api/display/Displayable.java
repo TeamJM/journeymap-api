@@ -28,6 +28,8 @@ import com.google.gson.annotations.Since;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
+import static journeymap.client.api.util.PluginHelper.cleanString;
+
 /**
  * Base class for Overlays and Waypoints.
  * Mods should not extend this class directly.  Use one of the provided implementations.
@@ -57,7 +59,7 @@ public abstract class Displayable implements Comparable<Displayable>
     /**
      * Constructor which will generate a GUID display id.
      *
-     * @param modId     the mod id
+     * @param modId the mod id
      */
     protected Displayable(String modId)
     {
@@ -67,8 +69,8 @@ public abstract class Displayable implements Comparable<Displayable>
     /**
      * Constructor with explicit display id.
      *
-     * @param modId       the mod id
-     * @param displayId   the display id
+     * @param modId     the mod id
+     * @param displayId the display id
      */
     protected Displayable(String modId, String displayId)
     {
@@ -110,6 +112,7 @@ public abstract class Displayable implements Comparable<Displayable>
 
     /**
      * Used to determine display order, lower first.
+     *
      * @return order
      */
     public abstract int getDisplayOrder();
@@ -151,7 +154,7 @@ public abstract class Displayable implements Comparable<Displayable>
      */
     public final String getGuid()
     {
-        return Joiner.on("-").join(modId, displayType, id);
+        return Joiner.on("-").join(modId, displayType, cleanString(id));
     }
 
     /**
