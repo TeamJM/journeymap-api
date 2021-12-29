@@ -9,7 +9,7 @@ public interface ModPopupMenu
      * Adds a button with an action when clicked to the popup menu.
      *
      * @param label  - The label.
-     * @param action - The action -> this is an anonymous function, similar to Button.onPress
+     * @param action - The action - this is an anonymous function, similar to Button.onPress
      */
     ModPopupMenu addMenuItem(String label, Action action);
 
