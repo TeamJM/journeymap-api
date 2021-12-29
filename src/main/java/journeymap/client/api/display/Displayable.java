@@ -154,7 +154,7 @@ public abstract class Displayable implements Comparable<Displayable>
      */
     public final String getGuid()
     {
-        return Joiner.on("-").join(modId, displayType, cleanString(id));
+        return Joiner.on("-").join(modId, displayType, cleanString(id)); //TODO: move to main mod
     }
 
     /**
