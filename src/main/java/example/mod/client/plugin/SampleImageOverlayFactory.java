@@ -7,6 +7,7 @@ import journeymap.client.api.display.ImageOverlay;
 import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.model.MapImage;
 import journeymap.client.api.util.UIState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 
 import java.awt.AlphaComposite;
@@ -75,11 +76,12 @@ class SampleImageOverlayFactory
      */
     static ImageOverlay createOverlay(IClientAPI jmAPI, BlockPos upperLeft, int blocksWide, int blocksTall)
     {
-        net.minecraft.core.BlockPos lowerRight = upperLeft.offset(blocksWide, 0, blocksTall);
+        BlockPos lowerRight = upperLeft.offset(blocksWide, 0, blocksTall);
 
         // For this example, we'll generate a BufferedImage, but using a pre-existing ResourceLocation works too.
         MapImage image = new MapImage(createImage(blocksWide, blocksTall));
 
+        image.centerAnchors();
         // Generate a deterministic displayId in case we need to refer to it again
         String displayId = String.format("image%s,%s,%s,%s", upperLeft.getX(), upperLeft.getZ(), blocksWide, blocksTall);
 
@@ -87,6 +89,7 @@ class SampleImageOverlayFactory
 
         imageOverlay.getImage().setOpacity(.8f);
 
+        imageOverlay.setDimension(Minecraft.getInstance().player.level.dimension());
         imageOverlay.setLabel("Image Overlay")
                 .setTitle(displayId)
                 .setOverlayListener(new ImageListener(jmAPI, imageOverlay));
