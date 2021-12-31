@@ -96,7 +96,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
      * <p>
      * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
      * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
-     * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#level} indicated.
+     * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
      * (Note: ModWaypoints with persisted==true will already be shown.)
      *
      * @param event the event
@@ -153,7 +153,14 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
         {
             BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0,0,0));
-            SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.level);
+            SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
+        }
+
+        // Create some random complex polygon overlays
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
+        {
+            BlockPos pos = Minecraft.getInstance().player.blockPosition();
+            SampleComplexPolygonOverlayFactory.create(jmAPI, pos, event.dimension, 256);
         }
 
         // Slime chunk Polygon Overlays are created by the ForgeEventListener

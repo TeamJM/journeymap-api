@@ -59,7 +59,7 @@ public interface IClientPlugin
      * <p>
      * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
      * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
-     * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#level} indicated.
+     * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
      * (Note: ModWaypoints with persisted==true will already be shown.)
      *
      * @param event the event

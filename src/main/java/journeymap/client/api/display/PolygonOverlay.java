@@ -21,6 +21,7 @@
 package journeymap.client.api.display;
 
 import journeymap.client.api.model.MapPolygon;
+import journeymap.client.api.model.MapPolygonWithHoles;
 import journeymap.client.api.model.ShapeProperties;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -56,6 +57,18 @@ public final class PolygonOverlay extends Overlay
     public PolygonOverlay(String modId, String displayId, ResourceKey<Level> dimension, ShapeProperties shapeProperties, MapPolygon outerArea)
     {
         this(modId, displayId, dimension, shapeProperties, outerArea, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param modId     Your mod id.
+     * @param displayId A unique id for the polygon (scoped within your mod) which can be used to remove/update it.
+     * @param polygon   A polygon of the outer area with holes to be displayed.
+     */
+    public PolygonOverlay(String modId, String displayId, ResourceKey<Level> dimension, ShapeProperties shapeProperties, MapPolygonWithHoles polygon)
+    {
+        this(modId, displayId, dimension, shapeProperties, polygon.hull, polygon.holes);
     }
 
     /**
@@ -124,6 +137,14 @@ public final class PolygonOverlay extends Overlay
             this.holes = new ArrayList<MapPolygon>(holes);
         }
         return this;
+    }
+
+    /**
+     * Sets the outer area and holes in one go.
+     */
+    public PolygonOverlay setPolygonWithHoles(MapPolygonWithHoles polygon)
+    {
+        return setOuterArea(polygon.hull).setHoles(polygon.holes);
     }
 
     /**
