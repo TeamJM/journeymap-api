@@ -28,8 +28,6 @@ import com.google.gson.annotations.Since;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
-import static journeymap.client.api.util.PluginHelper.cleanString;
-
 /**
  * Base class for Overlays and Waypoints.
  * Mods should not extend this class directly.  Use one of the provided implementations.
@@ -154,7 +152,7 @@ public abstract class Displayable implements Comparable<Displayable>
      */
     public final String getGuid()
     {
-        return Joiner.on("-").join(modId, displayType, cleanString(id)); //TODO: move to main mod
+        return Joiner.on("-").join(modId, displayType, id);
     }
 
     /**
