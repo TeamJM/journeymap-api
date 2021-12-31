@@ -7,6 +7,9 @@ import net.minecraft.world.level.Level;
 
 import java.awt.geom.Point2D;
 
+import static journeymap.client.api.event.ClientEvent.Type.MAP_CLICKED;
+import static journeymap.client.api.event.ClientEvent.Type.MAP_DRAGGED;
+
 /**
  * Event classes for the Fullscreen map.
  */
@@ -35,7 +38,7 @@ public class FullscreenMapEvent extends ClientEvent
 
     public ResourceKey<Level> getLevel()
     {
-        return level;
+        return dimension;
     }
 
 
@@ -46,22 +49,29 @@ public class FullscreenMapEvent extends ClientEvent
     {
         private final int button;
         private final Point2D.Double mousePosition;
+        private final Stage stage;
 
         /**
          * Map clicked event, fired when a user clicks on the map.
          * Can be canceled.
          *
-         * @param type          - The type
+         * @param stage         - The stage
          * @param location      - The BlockPos of the click.
          * @param level         - The dimension.
          * @param mousePosition - The precalculated scaled mouse position.
          * @param button        - The mouse button.
          */
-        private ClickEvent(Type type, BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
+        public ClickEvent(Stage stage, BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
         {
-            super(type, location, level);
+            super(MAP_CLICKED, location, level);
+            this.stage = stage;
             this.mousePosition = mousePosition;
             this.button = button;
+        }
+
+        public Stage getStage()
+        {
+            return stage;
         }
 
         public double getMouseX()
@@ -92,7 +102,7 @@ public class FullscreenMapEvent extends ClientEvent
 
             public Pre(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
             {
-                super(Type.MAP_CLICKED_PRE, location, level, mousePosition, button);
+                super(Stage.PRE, location, level, mousePosition, button);
             }
         }
 
@@ -104,7 +114,13 @@ public class FullscreenMapEvent extends ClientEvent
 
             public Post(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
             {
-                super(Type.MAP_CLICKED_POST, location, level, mousePosition, button);
+                super(Stage.POST, location, level, mousePosition, button);
+            }
+
+            @Override
+            public boolean isCancellable()
+            {
+                return false;
             }
         }
     }
@@ -116,22 +132,29 @@ public class FullscreenMapEvent extends ClientEvent
     {
         private final int button;
         private final Point2D.Double mousePosition;
+        private final Stage stage;
 
         /**
          * Map MouseDraggedEvent event, fired when a user drag the mouse on the map.
          * Can be canceled.
          *
-         * @param type          - The type
+         * @param stage         - The stage
          * @param location      - The BlockPos of the click.
          * @param level         - The dimension.
          * @param mousePosition - The precalculated scaled mouse position.
          * @param button        - The mouse button.
          */
-        private MouseDraggedEvent(Type type, BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
+        public MouseDraggedEvent(Stage stage, BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
         {
-            super(type, location, level);
+            super(MAP_DRAGGED, location, level);
+            this.stage = stage;
             this.mousePosition = mousePosition;
             this.button = button;
+        }
+
+        public Stage getStage()
+        {
+            return stage;
         }
 
         public double getMouseX()
@@ -162,7 +185,7 @@ public class FullscreenMapEvent extends ClientEvent
 
             public Pre(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
             {
-                super(Type.MAP_DRAGGED_PRE, location, level, mousePosition, button);
+                super(Stage.PRE, location, level, mousePosition, button);
             }
         }
 
@@ -174,7 +197,13 @@ public class FullscreenMapEvent extends ClientEvent
 
             public Post(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
             {
-                super(Type.MAP_DRAGGED_POST, location, level, mousePosition, button);
+                super(Stage.POST, location, level, mousePosition, button);
+            }
+
+            @Override
+            public boolean isCancellable()
+            {
+                return false;
             }
         }
     }
@@ -221,4 +250,10 @@ public class FullscreenMapEvent extends ClientEvent
             return info;
         }
     }
+
+    public enum Stage
+    {
+        PRE, POST
+    }
+
 }

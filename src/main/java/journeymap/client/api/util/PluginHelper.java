@@ -51,6 +51,7 @@ public enum PluginHelper
     protected Map<String, IClientPlugin> plugins = null;
     protected boolean initialized;
 
+
     /**
      * Called by JourneyMap during it's preInitialization phase to find plugin classes
      * included in other mods and then instantiate them.

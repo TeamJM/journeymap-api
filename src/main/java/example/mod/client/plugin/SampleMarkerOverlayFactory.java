@@ -4,6 +4,7 @@ import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.IOverlayListener;
 import journeymap.client.api.display.MarkerOverlay;
+import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.model.MapImage;
 import journeymap.client.api.util.UIState;
 import net.minecraft.core.BlockPos;
@@ -56,7 +57,7 @@ class SampleMarkerOverlayFactory
             int color = MaterialColor.byId(colorIndex).col;
 
             MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f);
-
+            icon.centerAnchors();
             // Build the overlay
             MarkerOverlay markerOverlay = new MarkerOverlay(ExampleMod.MODID, "sampleMarker" + i, pos, icon);
             markerOverlay.setDimension(Level.OVERWORLD).setTitle("Marker Overlay").setLabel("" + i);
@@ -157,6 +158,12 @@ class SampleMarkerOverlayFactory
 
             // Returning true will allow the click event to be used by other overlays
             return true;
+        }
+
+        @Override
+        public void onOverlayMenuPopup(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, ModPopupMenu modPopupMenu)
+        {
+            modPopupMenu.addMenuItem("Delete", (b) -> jmAPI.remove(overlay));
         }
 
         /**

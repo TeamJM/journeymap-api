@@ -57,7 +57,7 @@ public abstract class Displayable implements Comparable<Displayable>
     /**
      * Constructor which will generate a GUID display id.
      *
-     * @param modId     the mod id
+     * @param modId the mod id
      */
     protected Displayable(String modId)
     {
@@ -67,8 +67,8 @@ public abstract class Displayable implements Comparable<Displayable>
     /**
      * Constructor with explicit display id.
      *
-     * @param modId       the mod id
-     * @param displayId   the display id
+     * @param modId     the mod id
+     * @param displayId the display id
      */
     protected Displayable(String modId, String displayId)
     {
@@ -110,6 +110,7 @@ public abstract class Displayable implements Comparable<Displayable>
 
     /**
      * Used to determine display order, lower first.
+     *
      * @return order
      */
     public abstract int getDisplayOrder();
