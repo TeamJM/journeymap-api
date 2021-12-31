@@ -36,7 +36,7 @@ public class ClientEvent
     /**
      * World dimension where event occurred.
      */
-    public final ResourceKey<Level> level;
+    public final ResourceKey<Level> dimension;
 
     /**
      * System millis when event was created.
@@ -51,10 +51,10 @@ public class ClientEvent
     /**
      * Constructor.
      */
-    public ClientEvent(Type type, ResourceKey<Level> level)
+    public ClientEvent(Type type, ResourceKey<Level> dimension)
     {
         this.type = type;
-        this.level = level;
+        this.dimension = dimension;
         this.timestamp = System.currentTimeMillis();
     }
 

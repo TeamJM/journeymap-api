@@ -38,7 +38,7 @@ public class FullscreenMapEvent extends ClientEvent
 
     public ResourceKey<Level> getLevel()
     {
-        return level;
+        return dimension;
     }
 
 
