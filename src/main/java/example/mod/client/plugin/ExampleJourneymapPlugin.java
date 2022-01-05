@@ -26,6 +26,7 @@ import journeymap.client.api.IClientPlugin;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.DeathWaypointEvent;
+import journeymap.client.api.event.RegistryEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,6 +37,7 @@ import java.util.EnumSet;
 import static journeymap.client.api.event.ClientEvent.Type.DEATH_WAYPOINT;
 import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STARTED;
 import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STOPPED;
+import static journeymap.client.api.event.ClientEvent.Type.REGISTRY;
 
 /**
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
@@ -55,6 +57,24 @@ public class ExampleJourneymapPlugin implements IClientPlugin
 
     // Forge listener reference
     private ForgeEventListener forgeEventListener;
+    private ClientProperties clientProperties;
+
+    private static ExampleJourneymapPlugin INSTANCE;
+
+    public ExampleJourneymapPlugin()
+    {
+        INSTANCE = this;
+    }
+
+    public static ExampleJourneymapPlugin getInstance()
+    {
+        return INSTANCE;
+    }
+
+    public ClientProperties getClientProperties()
+    {
+        return clientProperties;
+    }
 
     /**
      * Called by JourneyMap during the init phase of mod loading.  The IClientAPI reference is how the mod
@@ -73,7 +93,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         MinecraftForge.EVENT_BUS.register(forgeEventListener);
 
         // Subscribe to desired ClientEvent types from JourneyMap
-        this.jmAPI.subscribe(getModId(), EnumSet.of(DEATH_WAYPOINT, MAPPING_STARTED, MAPPING_STOPPED));
+        this.jmAPI.subscribe(getModId(), EnumSet.of(DEATH_WAYPOINT, MAPPING_STARTED, MAPPING_STOPPED, REGISTRY));
 
         ExampleMod.LOGGER.info("Initialized " + getClass().getName());
     }
@@ -119,6 +139,13 @@ public class ExampleJourneymapPlugin implements IClientPlugin
                 case DEATH_WAYPOINT:
                     onDeathpoint((DeathWaypointEvent) event);
                     break;
+                case REGISTRY:
+                    RegistryEvent registryEvent = (RegistryEvent) event;
+                    if (RegistryEvent.RegistryType.OPTIONS.equals(registryEvent.getRegistryType()))
+                    {
+                        this.clientProperties = new ClientProperties();
+                    }
+                    break;
             }
         }
         catch (Throwable t)
@@ -126,6 +153,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
             ExampleMod.LOGGER.error(t.getMessage(), t);
         }
     }
+
 
     /**
      * When mapping has started, generate a bunch of random overlays.
@@ -152,7 +180,7 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         // will keep it updated if the player sleeps elsewhere.
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
         {
-            BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0,0,0));
+            BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0, 0, 0));
             SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
         }
 
