@@ -59,6 +59,14 @@ public class ClientEvent
     }
 
     /**
+     * Constructor.
+     */
+    public ClientEvent(Type type)
+    {
+        this(type, Level.OVERWORLD);
+    }
+
+    /**
      * Whether the event has been cancelled.
      *
      * @return true if cancelled
@@ -137,7 +145,14 @@ public class ClientEvent
          * Indicates moving of the mouse, gets block info where the cursor is pointing.
          * {@link FullscreenMapEvent.MouseMoveEvent}, which can not be cancelled.
          */
-        MAP_MOUSE_MOVED(false);
+        MAP_MOUSE_MOVED(false),
+
+        /**
+         * Indicates registry events.
+         * {@link RegistryEvent}
+         */
+        REGISTRY(false);
+
 
         /**
          * Whether the type of event can be cancelled.
