@@ -28,6 +28,9 @@ public class RegistryEvent extends ClientEvent
 
     /**
      * Fired when it is time to register custom options to display in journeymap options screen.
+     *
+     * This event is fired very early during the mod loading process. It is fired at the init phase of Journeymap
+     * which is during the FMLLoadCompleteEvent.
      */
     public static class OptionsRegistryEvent extends RegistryEvent
     {
