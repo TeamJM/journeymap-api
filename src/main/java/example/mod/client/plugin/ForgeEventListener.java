@@ -3,14 +3,20 @@ package example.mod.client.plugin;
 import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.DisplayType;
+import journeymap.client.api.display.IThemeButton;
 import journeymap.client.api.display.PolygonOverlay;
+import journeymap.client.api.display.ThemeButtonDisplay;
+import journeymap.client.api.event.forge.FullscreenButtonDisplayEvent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
@@ -111,6 +117,37 @@ class ForgeEventListener
                 }
             }
         }
+    }
+
+    /**
+     * Creates buttons on the right side of the fullscreen map.
+     *
+     * @param event - The event
+     */
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onFullscreenAddonButton(FullscreenButtonDisplayEvent.AddonButtonDisplayEvent event)
+    {
+        ThemeButtonDisplay buttonDisplay = event.getThemeButtonDisplay();
+        IThemeButton button1 = buttonDisplay.addThemeButton("Test1", "alert", b -> System.out.println("ALERT ALERT"));
+        IThemeButton button2 = buttonDisplay.addThemeButton("Test2", "grid", b -> System.out.println("ALERT ALERT"));
+        IThemeButton button3 = buttonDisplay.addThemeButton("Test3", "day", b -> System.out.println("ALERT ALERT"));
+        IThemeButton button4 = buttonDisplay.addThemeButton("Test4", "biome", b -> System.out.println("ALERT ALERT"));
+        IThemeButton button5 = buttonDisplay.addThemeButton("Test5", "keys", b -> System.out.println("ALERT ALERT"));
+        IThemeButton button6 = buttonDisplay.addThemeToggleButton("Test6 On", "Text 6 Off", "keys", false, b -> System.out.println("ALERT ALERT"));
+    }
+
+    /**
+     * Adds buttons to the map type button list at the top of the fullscreen map.
+     *
+     * @param event - The event
+     */
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onFullscreenMapTypeButton(FullscreenButtonDisplayEvent.MapTypeButtonDisplayEvent event)
+    {
+        event.getThemeButtonDisplay()
+                .addThemeButton("Test MapType", "follow", b -> System.out.println("follow"));
     }
 
     /**
