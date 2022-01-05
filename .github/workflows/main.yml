@@ -4,7 +4,6 @@ on:
   push:
     branches-ignore:
       - 'master'
-      - '1.16.5_1.6'
 
   pull_request:
 
@@ -18,7 +17,7 @@ jobs:
     - name: Set up Java
       uses: actions/setup-java@v1
       with:
-        version: 16
+        version: 17
 
     - name: Gradle Build
       run: /bin/sh ./gradlew build
