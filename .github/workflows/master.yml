@@ -1,0 +1,24 @@
+name: Master
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          version: 16
+
+      - name: Gradle Build
+        run: /bin/sh ./gradlew build
+
+      - name: Gradle Publish
+        run: /bin/sh ./gradlew -Pjourneymap.user=${{ secrets.JOURNEYMAP_USER }} -Pjourneymap.password=${{ secrets.JOURNEYMAP_PASSWORD }} publish
