@@ -63,7 +63,7 @@ public class ClientEvent
      */
     public ClientEvent(Type type)
     {
-        this(type, Level.OVERWORLD);
+        this(type, World.OVERWORLD);
     }
 
     /**
