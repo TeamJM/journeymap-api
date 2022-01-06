@@ -3,7 +3,7 @@ package journeymap.client.api.display;
 public interface ThemeButtonDisplay
 {
     /**
-     * Creates a theme toggle button with a separate on/off label.
+     * Creates and adds a theme toggle button with a separate on/off label to the toolbar.
      *
      * @param labelOn  - The on label.
      * @param labelOff - The off label.
@@ -15,7 +15,7 @@ public interface ThemeButtonDisplay
     IThemeButton addThemeToggleButton(String labelOn, String labelOff, String iconName, boolean toggled, IThemeButton.Action onPress);
 
     /**
-     * Creates a theme button with a separate on/off label.
+     * Creates and adds a theme button with a separate on/off label to the toolbar.
      *
      * @param labelOn  - The on label.
      * @param labelOff - The off label.
@@ -26,7 +26,7 @@ public interface ThemeButtonDisplay
     IThemeButton addThemeButton(String labelOn, String labelOff, String iconName, IThemeButton.Action onPress);
 
     /**
-     * Creates a theme toggle button with a separate on/off label.
+     * Creates and adds a theme toggle button with a separate on/off label to the toolbar.
      *
      * @param label    - The label.
      * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
@@ -37,7 +37,7 @@ public interface ThemeButtonDisplay
     IThemeButton addThemeToggleButton(String label, String iconName, boolean toggled, IThemeButton.Action onPress);
 
     /**
-     * Creates a theme button with a separate on/off label.
+     * Creates and adds a theme button with a separate on/off label to the toolbar.
      *
      * @param label    - The label.
      * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
