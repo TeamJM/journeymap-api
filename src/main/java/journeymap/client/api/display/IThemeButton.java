@@ -67,4 +67,12 @@ public interface IThemeButton
      * @param enabled - To enable.
      */
     void setEnabled(boolean enabled);
+
+    /**
+     * The button action.
+     */
+    interface Action
+    {
+        void doAction(IThemeButton button);
+    }
 }
