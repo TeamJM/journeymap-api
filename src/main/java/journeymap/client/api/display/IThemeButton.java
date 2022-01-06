@@ -1,6 +1,6 @@
 package journeymap.client.api.display;
 
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.widget.button.Button;
 
 public interface IThemeButton
 {

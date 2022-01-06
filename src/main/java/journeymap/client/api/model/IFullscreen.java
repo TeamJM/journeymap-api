@@ -3,7 +3,7 @@ package journeymap.client.api.model;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
 
