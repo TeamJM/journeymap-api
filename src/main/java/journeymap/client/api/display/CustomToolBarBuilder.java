@@ -1,7 +1,9 @@
 package journeymap.client.api.display;
 
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public interface CustomToolBarBuilder
 {
     /**
@@ -13,7 +15,7 @@ public interface CustomToolBarBuilder
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton getThemeToggleButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull String iconName, @NotNull IThemeButton.Action onPress);
+    IThemeButton getThemeToggleButton(String labelOn, String labelOff, String iconName, IThemeButton.Action onPress);
 
     /**
      * Creates and gets a theme button with a separate on/off label.
@@ -24,7 +26,7 @@ public interface CustomToolBarBuilder
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton getThemeButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull String iconName, @NotNull IThemeButton.Action onPress);
+    IThemeButton getThemeButton(String labelOn, String labelOff, String iconName, IThemeButton.Action onPress);
 
     /**
      * Creates and gets a theme toggle button with a separate on/off label.
@@ -34,7 +36,7 @@ public interface CustomToolBarBuilder
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton getThemeToggleButton(@NotNull String label, @NotNull String iconName, @NotNull IThemeButton.Action onPress);
+    IThemeButton getThemeToggleButton(String label, String iconName, IThemeButton.Action onPress);
 
     /**
      * Creates and gets a theme button with a separate on/off label.
@@ -44,7 +46,7 @@ public interface CustomToolBarBuilder
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton getThemeButton(@NotNull String label, @NotNull String iconName, @NotNull IThemeButton.Action onPress);
+    IThemeButton getThemeButton(String label, String iconName, IThemeButton.Action onPress);
 
 
     /**

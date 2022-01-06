@@ -1,7 +1,5 @@
 package journeymap.client.api.display;
 
-import org.jetbrains.annotations.NotNull;
-
 public interface ThemeButtonDisplay
 {
     /**
@@ -14,7 +12,7 @@ public interface ThemeButtonDisplay
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton addThemeToggleButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull String iconName, boolean toggled, @NotNull IThemeButton.Action onPress);
+    IThemeButton addThemeToggleButton(String labelOn, String labelOff, String iconName, boolean toggled, IThemeButton.Action onPress);
 
     /**
      * Creates and adds a theme button with a separate on/off label to the toolbar.
@@ -25,7 +23,7 @@ public interface ThemeButtonDisplay
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton addThemeButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull String iconName, @NotNull IThemeButton.Action onPress);
+    IThemeButton addThemeButton(String labelOn, String labelOff, String iconName, IThemeButton.Action onPress);
 
     /**
      * Creates and adds a theme toggle button with a separate on/off label to the toolbar.
@@ -36,7 +34,7 @@ public interface ThemeButtonDisplay
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton addThemeToggleButton(@NotNull String label, @NotNull String iconName, boolean toggled, @NotNull IThemeButton.Action onPress);
+    IThemeButton addThemeToggleButton(String label, String iconName, boolean toggled, IThemeButton.Action onPress);
 
     /**
      * Creates and adds a theme button with a separate on/off label to the toolbar.
@@ -46,6 +44,5 @@ public interface ThemeButtonDisplay
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton addThemeButton(@NotNull String label, @NotNull String iconName, @NotNull IThemeButton.Action onPress);
-
+    IThemeButton addThemeButton(String label, String iconName, IThemeButton.Action onPress);
 }
