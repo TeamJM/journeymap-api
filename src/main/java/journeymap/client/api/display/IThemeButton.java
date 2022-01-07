@@ -69,6 +69,13 @@ public interface IThemeButton
     void setEnabled(boolean enabled);
 
     /**
+     * Sets tooltip.
+     *
+     * @param tooltip the tooltip
+     */
+    void setTooltip(String... tooltip);
+
+    /**
      * The button action.
      */
     interface Action
