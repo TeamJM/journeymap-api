@@ -6,7 +6,7 @@ package journeymap.client.api.option;
 public interface KeyedEnum
 {
     /**
-     * Key can be an i18n key or a label.
+     * Key is the label.
      *
      * @return - The Key.
      */
