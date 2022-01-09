@@ -2,6 +2,10 @@ name: Master
 
 on:
   push:
+    branches-ignore:
+      - '1.16.5_1.8'
+      - '1.17.1_1.8'
+      - '1.18.1_1.8'
     branches:
       - 'master'
 
