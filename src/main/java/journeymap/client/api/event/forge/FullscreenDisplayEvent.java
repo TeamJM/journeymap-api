@@ -61,7 +61,7 @@ public class FullscreenDisplayEvent extends Event
     /**
      * Used to create custom toolbars on the fullscreen map.
      */
-    public static class CustomToolbarEvent
+    public static class CustomToolbarEvent extends Event
     {
 
         private final CustomToolBarBuilder customToolBarBuilder;
