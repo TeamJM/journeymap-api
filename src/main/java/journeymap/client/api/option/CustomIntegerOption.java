@@ -8,10 +8,11 @@ public class CustomIntegerOption extends CustomOption<Integer>
 
     /**
      * Creates an Integer textbox.
+     * For tooltips, your i18n key plus .tooltip in your language json example  mod.option.label and mod.option.label.tooltip
      *
      * @param category     - The category.
      * @param fieldName    - The fieldname.
-     * @param label        - The label.
+     * @param label        - The label, can be the display string or i18 key.
      * @param minValue     - The minimum allowed value.
      * @param maxValue     - The maximum allowed value.
      * @param defaultValue - The default value.

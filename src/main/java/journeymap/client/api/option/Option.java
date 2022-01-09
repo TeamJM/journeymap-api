@@ -11,6 +11,15 @@ public abstract class Option<T>
     protected final T defaultValue;
     protected Config<T> config;
 
+    /**
+     * Parent for all options.
+     * For tooltips, your i18n key plus .tooltip in your language json example  mod.option.label and mod.option.label.tooltip
+     *
+     * @param category     - The category.
+     * @param fieldName    - The field name.
+     * @param label        - the label, can be the display string or i18 key.
+     * @param defaultValue - the default value.
+     */
     protected Option(OptionCategory category, String fieldName, String label, T defaultValue)
     {
         this.category = category;
@@ -27,7 +36,7 @@ public abstract class Option<T>
 
     public String getFieldName()
     {
-        return fieldName.toLowerCase(Locale.ROOT).replaceAll("\\s","");
+        return fieldName.toLowerCase(Locale.ROOT).replaceAll("\\s", "");
     }
 
     public String getLabel()
