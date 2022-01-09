@@ -77,5 +77,9 @@ public class FullscreenDisplayEvent extends Event
             return customToolBarBuilder;
         }
 
+        public IFullscreen getFullscreen()
+        {
+            return fullscreen;
+        }
     }
 }
