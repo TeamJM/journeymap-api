@@ -1,5 +1,7 @@
 package journeymap.client.api.event;
 
+import java.util.function.Supplier;
+
 /**
  * Event classes for journeymap registries.
  */
@@ -28,13 +30,12 @@ public class RegistryEvent extends ClientEvent
 
     /**
      * Fired when it is time to register custom options to display in journeymap options screen.
-     *
-     * This event is fired very early during the mod loading process. It is fired at the init phase of Journeymap
-     * which is during the FMLLoadCompleteEvent.
+     * <p>
+     * This event is fired very early during the mod loading process. It is fired at the postInit phase of Journeymap
+     * which is right before the main title screen is loaded.
      */
     public static class OptionsRegistryEvent extends RegistryEvent
     {
-
         public OptionsRegistryEvent()
         {
             super(RegistryType.OPTIONS);
@@ -42,10 +43,51 @@ public class RegistryEvent extends ClientEvent
     }
 
     /**
+     * Used for creating your own info slots.
+     * This event is fired before the {@link OptionsRegistryEvent} as the info slots are need for the configs.
+     */
+    public static class InfoSlotRegistryEvent extends RegistryEvent
+    {
+        private final InfoSlotRegistrar registrar;
+
+        public InfoSlotRegistryEvent(InfoSlotRegistrar registrar)
+        {
+            super(RegistryType.INFO_SLOT);
+            this.registrar = registrar;
+        }
+
+        /**
+         * Registers an infoslot.
+         *
+         * @param key        - The i18n key or Label.
+         * @param updateTime - How often in milliseconds to update.
+         * @param supplier   - The supplier that gets the value to be displayed.
+         */
+        public void register(String key, long updateTime, Supplier<String> supplier)
+        {
+            registrar.register(key, updateTime, supplier);
+        }
+
+        public interface InfoSlotRegistrar
+        {
+            /**
+             * Registers an infoslot.
+             *
+             * @param key        - The i18n key or Label.
+             * @param updateTime - How often in milliseconds to update.
+             * @param supplier   - The supplier that gets the value to be displayed.
+             */
+            void register(String key, long updateTime, Supplier<String> supplier);
+        }
+    }
+
+
+    /**
      * The registry types.
      */
     public enum RegistryType
     {
-        OPTIONS
+        OPTIONS,
+        INFO_SLOT
     }
 }
