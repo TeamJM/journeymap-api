@@ -141,9 +141,16 @@ public class ExampleJourneymapPlugin implements IClientPlugin
                     break;
                 case REGISTRY:
                     RegistryEvent registryEvent = (RegistryEvent) event;
-                    if (RegistryEvent.RegistryType.OPTIONS.equals(registryEvent.getRegistryType()))
-                    {
-                        this.clientProperties = new ClientProperties();
+                    switch(registryEvent.getRegistryType()) {
+                        case OPTIONS:
+                            this.clientProperties = new ClientProperties();
+                            break;
+                        case INFO_SLOT:
+                            ((RegistryEvent.InfoSlotRegistryEvent)registryEvent)
+                                    .register("Current Millis", 1000, ()-> "Millis: " + System.currentTimeMillis());
+                            ((RegistryEvent.InfoSlotRegistryEvent)registryEvent)
+                                    .register("Current Ticks", 10, ExampleJourneymapPlugin::getTicks);
+                            break;
                     }
                     break;
             }
@@ -152,6 +159,10 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         {
             ExampleMod.LOGGER.error(t.getMessage(), t);
         }
+    }
+
+    private static String getTicks() {
+        return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
     }
 
 
