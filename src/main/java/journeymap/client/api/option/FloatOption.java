@@ -12,7 +12,7 @@ public class FloatOption extends Option<Float>
      *
      * @param category     - The category;
      * @param fieldName    - The fieldName;
-     * @param label        - The label, can be the display string or i18 key.
+     * @param label        - The label, can be the display string or i18n key.
      * @param defaultValue - The default value
      * @param minValue     - The min value
      * @param maxValue     - The max value
@@ -27,7 +27,7 @@ public class FloatOption extends Option<Float>
      *
      * @param category       - The category;
      * @param fieldName      - The fieldName;
-     * @param label          - The label, can be the display string or i18 key.
+     * @param label          - The label, can be the display string or i18n key.
      * @param defaultValue   - The default value
      * @param minValue       - The min value
      * @param maxValue       - The max value
