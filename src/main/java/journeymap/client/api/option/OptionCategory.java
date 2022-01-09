@@ -9,16 +9,26 @@ public class OptionCategory
     private final String label;
 
     /**
-     *
-     * @param modId - The modid.
-     * @param toolTip - The tooltip, can be the display string or i18 key.
-     * @param label - The label, can be the display string or i18 key.
+     * @param modId   - The modid.
+     * @param label   - The label, can be the display string or i18n key.
+     * @param toolTip - The tooltip, can be the display string or i18n key.
      */
-    public OptionCategory(String modId, String toolTip, String label)
+    public OptionCategory(String modId, String label, String toolTip)
     {
         this.modId = modId;
-        this.toolTip = toolTip;
         this.label = label;
+        this.toolTip = toolTip;
+    }
+
+    /**
+     * @param modId - The modid.
+     * @param key   - The i18n key.
+     */
+    public OptionCategory(String modId, String key)
+    {
+        this.modId = modId;
+        this.label = key;
+        this.toolTip = key + ".tooltip";
     }
 
     public String getModId()
