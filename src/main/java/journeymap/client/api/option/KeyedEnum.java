@@ -8,7 +8,7 @@ public interface KeyedEnum
     /**
      * Key is the label.
      *
-     * @return - The Key.
+     * @return - The Key, can be the display string or i18 key.
      */
     String getKey();
 }

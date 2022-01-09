@@ -70,6 +70,7 @@ public interface IThemeButton
 
     /**
      * Sets tooltip.
+     * Can be a list of strings or i18n keys.
      *
      * @param tooltip the tooltip
      */

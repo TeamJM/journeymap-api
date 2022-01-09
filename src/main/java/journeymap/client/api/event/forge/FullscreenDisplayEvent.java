@@ -61,14 +61,14 @@ public class FullscreenDisplayEvent extends Event
     /**
      * Used to create custom toolbars on the fullscreen map.
      */
-    public static class CustomToolbarEvent extends FullscreenDisplayEvent
+    public static class CustomToolbarEvent
     {
 
         private final CustomToolBarBuilder customToolBarBuilder;
-
+        private final IFullscreen fullscreen;
         public CustomToolbarEvent(IFullscreen fullscreen, CustomToolBarBuilder customToolBarBuilder)
         {
-            super(fullscreen, null);
+            this.fullscreen = fullscreen;
             this.customToolBarBuilder = customToolBarBuilder;
         }
 
@@ -77,10 +77,5 @@ public class FullscreenDisplayEvent extends Event
             return customToolBarBuilder;
         }
 
-        @Override
-        public ThemeButtonDisplay getThemeButtonDisplay()
-        {
-            throw new UnsupportedOperationException("ThemeButton display is not available during the CustomToolbarEvent");
-        }
     }
 }
