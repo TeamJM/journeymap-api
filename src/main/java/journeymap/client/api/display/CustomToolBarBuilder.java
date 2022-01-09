@@ -9,8 +9,8 @@ public interface CustomToolBarBuilder
     /**
      * Creates and gets a theme toggle button with a separate on/off label.
      *
-     * @param labelOn  - The on label.
-     * @param labelOff - The off label.
+     * @param labelOn  - The on label, can be the display string or i18 key.
+     * @param labelOff - The off label, can be the display string or i18 key.
      * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
      * @param onPress  - The onpress action.
      * @return IThemeButton
@@ -20,8 +20,8 @@ public interface CustomToolBarBuilder
     /**
      * Creates and gets a theme button with a separate on/off label.
      *
-     * @param labelOn  - The on label.
-     * @param labelOff - The off label.
+     * @param labelOn  - The on label, can be the display string or i18 key.
+     * @param labelOff - The off label, can be the display string or i18 key.
      * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
      * @param onPress  - The onpress action.
      * @return IThemeButton
@@ -31,7 +31,7 @@ public interface CustomToolBarBuilder
     /**
      * Creates and gets a theme toggle button with a separate on/off label.
      *
-     * @param label    - The label.
+     * @param label    - The label, can be the display string or i18 key.
      * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
      * @param onPress  - The onpress action.
      * @return IThemeButton
@@ -41,7 +41,7 @@ public interface CustomToolBarBuilder
     /**
      * Creates and gets a theme button with a separate on/off label.
      *
-     * @param label    - The label.
+     * @param label    - The label, can be the display string or i18 key.
      * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
      * @param onPress  - The onpress action.
      * @return IThemeButton

@@ -8,6 +8,12 @@ public class OptionCategory
     private final String toolTip;
     private final String label;
 
+    /**
+     *
+     * @param modId - The modid.
+     * @param toolTip - The tooltip, can be the display string or i18 key.
+     * @param label - The label, can be the display string or i18 key.
+     */
     public OptionCategory(String modId, String toolTip, String label)
     {
         this.modId = modId;

@@ -6,10 +6,11 @@ public class BooleanOption extends Option<Boolean>
 
     /**
      * Boolean - creates a checkbox
+     * For tooltips, your i18n key plus .tooltip in your language json example  mod.option.label and mod.option.label.tooltip
      *
      * @param category     - The category;
      * @param fieldName    - The fieldName;
-     * @param label        - The label
+     * @param label        - The label, can be the display string or i18 key.
      * @param defaultValue - The default value
      */
     public BooleanOption(OptionCategory category, String fieldName, String label, Boolean defaultValue)
@@ -20,10 +21,11 @@ public class BooleanOption extends Option<Boolean>
 
     /**
      * Boolean - creates a checkbox
+     * For tooltips, your i18n key plus .tooltip in your language json example  mod.option.label and mod.option.label.tooltip
      *
      * @param category     - The category;
      * @param fieldName    - The fieldName;
-     * @param label        - The label;
+     * @param label        - The label, can be the display string or i18 key.
      * @param defaultValue - The default value
      * @param isMaster     - Makes this value first in the last, and if disabled the whole category is disabled.
      */
