@@ -17,7 +17,7 @@ public abstract class Option<T>
      *
      * @param category     - The category.
      * @param fieldName    - The field name.
-     * @param label        - the label, can be the display string or i18 key.
+     * @param label        - the label, can be the display string or i18n key.
      * @param defaultValue - the default value.
      */
     protected Option(OptionCategory category, String fieldName, String label, T defaultValue)

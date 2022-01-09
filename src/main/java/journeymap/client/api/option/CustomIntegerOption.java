@@ -12,7 +12,7 @@ public class CustomIntegerOption extends CustomOption<Integer>
      *
      * @param category     - The category.
      * @param fieldName    - The fieldname.
-     * @param label        - The label, can be the display string or i18 key.
+     * @param label        - The label, can be the display string or i18n key.
      * @param minValue     - The minimum allowed value.
      * @param maxValue     - The maximum allowed value.
      * @param defaultValue - The default value.
