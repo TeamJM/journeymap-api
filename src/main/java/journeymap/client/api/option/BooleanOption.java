@@ -10,7 +10,7 @@ public class BooleanOption extends Option<Boolean>
      *
      * @param category     - The category;
      * @param fieldName    - The fieldName;
-     * @param label        - The label, can be the display string or i18 key.
+     * @param label        - The label, can be the display string or i18n key.
      * @param defaultValue - The default value
      */
     public BooleanOption(OptionCategory category, String fieldName, String label, Boolean defaultValue)
@@ -25,7 +25,7 @@ public class BooleanOption extends Option<Boolean>
      *
      * @param category     - The category;
      * @param fieldName    - The fieldName;
-     * @param label        - The label, can be the display string or i18 key.
+     * @param label        - The label, can be the display string or i18n key.
      * @param defaultValue - The default value
      * @param isMaster     - Makes this value first in the last, and if disabled the whole category is disabled.
      */
