@@ -32,6 +32,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.EnumSet;
 import java.util.function.Consumer;
 
@@ -195,5 +196,15 @@ public interface IClientAPI
      * @return true if enabled
      */
     boolean isWaypointsEnabled(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI);
+
+    /**
+     * This call gets the current user's data path for saving custom addon data specific to the game/world the user is playing in.
+     * <p>
+     * Will return null if not in world.
+     *
+     * @param modId The ModId
+     * @return a path similar to ./journeymap/data/{sp|mp}/{worldname}/addon-data/{modid}/`
+     */
+    File getDataPath(String modId);
 
 }
