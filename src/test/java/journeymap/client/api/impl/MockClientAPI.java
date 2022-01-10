@@ -44,6 +44,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.EnumSet;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -174,6 +175,12 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     public boolean isWaypointsEnabled(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI)
     {
         return false;
+    }
+
+    @Override
+    public File getDataPath(String modId)
+    {
+        return new File("");
     }
 
     /**
