@@ -59,13 +59,14 @@ public class RegistryEvent extends ClientEvent
         /**
          * Registers an infoslot.
          *
-         * @param key        - The i18n key or Label.
+         * @param modId      - The ModId
+         * @param key        - The i18n key or Label for the InfoSlot dropdown in the options menu.
          * @param updateTime - How often in milliseconds to update.
          * @param supplier   - The supplier that gets the value to be displayed.
          */
-        public void register(String key, long updateTime, Supplier<String> supplier)
+        public void register(String modId, String key, long updateTime, Supplier<String> supplier)
         {
-            registrar.register(key, updateTime, supplier);
+            registrar.register(modId, key, updateTime, supplier);
         }
 
         public interface InfoSlotRegistrar
@@ -73,11 +74,12 @@ public class RegistryEvent extends ClientEvent
             /**
              * Registers an infoslot.
              *
-             * @param key        - The i18n key or Label.
+             * @param modId      - The ModId
+             * @param key        - The i18n key or Label for the InfoSlot dropdown in the options menu.
              * @param updateTime - How often in milliseconds to update.
              * @param supplier   - The supplier that gets the value to be displayed.
              */
-            void register(String key, long updateTime, Supplier<String> supplier);
+            void register(String modId, String key, long updateTime, Supplier<String> supplier);
         }
     }
 

@@ -147,9 +147,9 @@ public class ExampleJourneymapPlugin implements IClientPlugin
                             break;
                         case INFO_SLOT:
                             ((RegistryEvent.InfoSlotRegistryEvent)registryEvent)
-                                    .register("Current Millis", 1000, ()-> "Millis: " + System.currentTimeMillis());
+                                    .register(getModId(), "Current Millis", 1000, ()-> "Millis: " + System.currentTimeMillis());
                             ((RegistryEvent.InfoSlotRegistryEvent)registryEvent)
-                                    .register("Current Ticks", 10, ExampleJourneymapPlugin::getTicks);
+                                    .register(getModId(), "Current Ticks", 10, ExampleJourneymapPlugin::getTicks);
                             break;
                     }
                     break;
