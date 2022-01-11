@@ -200,11 +200,17 @@ public interface IClientAPI
     /**
      * This call gets the current user's data path for saving custom addon data specific to the game/world the user is playing in.
      * <p>
-     * Will return null if not in world.
+     * This is only valid when Journeymap is mapping. Mods ideally should store this value on
+     * {@link journeymap.client.api.event.ClientEvent.Type#MAPPING_STARTED} event.
+     * <p>
+     * Note: Will method return null if not in world or not mapping.
+     * The path is flushed right after
+     * {@link journeymap.client.api.event.ClientEvent.Type#MAPPING_STOPPED}
      *
      * @param modId The ModId
-     * @return a path similar to ./journeymap/data/{sp|mp}/{worldname}/addon-data/{modid}/`
+     * @return a path similar to ./journeymap/data/{sp|mp}/{worldname}/addon-data/{modid}/
      */
+    @Nullable
     File getDataPath(String modId);
 
 }
