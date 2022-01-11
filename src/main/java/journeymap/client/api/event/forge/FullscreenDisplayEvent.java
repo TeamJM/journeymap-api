@@ -60,7 +60,12 @@ public class FullscreenDisplayEvent extends Event
 
     /**
      * Used to create custom toolbars on the fullscreen map.
+     *
+     * @deprecated this event should be a rare usage event, most mods should use {@link AddonButtonDisplayEvent}.
+     * Overuse of this event can cause toolbars to display over other mod's toolbars.
+     * USE SPARINGLY!
      */
+    @Deprecated
     public static class CustomToolbarEvent extends Event
     {
 
