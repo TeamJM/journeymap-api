@@ -2,14 +2,17 @@ package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
+import journeymap.client.api.display.Context;
 import journeymap.client.api.display.CustomToolBarBuilder;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.IThemeButton;
 import journeymap.client.api.display.IThemeToolBar;
 import journeymap.client.api.display.PolygonOverlay;
 import journeymap.client.api.display.ThemeButtonDisplay;
+import journeymap.client.api.event.forge.EntityRadarUpdateEvent;
 import journeymap.client.api.event.forge.FullscreenDisplayEvent;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -182,6 +185,21 @@ class ForgeEventListener
         IThemeButton button11 = barBuilder.getThemeButton("Test5", "keys", b -> System.out.println("ALERT ALERT"));
         IThemeToolBar bar4 = barBuilder.getNewToolbar(button0, button11);
         bar4.setLayoutHorizontal(startX, bar.getHeight() * 5, 3, true);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onRadarEntityUpdateEvent(EntityRadarUpdateEvent event)
+    {
+
+        if (event.getActiveUiState().ui.equals(Context.UI.Minimap))
+        {
+            if (((TranslatableComponent) event.getWrappedEntity().getEntityLivingRef().get().getName()).getKey().contains("slime"))
+            {
+                event.getWrappedEntity().setColor(0x0000FF);
+                event.getWrappedEntity().setCustomName("SLIME");
+            }
+        }
     }
 
     /**
