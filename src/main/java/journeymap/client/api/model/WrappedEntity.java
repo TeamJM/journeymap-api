@@ -6,6 +6,7 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -80,7 +81,7 @@ public interface WrappedEntity
      * @return - the custom name.
      */
     @Nullable
-    TextComponent getCustomName();
+    ITextComponent getCustomName();
 
     /**
      * The owner Entity if the Entity is tamed.
