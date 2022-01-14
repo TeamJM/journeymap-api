@@ -80,7 +80,7 @@ public interface WrappedEntity
      * @return - the custom name.
      */
     @Nullable
-    Component getCustomName();
+    TextComponent getCustomName();
 
     /**
      * The owner Entity if the Entity is tamed.
