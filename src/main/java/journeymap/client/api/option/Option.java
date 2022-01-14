@@ -10,6 +10,7 @@ public abstract class Option<T>
     private final String fieldName;
     protected final T defaultValue;
     protected Config<T> config;
+    private int sortOrder = 100;
 
     /**
      * Parent for all options.
@@ -62,5 +63,21 @@ public abstract class Option<T>
     public T getDefaultValue()
     {
         return this.defaultValue;
+    }
+
+
+    public int getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    /**
+     * Used for sorting in the options pane.
+     *
+     * @param sortOrder the sort order.
+     */
+    public void setSortOrder(int sortOrder)
+    {
+        this.sortOrder = sortOrder;
     }
 }
