@@ -76,8 +76,9 @@ public abstract class Option<T>
      *
      * @param sortOrder the sort order.
      */
-    public void setSortOrder(int sortOrder)
+    public Option<T> setSortOrder(int sortOrder)
     {
         this.sortOrder = sortOrder;
+        return this;
     }
 }
