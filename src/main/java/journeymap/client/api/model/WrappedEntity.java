@@ -172,6 +172,21 @@ public interface WrappedEntity
     boolean isDisabled();
 
     /**
+     * Gets the current entity tooltip
+     *
+     * @return - The tooltip
+     */
+    @Nullable
+    Component getEntityToolTip();
+
+    /**
+     * Sets the entity tooltip.
+     *
+     * @param entityToolTip - The tooltip
+     */
+    void setEntityToolTip(@Nullable Component entityToolTip);
+
+    /**
      * Set the icon location for the entity. The icon is the image shown on the map if the player has display type set to icon.
      *
      * @param entityIconLocation - the resource location of the icon.
