@@ -13,6 +13,7 @@ import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 /**
  * This interface is used for setting values of an entity, this controls how an entity is displayed.
@@ -175,17 +176,17 @@ public interface WrappedEntity
     /**
      * Gets the current entity tooltip
      *
-     * @return - The tooltip
+     * @return - The tooltips
      */
     @Nullable
-    ITextComponent getEntityToolTip();
+    List<ITextComponent> getEntityToolTips();
 
     /**
      * Sets the entity tooltip.
      *
-     * @param entityToolTip - The tooltip
+     * @param entityToolTips - The tooltips list
      */
-    void setEntityToolTip(@Nullable ITextComponent entityToolTip);
+    void setEntityToolTips(List<ITextComponent> entityToolTips);
 
     /**
      * Set the icon location for the entity. The icon is the image shown on the map if the player has display type set to icon.
