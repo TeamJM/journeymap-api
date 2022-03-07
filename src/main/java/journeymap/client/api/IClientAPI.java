@@ -23,6 +23,7 @@ package journeymap.client.api;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
+import journeymap.client.api.display.Waypoint;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
 import net.minecraft.util.RegistryKey;
@@ -34,6 +35,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -212,5 +214,30 @@ public interface IClientAPI
      */
     @Nullable
     File getDataPath(String modId);
+
+    /**
+     * Returns all waypoints that journeymap has stored for the current game/server.
+     *
+     * @return - List of all waypoints.
+     */
+    List<Waypoint> getAllWaypoints();
+
+    /**
+     * Gets the waypoint by display Id for the modId provided.
+     *
+     * @param modId     - The modId
+     * @param displayId - The display ID
+     * @return The waypoint.
+     */
+    @Nullable
+    Waypoint getWaypoint(final String modId, final String displayId);
+
+    /**
+     * Gets all waypoints for the provided modId
+     *
+     * @param modId - The modId
+     * @return the waypoint list
+     */
+    List<Waypoint> getWaypoints(final String modId);
 
 }
