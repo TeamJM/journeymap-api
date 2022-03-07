@@ -27,6 +27,7 @@ import com.google.common.collect.LinkedHashMultimap;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
+import journeymap.client.api.display.Waypoint;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
@@ -46,6 +47,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -181,6 +183,31 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     public File getDataPath(String modId)
     {
         return new File("");
+    }
+
+    @Override
+    public List<Waypoint> getAllWaypoints()
+    {
+        return null;
+    }
+
+    @Override
+    public List<Waypoint> getAllWaypoints(ResourceKey<Level> dim)
+    {
+        return null;
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public Waypoint getWaypoint(String modId, String displayId)
+    {
+        return null;
+    }
+
+    @Override
+    public List<Waypoint> getWaypoints(String modId)
+    {
+        return null;
     }
 
     /**
