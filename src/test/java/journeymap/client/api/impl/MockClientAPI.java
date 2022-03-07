@@ -192,12 +192,12 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
-    public List<Waypoint> getAllWaypoints(ResourceKey<Level> dim)
+    public List<Waypoint> getAllWaypoints(RegistryKey<World> dim)
     {
         return null;
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public Waypoint getWaypoint(String modId, String displayId)
     {

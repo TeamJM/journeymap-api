@@ -228,7 +228,7 @@ public interface IClientAPI
      * @param dim - The dimension
      * @return The waypoints.
      */
-    List<Waypoint> getAllWaypoints(ResourceKey<Level> dim);
+    List<Waypoint> getAllWaypoints(RegistryKey<World> dim);
 
     /**
      * Gets the waypoint by display Id for the modId provided.
