@@ -44,7 +44,7 @@ import java.util.Arrays;
  */
 public class Waypoint extends WaypointBase<Waypoint>
 {
-    public static final double VERSION = 1.4;
+    public static final double VERSION = 1.5;
 
     protected final transient CachedDimPosition cachedDimPosition = new CachedDimPosition();
     @Since(1.4)
@@ -59,6 +59,8 @@ public class Waypoint extends WaypointBase<Waypoint>
     protected boolean persistent = true;
     @Since(1.4)
     protected boolean editable = true;
+    @Since(1.5)
+    protected boolean enabled = true;
 
     /**
      * Constructor.
@@ -75,11 +77,11 @@ public class Waypoint extends WaypointBase<Waypoint>
     /**
      * Constructor.
      *
-     * @param modId Your mod id
-     * @param id    Unique id scoped to mod
-     * @param name  Waypoint name
+     * @param modId     Your mod id
+     * @param id        Unique id scoped to mod
+     * @param name      Waypoint name
      * @param dimension Dimension
-     * @param position position
+     * @param position  position
      */
     public Waypoint(String modId, String id, String name, ResourceKey<Level> dimension, net.minecraft.core.BlockPos position)
     {
@@ -90,11 +92,11 @@ public class Waypoint extends WaypointBase<Waypoint>
     /**
      * Constructor.
      *
-     * @param modId Your mod id
-     * @param id    Unique id scoped to mod
-     * @param name  Waypoint name
+     * @param modId     Your mod id
+     * @param id        Unique id scoped to mod
+     * @param name      Waypoint name
      * @param dimension Dimension name
-     * @param position position
+     * @param position  position
      */
     public Waypoint(String modId, String id, String name, String dimension, net.minecraft.core.BlockPos position)
     {
@@ -105,17 +107,16 @@ public class Waypoint extends WaypointBase<Waypoint>
     /**
      * Constructor.
      *
-     * @param modId Your mod id
-     * @param name  Waypoint name
+     * @param modId     Your mod id
+     * @param name      Waypoint name
      * @param dimension Dimension name
-     * @param position position
+     * @param position  position
      */
     public Waypoint(String modId, String name, String dimension, net.minecraft.core.BlockPos position)
     {
         super(modId, name);
         setPosition(dimension, position);
     }
-
 
 
     /**
@@ -182,6 +183,26 @@ public class Waypoint extends WaypointBase<Waypoint>
             }
         }
         return pos;
+    }
+
+    /**
+     * Is enabled and visible.
+     *
+     * @return is enabled
+     */
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    /**
+     * Sets enabled
+     *
+     * @param enabled - the enabled
+     */
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
     }
 
     /**
