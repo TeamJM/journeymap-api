@@ -151,7 +151,12 @@ public class ClientEvent
          * Indicates registry events.
          * {@link RegistryEvent}
          */
-        REGISTRY(false);
+        REGISTRY(false),
+
+        /**
+         * Waypoint events, includes save, add, update, delete.
+         */
+        WAYPOINT(false);
 
 
         /**
