@@ -223,6 +223,14 @@ public interface IClientAPI
     List<Waypoint> getAllWaypoints();
 
     /**
+     * Gets all waypoints for the provided dimension from all of journeymap's waypoints.
+     *
+     * @param dim - The dimension
+     * @return The waypoints.
+     */
+    List<Waypoint> getAllWaypoints(ResourceKey<Level> dim);
+
+    /**
      * Gets the waypoint by display Id for the modId provided.
      *
      * @param modId     - The modId
