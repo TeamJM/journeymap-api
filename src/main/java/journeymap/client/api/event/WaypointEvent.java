@@ -36,17 +36,6 @@ public class WaypointEvent extends ClientEvent
     }
 
     /**
-     * Fired when a waypoint is loaded.
-     */
-    public static class WaypointSavedEvent extends WaypointEvent
-    {
-        public WaypointSavedEvent(Waypoint waypoint)
-        {
-            super(waypoint, Context.SAVE);
-        }
-    }
-
-    /**
      * Fired when an existing waypoint is updated.
      */
     public static class WaypointUpdateEvent extends WaypointEvent
@@ -80,13 +69,16 @@ public class WaypointEvent extends ClientEvent
     }
 
     /**
-     * Fired when a waypoint is loaded from disk
+     * Fired when a waypoint is read from disk, waypoints are always read in batches.
+     * This event will be fired multiple times in a row, once per waypoint as it is loaded and put into internal cache.
+     *
+     * This will happen periodically as the waypoint cache gets refreshed on dimension change, modifying some options, and at world join.
      */
-    public static class WaypointLoadedEvent extends WaypointEvent
+    public static class WaypointReadEvent extends WaypointEvent
     {
-        public WaypointLoadedEvent(Waypoint waypoint)
+        public WaypointReadEvent(Waypoint waypoint)
         {
-            super(waypoint, Context.LOADED);
+            super(waypoint, Context.READ);
         }
     }
 
@@ -94,8 +86,7 @@ public class WaypointEvent extends ClientEvent
     {
         CREATE,
         UPDATE,
-        SAVE,
         DELETED,
-        LOADED
+        READ
     }
 }
