@@ -27,6 +27,7 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.DeathWaypointEvent;
 import journeymap.client.api.event.RegistryEvent;
+import journeymap.client.api.event.WaypointEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
@@ -135,7 +136,9 @@ public class ExampleJourneymapPlugin implements IClientPlugin
                 case MAPPING_STOPPED:
                     onMappingStopped(event);
                     break;
-
+                case WAYPOINT:
+                    onWaypointEvent((WaypointEvent) event);
+                    break;
                 case DEATH_WAYPOINT:
                     onDeathpoint((DeathWaypointEvent) event);
                     break;
@@ -165,6 +168,18 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
     }
 
+    public void onWaypointEvent(WaypointEvent event) {
+        switch(event.getContext()) {
+            case READ:
+                break;
+            case CREATE:
+                break;
+            case UPDATE:
+                break;
+            case DELETED:
+                break;
+        }
+    }
 
     /**
      * When mapping has started, generate a bunch of random overlays.
