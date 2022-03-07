@@ -217,6 +217,7 @@ public interface IClientAPI
 
     /**
      * Returns all waypoints that journeymap has stored for the current game/server.
+     * Modifying these waypoints will not change anything in game, they are just a copy.
      *
      * @return - List of all waypoints.
      */
@@ -224,6 +225,7 @@ public interface IClientAPI
 
     /**
      * Gets all waypoints for the provided dimension from all of journeymap's waypoints.
+     * Modifying these waypoints will not change anything in game, they are just a copy.
      *
      * @param dim - The dimension
      * @return The waypoints.
