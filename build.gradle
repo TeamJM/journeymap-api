@@ -92,7 +92,19 @@ jar {
         ]
     }
 }
-
+task deobfJar(type: Jar, dependsOn: classes) {
+    mustRunAfter = ['jar']
+    from sourceSets.main.output
+    include 'journeymap/**'
+    manifest {
+        attributes = [
+                "Manifest-Version"      : "1.0",
+                "Implementation-Title"  : project.title,
+                "Implementation-Version": project.version,
+                "Implementation-URL"    : project.git_website
+        ]
+    }
+}
 /* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
 task modJar(type: Jar, dependsOn: classes) {
     mustRunAfter = ['jar']
@@ -128,13 +140,14 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 /* Jar for Sources */
 task sourcesJar(type: Jar) {
-    from sourceSets.main.output
-    include 'journeymap/**'
+    classifier = 'sources'
+    from sourceSets.main.allSource
 }
 
 /* Additional artifacts produced by build task */
 artifacts {
     archives jar
+    archives deobfJar
     archives modJar
     archives javadocJar
     archives sourcesJar
@@ -182,6 +195,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             artifact jar
+            artifact deobfJar
             artifact javadocJar
             artifact sourcesJar
         }
