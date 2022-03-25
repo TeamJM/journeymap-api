@@ -18,32 +18,21 @@
  *
  */
 
-package example.mod;
+package example.mod.client;
 
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+
+import net.fabricmc.api.ClientModInitializer;
 
 /**
- * Base class for sided proxies.
+ * Client-sided proxy. No reference to ExampleJourneymapPlugin is here;
+ * we don't want it to be classloaded if Journeymap never loads.
  */
-public interface CommonProxy
+public class ExampleModClient implements ClientModInitializer
 {
-    void commonSetupEvent(FMLCommonSetupEvent event);
 
-    void imcEnqueue(InterModEnqueueEvent event);
+    @Override
+    public void onInitializeClient()
+    {
 
-    void imcHandle(InterModProcessEvent event);
-
-    void loadCompleteEvent(FMLLoadCompleteEvent event);
-
-    void clientSetupEvent(FMLClientSetupEvent event);
-
-    void serverStartingEvent(ServerStartingEvent event);
-
-    void dedicatedServerSetupEvent(FMLDedicatedServerSetupEvent event);
+    }
 }

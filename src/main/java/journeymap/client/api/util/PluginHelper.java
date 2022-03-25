@@ -21,12 +21,10 @@
 package journeymap.client.api.util;
 
 import com.google.common.base.Strings;
-import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.objectweb.asm.Type;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
@@ -36,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Enum singleton used by JourneyMap to load and initialize plugins.  A plugin class must be annotated with
- * the {@link ClientPlugin} annotation and also implement the {@link IClientPlugin} interface.
+ * Enum singleton used by JourneyMap to load and initialize plugins.
+ * A plugin class must implement the {@link IClientPlugin} interface.
  */
 @ParametersAreNonnullByDefault
 public enum PluginHelper
@@ -45,7 +43,6 @@ public enum PluginHelper
     INSTANCE;
 
     public final static Logger LOGGER = LogManager.getLogger("journeymap");
-    public final static Type PLUGIN_ANNOTATION_NAME = Type.getType(ClientPlugin.class);
     public final static String PLUGIN_INTERFACE_NAME = IClientPlugin.class.getSimpleName();
 
     protected Map<String, IClientPlugin> plugins = null;
@@ -87,18 +84,18 @@ public enum PluginHelper
                             throw new Exception(String.format("Multiple plugins trying to use the same modId: %s and %s", interfaceImplClass, otherPluginClass));
                         }
                         discovered.put(modId, instance);
-                        LOGGER.info(String.format("Found @%s: %s", PLUGIN_ANNOTATION_NAME, className));
+                        LOGGER.info(String.format("Found @%s: %s", PLUGIN_INTERFACE_NAME, className));
                     }
                     else
                     {
-                        LOGGER.error(String.format("Found @%s: %s, but it doesn't implement %s",
-                                PLUGIN_ANNOTATION_NAME, className, PLUGIN_INTERFACE_NAME));
+                        LOGGER.error(String.format("Found %s, but it doesn't implement %s",
+                                className, PLUGIN_INTERFACE_NAME));
                     }
                 }
                 catch (Exception e)
                 {
-                    LOGGER.error(String.format("Found @%s: %s, but failed to instantiate it: %s",
-                            PLUGIN_ANNOTATION_NAME, className, e.getMessage()), e);
+                    LOGGER.error(String.format("Found %s, but failed to instantiate it: %s",
+                            className, e.getMessage()), e);
                 }
             }
 

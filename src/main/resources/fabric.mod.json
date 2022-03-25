@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "examplemodjm",
+  "version": "${version}",
+
+  "name": "examplemodjm",
+  "description": "Example for JourneyMap API",
+  "authors": [
+    "Mysticdrew",
+    "Techbrew"
+  ],
+  "contact": {
+    "homepage": "http://journeymap.info",
+    "issues": "https://github.com/TeamJM/journeymap-api/issues",
+    "discord": "https://discord.gg/eP8gE69"
+  },
+
+  "license": "All Rights Reserved",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "example.mod.client.ExampleModClient"
+    ],
+    "client": [
+      "example.mod.ExampleMod"
+    ],
+    "jourenymap": [
+      "example.mod.client.plugin.ExampleJourneymapPlugin"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  }
+}

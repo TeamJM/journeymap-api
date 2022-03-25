@@ -30,7 +30,6 @@ import journeymap.client.api.event.RegistryEvent;
 import journeymap.client.api.event.WaypointEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
@@ -50,14 +49,13 @@ import static journeymap.client.api.event.ClientEvent.Type.REGISTRY;
  * The
  */
 @ParametersAreNonnullByDefault
-@journeymap.client.api.ClientPlugin
 public class ExampleJourneymapPlugin implements IClientPlugin
 {
     // API reference
     private IClientAPI jmAPI = null;
 
     // Forge listener reference
-    private ForgeEventListener forgeEventListener;
+    private EventListener eventListener;
     private ClientProperties clientProperties;
 
     private static ExampleJourneymapPlugin INSTANCE;
@@ -90,8 +88,8 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         this.jmAPI = jmAPI;
 
         // Register listener for forge events
-        forgeEventListener = new ForgeEventListener(jmAPI);
-        MinecraftForge.EVENT_BUS.register(forgeEventListener);
+        eventListener = new EventListener(jmAPI);
+
 
         // Subscribe to desired ClientEvent types from JourneyMap
         this.jmAPI.subscribe(getModId(), EnumSet.of(DEATH_WAYPOINT, MAPPING_STARTED, MAPPING_STOPPED, REGISTRY));
@@ -144,15 +142,14 @@ public class ExampleJourneymapPlugin implements IClientPlugin
                     break;
                 case REGISTRY:
                     RegistryEvent registryEvent = (RegistryEvent) event;
-                    switch(registryEvent.getRegistryType()) {
+                    switch (registryEvent.getRegistryType())
+                    {
                         case OPTIONS:
                             this.clientProperties = new ClientProperties();
                             break;
                         case INFO_SLOT:
-                            ((RegistryEvent.InfoSlotRegistryEvent)registryEvent)
-                                    .register(getModId(), "Current Millis", 1000, ()-> "Millis: " + System.currentTimeMillis());
-                            ((RegistryEvent.InfoSlotRegistryEvent)registryEvent)
-                                    .register(getModId(), "Current Ticks", 10, ExampleJourneymapPlugin::getTicks);
+                            ((RegistryEvent.InfoSlotRegistryEvent) registryEvent).register(getModId(), "Current Millis", 1000, () -> "Millis: " + System.currentTimeMillis());
+                            ((RegistryEvent.InfoSlotRegistryEvent) registryEvent).register(getModId(), "Current Ticks", 10, ExampleJourneymapPlugin::getTicks);
                             break;
                     }
                     break;
@@ -164,12 +161,15 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         }
     }
 
-    private static String getTicks() {
+    private static String getTicks()
+    {
         return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
     }
 
-    public void onWaypointEvent(WaypointEvent event) {
-        switch(event.getContext()) {
+    public void onWaypointEvent(WaypointEvent event)
+    {
+        switch (event.getContext())
+        {
             case READ:
                 break;
             case CREATE:

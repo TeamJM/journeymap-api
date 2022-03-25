@@ -9,28 +9,28 @@ import journeymap.client.api.display.IThemeButton;
 import journeymap.client.api.display.IThemeToolBar;
 import journeymap.client.api.display.PolygonOverlay;
 import journeymap.client.api.display.ThemeButtonDisplay;
-import journeymap.client.api.event.forge.EntityRadarUpdateEvent;
-import journeymap.client.api.event.forge.FullscreenDisplayEvent;
+import journeymap.client.api.event.fabric.EntityRadarUpdateEvent;
+import journeymap.client.api.event.fabric.FabricEvents;
+import journeymap.client.api.event.fabric.FullscreenDisplayEvent;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
+import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
 
 /**
  * Listens to Forge events, creates bed waypoints and slime chunk overlays via the ClientAPI.
  */
-class ForgeEventListener
+class EventListener
 {
     IClientAPI jmAPI;
     HashMap<ChunkPos, PolygonOverlay> slimeChunkOverlays;
@@ -40,26 +40,35 @@ class ForgeEventListener
      *
      * @param jmAPI API implementation
      */
-    ForgeEventListener(IClientAPI jmAPI)
+    EventListener(IClientAPI jmAPI)
     {
         this.jmAPI = jmAPI;
-        this.slimeChunkOverlays = new HashMap<ChunkPos, PolygonOverlay>();
+        this.slimeChunkOverlays = new HashMap<>();
+        EntitySleepEvents.START_SLEEPING.register(this::onPlayerSlept);
+        ClientChunkEvents.CHUNK_LOAD.register(this::onChunkLoadEvent);
+        ClientChunkEvents.CHUNK_UNLOAD.register((this::onChunkUnloadEvent));
+        FabricEvents.ADDON_BUTTON_DISPLAY_EVENT.register(this::onFullscreenAddonButton);
+        FabricEvents.MAP_TYPE_BUTTON_DISPLAY_EVENT.register(this::onFullscreenMapTypeButton);
+        FabricEvents.CUSTOM_TOOLBAR_UPDATE_EVENT.register(this::onCustomToolbarEvent);
+        FabricEvents.ENTITY_RADAR_UPDATE_EVENT.register(this::onRadarEntityUpdateEvent);
     }
 
     /**
      * Listen for Forge PlayerSleepInBedEvents, create a waypoint for the bed.
      * This is just a quick example, and doesn't take into account whether the player successfully slept.
+     *
+     * @param entity
+     * @param pos
      */
-    @SubscribeEvent
-    public void onPlayerSlept(PlayerSleepInBedEvent event)
+    public void onPlayerSlept(LivingEntity entity, BlockPos pos)
     {
         try
         {
-            if (event.getEntityLiving().getCommandSenderWorld().isClientSide)
+            if (entity.getCommandSenderWorld().isClientSide)
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
                 {
-                    SampleWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().level.dimension());
+                    SampleWaypointFactory.createBedWaypoint(jmAPI, pos, entity.level.dimension());
                 }
             }
         }
@@ -71,23 +80,24 @@ class ForgeEventListener
 
     /**
      * Listen for Forge chunk load, show polygon overlay if it is a slime chunk.
+     *
+     * @param world
+     * @param chunk
      */
-    @SubscribeEvent
-    public void onChunkLoadEvent(ChunkEvent.Load event)
+    public void onChunkLoadEvent(ClientLevel world, LevelChunk chunk)
     {
         try
         {
-            if (event.getWorld().isClientSide())
+            if (world.isClientSide())
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
                 {
-                    LevelChunk chunk = (LevelChunk) event.getChunk();
                     if (isSlimeChunk(chunk))
                     {
                         ChunkPos chunkCoords = chunk.getPos();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
-                            ResourceKey<Level> dimension = ((Level) event.getWorld()).dimension();
+                            ResourceKey<Level> dimension = world.dimension();
                             PolygonOverlay overlay = SamplePolygonOverlayFactory.create(chunkCoords, dimension);
                             slimeChunkOverlays.put(chunkCoords, overlay);
                             jmAPI.show(overlay);
@@ -105,14 +115,13 @@ class ForgeEventListener
     /**
      * Listen for Forge chunk unload, remove polygon overlay if it is a slime chunk.
      */
-    @SubscribeEvent
-    public void onChunkUnloadEvent(ChunkEvent.Unload event)
+    public void onChunkUnloadEvent(ClientLevel world, LevelChunk chunk)
     {
-        if (event.getWorld().isClientSide())
+        if (world.isClientSide())
         {
             if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
             {
-                ChunkPos chunkCoords = event.getChunk().getPos();
+                ChunkPos chunkCoords = chunk.getPos();
                 if (!slimeChunkOverlays.containsKey(chunkCoords))
                 {
                     PolygonOverlay overlay = slimeChunkOverlays.remove(chunkCoords);
@@ -130,8 +139,6 @@ class ForgeEventListener
      *
      * @param event - The event
      */
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onFullscreenAddonButton(FullscreenDisplayEvent.AddonButtonDisplayEvent event)
     {
         ThemeButtonDisplay buttonDisplay = event.getThemeButtonDisplay();
@@ -148,7 +155,6 @@ class ForgeEventListener
      *
      * @param event - The event
      */
-    @OnlyIn(Dist.CLIENT)
     public void onFullscreenMapTypeButton(FullscreenDisplayEvent.MapTypeButtonDisplayEvent event)
     {
         event.getThemeButtonDisplay()
@@ -160,7 +166,6 @@ class ForgeEventListener
      *
      * @param event - the event.
      */
-    @OnlyIn(Dist.CLIENT)
     public void onCustomToolbarEvent(FullscreenDisplayEvent.CustomToolbarEvent event)
     {
         CustomToolBarBuilder barBuilder = event.getCustomToolBarBuilder();
@@ -187,8 +192,6 @@ class ForgeEventListener
         bar4.setLayoutHorizontal(startX, bar.getHeight() * 5, 3, true);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRadarEntityUpdateEvent(EntityRadarUpdateEvent event)
     {
 
