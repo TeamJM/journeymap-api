@@ -1,6 +1,6 @@
 [JourneyMap API](https://github.com/TeamJM/journeymap-api) Changelog
 ======================================================
-**v1.18.1-1.8-fabric**
+**v1.18.2-1.8-fabric**
 * Updated for fabric
 
 **API v1.16.5-1.8, v1.17.1-1.8, v1.18.1-1.8** 
