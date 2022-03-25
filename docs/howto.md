@@ -7,7 +7,7 @@ via the API interfaces in this repository.
 The JourneyMap API is designed so that your mod will only have a **soft dependency** on it:  
 
  * You should **only** have a compile-time dependency via your plugin implementation.
- * You should **not** need a runtime dependency. As long as you don't declare a dependency on "journeymap" in your mcmod.info file, your mod should load even if JourneyMap doesn't.
+ * You should **not** need a runtime dependency. As long as you don't declare a dependency on "journeymap" in your mods.toml file, your mod should load even if JourneyMap doesn't.
  * You should **never** include any JourneyMap API classes in your mod's jar. (No shading is needed.)
 
 This page describes the recommended approach to writing a plugin for the JourneyMap API:
@@ -85,3 +85,4 @@ IV. Test your Plugin
 =============================
 
 1. Using the following gradle configuration above, your mod will load journeymap and the api in your development environment.
+2. Run Minecraft in your development environment.  Forge will load JourneyMap and your mod, and the JourneyMap API will activate your plugin.
