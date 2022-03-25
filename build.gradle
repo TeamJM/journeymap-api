@@ -76,11 +76,6 @@ processResources
             filesMatching("fabric.mod.json") {
                 expand 'version': project.version, 'mcversion': project.minecraft_version
             }
-
-//            // copy everything else
-//            from(sourceSets.main.resources.srcDirs) {
-//                exclude 'mcmod.info'
-//            }
         }
 
 /* Reobfuscated jar for just the Example Mod */
