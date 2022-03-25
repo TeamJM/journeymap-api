@@ -1,5 +1,17 @@
 [JourneyMap API](https://github.com/TeamJM/journeymap-api) Changelog
 ======================================================
+**API v1.16.5-1.8, v1.17.1-1.8, v1.18.1-1.8** 
+* 1.17.1-1.8 Java 16 Required
+* 1.18.1-1.8 Java 17 Required
+* 1.18.1-1.8 is compatible with 1.18.2
+* Added Waypoint Crud Events
+* Added EntityRadarUpdateEvent
+* Added PopupMenuEvent
+* Added FullscreenMapEvent
+* Added FullscreenDisplayEvent
+* Added RegistryEvent
+* Added ClientAPI hook for getting Waypoints
+* Added ClientAPI hook for getting the current data path.
 
 **API v1.9.4-1.3, v1.10.2-1.3**
 
