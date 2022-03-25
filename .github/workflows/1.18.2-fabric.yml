@@ -17,6 +17,9 @@ jobs:
         with:
           version: 17
 
+      - name: Gradle GenSources
+        run: /bin/sh ./gradlew genSources
+
       - name: Gradle Build
         run: /bin/sh ./gradlew build
 
