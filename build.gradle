@@ -73,15 +73,14 @@ processResources
             inputs.property "mcversion", project.minecraft_version
 
             // replace stuff in mcmod.info on copy
-            from(sourceSets.main.resources.srcDirs) {
-                include 'mcmod.info'
+            filesMatching("fabric.mod.json") {
                 expand 'version': project.version, 'mcversion': project.minecraft_version
             }
 
-            // copy everything else
-            from(sourceSets.main.resources.srcDirs) {
-                exclude 'mcmod.info'
-            }
+//            // copy everything else
+//            from(sourceSets.main.resources.srcDirs) {
+//                exclude 'mcmod.info'
+//            }
         }
 
 /* Reobfuscated jar for just the Example Mod */
@@ -98,6 +97,10 @@ jar {
                 "Implementation-URL"    : project.git_website
         ]
     }
+}
+
+remapJar {
+    classifier "fabric"
 }
 
 /* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
