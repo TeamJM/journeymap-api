@@ -37,7 +37,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public final class ImageOverlay extends Overlay
 {
-    private net.minecraft.core.BlockPos northWestPoint;
+    private BlockPos northWestPoint;
     private BlockPos southEastPoint;
     private MapImage image;
 
@@ -50,7 +50,7 @@ public final class ImageOverlay extends Overlay
      * @param southEastPoint Location of the lower-right corner of the image.
      * @param image          The image to display as the overlay.
      */
-    public ImageOverlay(String modId, String imageId, BlockPos northWestPoint, net.minecraft.core.BlockPos southEastPoint, MapImage image)
+    public ImageOverlay(String modId, String imageId, BlockPos northWestPoint, BlockPos southEastPoint, MapImage image)
     {
         super(modId, imageId);
         setNorthWestPoint(northWestPoint);
@@ -61,7 +61,7 @@ public final class ImageOverlay extends Overlay
     /**
      * Top-left location of the image overlay.
      */
-    public net.minecraft.core.BlockPos getNorthWestPoint()
+    public BlockPos getNorthWestPoint()
     {
         return northWestPoint;
     }

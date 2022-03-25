@@ -40,7 +40,7 @@ public interface IOverlayListener
      * @param mousePosition screen coordinates of the mouse
      * @param blockPosition the block position under the mouse
      */
-    void onMouseOut(UIState mapState, Point2D.Double mousePosition, net.minecraft.core.BlockPos blockPosition);
+    void onMouseOut(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
 
     /**
      * Called when the mouse is clicked within the bounds of the overlay.

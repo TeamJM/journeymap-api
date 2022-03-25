@@ -1,17 +1,14 @@
-package journeymap.client.api.event.forge;
+package journeymap.client.api.event.fabric;
 
 import journeymap.client.api.model.WrappedEntity;
 import journeymap.client.api.util.UIState;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
 
 import javax.annotation.Nullable;
 
 /**
  * This event is fired when Journeymap updates an entity before it is displayed on the map.
  */
-@Cancelable
-public class EntityRadarUpdateEvent extends Event
+public class EntityRadarUpdateEvent extends FabricEvent
 {
     private final UIState activeUiState;
     private final EntityType entityType;
@@ -22,6 +19,12 @@ public class EntityRadarUpdateEvent extends Event
         this.activeUiState = activeUiState;
         this.entityType = entityType;
         this.wrappedEntity = wrappedEntity;
+    }
+
+    @Override
+    public boolean isCancelable()
+    {
+        return true;
     }
 
     /**

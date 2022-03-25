@@ -148,7 +148,7 @@ public interface IClientAPI
      * @param showGrid   Whether to include to include the chunk grid overlay
      * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
-    void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, ChunkPos startChunk, net.minecraft.world.level.ChunkPos endChunk,
+    void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
                         @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback);
 
     /**
@@ -203,11 +203,11 @@ public interface IClientAPI
      * This call gets the current user's data path for saving custom addon data specific to the game/world the user is playing in.
      * <p>
      * This is only valid when Journeymap is mapping. Mods ideally should store this value on
-     * {@link journeymap.client.api.event.ClientEvent.Type#MAPPING_STARTED} event.
+     * {@link ClientEvent.Type#MAPPING_STARTED} event.
      * <p>
      * Note: Will method return null if not in world or not mapping.
      * The path is flushed right after
-     * {@link journeymap.client.api.event.ClientEvent.Type#MAPPING_STOPPED}
+     * {@link ClientEvent.Type#MAPPING_STOPPED}
      *
      * @param modId The ModId
      * @return a path similar to ./journeymap/data/{sp|mp}/{worldname}/addon-data/{modid}/

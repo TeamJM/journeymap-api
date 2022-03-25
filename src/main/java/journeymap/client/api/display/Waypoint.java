@@ -52,7 +52,7 @@ public class Waypoint extends WaypointBase<Waypoint>
     @Since(1.4)
     protected String dim;
     @Since(1.4)
-    protected net.minecraft.core.BlockPos pos;
+    protected BlockPos pos;
     @Since(1.4)
     protected WaypointGroup group;
     @Since(1.4)
@@ -68,7 +68,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      * @param modId Your mod id
      * @param name  Waypoint name
      */
-    public Waypoint(String modId, String name, ResourceKey<Level> dimension, net.minecraft.core.BlockPos position)
+    public Waypoint(String modId, String name, ResourceKey<Level> dimension, BlockPos position)
     {
         super(modId, name);
         setPosition(dimension.location().toString(), position);
@@ -83,7 +83,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      * @param dimension Dimension
      * @param position  position
      */
-    public Waypoint(String modId, String id, String name, ResourceKey<Level> dimension, net.minecraft.core.BlockPos position)
+    public Waypoint(String modId, String id, String name, ResourceKey<Level> dimension, BlockPos position)
     {
         super(modId, id, name);
         setPosition(dimension.location().toString(), position);
@@ -98,7 +98,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      * @param dimension Dimension name
      * @param position  position
      */
-    public Waypoint(String modId, String id, String name, String dimension, net.minecraft.core.BlockPos position)
+    public Waypoint(String modId, String id, String name, String dimension, BlockPos position)
     {
         super(modId, id, name);
         setPosition(dimension, position);
@@ -112,7 +112,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      * @param dimension Dimension name
      * @param position  position
      */
-    public Waypoint(String modId, String name, String dimension, net.minecraft.core.BlockPos position)
+    public Waypoint(String modId, String name, String dimension, BlockPos position)
     {
         super(modId, name);
         setPosition(dimension, position);
@@ -147,7 +147,7 @@ public class Waypoint extends WaypointBase<Waypoint>
     /**
      * Waypoint location.
      */
-    public final net.minecraft.core.BlockPos getPosition()
+    public final BlockPos getPosition()
     {
         return pos;
     }
@@ -157,7 +157,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      *
      * @return the block pos
      */
-    public net.minecraft.core.BlockPos getPosition(String targetDimension)
+    public BlockPos getPosition(String targetDimension)
     {
         return cachedDimPosition.getPosition(targetDimension);
     }
@@ -174,12 +174,12 @@ public class Waypoint extends WaypointBase<Waypoint>
             if (this.dim.equalsIgnoreCase(Level.NETHER.location().toString()))
             {
                 // Convert coords to 8x horizontal scale outside of the Nether
-                pos = new net.minecraft.core.BlockPos(pos.getX() * 8, pos.getY(), pos.getZ() * 8);
+                pos = new BlockPos(pos.getX() * 8, pos.getY(), pos.getZ() * 8);
             }
             else if (targetDimension.equalsIgnoreCase(Level.NETHER.location().toString()))
             {
                 // Convert coords to 1/8 horizontal scale for display in the Nether
-                pos = new net.minecraft.core.BlockPos(pos.getX() / 8.0, pos.getY(), pos.getZ() / 8.0);
+                pos = new BlockPos(pos.getX() / 8.0, pos.getY(), pos.getZ() / 8.0);
             }
         }
         return pos;
@@ -211,7 +211,7 @@ public class Waypoint extends WaypointBase<Waypoint>
      * @param position the BlockPos
      * @return this
      */
-    public Waypoint setPosition(String dimension, net.minecraft.core.BlockPos position)
+    public Waypoint setPosition(String dimension, BlockPos position)
     {
         if (position == null)
         {

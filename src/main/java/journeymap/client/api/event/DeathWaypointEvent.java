@@ -19,7 +19,7 @@ public class DeathWaypointEvent extends ClientEvent
      * @param location  The location of the waypoint.
      * @param dimension The dimension of the waypoint.
      */
-    public DeathWaypointEvent(net.minecraft.core.BlockPos location, ResourceKey<Level> dimension)
+    public DeathWaypointEvent(BlockPos location, ResourceKey<Level> dimension)
     {
         super(Type.DEATH_WAYPOINT, dimension);
         this.location = location;

@@ -49,7 +49,7 @@ public final class MarkerOverlay extends Overlay
      * @param point    Location of the marker.
      * @param icon     The icon to display as the marker.
      */
-    public MarkerOverlay(String modId, String markerId, net.minecraft.core.BlockPos point, MapImage icon)
+    public MarkerOverlay(String modId, String markerId, BlockPos point, MapImage icon)
     {
         super(modId, markerId);
         setPoint(point);
@@ -59,7 +59,7 @@ public final class MarkerOverlay extends Overlay
     /**
      * Location of the marker.
      */
-    public net.minecraft.core.BlockPos getPoint()
+    public BlockPos getPoint()
     {
         return point;
     }
@@ -70,7 +70,7 @@ public final class MarkerOverlay extends Overlay
      * @param point location
      * @return this
      */
-    public MarkerOverlay setPoint(net.minecraft.core.BlockPos point)
+    public MarkerOverlay setPoint(BlockPos point)
     {
         this.point = point;
         return this;

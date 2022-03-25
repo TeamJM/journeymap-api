@@ -1,14 +1,13 @@
-package journeymap.client.api.event.forge;
+package journeymap.client.api.event.fabric;
 
 import journeymap.client.api.display.CustomToolBarBuilder;
 import journeymap.client.api.display.ThemeButtonDisplay;
 import journeymap.client.api.model.IFullscreen;
-import net.minecraftforge.eventbus.api.Event;
 
 /**
  * This event is used for adding buttons to existing tool bars or creating your own toolbars on the fullscreen map.
  */
-public class FullscreenDisplayEvent extends Event
+public class FullscreenDisplayEvent extends FabricEvent
 {
     private final IFullscreen fullscreen;
     private final ThemeButtonDisplay themeButtonDisplay;
@@ -66,11 +65,12 @@ public class FullscreenDisplayEvent extends Event
      * USE SPARINGLY!
      */
     @Deprecated
-    public static class CustomToolbarEvent extends Event
+    public static class CustomToolbarEvent
     {
 
         private final CustomToolBarBuilder customToolBarBuilder;
         private final IFullscreen fullscreen;
+
         public CustomToolbarEvent(IFullscreen fullscreen, CustomToolBarBuilder customToolBarBuilder)
         {
             this.fullscreen = fullscreen;

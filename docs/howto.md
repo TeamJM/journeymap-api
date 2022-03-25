@@ -27,15 +27,18 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version = 1.9-1.2 // or 1.9-x-SNAPSHOT
+journeymap_api_version = 1.18.1-1.8 // or 1.8-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
     // JourneyMap API releases are here
-    mavenCentral()
-
-    // JourneyMap API snapshots are here
-    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    maven {
+        name = "JourneyMap (Public)"
+        url = "https://jm.gserv.me/repository/maven-public/"
+    }
+    maven {
+        url "https://www.cursemaven.com"
+    }
 }
 
 configurations.all {
@@ -44,7 +47,8 @@ configurations.all {
 }
 
 dependencies {
-    compile group: "info.journeymap", name: "journeymap-api", version: project.journeymap_api_version, changing: true
+    compileOnly fg.deobf(group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true)
+    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
 }
 
 ```
@@ -68,14 +72,16 @@ III. Write your Plugin
 =============================
 
 1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
-    - Annotate the class with *[@journeymap.client.api.ClientPlugin](src/main/java/journeymap/client/api/ClientPlugin.java)* so that JourneyMap can find and instantiate it
     - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
-1. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
+2. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
     - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't loaded.
-    
+3. In your `fabric.mod.json file` add the path to your class that implements `IClientPlug` to your entrypoint Example:  
+```
+    "journeymap": [
+      "mymod.modhooks.MyJourneymapPlugin"
+    ]
+```
 IV. Test your Plugin
 =============================
 
-1. [Download JourneyMap](http://journeymap.info/Download) 5.1.5 or later and place it in your runtime mods directory (usually `/run/mods`).
-You don't need a "dev" or "deobf" version of JourneyMap; Forge 1.8-11.14.3.1503 or later now handles automatic deobfuscation for you.
-2. Run Minecraft in your development environment.  Forge will load JourneyMap and your mod, and the JourneyMap API will activate your plugin.
+1. Using the following gradle configuration above, your mod will load journeymap and the api in your development environment.
