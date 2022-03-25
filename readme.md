@@ -12,6 +12,8 @@ to read the [License Information](docs/license.md).
 
 News
 ============================================================
+* **25 March 2022**: Versions API v1.18.2-1.8-fabric published
+
 * **Q1 2022**: Versions API v1.16.5-1.8, v1.17.1-1.8, v1.18.1-1.8 published 
 
 * **22 Nov 2016**: Version 1.11-1.3-SNAPSHOT has been pushed to Maven

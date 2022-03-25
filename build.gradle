@@ -94,10 +94,6 @@ jar {
     }
 }
 
-remapJar {
-    classifier "fabric"
-}
-
 /* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
 task modJar(type: Jar, dependsOn: classes) {
     mustRunAfter = ['jar']
