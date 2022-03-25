@@ -111,6 +111,10 @@ task modJar(type: Jar, dependsOn: classes) {
     }
 }
 
+remapJar {
+    classifier = 'fabric'
+}
+
 /* Javadoc properties */
 javadoc {
     title = project.title_javadoc
@@ -124,8 +128,8 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 /* Jar for Sources */
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+    from sourceSets.main.output
+    include 'journeymap/**'
 }
 
 /* Additional artifacts produced by build task */
