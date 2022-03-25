@@ -47,8 +47,8 @@ configurations.all {
 }
 
 dependencies {
-    compileOnly group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true
-    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
+    modCompileOnly group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true
+    modRuntimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
 }
 
 ```
