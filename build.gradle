@@ -61,12 +61,7 @@ repositories {
 
 /* ForgeGradle spec for Minecraft */
 minecraft {
-//    version = project.minecraft_version + "-" + project.forge_version
-//    runDir = "run"
     mappings channel: project.channel, version: project.mappings
-//    replace '@API_VERSION@', project.api_version
-//    replace '@MC_VERSION@', project.minecraft_version
-
     runs {
         client = {
             // recommended logging data for a userdev environment
@@ -87,7 +82,7 @@ minecraft {
     }
 }
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.loader_version}"
     runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
 }
 /* Replace tokens in resources files */

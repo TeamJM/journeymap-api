@@ -7,7 +7,7 @@ via the API interfaces in this repository.
 The JourneyMap API is designed so that your mod will only have a **soft dependency** on it:  
 
  * You should **only** have a compile-time dependency via your plugin implementation.
- * You should **not** need a runtime dependency. As long as you don't declare a dependency on "journeymap" in your mcmod.info file, your mod should load even if JourneyMap doesn't.
+ * You should **not** need a runtime dependency. As long as you don't declare a dependency on "journeymap" in your mods.toml file, your mod should load even if JourneyMap doesn't.
  * You should **never** include any JourneyMap API classes in your mod's jar. (No shading is needed.)
 
 This page describes the recommended approach to writing a plugin for the JourneyMap API:
@@ -27,15 +27,18 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version = 1.9-1.2 // or 1.9-x-SNAPSHOT
+journeymap_api_version = 1.18.1-1.8 // or 1.8-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
     // JourneyMap API releases are here
-    mavenCentral()
-
-    // JourneyMap API snapshots are here
-    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    maven {
+        name = "JourneyMap (Public)"
+        url = "https://jm.gserv.me/repository/maven-public/"
+    }
+    maven {
+        url "https://www.cursemaven.com"
+    }
 }
 
 configurations.all {
@@ -44,11 +47,20 @@ configurations.all {
 }
 
 dependencies {
-    compile group: "info.journeymap", name: "journeymap-api", version: project.journeymap_api_version, changing: true
+    compileOnly fg.deobf(group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true)
+    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
 }
 
 ```
-
+Example mods.toml entry for a soft dependency. Set `mandatory=true` for a hard dependency if needed.
+```
+[[dependencies.mymodId]]
+modId = "journeymap"
+mandatory = false
+versionRange = "[5.8.0,)"
+ordering = "NONE"
+side = "CLIENT"
+```
 *Note that the journeymap-api.jar is built with deobfuscated code so that it can be used at compile time and when
 stepping through a debugger in your development environment.*
 
@@ -76,6 +88,5 @@ III. Write your Plugin
 IV. Test your Plugin
 =============================
 
-1. [Download JourneyMap](http://journeymap.info/Download) 5.1.5 or later and place it in your runtime mods directory (usually `/run/mods`).
-You don't need a "dev" or "deobf" version of JourneyMap; Forge 1.8-11.14.3.1503 or later now handles automatic deobfuscation for you.
+1. Using the following gradle configuration above, your mod will load journeymap and the api in your development environment.
 2. Run Minecraft in your development environment.  Forge will load JourneyMap and your mod, and the JourneyMap API will activate your plugin.
