@@ -86,7 +86,6 @@ jar {
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
-                "FMLModType"            : "GAMELIBRARY",
                 "Implementation-Title"  : project.title,
                 "Implementation-Version": project.version,
                 "Implementation-URL"    : project.git_website
@@ -100,12 +99,10 @@ task modJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.output
     classifier = 'examplemod'
     include 'example/**'
-    include 'mcmod.info'
     include 'assets/**'
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
-                "FMLModType"            : "GAMELIBRARY",
                 "Implementation-Title"  : project.title_example,
                 "Implementation-Version": project.version,
                 "Implementation-URL"    : project.git_website
@@ -133,7 +130,7 @@ task sourcesJar(type: Jar) {
 
 /* Additional artifacts produced by build task */
 artifacts {
-    archives remapJar
+    archives jar
     archives modJar
     archives javadocJar
     archives sourcesJar
@@ -180,7 +177,7 @@ publishing {
 
     publications {
         maven(MavenPublication) {
-            artifact remapJar
+            artifact jar
             artifact javadocJar
             artifact sourcesJar
         }
