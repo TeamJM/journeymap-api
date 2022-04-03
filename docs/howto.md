@@ -18,13 +18,13 @@ I. Add the API Dependency
 To find out which API version to use, run Minecraft with JourneyMap. Open the Options manager or any other dialog in JourneyMap,
 and you'll see the API version in the corner of the screen.  The mod info dialog also displays this information.
 
-1. Add [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api) to your list of repositories
+1. Add the JM Public repository and CurseMaven to your list of repositories
 2. Add a compile dependency on 'info.journeymap:journeymap-api:#version'
+3. Add a runtime dependency on the CurseForge project
 
 For example:
 
-```
-#!gradle
+```gradle
 
 // Version of JourneyMap API to use
 journeymap_api_version = 1.18.2-1.8-fabric-SNAPSHOT
@@ -47,31 +47,25 @@ configurations.all {
 }
 
 dependencies {
-    modCompileOnly group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true
+    modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true
     modRuntimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
 }
 
 ```
 
-*Note that the journeymap-api.jar is built with deobfuscated code so that it can be used at compile time and when
-stepping through a debugger in your development environment.*
-
 II. Look at the Example Code
 =============================
 
-* Look in the [example package](src/main/java/example) for a complete 
+* Look in the [example package](/src/testmod/java/example) for a complete 
 example of a mod that has implemented a plugin for the JourneyMap API.
 
 * You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
-to see the Example Mod code in action.  To get the examplemod.jar, download it from 
-[Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api) or build this project.
-
-*Note that the examplemod.jar is built with re-obfuscated code so that it can be used like a normal mod.*
+to see the Example Mod code in action.
 
 III. Write your Plugin
 =============================
 
-1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
+1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](/src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](/src/testmod/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
     - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
 2. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
     - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't loaded.
@@ -85,4 +79,4 @@ IV. Test your Plugin
 =============================
 
 1. Using the following gradle configuration above, your mod will load journeymap and the api in your development environment.
-2. Run Minecraft in your development environment.  Forge will load JourneyMap and your mod, and the JourneyMap API will activate your plugin.
+2. Run Minecraft in your development environment. Fabric will load JourneyMap and your mod, and the JourneyMap API will activate your plugin.
