@@ -44,10 +44,16 @@ group 'info.journeymap'
 /* Artifact Version */
 version = project.minecraft_version + '-' + project.api_version
 
+configurations {
+    testmodImplementation.extendsFrom implementation
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
@@ -62,6 +68,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.loader_version}"
 //    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
+
+    testmodImplementation sourceSets.main.output
 }
 /* Replace tokens in resources files */
 processResources
@@ -104,12 +112,6 @@ remapJar {
 /* Javadoc properties */
 javadoc {
     title = project.title_javadoc
-}
-
-/* Jars for Javadocs and Sources */
-java {
-    withJavadocJar()
-    withSourcesJar()
 }
 
 def bintrayUser = project.findProperty("bintray.user") ?: System.getenv("BINTRAY_USER")
