@@ -25,7 +25,7 @@
     "main": [
       "example.mod.ExampleMod"
     ],
-    "jourenymap": [
+    "journeymap": [
       "example.mod.client.plugin.ExampleJourneymapPlugin"
     ]
   },
