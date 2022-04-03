@@ -210,6 +210,18 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
         return null;
     }
 
+    @Override
+    public void setWorldId(String identifier)
+    {
+
+    }
+
+    @Override
+    public String getWorldId()
+    {
+        return null;
+    }
+
     /**
      * Create a randomly-colored image
      *

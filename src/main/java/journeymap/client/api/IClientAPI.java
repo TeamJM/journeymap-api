@@ -250,4 +250,18 @@ public interface IClientAPI
      */
     List<Waypoint> getWaypoints(final String modId);
 
+    /**
+     * Sets a custom worldId to identify servers and or worlds when bungeecord style servers send all dims as overworld or such.
+     * This is intended to be used on the {@link ClientEvent.Type#MAPPING_STARTED} event..
+     *
+     * @param identifier - the new worldId
+     */
+    void setWorldId(String identifier);
+
+    /**
+     * Gets the worldId for the current world.
+     *
+     * @return worldId.
+     */
+    String getWorldId();
 }
