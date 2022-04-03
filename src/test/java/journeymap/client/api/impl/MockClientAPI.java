@@ -197,7 +197,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
         return null;
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public Waypoint getWaypoint(String modId, String displayId)
     {
