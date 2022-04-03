@@ -251,11 +251,17 @@ public interface IClientAPI
     List<Waypoint> getWaypoints(final String modId);
 
     /**
+     * NOTE: Mod Devs, please only use when connected to specific servers or use the getter to verify. If multiple mods use this hook
+     * it can lead to an infinite loop on the client. Because mapping is restarted and the MAPPING_STARTED is fired again after the worldId is set.
+     * If the worldId is the same on the second firing of the event, it ignores it. But, if another mod changes it, it may be different which would cause a reset loop.
+     * <p>
      * Sets a custom worldId to identify servers and or worlds when bungeecord style servers send all dims as overworld or such.
-     * This is intended to be used on the {@link ClientEvent.Type#MAPPING_STARTED} event..
+     * This is intended to be used on the {@link ClientEvent.Type#MAPPING_STARTED} event.
      *
      * @param identifier - the new worldId
+     * @deprecated due to the inherent risk associated with this setter. This may be switched to a singular event in the future.
      */
+    @Deprecated
     void setWorldId(String identifier);
 
     /**
