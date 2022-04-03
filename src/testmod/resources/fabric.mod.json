@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "journeymap-api-fabric",
+  "id": "examplemodjm",
   "version": "${version}",
 
-  "name": "JourneyMap API",
-  "description": "API library for the JourneyMap Mod for Minecraft.",
+  "name": "examplemodjm",
+  "description": "Example for JourneyMap API",
   "authors": [
     "Mysticdrew",
     "Techbrew"
@@ -18,15 +18,21 @@
   "license": "All Rights Reserved",
 
   "environment": "*",
+  "entrypoints": {
+    "client": [
+      "example.mod.client.ExampleModClient"
+    ],
+    "main": [
+      "example.mod.ExampleMod"
+    ],
+    "journeymap": [
+      "example.mod.client.plugin.ExampleJourneymapPlugin"
+    ]
+  },
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",
     "minecraft": "1.18.x",
     "java": ">=17"
-  },
-  "custom": {
-    "modmenu": {
-      "parent": "journeymap-fabric"
-    }
   }
 }

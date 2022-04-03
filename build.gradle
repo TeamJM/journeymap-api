@@ -57,7 +57,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:20.1.0'
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
@@ -78,53 +77,28 @@ processResources
             }
         }
 
-/* Reobfuscated jar for just the Example Mod */
-jar {
-    dependsOn classes
-    from sourceSets.main.output
-    include 'journeymap/**'
-    manifest {
-        attributes = [
-                "Manifest-Version"      : "1.0",
-                "Implementation-Title"  : project.title,
-                "Implementation-Version": project.version,
-                "Implementation-URL"    : project.git_website
-        ]
+/* Use the same compile and runtime classpath in the Example Mod */
+sourceSets {
+    testmod {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
     }
 }
-task deobfJar(type: Jar, dependsOn: classes) {
-    mustRunAfter = ['jar']
-    from sourceSets.main.output
-    include 'journeymap/**'
-    manifest {
-        attributes = [
-                "Manifest-Version"      : "1.0",
-                "Implementation-Title"  : project.title,
-                "Implementation-Version": project.version,
-                "Implementation-URL"    : project.git_website
-        ]
-    }
-}
-/* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
-task modJar(type: Jar, dependsOn: classes) {
-    mustRunAfter = ['jar']
-    from sourceSets.main.output
-    classifier = 'examplemod'
-    include 'example/**'
-    include 'assets/**'
-    manifest {
-        attributes = [
-                "Manifest-Version"      : "1.0",
-                "Implementation-Title"  : project.title_example,
-                "Implementation-Version": project.version,
-                "Implementation-URL"    : project.git_website
 
+/* Add our attributes to every Jar task */
+jar {
+    manifest {
+        attributes = [
+                "Manifest-Version"      : "1.0",
+                "Implementation-Title"  : project.title,
+                "Implementation-Version": project.version,
+                "Implementation-URL"    : project.git_website
         ]
     }
 }
 
 remapJar {
-    classifier = 'fabric'
+    archiveClassifier = 'fabric'
 }
 
 /* Javadoc properties */
@@ -132,25 +106,10 @@ javadoc {
     title = project.title_javadoc
 }
 
-/* Jar for Javadocs */
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-/* Jar for Sources */
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-/* Additional artifacts produced by build task */
-artifacts {
-    archives jar
-    archives deobfJar
-    archives modJar
-    archives javadocJar
-    archives sourcesJar
+/* Jars for Javadocs and Sources */
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 def bintrayUser = project.findProperty("bintray.user") ?: System.getenv("BINTRAY_USER")
@@ -194,10 +153,7 @@ publishing {
 
     publications {
         maven(MavenPublication) {
-            artifact jar
-            artifact deobfJar
-            artifact javadocJar
-            artifact sourcesJar
+            from components.java
         }
     }
 }
