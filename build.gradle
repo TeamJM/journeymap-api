@@ -62,26 +62,25 @@ repositories {
     }
 }
 
-task deobfJar(type: Jar, dependsOn: classes) {
-    from sourceSets.main.output
-    classifier "common"
-    include 'journeymap/**'
-    manifest {
-        attributes = [
-                "Manifest-Version"      : "1.0",
-                "Implementation-Title"  : project.title,
-                "Implementation-Version": project.version,
-                "Implementation-URL"    : project.git_website
-        ]
-    }
-}
+//task deobfJar(type: Jar, dependsOn: classes) {
+//    from sourceSets.main.output
+//    classifier "common"
+//    include 'journeymap/**'
+//    manifest {
+//        attributes = [
+//                "Manifest-Version"      : "1.0",
+//                "Implementation-Title"  : project.title,
+//                "Implementation-Version": project.version,
+//                "Implementation-URL"    : project.git_website
+//        ]
+//    }
+//}
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.loader_version}"
-//    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
 
     testmodImplementation sourceSets.main.output
 }
@@ -109,7 +108,6 @@ sourceSets {
 
 /* Add our attributes to every Jar task */
 jar {
-    dependsOn 'deobfJar'
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
@@ -149,13 +147,6 @@ if (project.hasProperty("production")) {
     }
 }
 
-artifacts {
-    archives jar
-    archives deobfJar
-    archives javadocJar
-    archives sourcesJar
-}
-
 publishing {
     repositories {
         maven {
@@ -173,10 +164,7 @@ publishing {
 
     publications {
         maven(MavenPublication) {
-            artifact jar
-            artifact deobfJar
-            artifact javadocJar
-            artifact sourcesJar
+            from components.java
         }
     }
 }
