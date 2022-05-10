@@ -62,6 +62,20 @@ repositories {
     }
 }
 
+task deobfJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.output
+    classifier "common"
+    include 'journeymap/**'
+    manifest {
+        attributes = [
+                "Manifest-Version"      : "1.0",
+                "Implementation-Title"  : project.title,
+                "Implementation-Version": project.version,
+                "Implementation-URL"    : project.git_website
+        ]
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
@@ -95,6 +109,7 @@ sourceSets {
 
 /* Add our attributes to every Jar task */
 jar {
+    dependsOn 'deobfJar'
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
