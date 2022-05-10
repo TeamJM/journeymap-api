@@ -149,6 +149,13 @@ if (project.hasProperty("production")) {
     }
 }
 
+artifacts {
+    archives jar
+    archives deobfJar
+    archives javadocJar
+    archives sourcesJar
+}
+
 publishing {
     repositories {
         maven {
@@ -166,7 +173,10 @@ publishing {
 
     publications {
         maven(MavenPublication) {
-            from components.java
+            artifact jar
+            artifact deobfJar
+            artifact javadocJar
+            artifact sourcesJar
         }
     }
 }
