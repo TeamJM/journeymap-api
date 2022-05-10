@@ -108,7 +108,7 @@ sourceSets {
 
 /* Add our attributes to every Jar task */
 jar {
-    dependsOn 'deobfJar'
+//    dependsOn 'deobfJar'
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
