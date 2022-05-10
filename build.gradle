@@ -108,6 +108,7 @@ sourceSets {
 
 /* Add our attributes to every Jar task */
 jar {
+    dependsOn 'deobfJar'
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
@@ -146,6 +147,12 @@ if (project.hasProperty("production")) {
         }
     }
 }
+artifacts {
+    archives jar
+    archives remapJar
+    archives javadocJar
+    archives sourcesJar
+}
 
 publishing {
     repositories {
@@ -164,7 +171,10 @@ publishing {
 
     publications {
         maven(MavenPublication) {
-            from components.java
+            artifact remapJar
+            artifact jar
+            artifact javadocJar
+            artifact sourcesJar
         }
     }
 }
