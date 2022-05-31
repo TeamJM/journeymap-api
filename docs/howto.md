@@ -27,15 +27,18 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version = 1.9-1.2 // or 1.9-x-SNAPSHOT
+journeymap_api_version = 1.16.5-1.8-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
     // JourneyMap API releases are here
-    mavenCentral()
-
-    // JourneyMap API snapshots are here
-    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    maven {
+        name = "JourneyMap (Public)"
+        url = "https://jm.gserv.me/repository/maven-public/"
+    }
+    maven {
+        url "https://www.cursemaven.com"
+    }
 }
 
 configurations.all {
@@ -44,7 +47,8 @@ configurations.all {
 }
 
 dependencies {
-    compile group: "info.journeymap", name: "journeymap-api", version: project.journeymap_api_version, changing: true
+    compileOnly fg.deobf(group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true)
+    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
 }
 
 ```
