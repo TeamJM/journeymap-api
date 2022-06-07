@@ -1,9 +1,9 @@
-name: 1.19.x
+name: 1.19.x_1.8
 
 on:
   push:
     branches:
-      - '1.19.x_1.8'
+      - '1.19.x_1.8-forge'
 
 jobs:
   build:
