@@ -12,7 +12,7 @@ import journeymap.client.api.display.ThemeButtonDisplay;
 import journeymap.client.api.event.forge.EntityRadarUpdateEvent;
 import journeymap.client.api.event.forge.FullscreenDisplayEvent;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -151,8 +151,7 @@ class ForgeEventListener
     @OnlyIn(Dist.CLIENT)
     public void onFullscreenMapTypeButton(FullscreenDisplayEvent.MapTypeButtonDisplayEvent event)
     {
-        event.getThemeButtonDisplay()
-                .addThemeButton("Test MapType", "follow", b -> System.out.println("follow"));
+        event.getThemeButtonDisplay().addThemeButton("Test MapType", "follow", b -> System.out.println("follow"));
     }
 
     /**
@@ -194,7 +193,7 @@ class ForgeEventListener
 
         if (event.getActiveUiState().ui.equals(Context.UI.Minimap))
         {
-            if (((TranslatableComponent) event.getWrappedEntity().getEntityLivingRef().get().getName()).getKey().contains("slime"))
+            if (((Component) event.getWrappedEntity().getEntityLivingRef().get().getName()).getString().contains("slime"))
             {
                 event.getWrappedEntity().setColor(0x0000FF);
                 event.getWrappedEntity().setCustomName("SLIME");
