@@ -27,7 +27,7 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version = 1.18.1-1.8 // or 1.8-SNAPSHOT
+journeymap_api_version = 1.18.2-1.9-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
@@ -57,7 +57,7 @@ Example mods.toml entry for a soft dependency. Set `mandatory=true` for a hard d
 [[dependencies.mymodId]]
 modId = "journeymap"
 mandatory = false
-versionRange = "[5.8.0,)"
+versionRange = "[5.9.0,)"
 ordering = "NONE"
 side = "CLIENT"
 ```

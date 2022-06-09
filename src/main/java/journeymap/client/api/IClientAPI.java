@@ -20,6 +20,7 @@
 
 package journeymap.client.api;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
@@ -32,7 +33,6 @@ import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.EnumSet;
 import java.util.List;
@@ -45,7 +45,7 @@ import java.util.function.Consumer;
 public interface IClientAPI
 {
     String API_OWNER = "journeymap";
-    String API_VERSION = "1.8-SNAPSHOT";
+    String API_VERSION = "1.9-SNAPSHOT";
 
     /**
      * Returns the current UIState of the UI specified.
@@ -149,7 +149,7 @@ public interface IClientAPI
      * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
     void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, ChunkPos startChunk, net.minecraft.world.level.ChunkPos endChunk,
-                        @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback);
+                        @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<NativeImage> callback);
 
     /**
      * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
