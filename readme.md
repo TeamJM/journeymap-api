@@ -12,6 +12,8 @@ to read the [License Information](docs/license.md).
 
 News
 ============================================================
+* **Q2 2022**: Versions API v1.18.2-1.9-fabric-SNAPSHOT for Journeymap 5.9.0 published
+
 * **25 March 2022**: Versions API v1.18.2-1.8-fabric published
 
 * **Q1 2022**: Versions API v1.16.5-1.8, v1.17.1-1.8, v1.18.1-1.8 published 

@@ -23,11 +23,11 @@ package journeymap.client.api.model;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.gson.annotations.Since;
+import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.client.api.display.Displayable;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
-import java.awt.image.BufferedImage;
 
 /**
  * Defines attributes needed to display an image on the map.
@@ -41,7 +41,7 @@ import java.awt.image.BufferedImage;
 public final class MapImage
 {
     @Since(1.1)
-    private transient BufferedImage image;
+    private transient NativeImage image;
 
     @Since(1.1)
     private ResourceLocation imageLocation;
@@ -86,7 +86,7 @@ public final class MapImage
      *
      * @param image Image texture
      */
-    public MapImage(BufferedImage image)
+    public MapImage(NativeImage image)
     {
         this(image, 0, 0, image.getWidth(), image.getHeight(), 0xffffff, 1f);
     }
@@ -104,7 +104,7 @@ public final class MapImage
      * @param color         Sets a color tint (rgb) on the image.  Use white (0xffffff) for no tint.
      * @param opacity       opacity between 0 and 1
      */
-    public MapImage(BufferedImage image, int textureX, int textureY, int textureWidth, int textureHeight, int color, float opacity)
+    public MapImage(NativeImage image, int textureX, int textureY, int textureWidth, int textureHeight, int color, float opacity)
     {
         this.image = image;
         this.textureX = textureX;
@@ -313,7 +313,7 @@ public final class MapImage
      * @return the location
      */
     @Nullable
-    public BufferedImage getImage()
+    public NativeImage getImage()
     {
         return image;
     }

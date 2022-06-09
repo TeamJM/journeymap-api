@@ -24,6 +24,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.LinkedHashMultimap;
+import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
@@ -41,10 +42,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.EnumSet;
 import java.util.List;
@@ -143,7 +141,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
 
     @Override
     public void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, net.minecraft.world.level.ChunkPos startChunk, ChunkPos endChunk,
-                               @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback)
+                               @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<NativeImage> callback)
     {
         // Determine chunks for coordinates at zoom level
         final int scale = (int) Math.pow(2, zoom);
@@ -227,14 +225,11 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
      *
      * @return
      */
-    private BufferedImage createFakeImage(int width, int height)
+    private NativeImage createFakeImage(int width, int height)
     {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = image.createGraphics();
+        NativeImage image = new NativeImage(width, height, false);
         int color = new Random().nextInt(0xffffff);
-        g.setColor(new Color(color));
-        g.fillRect(0, 0, 512, 512);
-        g.dispose();
+        image.fillRect(0, 0, 512, 512, color);
         return image;
     }
 

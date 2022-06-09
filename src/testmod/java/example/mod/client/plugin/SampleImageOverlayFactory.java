@@ -1,5 +1,6 @@
 package example.mod.client.plugin;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.display.IOverlayListener;
@@ -18,7 +19,6 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -104,39 +104,41 @@ class SampleImageOverlayFactory
      * @param height image height
      * @return image
      */
-    static BufferedImage createImage(int width, int height)
+    static NativeImage createImage(int width, int height)
     {
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = bufferedImage.createGraphics();
+        NativeImage image = new NativeImage(NativeImage.Format.LUMINANCE, width, height, false);
 
-        // Garish background
-        g.setPaint(new GradientPaint(0, 0, new Color(255, 255, 255, 100), width, height, new Color(0, 0, 200, 200)));
-        g.fillRect(0, 0, width, height);
+        //TODO: fix
+////        Graphics2D g = bufferedImage.createGraphics();
+//
+//        // Garish background
+//        g.setPaint(new GradientPaint(0, 0, new Color(255, 255, 255, 100), width, height, new Color(0, 0, 200, 200)));
+//        g.fillRect(0, 0, width, height);
+//
+//        // Draw some text, for grins
+//        Font font = new Font(Font.MONOSPACED, Font.BOLD, 8);
+//        String text = String.format("%sx%s", width, height);
+//        Rectangle2D fontBounds = font.getStringBounds(text, g.getFontRenderContext());
+//        final float x = (float) (image.getWidth() - fontBounds.getWidth()) / 2f;
+//        final float y = (float) (fontBounds.getHeight() + (image.getHeight() - fontBounds.getHeight()) / 2f);
+//
+//        // Text will be transparent
+//        g.setComposite(AlphaComposite.Src);
+//        g.setColor(new Color(0, 0, 0, 0));
+//        g.setFont(font);
+//        g.drawString(text, x, y);
+//
+//        // Stroke the perimeter
+//        float strokeWidth = 1f;
+//        g.setColor(new Color(0, 0, 0, 0));
+//        final BasicStroke dashed = new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[]{2f}, 0.0f);
+//        g.setStroke(dashed);
+//        g.draw(new Rectangle2D.Double(0, 0, width - strokeWidth, height - strokeWidth));
+//
+//        // Done
+//        g.dispose();
 
-        // Draw some text, for grins
-        Font font = new Font(Font.MONOSPACED, Font.BOLD, 8);
-        String text = String.format("%sx%s", width, height);
-        Rectangle2D fontBounds = font.getStringBounds(text, g.getFontRenderContext());
-        final float x = (float) (bufferedImage.getWidth() - fontBounds.getWidth()) / 2f;
-        final float y = (float) (fontBounds.getHeight() + (bufferedImage.getHeight() - fontBounds.getHeight()) / 2f);
-
-        // Text will be transparent
-        g.setComposite(AlphaComposite.Src);
-        g.setColor(new Color(0, 0, 0, 0));
-        g.setFont(font);
-        g.drawString(text, x, y);
-
-        // Stroke the perimeter
-        float strokeWidth = 1f;
-        g.setColor(new Color(0, 0, 0, 0));
-        final BasicStroke dashed = new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[]{2f}, 0.0f);
-        g.setStroke(dashed);
-        g.draw(new Rectangle2D.Double(0, 0, width - strokeWidth, height - strokeWidth));
-
-        // Done
-        g.dispose();
-
-        return bufferedImage;
+        return image;
     }
 
     /**
