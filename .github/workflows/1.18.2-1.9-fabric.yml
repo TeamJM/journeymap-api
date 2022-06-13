@@ -1,9 +1,9 @@
-name: 1.18.2_1.9-fabric
+name: 1.18.2-1.9-fabric
 
 on:
   push:
     branches:
-      - '1.18.2_1.9-fabric'
+      - '1.18.2-1.9-fabric'
 
 jobs:
   build:
