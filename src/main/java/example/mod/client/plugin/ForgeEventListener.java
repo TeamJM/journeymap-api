@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -43,7 +43,7 @@ class ForgeEventListener
     ForgeEventListener(IClientAPI jmAPI)
     {
         this.jmAPI = jmAPI;
-        this.slimeChunkOverlays = new HashMap<ChunkPos, PolygonOverlay>();
+        this.slimeChunkOverlays = new HashMap<>();
     }
 
     /**
@@ -55,7 +55,7 @@ class ForgeEventListener
     {
         try
         {
-            if (event.getEntityLiving().getCommandSenderWorld().isClientSide)
+            if (event.getEntity().getCommandSenderWorld().isClientSide)
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
                 {
@@ -77,7 +77,7 @@ class ForgeEventListener
     {
         try
         {
-            if (event.getWorld().isClientSide())
+            if (event.getLevel().isClientSide())
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
                 {
@@ -87,7 +87,7 @@ class ForgeEventListener
                         ChunkPos chunkCoords = chunk.getPos();
                         if (!slimeChunkOverlays.containsKey(chunkCoords))
                         {
-                            ResourceKey<Level> dimension = ((Level) event.getWorld()).dimension();
+                            ResourceKey<Level> dimension = ((Level) event.getLevel()).dimension();
                             PolygonOverlay overlay = SamplePolygonOverlayFactory.create(chunkCoords, dimension);
                             slimeChunkOverlays.put(chunkCoords, overlay);
                             jmAPI.show(overlay);
@@ -108,7 +108,7 @@ class ForgeEventListener
     @SubscribeEvent
     public void onChunkUnloadEvent(ChunkEvent.Unload event)
     {
-        if (event.getWorld().isClientSide())
+        if (event.getLevel().isClientSide())
         {
             if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
             {
