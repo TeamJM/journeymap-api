@@ -3,7 +3,6 @@ name: 1.19.x_1.9-fabric
 on:
   push:
     branches:
-      - '1.19.x_1.9-fabric'
       - '1.19.3+_1.9-fabric'
 
 jobs:
