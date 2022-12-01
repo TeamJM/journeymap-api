@@ -24,11 +24,12 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.Since;
-import com.mojang.math.Vector3d;
+
 import journeymap.client.api.model.WaypointBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import org.joml.Vector3d;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
