@@ -1,9 +1,9 @@
-name: 1.18.1
+name: 1.19.3_1.9-forge
 
 on:
   push:
     branches:
-      - '1.18.1_1.8'
+      - '1.19.3_1.9-forge'
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v1
         with:
-          version: 16
+          version: 17
 
       - name: Gradle Build
         run: /bin/sh ./gradlew build
