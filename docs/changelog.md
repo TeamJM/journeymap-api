@@ -1,6 +1,7 @@
 [JourneyMap API](https://github.com/TeamJM/journeymap-api) Changelog
 ======================================================
-**API v1.18.2-1.9-fabric-SNAPSHOT**
+**API v1.19.3-1.9-fabric-SNAPSHOT**
+* Updated to mc 1.19.3
 * Changed BufferedImage to NativeImage
 
 **v1.18.2-1.8-fabric**
