@@ -39,9 +39,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.EnumSet;
@@ -53,7 +52,6 @@ import java.util.function.Consumer;
  * Stub implementation of the IClientAPI. Doesn't actually do anything, other than track displayIds.
  */
 //@Optional.Interface(iface = "journeymap.client.api.IClientAPI", modid = "journeymap")
-@ParametersAreNonnullByDefault
 enum MockClientAPI implements journeymap.client.api.IClientAPI
 {
     INSTANCE;

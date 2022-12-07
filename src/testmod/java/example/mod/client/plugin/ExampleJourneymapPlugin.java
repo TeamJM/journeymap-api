@@ -31,7 +31,6 @@ import journeymap.client.api.event.WaypointEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
 import static journeymap.client.api.event.ClientEvent.Type.DEATH_WAYPOINT;
@@ -48,7 +47,6 @@ import static journeymap.client.api.event.ClientEvent.Type.REGISTRY;
  * <p>
  * The
  */
-@ParametersAreNonnullByDefault
 public class ExampleJourneymapPlugin implements IClientPlugin
 {
     // API reference
