@@ -26,8 +26,7 @@ import com.google.gson.annotations.Since;
 import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.client.api.display.Displayable;
 import net.minecraft.resources.ResourceLocation;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Defines attributes needed to display an image on the map.

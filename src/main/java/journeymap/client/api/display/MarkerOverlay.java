@@ -23,8 +23,6 @@ package journeymap.client.api.display;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.core.BlockPos;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 /**
  * A Marker overlay shows a geographical point on the map with an icon and a label.
  * For example: A pushpin shown at the world spawn point.
@@ -35,7 +33,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.
  */
-@ParametersAreNonnullByDefault
 public final class MarkerOverlay extends Overlay
 {
     private BlockPos point;

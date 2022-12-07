@@ -25,8 +25,8 @@ import journeymap.client.api.model.MapPolygonWithHoles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.ChunkPos;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
@@ -106,8 +106,8 @@ public class PolygonHelper
      * @param chunks The set of chunks.
      * @return An Area of the corresponding block coordinates.
      */
-    @Nonnull
-    public static Area createChunksArea(@Nonnull final Collection<ChunkPos> chunks)
+    @NotNull
+    public static Area createChunksArea(@NotNull final Collection<ChunkPos> chunks)
     {
         final Area area = new Area();
         for (final ChunkPos chunkPos : chunks)
@@ -125,8 +125,8 @@ public class PolygonHelper
      * @param y      The y-coordinate for the resulting polygons.
      * @return One or more polygons that cover the specified chunks.
      */
-    @Nonnull
-    public static List<MapPolygonWithHoles> createChunksPolygon(@Nonnull final Collection<ChunkPos> chunks, final int y)
+    @NotNull
+    public static List<MapPolygonWithHoles> createChunksPolygon(@NotNull final Collection<ChunkPos> chunks, final int y)
     {
         return createPolygonFromArea(createChunksArea(chunks), y);
     }
@@ -137,8 +137,8 @@ public class PolygonHelper
      * @param polygon The polygon.
      * @return The corresponding area.
      */
-    @Nonnull
-    public static Area toArea(@Nonnull final MapPolygon polygon)
+    @NotNull
+    public static Area toArea(@NotNull final MapPolygon polygon)
     {
         final List<BlockPos> points = polygon.getPoints();
         final int[] xPoints = new int[points.size()];
@@ -166,8 +166,8 @@ public class PolygonHelper
      * @param y    The y-coordinate.
      * @return The polygons.
      */
-    @Nonnull
-    public static List<MapPolygonWithHoles> createPolygonFromArea(@Nonnull final Area area, final int y)
+    @NotNull
+    public static List<MapPolygonWithHoles> createPolygonFromArea(@NotNull final Area area, final int y)
     {
         final List<MapPolygon> polygons = new ArrayList<>();
         List<BlockPos> poly = new ArrayList<>();
@@ -211,8 +211,8 @@ public class PolygonHelper
      * @param polygons The input list of {@link MapPolygon}s.
      * @return The resulting list of {@link MapPolygonWithHoles}.
      */
-    @Nonnull
-    public static List<MapPolygonWithHoles> classifyAndGroup(@Nonnull final List<MapPolygon> polygons)
+    @NotNull
+    public static List<MapPolygonWithHoles> classifyAndGroup(@NotNull final List<MapPolygon> polygons)
     {
         final List<MapPolygon> hulls = new ArrayList<>();
         final List<MapPolygon> holes = new ArrayList<>();
@@ -265,8 +265,8 @@ public class PolygonHelper
      * @param points The input points
      * @return The filtered points
      */
-    @Nonnull
-    private static List<BlockPos> simplify(@Nonnull final List<BlockPos> points)
+    @NotNull
+    private static List<BlockPos> simplify(@NotNull final List<BlockPos> points)
     {
         final List<BlockPos> result = new ArrayList<>();
         BlockPos prev2 = points.get(0);
@@ -304,7 +304,7 @@ public class PolygonHelper
      * @param polygon The polygon.
      * @return True if it's a hole.
      */
-    private static boolean isHole(@Nonnull final MapPolygon polygon)
+    private static boolean isHole(@NotNull final MapPolygon polygon)
     {
         // from https://stackoverflow.com/a/18472899/43534
         long sum = 0;

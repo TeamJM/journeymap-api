@@ -23,8 +23,6 @@ package journeymap.client.api.display;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.core.BlockPos;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 /**
  * An image overlay places an image on the map between the given coordinates.
  * <p>
@@ -34,7 +32,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.
  */
-@ParametersAreNonnullByDefault
 public final class ImageOverlay extends Overlay
 {
     private BlockPos northWestPoint;

@@ -1,7 +1,7 @@
 package journeymap.client.api.model;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class MapPolygonWithHoles
 {
-    @Nonnull public final MapPolygon hull;
+    @NotNull public final MapPolygon hull;
     @Nullable public final List<MapPolygon> holes;
 
     /**
@@ -19,7 +19,7 @@ public class MapPolygonWithHoles
      * @param hull The outer hull of the polygon.
      * @param holes Intersecting polygons representing holes in the hull.
      */
-    public MapPolygonWithHoles(@Nonnull final MapPolygon hull,
+    public MapPolygonWithHoles(@NotNull final MapPolygon hull,
                                @Nullable final List<MapPolygon> holes)
     {
         this.hull = hull;
