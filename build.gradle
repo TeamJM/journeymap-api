@@ -68,6 +68,9 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.loader_version}"
 
+    // for annotations
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+
     testmodImplementation sourceSets.main.output
 }
 /* Replace tokens in resources files */

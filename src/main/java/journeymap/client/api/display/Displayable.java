@@ -25,12 +25,14 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.gson.annotations.Since;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
 /**
  * Base class for Overlays and Waypoints.
  * Mods should not extend this class directly.  Use one of the provided implementations.
  */
+@ParametersAreNonnullByDefault
 public abstract class Displayable implements Comparable<Displayable>
 {
     @Since(1.1)

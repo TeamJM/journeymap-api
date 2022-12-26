@@ -26,12 +26,14 @@ import journeymap.client.api.util.UIState;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
 /**
  * Provides IDs and key information for map overlays in JourneyMap.
  */
+@ParametersAreNonnullByDefault
 public abstract class Overlay extends Displayable
 {
     protected String overlayGroupName;

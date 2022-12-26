@@ -26,6 +26,7 @@ import journeymap.client.api.IClientPlugin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,6 +37,7 @@ import java.util.Map;
  * Enum singleton used by JourneyMap to load and initialize plugins.
  * A plugin class must implement the {@link IClientPlugin} interface.
  */
+@ParametersAreNonnullByDefault
 public enum PluginHelper
 {
     INSTANCE;

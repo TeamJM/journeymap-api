@@ -26,7 +26,8 @@ import journeymap.client.api.model.ShapeProperties;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ import java.util.List;
  * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.
  */
+@ParametersAreNonnullByDefault
 public final class PolygonOverlay extends Overlay
 {
     private MapPolygon outerArea;

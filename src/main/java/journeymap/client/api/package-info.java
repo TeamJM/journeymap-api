@@ -25,4 +25,7 @@
  * @author Techbrew
  */
 //@API(owner = "journeymap", apiVersion = "@API_VERSION@", provides = "journeymap|client-api")
+@ParametersAreNonnullByDefault
 package journeymap.client.api;
+
+import javax.annotation.ParametersAreNonnullByDefault;

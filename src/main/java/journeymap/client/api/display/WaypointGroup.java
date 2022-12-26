@@ -4,11 +4,13 @@ import com.google.common.base.Objects;
 import com.google.gson.annotations.Since;
 import journeymap.client.api.model.WaypointBase;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
 /**
  * Group for ModWaypoints.
  */
+@ParametersAreNonnullByDefault
 public class WaypointGroup extends WaypointBase<WaypointGroup>
 {
     public static final double VERSION = 1.4;

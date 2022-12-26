@@ -2,7 +2,8 @@ package journeymap.client.api.event.fabric;
 
 import journeymap.client.api.model.WrappedEntity;
 import journeymap.client.api.util.UIState;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 /**
  * This event is fired when Journeymap updates an entity before it is displayed on the map.

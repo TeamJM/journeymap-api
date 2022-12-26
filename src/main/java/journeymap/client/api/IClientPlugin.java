@@ -22,11 +22,13 @@ package journeymap.client.api;
 
 import journeymap.client.api.event.ClientEvent;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
 /**
  * Interface used by JourneyMap to initialize client plugins and provide the Client API.
  */
+@ParametersAreNonnullByDefault
 public interface IClientPlugin
 {
     /**

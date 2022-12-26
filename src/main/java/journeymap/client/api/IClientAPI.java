@@ -30,8 +30,9 @@ import journeymap.client.api.util.UIState;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
 import java.util.EnumSet;
 import java.util.List;
@@ -40,6 +41,7 @@ import java.util.function.Consumer;
 /**
  * Definition for the JourneyMap Client API.
  */
+@ParametersAreNonnullByDefault
 public interface IClientAPI
 {
     String API_OWNER = "journeymap";
