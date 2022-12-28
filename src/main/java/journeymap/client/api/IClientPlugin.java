@@ -20,6 +20,7 @@
 
 package journeymap.client.api;
 
+import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -51,15 +52,15 @@ public interface IClientPlugin
     String getModId();
 
     /**
-     * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
+     * Called by JourneyMap on the main Minecraft thread when a {@link ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p>
      * You must call {@link IClientAPI#subscribe(String, EnumSet)} to subscribe to these events ( preferably during
      * {@link #initialize(IClientAPI)} ), otherwise this method will never be called.
      * <p>
-     * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
-     * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
-     * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
+     * If the event type is {@link ClientEvent.Type#DISPLAY_UPDATE},
+     * this is a signal to {@link IClientAPI#show(Displayable)}
+     * all relevant Displayables for the {@link ClientEvent#dimension} indicated.
      * (Note: ModWaypoints with persisted==true will already be shown.)
      *
      * @param event the event

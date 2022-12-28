@@ -1,6 +1,6 @@
 {
   "pack": {
-    "pack_format": 4,
-    "description": "Resources used for JourneyMap-api"
+    "pack_format": 9,
+    "description": "Resources used for JourneyMap-API"
   }
 }

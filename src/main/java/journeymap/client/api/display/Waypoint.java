@@ -24,6 +24,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.Since;
+import journeymap.client.api.IClientAPI;
 import journeymap.client.api.model.WaypointBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -39,7 +40,7 @@ import java.util.Arrays;
  * Setters use the Builder pattern so they can be chained.
  * <p>
  * Note that like all Displayables, simply changing this object doesn't guarantee the player will get the changes.
- * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
+ * You must call {@link IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.
  */
 public class Waypoint extends WaypointBase<Waypoint>

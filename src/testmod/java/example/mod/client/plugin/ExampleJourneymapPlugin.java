@@ -21,9 +21,11 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
+import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
 import journeymap.client.api.display.DisplayType;
+import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.DeathWaypointEvent;
 import journeymap.client.api.event.RegistryEvent;
@@ -50,7 +52,7 @@ import static journeymap.client.api.event.ClientEvent.Type.REGISTRY;
  * The
  */
 @ParametersAreNonnullByDefault
-@journeymap.client.api.ClientPlugin
+@ClientPlugin
 public class ExampleJourneymapPlugin implements IClientPlugin
 {
     // API reference
@@ -109,15 +111,15 @@ public class ExampleJourneymapPlugin implements IClientPlugin
     }
 
     /**
-     * Called by JourneyMap on the main Minecraft thread when a {@link journeymap.client.api.event.ClientEvent} occurs.
+     * Called by JourneyMap on the main Minecraft thread when a {@link ClientEvent} occurs.
      * Be careful to minimize the time spent in this method so you don't lag the game.
      * <p>
      * You must call {@link IClientAPI#subscribe(String, EnumSet)} at some point to subscribe to these events, otherwise this
      * method will never be called.
      * <p>
-     * If the event type is {@link journeymap.client.api.event.ClientEvent.Type#DISPLAY_UPDATE},
-     * this is a signal to {@link journeymap.client.api.IClientAPI#show(journeymap.client.api.display.Displayable)}
-     * all relevant Displayables for the {@link journeymap.client.api.event.ClientEvent#dimension} indicated.
+     * If the event type is {@link ClientEvent.Type#DISPLAY_UPDATE},
+     * this is a signal to {@link IClientAPI#show(Displayable)}
+     * all relevant Displayables for the {@link ClientEvent#dimension} indicated.
      * (Note: ModWaypoints with persisted==true will already be shown.)
      *
      * @param event the event

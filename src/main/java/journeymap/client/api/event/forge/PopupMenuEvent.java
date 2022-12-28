@@ -1,5 +1,6 @@
 package journeymap.client.api.event.forge;
 
+import journeymap.client.api.display.IOverlayListener;
 import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.display.Waypoint;
 import journeymap.client.api.model.IFullscreen;
@@ -50,7 +51,7 @@ public class PopupMenuEvent extends Event
 
     /**
      * This event is fired when a user right clicks anywhere on the fullscreen map that is not an overlay or waypoint.
-     * To target overlays, see {@link journeymap.client.api.display.IOverlayListener#onOverlayMenuPopup(UIState, Point2D.Double, BlockPos, ModPopupMenu)}
+     * To target overlays, see {@link IOverlayListener#onOverlayMenuPopup(UIState, Point2D.Double, BlockPos, ModPopupMenu)}
      */
     public static class FullscreenPopupMenuEvent extends PopupMenuEvent
     {

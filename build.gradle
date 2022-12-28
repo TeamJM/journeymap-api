@@ -46,11 +46,17 @@ group 'info.journeymap'
 
 /* Artifact Version */
 version = project.minecraft_version + '-' + project.api_version
+def modVersion = project.api_version
+configurations {
+    testmodImplementation.extendsFrom implementation
+}
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
@@ -84,6 +90,8 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.loader_version}"
     runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
+
+    testmodImplementation sourceSets.main.output
 }
 /* Replace tokens in resources files */
 processResources
@@ -93,27 +101,32 @@ processResources
             inputs.property "version", project.version
             inputs.property "mcversion", project.minecraft_version
 
-            // replace stuff in mcmod.info on copy
+            // replace stuff in mods.toml on copy
             from(sourceSets.main.resources.srcDirs) {
-                include 'mcmod.info'
-                expand 'version': project.version, 'mcversion': project.minecraft_version
-            }
-
-            // copy everything else
-            from(sourceSets.main.resources.srcDirs) {
-                exclude 'mcmod.info'
+                include 'META-INF/mods.toml'
+                expand 'version': project.version,
+                        'mcversion': project.minecraft_version,
+                        'modVersion': modVersion
             }
         }
 
+/* Use the same compile and runtime classpath in the Example Mod */
+sourceSets {
+    testmod {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
+}
+
 /* Reobfuscated jar for just the Example Mod */
 jar {
-    dependsOn classes
-    from sourceSets.main.output
-    include 'journeymap/**'
+//    dependsOn classes
+//    from sourceSets.main.output
+//    include 'journeymap/**'
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
-                "FMLModType"            : "GAMELIBRARY",
+//                "FMLModType"            : "GAMELIBRARY",
                 "Implementation-Title"  : project.title,
                 "Implementation-Version": project.version,
                 "Implementation-URL"    : project.git_website
@@ -124,15 +137,12 @@ jar {
 /* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
 task modJar(type: Jar, dependsOn: classes) {
     mustRunAfter = ['jar']
-    from sourceSets.main.output
+    from sourceSets.testmod.output
     classifier = 'examplemod'
-    include 'example/**'
-    include 'mcmod.info'
-    include 'assets/**'
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
-                "FMLModType"            : "GAMELIBRARY",
+//                "FMLModType"            : "GAMELIBRARY",
                 "Implementation-Title"  : project.title_example,
                 "Implementation-Version": project.version,
                 "Implementation-URL"    : project.git_website
@@ -146,17 +156,17 @@ javadoc {
     title = project.title_javadoc
 }
 
-/* Jar for Javadocs */
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-/* Jar for Sources */
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
+///* Jar for Javadocs */
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+///* Jar for Sources */
+//task sourcesJar(type: Jar) {
+//    classifier = 'sources'
+//    from sourceSets.main.allSource
+//}
 
 /* Additional artifacts produced by build task */
 artifacts {
