@@ -22,7 +22,10 @@ package journeymap.client.api.model;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.client.api.display.Displayable;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Properties defining the display of a shape.
@@ -36,6 +39,12 @@ public class ShapeProperties
     private float strokeOpacity = 1f;
     private float fillOpacity = .5f;
     private float strokeWidth = 2;
+    private NativeImage image;
+    private ResourceLocation imageLocation;
+    private double texturePositionX = 0;
+    private double texturePositionY = 0;
+    private double textureScaleX = 1;
+    private double textureScaleY = 1;
 
     /**
      * Gets the stroke color.
@@ -147,6 +156,140 @@ public class ShapeProperties
         return this;
     }
 
+    /**
+     * Gets the image, if there is one.
+     *
+     * @return the image
+     */
+    @Nullable
+    public NativeImage getImage()
+    {
+        return image;
+    }
+
+    /**
+     * Sets the image.
+     *
+     * @param image the image
+     * @return this
+     */
+    public ShapeProperties setImage(NativeImage image)
+    {
+        this.image = image;
+        return this;
+    }
+
+    /**
+     * Gets the image location, if there is one.
+     *
+     * @return the location
+     */
+    @Nullable
+    public ResourceLocation getImageLocation()
+    {
+        return imageLocation;
+    }
+
+    /**
+     * Sets the image location.
+     *
+     * @param imageLocation the image location
+     * @return this
+     */
+    public ShapeProperties setImageLocation(ResourceLocation imageLocation)
+    {
+        this.imageLocation = imageLocation;
+        return this;
+    }
+
+    /**
+     * Gets texture position x.
+     *
+     * @return the texture position x
+     */
+    public double getTexturePositionX()
+    {
+        return texturePositionX;
+    }
+
+    /**
+     * Sets texture position x.
+     *
+     * @param texturePositionX the texture position x
+     * @return this
+     */
+    public ShapeProperties setTexturePositionX(double texturePositionX)
+    {
+        this.texturePositionX = texturePositionX;
+        return this;
+    }
+
+    /**
+     * Gets texture position y.
+     *
+     * @return the texture position y
+     */
+    public double getTexturePositionY()
+    {
+        return texturePositionY;
+    }
+
+    /**
+     * Sets texture position y.
+     *
+     * @param texturePositionY the texture position y
+     * @return this
+     */
+    public ShapeProperties setTexturePositionY(double texturePositionY)
+    {
+        this.texturePositionY = texturePositionY;
+        return this;
+    }
+
+    /**
+     * Gets texture scale x.
+     *
+     * @return the texture scale x
+     */
+    public double getTextureScaleX()
+    {
+        return textureScaleX;
+    }
+
+    /**
+     * Sets texture scale x.
+     *
+     * @param textureScaleX the texture scale x
+     * @return this
+     */
+    public ShapeProperties setTextureScaleX(double textureScaleX)
+    {
+        this.textureScaleX = textureScaleX;
+        return this;
+    }
+
+    /**
+     * Gets texture scale y.
+     *
+     * @return the texture scale y
+     */
+    public double getTextureScaleY()
+    {
+        return textureScaleY;
+    }
+
+    /**
+     * Sets texture scale y.
+     *
+     * @param textureScaleY the texture scale y
+     * @return this
+     */
+    public ShapeProperties setTextureScaleY(double textureScaleY)
+    {
+        this.textureScaleY = textureScaleY;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -163,13 +306,18 @@ public class ShapeProperties
                 Objects.equal(fillColor, that.fillColor) &&
                 Objects.equal(strokeOpacity, that.strokeOpacity) &&
                 Objects.equal(fillOpacity, that.fillOpacity) &&
-                Objects.equal(strokeWidth, that.strokeWidth);
+                Objects.equal(strokeWidth, that.strokeWidth) &&
+                Objects.equal(imageLocation, that.imageLocation) &&
+                Objects.equal(texturePositionX, that.texturePositionX) &&
+                Objects.equal(texturePositionY, that.texturePositionY) &&
+                Objects.equal(textureScaleX, that.textureScaleX) &&
+                Objects.equal(textureScaleY, that.textureScaleY);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hashCode(strokeColor, fillColor, strokeOpacity, fillOpacity, strokeWidth);
+        return Objects.hashCode(strokeColor, fillColor, strokeOpacity, fillOpacity, strokeWidth, imageLocation, texturePositionX, texturePositionY, textureScaleX, textureScaleY);
     }
 
     @Override
@@ -181,6 +329,11 @@ public class ShapeProperties
                 .add("strokeColor", strokeColor)
                 .add("strokeOpacity", strokeOpacity)
                 .add("strokeWidth", strokeWidth)
+                .add("imageLocation", imageLocation)
+                .add("texturePositionX", texturePositionX)
+                .add("texturePositionY", texturePositionY)
+                .add("textureScaleX", textureScaleX)
+                .add("textureScaleY", textureScaleY)
                 .toString();
     }
 
