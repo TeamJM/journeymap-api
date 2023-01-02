@@ -1,6 +1,7 @@
 [JourneyMap API](https://github.com/TeamJM/journeymap-api) Changelog
 ======================================================
 **API v1.19.3-1.9-SNAPSHOT**
+* Added new methods to ShapeProperties to assign a texture to PolygonOverlays, specifying its position and scale.
 * Changed BufferedImage to NativeImage
 
 **API v1.16.5-1.8, v1.17.1-1.8, v1.18.1-1.8** 
