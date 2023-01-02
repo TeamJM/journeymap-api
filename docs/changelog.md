@@ -2,6 +2,7 @@
 ======================================================
 **API v1.19.3-1.9-fabric-SNAPSHOT**
 * Updated to mc 1.19.3
+* Added new methods to ShapeProperties to assign a texture to PolygonOverlays, specifying its position and scale.
 * Changed BufferedImage to NativeImage
 
 **v1.18.2-1.8-fabric**
