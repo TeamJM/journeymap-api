@@ -27,7 +27,7 @@ For example:
 ```gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version = 1.19.3-1.9-fabric-SNAPSHOT
+journeymap_api_version = '1.19.3-1.9-fabric-SNAPSHOT'
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
