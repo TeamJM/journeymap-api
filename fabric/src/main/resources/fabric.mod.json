@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "journeymap-api-fabric",
+  "version": "${version}",
+
+  "name": "JourneyMap API",
+  "description": "API library for the JourneyMap Mod for Minecraft.",
+  "authors": [
+    "Mysticdrew",
+    "Techbrew"
+  ],
+  "contact": {
+    "homepage": "http://journeymap.info",
+    "issues": "https://github.com/TeamJM/journeymap-api/issues",
+    "discord": "https://discord.gg/eP8gE69"
+  },
+
+  "license": "All Rights Reserved",
+
+  "environment": "*",
+  "depends": {
+    "fabricloader": ">=0.14.11",
+    "fabric": "*",
+    "minecraft": ">=1.19.3",
+    "java": ">=17"
+  },
+  "custom": {
+    "modmenu": {
+      "parent": "journeymap"
+    }
+  }
+}

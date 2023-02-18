@@ -27,7 +27,8 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version = 1.19.3-1.9-SNAPSHOT
+journeymap_api_version_forge = `journeymap-api-2.0+1.19.3-forge-SNAPSHOT`
+journeymap_api_version_fabric = `journeymap-api-2.0+1.19.3-fabric-SNAPSHOT`
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
@@ -46,18 +47,24 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
+// FORGE
 dependencies {
-    compileOnly fg.deobf(group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version, changing: true)
-    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
+    compileOnly fg.deobf(group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version_forge, changing: true)
+    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}")
 }
 
+// FABRIC/QUILT
+dependencies {
+    modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version_fabric, changing: true
+    modRuntimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.fabric_jm_file_id}"
+}
 ```
 Example mods.toml entry for a soft dependency. Set `mandatory=true` for a hard dependency if needed.
 ```
 [[dependencies.mymodId]]
 modId = "journeymap"
 mandatory = false
-versionRange = "[5.9.0,)"
+versionRange = "[6.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
 ```
@@ -82,9 +89,16 @@ III. Write your Plugin
 1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
     - Annotate the class with *[@journeymap.client.api.ClientPlugin](src/main/java/journeymap/client/api/ClientPlugin.java)* so that JourneyMap can find and instantiate it
     - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
-1. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
+2. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
     - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't loaded.
-    
+3. For Forge: automatically detects the plugin.
+4. For Fabric: In your `fabric.mod.json file` add the path to your class that implements `IClientPlug` to your entrypoint Example:
+```
+    "journeymap": [
+      "mymod.modhooks.MyJourneymapPlugin"
+    ]
+```    
+
 IV. Test your Plugin
 =============================
 

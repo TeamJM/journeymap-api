@@ -1,225 +1,76 @@
-/*
- * JourneyMap API (http://journeymap.info)
- * http://github.com/TeamJM/journeymap-api
- *
- * Copyright (c) 2011-2016 Techbrew.  All Rights Reserved.
- * The following limited rights are granted to you:
- *
- * You MAY:
- *  + Write your own code that uses the API source code in journeymap.* packages as a dependency.
- *  + Write and distribute your own code that uses, modifies, or extends the example source code in example.* packages
- *  + Fork and modify any source code for the purpose of submitting Pull Requests to the TeamJM/journeymap-api repository.
- *    Submitting new or modified code to the repository means that you are granting Techbrew all rights to the submitted code.
- *
- * You MAY NOT:
- *  - Distribute source code or classes (whether modified or not) from journeymap.* packages.
- *  - Submit any code to the TeamJM/journeymap-api repository with a different license than this one.
- *  - Use code or artifacts from the repository in any way not explicitly granted by this license.
- *
- */
+subprojects {
+    apply plugin: 'java'
+    sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-/* Repos */
-buildscript {
-    repositories {
-        maven {
-            name = "forge"
-            url = "https://maven.minecraftforge.net"
-        }
-        maven {
-            url "https://plugins.gradle.org/m2/"
+    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+    java.withSourcesJar()
+    java.withJavadocJar()
+
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        manifest {
+            attributes([
+                    "Specification-Title"     : project.name,
+                    "Specification-Vendor"    : project.group,
+                    "Specification-Version"   : "1", // We are version 1 of ourselves
+                    "Implementation-Title"    : project.name,
+                    "Implementation-Version"  : "${version}",
+                    "Implementation-Vendor"   : project.group,
+                    "Implementation-URL"      : "http://journeymap.info",
+                    "Implementation-Timestamp": getDate()
+            ])
         }
     }
+
+    repositories {
+
+        mavenCentral()
+
+        maven {
+            name = 'Sponge / Mixin'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+        maven {
+            name = "JourneyMap (Public)"
+            url = "https://jm.gserv.me/repository/maven-public/"
+        }
+        maven {
+            url "https://www.cursemaven.com"
+        }
+
+        maven {
+            name = 'BlameJared Maven (CrT / Bookshelf)'
+            url = 'https://maven.blamejared.com'
+        }
+    }
+
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+        // for annotations
+        implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+
+        testImplementation 'junit:junit:4.12'
+        testImplementation 'org.mockito:mockito-inline:4.10.+'
+
+    }
+
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = 'UTF-8'
+        it.options.release = 17
+    }
+
+
+    // Disables Gradle's custom module metadata from being published to maven. The
+    // metadata includes mapped dependencies which are not reasonably consumable by
+    // other mod developers.
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
     }
 }
 
-/* Gradle Plugins */
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
 
-group 'info.journeymap'
-
-/* Artifact Version */
-version = project.minecraft_version + '-' + project.api_version
-def modVersion = project.api_version
-configurations {
-    testmodImplementation.extendsFrom implementation
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-    withJavadocJar()
-    withSourcesJar()
-}
-
-repositories {
-    maven {
-        url "https://www.cursemaven.com"
-    }
-}
-
-/* ForgeGradle spec for Minecraft */
-minecraft {
-    mappings channel: project.channel, version: project.mappings
-    runs {
-        client = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'info'
-            workingDirectory project.file('run/client').canonicalPath
-            source sourceSets.main
-        }
-        server = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
-        }
-    }
-}
-dependencies {
-    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.loader_version}"
-    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
-
-    testmodImplementation sourceSets.main.output
-}
-/* Replace tokens in resources files */
-processResources
-        {
-            duplicatesStrategy = DuplicatesStrategy.INCLUDE
-            // this will ensure that this task is redone when the versions change.
-            inputs.property "version", project.version
-            inputs.property "mcversion", project.minecraft_version
-
-            // replace stuff in mods.toml on copy
-            from(sourceSets.main.resources.srcDirs) {
-                include 'META-INF/mods.toml'
-                expand 'version': project.version,
-                        'mcversion': project.minecraft_version,
-                        'modVersion': modVersion
-            }
-        }
-
-/* Use the same compile and runtime classpath in the Example Mod */
-sourceSets {
-    testmod {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-    }
-}
-
-/* Reobfuscated jar for just the Example Mod */
-jar {
-//    dependsOn classes
-//    from sourceSets.main.output
-//    include 'journeymap/**'
-    manifest {
-        attributes = [
-                "Manifest-Version"      : "1.0",
-//                "FMLModType"            : "GAMELIBRARY",
-                "Implementation-Title"  : project.title,
-                "Implementation-Version": project.version,
-                "Implementation-URL"    : project.git_website
-        ]
-    }
-}
-
-/* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
-task modJar(type: Jar, dependsOn: classes) {
-    mustRunAfter = ['jar']
-    from sourceSets.testmod.output
-    classifier = 'examplemod'
-    manifest {
-        attributes = [
-                "Manifest-Version"      : "1.0",
-//                "FMLModType"            : "GAMELIBRARY",
-                "Implementation-Title"  : project.title_example,
-                "Implementation-Version": project.version,
-                "Implementation-URL"    : project.git_website
-
-        ]
-    }
-}
-
-/* Javadoc properties */
-javadoc {
-    title = project.title_javadoc
-}
-
-///* Jar for Javadocs */
-//task javadocJar(type: Jar, dependsOn: javadoc) {
-//    classifier = 'javadoc'
-//    from javadoc.destinationDir
-//}
-//
-///* Jar for Sources */
-//task sourcesJar(type: Jar) {
-//    classifier = 'sources'
-//    from sourceSets.main.allSource
-//}
-
-/* Additional artifacts produced by build task */
-artifacts {
-    archives jar
-    archives modJar
-    archives javadocJar
-    archives sourcesJar
-}
-
-def bintrayUser = project.findProperty("bintray.user") ?: System.getenv("BINTRAY_USER")
-def bintrayKey = project.findProperty("bintray.password") ?: System.getenv("BINTRAY_PASSWORD")
-
-if (project.hasProperty("production")) {
-    // Bintray is _only_ for releases, not snapshots
-    bintray {
-        user = bintrayUser
-        key = bintrayKey
-
-        pkg {
-            name = "api"
-            repo = "JourneyMap"
-            userOrg = "teamjm"
-
-            publications = ["maven"]
-
-            version {
-                name = project.version
-                released = new Date()
-            }
-        }
-    }
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "JourneyMap"
-            url = uri("https://jm.gserv.me/repository/maven-snapshots/")
-
-            credentials {
-                username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
-                password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
-            }
-
-            version = project.version
-        }
-    }
-
-    publications {
-        maven(MavenPublication) {
-            artifact jar
-            artifact javadocJar
-            artifact sourcesJar
-        }
-    }
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format(project.dateFormat)
+    return formattedDate
 }

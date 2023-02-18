@@ -1,0 +1,90 @@
+plugins {
+    id 'java'
+    id 'org.spongepowered.gradle.vanilla' version '0.2.1-SNAPSHOT'
+    id 'maven-publish'
+}
+
+version = "${project.api_version}+${project.minecraft_version}-common"
+group = project.group
+archivesBaseName = project.mod_name
+
+minecraft {
+    version(minecraft_version)
+    runs {
+        if (project.hasProperty('common_runs_enabled') ? project.findProperty('common_runs_enabled').toBoolean() : true) {
+
+            server(project.hasProperty('common_server_run_name') ? project.findProperty('common_server_run_name') : 'vanilla_server') {
+                workingDirectory(this.file("run"))
+            }
+            client(project.hasProperty('common_client_run_name') ? project.findProperty('common_client_run_name') : 'vanilla_client') {
+                workingDirectory(this.file("run"))
+            }
+        }
+    }
+}
+
+dependencies {
+     compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
+     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+}
+
+processResources {
+
+    def buildProps = project.properties.clone()
+
+    filesMatching(['pack.mcmeta']) {
+
+        expand buildProps
+    }
+}
+
+/* Javadoc properties */
+javadoc {
+    title = project.title_javadoc
+}
+
+def bintrayUser = project.findProperty("bintray.user") ?: System.getenv("BINTRAY_USER")
+def bintrayKey = project.findProperty("bintray.password") ?: System.getenv("BINTRAY_PASSWORD")
+
+if (project.hasProperty("production")) {
+    // Bintray is _only_ for releases, not snapshots
+    bintray {
+        user = bintrayUser
+        key = bintrayKey
+
+        pkg {
+            name = "api"
+            repo = "JourneyMap"
+            userOrg = "teamjm"
+
+            publications = ["maven"]
+
+            version {
+                name = project.version
+                released = new Date()
+            }
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "JourneyMap"
+            url = uri("https://jm.gserv.me/repository/maven-snapshots/")
+
+            credentials {
+                username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
+                password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
+            }
+
+            version = project.version
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
