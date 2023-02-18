@@ -30,6 +30,9 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
+import static journeymap.client.api.util.UIState.FULLSCREEN_ZOOM_MIN;
+import static journeymap.client.api.util.UIState.ZOOM_IN_MAX;
+
 /**
  * Provides IDs and key information for map overlays in JourneyMap.
  */
@@ -40,8 +43,8 @@ public abstract class Overlay extends Displayable
     protected String title;
     protected String label;
     protected ResourceKey<Level> dimension;
-    protected int minZoom = 0;
-    protected int maxZoom = 8;
+    protected int minZoom = FULLSCREEN_ZOOM_MIN;
+    protected int maxZoom = ZOOM_IN_MAX;
     protected int displayOrder;
     protected EnumSet<Context.UI> activeUIs = EnumSet.of(Context.UI.Any);
     protected EnumSet<Context.MapType> activeMapTypes = EnumSet.of(Context.MapType.Any);

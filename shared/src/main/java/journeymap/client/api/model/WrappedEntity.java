@@ -152,6 +152,13 @@ public interface WrappedEntity
     boolean isPassiveAnimal();
 
     /**
+     * Is entity an ambient creature.
+     *
+     * @return is an ambient creature
+     */
+    boolean isAmbientCreature();
+
+    /**
      * Is entity an npc
      *
      * @return - is npc.

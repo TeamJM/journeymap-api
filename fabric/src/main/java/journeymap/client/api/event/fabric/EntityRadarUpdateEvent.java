@@ -1,5 +1,6 @@
 package journeymap.client.api.event.fabric;
 
+import journeymap.client.api.event.util.EntityType;
 import journeymap.client.api.model.WrappedEntity;
 import journeymap.client.api.util.UIState;
 
@@ -56,14 +57,5 @@ public class EntityRadarUpdateEvent extends FabricEvent
     public WrappedEntity getWrappedEntity()
     {
         return wrappedEntity;
-    }
-
-    /**
-     * The entity types
-     */
-    public enum EntityType
-    {
-        MOB,
-        PLAYER
     }
 }

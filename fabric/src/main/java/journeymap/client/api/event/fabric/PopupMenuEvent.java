@@ -1,9 +1,9 @@
 package journeymap.client.api.event.fabric;
 
 import journeymap.client.api.display.ModPopupMenu;
-import journeymap.client.api.display.Waypoint;
 import journeymap.client.api.model.IFullscreen;
 import journeymap.client.api.util.UIState;
+import journeymap.common.waypoint.Waypoint;
 import net.minecraft.core.BlockPos;
 
 import java.awt.geom.Point2D;
@@ -46,7 +46,8 @@ public class PopupMenuEvent extends FabricEvent
     }
 
     @Override
-    public boolean isCancelable() {
+    public boolean isCancelable()
+    {
         return true;
     }
 

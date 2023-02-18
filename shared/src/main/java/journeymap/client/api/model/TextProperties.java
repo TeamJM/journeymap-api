@@ -27,6 +27,9 @@ import journeymap.client.api.util.UIState;
 
 import java.util.EnumSet;
 
+import static journeymap.client.api.util.UIState.FULLSCREEN_ZOOM_MIN;
+import static journeymap.client.api.util.UIState.ZOOM_IN_MAX;
+
 /**
  * Properties defining the display of text.
  * <p>
@@ -42,8 +45,8 @@ public class TextProperties
     protected float opacity = 1f;
     protected float backgroundOpacity = .5f;
     protected boolean fontShadow = true;
-    protected int minZoom = 0;
-    protected int maxZoom = 8;
+    protected int minZoom = FULLSCREEN_ZOOM_MIN;
+    protected int maxZoom = ZOOM_IN_MAX;
     protected int offsetX = 0;
     protected int offsetY = 0;
 
@@ -269,7 +272,7 @@ public class TextProperties
      */
     public TextProperties setMinZoom(int minZoom)
     {
-        this.minZoom = Math.max(0, minZoom);
+        this.minZoom = Math.max(FULLSCREEN_ZOOM_MIN, minZoom);
         return this;
     }
 
@@ -291,7 +294,7 @@ public class TextProperties
      */
     public TextProperties setMaxZoom(int maxZoom)
     {
-        this.maxZoom = Math.min(8, maxZoom);
+        this.maxZoom = Math.min(ZOOM_IN_MAX, maxZoom);
         return this;
     }
 

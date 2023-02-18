@@ -20,7 +20,6 @@
 
 package journeymap.client.api.display;
 
-import journeymap.client.api.IClientAPI;
 import journeymap.client.api.model.MapImage;
 import net.minecraft.core.BlockPos;
 
@@ -33,7 +32,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * Setters use the Builder pattern so they can be chained.
  * <p>
  * Note that like all Displayables, simply changing this object doesn't guarantee the player will get the changes.
- * You must call {@link IClientAPI#show(Displayable)} in order for the changes to take effect
+ * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.
  */
 @ParametersAreNonnullByDefault
@@ -50,7 +49,7 @@ public final class MarkerOverlay extends Overlay
      * @param point    Location of the marker.
      * @param icon     The icon to display as the marker.
      */
-    public MarkerOverlay(String modId, String markerId, net.minecraft.core.BlockPos point, MapImage icon)
+    public MarkerOverlay(String modId, String markerId, BlockPos point, MapImage icon)
     {
         super(modId, markerId);
         setPoint(point);
@@ -60,7 +59,7 @@ public final class MarkerOverlay extends Overlay
     /**
      * Location of the marker.
      */
-    public net.minecraft.core.BlockPos getPoint()
+    public BlockPos getPoint()
     {
         return point;
     }
@@ -71,7 +70,7 @@ public final class MarkerOverlay extends Overlay
      * @param point location
      * @return this
      */
-    public MarkerOverlay setPoint(net.minecraft.core.BlockPos point)
+    public MarkerOverlay setPoint(BlockPos point)
     {
         this.point = point;
         return this;

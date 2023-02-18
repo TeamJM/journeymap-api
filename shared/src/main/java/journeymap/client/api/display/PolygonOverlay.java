@@ -20,7 +20,6 @@
 
 package journeymap.client.api.display;
 
-import journeymap.client.api.IClientAPI;
 import journeymap.client.api.model.MapPolygon;
 import journeymap.client.api.model.MapPolygonWithHoles;
 import journeymap.client.api.model.ShapeProperties;
@@ -38,7 +37,7 @@ import java.util.List;
  * Setters use the Builder pattern so they can be chained.
  * <p>
  * Note that like all Displayables, simply changing this object doesn't guarantee the player will get the changes.
- * You must call {@link IClientAPI#show(Displayable)} in order for the changes to take effect
+ * You must call {@link journeymap.client.api.IClientAPI#show(Displayable)} in order for the changes to take effect
  * in JourneyMap.
  */
 @ParametersAreNonnullByDefault

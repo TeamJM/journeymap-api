@@ -6,7 +6,7 @@ import journeymap.client.api.model.IFullscreen;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
- * This event is used for adding buttons to existing tool bars or creating your own toolbars on the fullscreen map.
+ * This event is used for adding buttons to existing toolbars or creating your own toolbars on the fullscreen map.
  */
 public class FullscreenDisplayEvent extends Event
 {

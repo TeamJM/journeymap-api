@@ -22,8 +22,8 @@ package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
-import journeymap.client.api.display.Waypoint;
-import journeymap.client.api.model.MapImage;
+import journeymap.common.waypoint.Waypoint;
+import journeymap.common.waypoint.WaypointIcon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -46,17 +46,15 @@ class SampleWaypointFactory
         try
         {
             // Icon for waypoint
-            MapImage bedIcon = new MapImage(new ResourceLocation("examplemod:images/bed.png"), 32, 32)
-                    .setAnchorX(16)
-                    .setAnchorY(32);
+            WaypointIcon bedIcon = new WaypointIcon(new ResourceLocation("examplemod:images/bed.png"), 32, 32);
+            bedIcon.setColor(0x00ffff);
 
             // Waypoint itself
-            bedWaypoint = new Waypoint(ExampleMod.MODID, "bed_" + dimension, "Bed", dimension, bedLocation)
-                    .setColor(0x00ffff)
-                    .setIcon(bedIcon);
+            bedWaypoint = new Waypoint(ExampleMod.MODID, "bed_" + dimension, "Bed", dimension, bedLocation);
+            bedWaypoint.setIcon(bedIcon);
 
             // Add or update
-            jmAPI.show(bedWaypoint);
+//            jmAPI.show(bedWaypoint); // TODO
 
         }
         catch (Throwable t)

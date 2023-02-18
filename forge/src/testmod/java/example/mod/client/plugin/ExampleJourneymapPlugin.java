@@ -206,17 +206,17 @@ public class ExampleJourneymapPlugin implements IClientPlugin
 
         // Create a waypoint for the player's bed location.  The ForgeEventListener
         // will keep it updated if the player sleeps elsewhere.
-        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
-        {
-            BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0, 0, 0));
-            SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
-        }
+//        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) // TODO
+//        {
+        BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0, 0, 0));
+        SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
+//        }
 
         // Create some random complex polygon overlays
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
         {
-            BlockPos pos = Minecraft.getInstance().player.blockPosition();
-            SampleComplexPolygonOverlayFactory.create(jmAPI, pos, event.dimension, 256);
+            BlockPos playerPos = Minecraft.getInstance().player.blockPosition();
+            SampleComplexPolygonOverlayFactory.create(jmAPI, playerPos, event.dimension, 256);
         }
 
         // Slime chunk Polygon Overlays are created by the ForgeEventListener

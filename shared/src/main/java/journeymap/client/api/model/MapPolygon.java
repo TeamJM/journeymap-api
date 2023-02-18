@@ -41,7 +41,7 @@ import java.util.List;
  */
 public final class MapPolygon
 {
-    private List<net.minecraft.core.BlockPos> points;
+    private List<BlockPos> points;
 
     /**
      * Constructor.
@@ -49,7 +49,7 @@ public final class MapPolygon
      * @param points See class description for details on ordering.
      * @throws IllegalArgumentException if conditions for a proper polygon aren't met.
      */
-    public MapPolygon(net.minecraft.core.BlockPos... points)
+    public MapPolygon(BlockPos... points)
     {
         this(Arrays.asList(points));
     }
@@ -75,7 +75,7 @@ public final class MapPolygon
         return points;
     }
 
-    public MapPolygon setPoints(List<net.minecraft.core.BlockPos> points)
+    public MapPolygon setPoints(List<BlockPos> points)
     {
         if (points.size() < 3)
         {
@@ -91,7 +91,7 @@ public final class MapPolygon
      *
      * @return iterator
      */
-    public Iterator<net.minecraft.core.BlockPos> iterator()
+    public Iterator<BlockPos> iterator()
     {
         return points.iterator();
     }

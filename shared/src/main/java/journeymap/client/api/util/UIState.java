@@ -18,6 +18,21 @@ import java.awt.geom.Rectangle2D;
 public final class UIState
 {
     /**
+     * Max Zoom In value.
+     */
+    public final static int ZOOM_IN_MAX = 16384;
+
+    /**
+     * Max Zoom Out for fullscreen 2 pixels per region.
+     */
+    public final static int FULLSCREEN_ZOOM_MIN = 2;
+
+    /**
+     * Maz Zoom out for the minimap.
+     */
+    public final static int MINIMAP_ZOOM_MIN = 256;
+
+    /**
      * The UI to which this state applies.
      */
     public final Context.UI ui;
@@ -100,7 +115,7 @@ public final class UIState
         this.chunkY = chunkY;
         this.blockBounds = blockBounds;
         this.displayBounds = displayBounds;
-        this.blockSize = Math.pow(2, zoom);
+        this.blockSize = zoom / 512.0D;
     }
 
     /**
@@ -111,7 +126,7 @@ public final class UIState
      */
     public static UIState newInactive(Context.UI ui, Minecraft minecraft)
     {
-        net.minecraft.core.BlockPos center = minecraft.level == null ? new net.minecraft.core.BlockPos(0, 68, 0) : minecraft.level.getSharedSpawnPos(); //getSharedSpawnPos() == getSpawnPoint()
+        BlockPos center = minecraft.level == null ? new BlockPos(0, 68, 0) : minecraft.level.getSharedSpawnPos(); //getSharedSpawnPos() == getSpawnPoint()
         return new UIState(ui, false, Level.OVERWORLD, 0, Context.MapType.Day, center, null, null, null);
     }
 

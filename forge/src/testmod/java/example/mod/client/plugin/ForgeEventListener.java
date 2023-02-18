@@ -57,10 +57,10 @@ class ForgeEventListener
         {
             if (event.getEntity().getCommandSenderWorld().isClientSide)
             {
-                if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
-                {
+//                if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) // TODO
+//                {
                     SampleWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().level.dimension());
-                }
+//                }
             }
         }
         catch (Throwable t)

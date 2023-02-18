@@ -5,6 +5,9 @@ plugins {
 }
 
 version = "${project.api_version}+${project.minecraft_version}-common"
+if (project.snapshot) {
+    version = version + "-SNAPSHOT"
+}
 group = project.group
 archivesBaseName = project.mod_name
 
@@ -24,8 +27,8 @@ minecraft {
 }
 
 dependencies {
-     compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
-     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 }
 
 processResources {
