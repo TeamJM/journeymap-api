@@ -4,8 +4,7 @@ on:
   push:
     branches-ignore:
       - 'master'
-      - '1.19.3_1.9-fabric'
-      - '1.19.3_1.9-forge'
+      - '1.19.x_2.0'
 
   pull_request:
 

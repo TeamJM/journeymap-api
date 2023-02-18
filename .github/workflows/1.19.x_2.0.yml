@@ -3,7 +3,7 @@ name: 1.19.3_1.9-forge
 on:
   push:
     branches:
-      - '1.19.3_1.9-forge'
+      - '1.19.x_2.0'
 
 jobs:
   build:
