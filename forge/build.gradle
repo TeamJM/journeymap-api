@@ -214,9 +214,18 @@ publishing {
 
     publications {
         maven(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
             artifact jar
-            artifact javadocJar
-            artifact sourcesJar
+
+            artifact project.sourcesJar {
+                classifier 'sources'
+            }
+
+            artifact project.javadocJar {
+                classifier 'javadoc'
+            }
         }
     }
 }
