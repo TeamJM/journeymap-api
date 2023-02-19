@@ -53,6 +53,13 @@ public interface WrappedEntity
     Boolean getHostile();
 
     /**
+     * If the entity is aggro toward the player
+     *
+     * @return - the aggro boolean.
+     */
+    Boolean getAggro();
+
+    /**
      * The position of the entity.
      *
      * @return - the position vector.
