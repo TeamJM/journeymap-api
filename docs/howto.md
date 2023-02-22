@@ -92,7 +92,7 @@ III. Write your Plugin
 2. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
     - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't loaded.
 3. For Forge: automatically detects the plugin.
-4. For Fabric: In your `fabric.mod.json file` add the path to your class that implements `IClientPlug` to your entrypoint Example:
+4. For Fabric: In your `fabric.mod.json file` add the path to your class that implements `IClientPlugin` to your entrypoint Example:
 ```
     "journeymap": [
       "mymod.modhooks.MyJourneymapPlugin"
