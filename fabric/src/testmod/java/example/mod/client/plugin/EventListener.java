@@ -66,7 +66,7 @@ class EventListener
         {
             if (entity.getCommandSenderWorld().isClientSide)
             {
-                if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
+//                if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) //TODO: add a player accepts for waypoints when player accepts is implemented
                 {
                     SampleWaypointFactory.createBedWaypoint(jmAPI, pos, entity.level.dimension());
                 }

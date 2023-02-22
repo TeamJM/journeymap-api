@@ -209,6 +209,24 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     }
 
     @Override
+    public void removeWaypoint(String modId, Waypoint waypoint)
+    {
+
+    }
+
+    @Override
+    public void addWaypoint(String modId, Waypoint waypoint)
+    {
+
+    }
+
+    @Override
+    public void removeAllWaypoints(String modId)
+    {
+
+    }
+
+    @Override
     public void setWorldId(String identifier)
     {
 

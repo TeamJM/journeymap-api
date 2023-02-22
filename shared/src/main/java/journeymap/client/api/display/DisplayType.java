@@ -50,7 +50,7 @@ public enum DisplayType
     {
         if (reverseLookup == null)
         {
-            reverseLookup = new HashMap<Class<? extends Displayable>, DisplayType>();
+            reverseLookup = new HashMap<>();
             for (DisplayType type : DisplayType.values())
             {
                 reverseLookup.put(type.getImplClass(), type);

@@ -71,7 +71,7 @@ public class WaypointEvent extends ClientEvent
     /**
      * Fired when a waypoint is read from disk, waypoints are always read in batches.
      * This event will be fired multiple times in a row, once per waypoint as it is loaded and put into internal cache.
-     *
+     * <p>
      * This will happen periodically as the waypoint cache gets refreshed on dimension change, modifying some options, and at world join.
      */
     public static class WaypointReadEvent extends WaypointEvent

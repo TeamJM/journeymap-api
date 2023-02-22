@@ -29,6 +29,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
+import java.awt.Color;
+
 /**
  * Sample factory that creates a waypoint.
  */
@@ -50,7 +52,7 @@ class SampleWaypointFactory
             bedIcon.setColor(0x00ffff);
 
             // Waypoint itself
-            bedWaypoint = new Waypoint(ExampleMod.MODID, "bed_" + dimension, "Bed", dimension, bedLocation);
+            bedWaypoint = new Waypoint(ExampleMod.MODID, "bed_" + dimension, bedLocation, Color.BLUE , dimension.registry().toString());
             bedWaypoint.setIcon(bedIcon);
 
             // Add or update

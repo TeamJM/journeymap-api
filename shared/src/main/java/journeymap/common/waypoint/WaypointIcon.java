@@ -33,6 +33,7 @@ public class WaypointIcon
 
     @Since(1.0)
     private Integer rotation = 0;
+    protected transient boolean dirty;
 
     /**
      * Defaults tint to white (0xffffff) and opacity to 1f.
@@ -156,7 +157,7 @@ public class WaypointIcon
      *
      * @return the color
      */
-    public int getColor()
+    public Integer getColor()
     {
         return color;
     }
@@ -167,7 +168,7 @@ public class WaypointIcon
      * @param color the color
      * @return this
      */
-    public WaypointIcon setColor(int color)
+    public WaypointIcon setColor(Integer color)
     {
         this.color = Displayable.clampRGB(color);
         return this;
@@ -194,7 +195,15 @@ public class WaypointIcon
         this.opacity = Displayable.clampOpacity(opacity);
         return this;
     }
+    public boolean isDirty()
+    {
+        return this.dirty;
+    }
 
+    public void setDirty(boolean dirty)
+    {
+        this.dirty = dirty;
+    }
     public ResourceLocation getResourceLocation()
     {
         return resourceLocation;
@@ -256,4 +265,6 @@ public class WaypointIcon
                 .add("textureWidth", textureWidth)
                 .toString();
     }
+
+
 }

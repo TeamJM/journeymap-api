@@ -45,7 +45,7 @@ import java.util.function.Consumer;
 public interface IClientAPI
 {
     String API_OWNER = "journeymap";
-    String API_VERSION = "2.0-SNAPSHOT";
+    String API_VERSION = "1.9-SNAPSHOT";
 
     /**
      * Returns the current UIState of the UI specified.
@@ -59,7 +59,7 @@ public interface IClientAPI
     UIState getUIState(Context.UI ui);
 
     /**
-     * Subscribes to all the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
+     * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
      * if no event subscriptions are needed. (This is the default).
      *
      * @param modId      Mod id
@@ -148,7 +148,7 @@ public interface IClientAPI
      * @param showGrid   Whether to include to include the chunk grid overlay
      * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
      */
-    void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, ChunkPos startChunk, net.minecraft.world.level.ChunkPos endChunk,
+    void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
                         @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<NativeImage> callback);
 
     /**
@@ -249,6 +249,29 @@ public interface IClientAPI
      * @return the waypoint list
      */
     List<Waypoint> getWaypoints(final String modId);
+
+    /**
+     * Remove a waypoint.
+     *
+     * @param modId    - The modId
+     * @param waypoint - the waypoint
+     */
+    void removeWaypoint(final String modId, Waypoint waypoint);
+
+    /**
+     * Adds a waypoint
+     *
+     * @param modId    - The modId
+     * @param waypoint - the waypoint
+     */
+    void addWaypoint(final String modId, Waypoint waypoint);
+
+    /**
+     * Remove all waypoints.
+     *
+     * @param modId - The modId
+     */
+    void removeAllWaypoints(final String modId);
 
     /**
      * NOTE: Mod Devs, please only use when connected to specific servers or use the getter to verify. If multiple mods use this hook
