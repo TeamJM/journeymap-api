@@ -20,7 +20,7 @@ public class WaypointIcon
     private ResourceLocation resourceLocation;
 
     @Since(1.0)
-    private Integer color;
+    private Integer color = -1;
 
     @Since(1.0)
     private Float opacity = 1f;
@@ -45,7 +45,6 @@ public class WaypointIcon
     public WaypointIcon(ResourceLocation resourceLocation)
     {
         this.resourceLocation = resourceLocation;
-        this.color = 0xffffff;
         this.opacity = 1f;
     }
 
@@ -59,7 +58,7 @@ public class WaypointIcon
      */
     public WaypointIcon(ResourceLocation resourceLocation, int textureWidth, int textureHeight)
     {
-        this(resourceLocation, textureWidth, textureHeight, 0xffffff, 1f);
+        this(resourceLocation, textureWidth, textureHeight, -1, 1f);
     }
 
     /**
@@ -164,6 +163,7 @@ public class WaypointIcon
 
     /**
      * Sets color used to tint the image.  Use 0xffffff for white (no tint).
+     * This is only to be used if the icon needs to have a separate color from the waypoint.
      *
      * @param color the color
      * @return this
@@ -195,6 +195,7 @@ public class WaypointIcon
         this.opacity = Displayable.clampOpacity(opacity);
         return this;
     }
+
     public boolean isDirty()
     {
         return this.dirty;
@@ -204,6 +205,7 @@ public class WaypointIcon
     {
         this.dirty = dirty;
     }
+
     public ResourceLocation getResourceLocation()
     {
         return resourceLocation;
