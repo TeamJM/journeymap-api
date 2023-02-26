@@ -37,6 +37,12 @@ public class Waypoint
     @Since(1)
     protected String id;
 
+    /**
+     * The Id.
+     */
+    @Since(1)
+    protected String displayId;
+
     @Since(1)
     protected String modId;
     /**
@@ -172,7 +178,8 @@ public class Waypoint
     public Waypoint(String modId, String displayId, String name, BlockPos pos, Color color, String dimension)
     {
         this(name, pos.getX(), pos.getY(), pos.getZ(), true, color.getRed(), color.getGreen(), color.getBlue(), WaypointType.Normal, modId, dimension, Collections.singletonList(dimension), false);
-        this.setId(displayId);
+        this.displayId = displayId;
+        this.modId = modId;
     }
 
     public Waypoint(String name, BlockPos pos, Color color, WaypointType type, String origin, String currentDimension, boolean showDeviation)
@@ -242,7 +249,7 @@ public class Waypoint
 
     public String getDisplayId()
     {
-        return this.modId + ":" + this.id;
+        return this.displayId == null ? (this.modId + ":" + this.id) : this.displayId;
     }
 
     public String getId()
