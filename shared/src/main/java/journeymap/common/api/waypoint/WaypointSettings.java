@@ -1,4 +1,4 @@
-package journeymap.common.waypoint;
+package journeymap.common.api.waypoint;
 
 import com.google.gson.annotations.Since;
 

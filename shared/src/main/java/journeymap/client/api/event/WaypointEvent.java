@@ -1,6 +1,6 @@
 package journeymap.client.api.event;
 
-import journeymap.common.waypoint.Waypoint;
+import journeymap.common.api.waypoint.Waypoint;
 import net.minecraft.client.Minecraft;
 
 public class WaypointEvent extends ClientEvent

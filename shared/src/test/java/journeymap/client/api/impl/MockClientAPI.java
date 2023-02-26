@@ -30,7 +30,7 @@ import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
-import journeymap.common.waypoint.Waypoint;
+import journeymap.common.api.waypoint.Waypoint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;

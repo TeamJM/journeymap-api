@@ -3,7 +3,7 @@ package journeymap.client.api.event.fabric;
 import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.model.IFullscreen;
 import journeymap.client.api.util.UIState;
-import journeymap.common.waypoint.Waypoint;
+import journeymap.common.api.waypoint.Waypoint;
 import net.minecraft.core.BlockPos;
 
 import java.awt.geom.Point2D;

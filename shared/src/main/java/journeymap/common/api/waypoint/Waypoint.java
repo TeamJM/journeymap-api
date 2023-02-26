@@ -1,4 +1,4 @@
-package journeymap.common.waypoint;
+package journeymap.common.api.waypoint;
 
 import com.google.gson.annotations.Since;
 import net.minecraft.core.BlockPos;
@@ -156,12 +156,23 @@ public class Waypoint
 
     public Waypoint(String modId, String name, BlockPos pos, Color color, ResourceKey<Level> dimension)
     {
-        this(modId, name, pos, color, dimension.location().toString());
+        this(modId, "", name, pos, color, dimension.location().toString());
     }
 
-    public Waypoint(String modId, String name, BlockPos pos, Color color, String dimension)
+    public Waypoint(String modId, String displayId, String name, BlockPos pos, Color color, ResourceKey<Level> dimension)
+    {
+        this(modId, displayId, name, pos, color, dimension.location().toString());
+    }
+
+    public Waypoint(String modId, String displayId, String name, BlockPos pos, int color, ResourceKey<Level> dimension)
+    {
+        this(modId, displayId, name, pos, new Color(color), dimension.location().toString());
+    }
+
+    public Waypoint(String modId, String displayId, String name, BlockPos pos, Color color, String dimension)
     {
         this(name, pos.getX(), pos.getY(), pos.getZ(), true, color.getRed(), color.getGreen(), color.getBlue(), WaypointType.Normal, modId, dimension, Collections.singletonList(dimension), false);
+        this.setId(displayId);
     }
 
     public Waypoint(String name, BlockPos pos, Color color, WaypointType type, String origin, String currentDimension, boolean showDeviation)
