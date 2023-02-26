@@ -33,6 +33,10 @@ public class WaypointIcon
 
     @Since(1.0)
     private Integer rotation = 0;
+
+    @Since(1.0)
+    private boolean useBeaconColor = true;
+
     protected transient boolean dirty;
 
     /**
@@ -171,7 +175,30 @@ public class WaypointIcon
     public WaypointIcon setColor(Integer color)
     {
         this.color = Displayable.clampRGB(color);
+        this.useBeaconColor = false;
         return this;
+    }
+
+    /**
+     * This tells JourneyMap to use the waypoint beacon color for rendering icon.
+     * Default is True.
+     * If False, it will use the icon color, if icon color is not set, it will not apply any color to the icon.
+     *
+     * @return if using beacon color
+     */
+    public boolean useBeaconColor()
+    {
+        return useBeaconColor;
+    }
+
+    /**
+     * Sets the use beacon color.
+     *
+     * @param useBeaconColor - the boolean
+     */
+    public void setUseBeaconColor(boolean useBeaconColor)
+    {
+        this.useBeaconColor = useBeaconColor;
     }
 
     /**
