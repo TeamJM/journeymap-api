@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 
 import java.awt.Color;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Objects;
+import java.util.Random;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
@@ -50,12 +50,6 @@ public class Waypoint
      */
     @Since(1)
     protected String name;
-
-    /**
-     * Used for the webmap
-     */
-    @Since(1)
-    protected String colorizedIcon;
 
     /**
      * The Persistent.
@@ -152,42 +146,50 @@ public class Waypoint
                 original.origin,
                 original.dimensions == null || original.dimensions.isEmpty() ? null : original.dimensions.first(),
                 original.dimensions,
-                original.settings.showDeviation);
+                original.settings.showDeviation,
+                new WaypointIcon(original.icon));
         this.x = original.x;
         this.y = original.y;
         this.z = original.z;
-        this.icon = original.icon;
         this.modId = original.modId;
     }
 
-    public Waypoint(String modId, String name, BlockPos pos, Color color, ResourceKey<Level> dimension)
+    public Waypoint(Builder builder)
     {
-        this(modId, "", name, pos, color, dimension.location().toString());
+        this(
+                builder.name,
+                builder.x,
+                builder.y,
+                builder.z,
+                builder.enabled,
+                builder.red,
+                builder.green,
+                builder.blue,
+                builder.type,
+                builder.origin,
+                builder.currentDimension,
+                builder.dimensions,
+                builder.showDeviation,
+                builder.icon
+        );
+        this.modId = builder.modId;
+        this.displayId = builder.displayId;
     }
 
-    public Waypoint(String modId, String displayId, String name, BlockPos pos, Color color, ResourceKey<Level> dimension)
-    {
-        this(modId, displayId, name, pos, color, dimension.location().toString());
-    }
-
-    public Waypoint(String modId, String displayId, String name, BlockPos pos, int color, ResourceKey<Level> dimension)
-    {
-        this(modId, displayId, name, pos, new Color(color), dimension.location().toString());
-    }
-
-    public Waypoint(String modId, String displayId, String name, BlockPos pos, Color color, String dimension)
-    {
-        this(name, pos.getX(), pos.getY(), pos.getZ(), true, color.getRed(), color.getGreen(), color.getBlue(), WaypointType.Normal, modId, dimension, Collections.singletonList(dimension), false);
-        this.displayId = displayId;
-        this.modId = modId;
-    }
-
-    public Waypoint(String name, BlockPos pos, Color color, WaypointType type, String origin, String currentDimension, boolean showDeviation)
-    {
-        this(name, pos.getX(), pos.getY(), pos.getZ(), true, color.getRed(), color.getGreen(), color.getBlue(), type, origin, currentDimension, Collections.singletonList(currentDimension), showDeviation);
-    }
-
-    public Waypoint(String name, int x, int y, int z, boolean enable, int red, int green, int blue, WaypointType type, String origin, String currentDimension, Collection<String> dimensions, boolean showDeviation)
+    private Waypoint(String name,
+                     int x,
+                     int y,
+                     int z,
+                     boolean enable,
+                     int red,
+                     int green,
+                     int blue,
+                     WaypointType type,
+                     String origin,
+                     String currentDimension,
+                     Collection<String> dimensions,
+                     boolean showDeviation,
+                     WaypointIcon icon)
     {
         if (name == null)
         {
@@ -206,17 +208,25 @@ public class Waypoint
         this.origin = origin;
         this.persistent = true;
 
-        this.settings = new WaypointSettings();
+        if (settings == null)
+        {
+            this.settings = new WaypointSettings();
+        }
+
         settings.setEnable(enable);
         settings.setShowDeviation(showDeviation);
 
-        switch (type)
+        if (icon == null)
         {
-            case Normal -> this.setIcon(new WaypointIcon(DEFAULT_ICON_NORMAL));
-            case Death -> this.setIcon(new WaypointIcon(DEFAULT_ICON_DEATH));
+            switch (type)
+            {
+                case Normal -> this.setIcon(new WaypointIcon(DEFAULT_ICON_NORMAL));
+                case Death -> this.setIcon(new WaypointIcon(DEFAULT_ICON_DEATH));
+            }
         }
         setLocation(x, y, z, currentDimension);
     }
+
 
     public boolean isDirty()
     {
@@ -257,11 +267,6 @@ public class Waypoint
         return id;
     }
 
-    public void setId(String id)
-    {
-        this.id = id;
-        this.markDirty();
-    }
 
     public String getName()
     {
@@ -274,20 +279,11 @@ public class Waypoint
         this.markDirty();
     }
 
-    public String getColorizedIcon()
+    public void setPos(BlockPos pos)
     {
-        return colorizedIcon;
-    }
-
-    /**
-     * Used internally, this is for webmap waypoint icons.
-     *
-     * @param colorizedIcon - the recolored icon
-     */
-    public void setColorizedIcon(String colorizedIcon)
-    {
-        this.colorizedIcon = colorizedIcon;
-        this.markDirty();
+        this.setX(pos.getX());
+        this.setZ(pos.getZ());
+        this.setY(pos.getY());
     }
 
     public int getX()
@@ -539,4 +535,184 @@ public class Waypoint
         return true;
     }
 
+    public static class Builder
+    {
+        private String displayId;
+        private final String modId;
+        private String name;
+        private boolean persistent = true;
+        private Integer x;
+        private Integer y;
+        private Integer z;
+        private Integer red;
+        private Integer green;
+        private Integer blue;
+        private WaypointType type;
+        private String origin;
+        private WaypointSettings settings;
+        private WaypointIcon icon;
+        private Collection<String> dimensions;
+
+        private String currentDimension;
+
+        private boolean enabled = true;
+        private boolean showDeviation = false;
+
+        public Builder(String modId)
+        {
+            this.modId = modId;
+        }
+
+        public Builder isEnabled(boolean enabled)
+        {
+            this.enabled = enabled;
+            return this;
+        }
+
+        public Builder showDeviation(boolean showDeviation)
+        {
+            this.showDeviation = showDeviation;
+            return this;
+        }
+
+        public Builder withDimension(String dimension)
+        {
+            this.currentDimension = dimension;
+            return this;
+        }
+
+        public Builder withDimension(ResourceKey<Level> dimension)
+        {
+            return withDimension(dimension.location().toString());
+        }
+
+        public Builder withDimensions(Collection<String> dimensions)
+        {
+            this.dimensions = dimensions;
+            return this;
+        }
+
+        public Builder withIcon(WaypointIcon icon)
+        {
+            this.icon = icon;
+            return this;
+        }
+
+        public Builder withOrigin(String origin)
+        {
+            this.origin = origin;
+            return this;
+        }
+
+        public Builder withType(WaypointType type)
+        {
+            this.type = type;
+            return this;
+        }
+
+        public Builder isPersistent(boolean persistent)
+        {
+            this.persistent = persistent;
+            return this;
+        }
+
+        public Builder withName(String name)
+        {
+
+            this.name = name;
+            return this;
+        }
+
+        public Builder withDisplayId(String displayId)
+        {
+
+            this.displayId = displayId;
+            return this;
+        }
+
+        public Builder withPos(int x, int y, int z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            return this;
+        }
+
+        public Builder withBlockPos(BlockPos blockPos)
+        {
+            return withPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        }
+
+        public Builder withColorInt(int color)
+        {
+            return withRgb((color >> 16) & 0xFF, (color >> 8) & 0xFF, (color) & 0xFF);
+        }
+
+        public Builder withColor(Color color)
+        {
+            return withRgb(color.getRed(), color.getGreen(), color.getBlue());
+        }
+
+        public Builder withRgb(int red, int green, int blue)
+        {
+            this.red = red;
+            this.blue = blue;
+            this.green = green;
+            return this;
+        }
+
+        public Waypoint build()
+        {
+            this.validate();
+            return new Waypoint(this);
+        }
+
+        private void validate()
+        {
+            if (x == null || y == null || z == null)
+            {
+                throw new RuntimeException("Must provide waypoint position.");
+            }
+
+            if (this.type == null)
+            {
+                this.type = WaypointType.Normal;
+            }
+
+            if (this.icon == null)
+            {
+                this.icon = new WaypointIcon(WaypointType.Normal.equals(this.type) ? DEFAULT_ICON_NORMAL : DEFAULT_ICON_DEATH);
+            }
+
+            this.origin = this.origin == null ? this.modId : this.origin;
+
+            // if no color provided, set to random.
+            if (red == null || green == null || blue == null)
+            {
+                Random random = new Random();
+                int r = random.nextInt(255);
+                int g = random.nextInt(255);
+                int b = random.nextInt(255);
+
+                int min = 100;
+                int max = Math.max(r, Math.max(g, b));
+                if (max < min)
+                {
+                    if (r == max)
+                    {
+                        r = min;
+                    }
+                    else if (g == max)
+                    {
+                        g = min;
+                    }
+                    else
+                    {
+                        b = min;
+                    }
+                }
+                withRgb(r, g, b);
+            }
+        }
+    }
 }

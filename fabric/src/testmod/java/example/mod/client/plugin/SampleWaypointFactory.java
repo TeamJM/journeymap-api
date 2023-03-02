@@ -50,13 +50,18 @@ class SampleWaypointFactory
             // Icon for waypoint
             WaypointIcon bedIcon = new WaypointIcon(new ResourceLocation("examplemod:images/bed.png"), 32, 32);
             bedIcon.setColor(0x00ffff);
+            bedIcon.setUseBeaconColor(false);
 
             // Waypoint itself
-            bedWaypoint = new Waypoint(ExampleMod.MODID, "bed_" + dimension.registry().getPath(), bedLocation, Color.BLUE, dimension);
-            bedWaypoint.setIcon(bedIcon);
-
+            bedWaypoint = new Waypoint.Builder(ExampleMod.MODID)
+                    .withDisplayId("bed_" + dimension.registry().getPath())
+                    .withBlockPos(bedLocation)
+                    .withColor(Color.BLUE)
+                    .withDimension(dimension)
+                    .withIcon(bedIcon)
+                    .build();
             // Add or update
-//            jmAPI.show(bedWaypoint); // TODO
+            jmAPI.addWaypoint(ExampleMod.MODID, bedWaypoint);
 
         }
         catch (Throwable t)

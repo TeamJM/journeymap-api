@@ -85,6 +85,19 @@ public class WaypointIcon
         setOpacity(opacity);
     }
 
+    public WaypointIcon(WaypointIcon original)
+    {
+        this.resourceLocation = original.resourceLocation;
+        this.textureWidth = Math.max(1, original.textureWidth);
+        this.textureHeight = Math.max(1, original.textureHeight);
+        this.useBeaconColor = original.useBeaconColor;
+        this.displayWidth = original.displayWidth;
+        this.displayHeight = original.displayHeight;
+        this.color = original.color;
+        this.opacity = original.opacity;
+        this.rotation = original.rotation;
+    }
+
     /**
      * Gets the rotation in degrees the image should be oriented.
      * Zero is the default.
