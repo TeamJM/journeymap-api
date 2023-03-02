@@ -88,8 +88,8 @@ public class WaypointIcon
     public WaypointIcon(WaypointIcon original)
     {
         this.resourceLocation = original.resourceLocation;
-        this.textureWidth = Math.max(1, original.textureWidth);
-        this.textureHeight = Math.max(1, original.textureHeight);
+        this.textureWidth = original.textureWidth;
+        this.textureHeight = original.textureHeight;
         this.useBeaconColor = original.useBeaconColor;
         this.displayWidth = original.displayWidth;
         this.displayHeight = original.displayHeight;
