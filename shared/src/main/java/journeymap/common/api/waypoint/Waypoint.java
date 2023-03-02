@@ -239,6 +239,10 @@ public class Waypoint
                 case Death -> this.setIcon(new WaypointIcon(DEFAULT_ICON_DEATH));
             }
         }
+        else
+        {
+            this.icon = icon;
+        }
         setLocation(x, y, z, currentDimension);
     }
 
