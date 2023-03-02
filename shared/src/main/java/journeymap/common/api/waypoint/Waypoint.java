@@ -127,12 +127,11 @@ public class Waypoint
     /**
      * This constructor is for internal use only. Will cause problems when using it.
      */
-    @Deprecated
-    public Waypoint()
+    protected Waypoint()
     {
     }
 
-    public Waypoint(Waypoint original)
+    protected Waypoint(Waypoint original)
     {
         this(original.name,
                 original.x,
