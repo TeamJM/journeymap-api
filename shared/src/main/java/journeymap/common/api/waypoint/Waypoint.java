@@ -152,7 +152,7 @@ public class Waypoint
                 original.dimensions == null || original.dimensions.isEmpty() ? null : original.dimensions.first(),
                 original.dimensions,
                 original.settings.showDeviation,
-                new WaypointIcon(original.icon));
+                original.icon != null ? new WaypointIcon(original.icon) : null);
         this.x = original.x;
         this.y = original.y;
         this.z = original.z;
