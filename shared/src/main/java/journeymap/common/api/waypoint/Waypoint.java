@@ -52,6 +52,12 @@ public class Waypoint
     protected String name;
 
     /**
+     * The Group
+     */
+    @Since(1)
+    protected String group;
+
+    /**
      * The Persistent.
      */
     @Since(1)
@@ -173,6 +179,7 @@ public class Waypoint
         );
         this.modId = builder.modId;
         this.displayId = builder.displayId;
+        this.group = builder.group;
     }
 
     private Waypoint(String name,
@@ -417,6 +424,18 @@ public class Waypoint
         this.markDirty();
     }
 
+    protected void setId(String id)
+    {
+        this.id = id;
+        this.setDirty(true);
+    }
+
+    protected void setDisplayId(String id)
+    {
+        this.displayId = displayId;
+        this.setDirty(true);
+    }
+
     /**
      * Sets location.
      *
@@ -552,6 +571,8 @@ public class Waypoint
         private WaypointIcon icon;
         private Collection<String> dimensions;
 
+        private String group;
+
         private String currentDimension;
 
         private boolean enabled = true;
@@ -560,6 +581,12 @@ public class Waypoint
         public Builder(String modId)
         {
             this.modId = modId;
+        }
+
+        public Builder withGroup(String group)
+        {
+            this.group = group;
+            return this;
         }
 
         public Builder isEnabled(boolean enabled)
