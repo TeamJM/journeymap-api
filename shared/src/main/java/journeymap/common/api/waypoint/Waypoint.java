@@ -231,6 +231,8 @@ public class Waypoint
         settings.setEnable(enable);
         settings.setShowDeviation(showDeviation);
 
+        this.icon = icon;
+
         if (icon == null)
         {
             switch (type)
@@ -238,10 +240,6 @@ public class Waypoint
                 case Normal -> this.setIcon(new WaypointIcon(DEFAULT_ICON_NORMAL));
                 case Death -> this.setIcon(new WaypointIcon(DEFAULT_ICON_DEATH));
             }
-        }
-        else
-        {
-            this.icon = icon;
         }
         setLocation(x, y, z, currentDimension);
     }
