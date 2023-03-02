@@ -201,7 +201,16 @@ public class Waypoint
         {
             name = createName(x, z);
         }
-        this.dimensions = new TreeSet<>(dimensions);
+
+        if (dimensions == null)
+        {
+            this.dimensions = new TreeSet<>();
+        }
+        else
+        {
+            this.dimensions = new TreeSet<>(dimensions);
+        }
+
         if (currentDimension != null)
         {
             this.dimensions.add(currentDimension);
