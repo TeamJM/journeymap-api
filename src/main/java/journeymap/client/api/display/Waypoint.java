@@ -24,7 +24,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.Since;
-
 import journeymap.client.api.model.WaypointBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -180,7 +179,7 @@ public class Waypoint extends WaypointBase<Waypoint>
             else if (targetDimension.equalsIgnoreCase(Level.NETHER.location().toString()))
             {
                 // Convert coords to 1/8 horizontal scale for display in the Nether
-                pos = new BlockPos(pos.getX() / 8.0, pos.getY(), pos.getZ() / 8.0);
+                pos = BlockPos.containing(pos.getX() / 8.0, pos.getY(), pos.getZ() / 8.0);
             }
         }
         return pos;
