@@ -179,7 +179,7 @@ public class Waypoint extends WaypointBase<Waypoint>
             else if (targetDimension.equalsIgnoreCase(Level.NETHER.location().toString()))
             {
                 // Convert coords to 1/8 horizontal scale for display in the Nether
-                pos = new net.minecraft.core.BlockPos(pos.getX() / 8.0, pos.getY(), pos.getZ() / 8.0);
+                pos = BlockPos.containing(pos.getX() / 8.0, pos.getY(), pos.getZ() / 8.0);
             }
         }
         return pos;
