@@ -1,5 +1,8 @@
 [JourneyMap API](https://github.com/TeamJM/journeymap-api) Changelog
 ======================================================
+**API v1.19.4-1.9-fabric-SNAPSHOT**
+* Fixed waypoints
+
 **API v1.19.3-1.9-fabric-SNAPSHOT**
 * Updated to mc 1.19.3
 * Added new methods to ShapeProperties to assign a texture to PolygonOverlays, specifying its position and scale.
