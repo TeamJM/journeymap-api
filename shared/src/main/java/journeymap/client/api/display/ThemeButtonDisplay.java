@@ -1,5 +1,6 @@
 package journeymap.client.api.display;
 
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public interface ThemeButtonDisplay
@@ -9,43 +10,43 @@ public interface ThemeButtonDisplay
      *
      * @param labelOn  - The on label, can be the display string or i18n key.
      * @param labelOff - The off label, can be the display string or i18n key.
-     * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
+     * @param icon - The icon name. Icon resourceLocation
      * @param toggled  - If button starts toggled.
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton addThemeToggleButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull String iconName, boolean toggled, @NotNull IThemeButton.Action onPress);
+    IThemeButton addThemeToggleButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull ResourceLocation icon, boolean toggled, @NotNull IThemeButton.Action onPress);
 
     /**
      * Creates and adds a theme button with a separate on/off label to the toolbar.
      *
      * @param labelOn  - The on label, can be the display string or i18n key.
      * @param labelOff - The off label, can be the display string or i18n key.
-     * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
+     * @param icon - The icon name. Icon resourceLocation
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton addThemeButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull String iconName, @NotNull IThemeButton.Action onPress);
+    IThemeButton addThemeButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull ResourceLocation icon, @NotNull IThemeButton.Action onPress);
 
     /**
      * Creates and adds a theme toggle button with a separate on/off label to the toolbar.
      *
      * @param label    - The label, can be the display string or i18n key.
-     * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
+     * @param icon - The icon name. Icon resourceLocation
      * @param toggled  - If button starts toggled.
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton addThemeToggleButton(@NotNull String label, @NotNull String iconName, boolean toggled, @NotNull IThemeButton.Action onPress);
+    IThemeButton addThemeToggleButton(@NotNull String label, @NotNull ResourceLocation icon, boolean toggled, @NotNull IThemeButton.Action onPress);
 
     /**
      * Creates and adds a theme button with a separate on/off label to the toolbar.
      *
      * @param label    - The label, can be the display string or i18n key.
-     * @param iconName - The icon name. Icons must be located in /resources/assets/journeymap/theme/flat/icon
+     * @param icon - The icon name. Icon resourceLocation
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton addThemeButton(@NotNull String label, @NotNull String iconName, @NotNull IThemeButton.Action onPress);
+    IThemeButton addThemeButton(@NotNull String label, @NotNull ResourceLocation icon, @NotNull IThemeButton.Action onPress);
 
 }

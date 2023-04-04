@@ -19,6 +19,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -142,12 +143,12 @@ class EventListener
     public void onFullscreenAddonButton(FullscreenDisplayEvent.AddonButtonDisplayEvent event)
     {
         ThemeButtonDisplay buttonDisplay = event.getThemeButtonDisplay();
-        IThemeButton button1 = buttonDisplay.addThemeButton("Test1", "alert", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button2 = buttonDisplay.addThemeButton("Test2", "grid", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button3 = buttonDisplay.addThemeButton("Test3", "day", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button4 = buttonDisplay.addThemeButton("Test4", "biome", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button5 = buttonDisplay.addThemeButton("Test5", "keys", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button6 = buttonDisplay.addThemeToggleButton("Test6 On", "Text 6 Off", "keys", false, b -> System.out.println("ALERT ALERT"));
+        IThemeButton button1 = buttonDisplay.addThemeButton("Test1", getIcon("alert"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button2 = buttonDisplay.addThemeButton("Test2", getIcon("grid"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button3 = buttonDisplay.addThemeButton("Test3", getIcon("day"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button4 = buttonDisplay.addThemeButton("Test4", getIcon("biome"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button5 = buttonDisplay.addThemeButton("Test5", getIcon("keys"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button6 = buttonDisplay.addThemeToggleButton("Test6 On", "Text 6 Off", getIcon("keys"), false, b -> System.out.println("ALERT ALERT"));
     }
 
     /**
@@ -158,7 +159,7 @@ class EventListener
     public void onFullscreenMapTypeButton(FullscreenDisplayEvent.MapTypeButtonDisplayEvent event)
     {
         event.getThemeButtonDisplay()
-                .addThemeButton("Test MapType", "follow", b -> System.out.println("follow"));
+                .addThemeButton("Test MapType", getIcon("follow"), b -> System.out.println("follow"));
     }
 
     /**
@@ -172,22 +173,22 @@ class EventListener
         Screen screen = event.getFullscreen().getMinecraft().screen;
         int startX = screen.width / 2;
 
-        IThemeButton button1 = barBuilder.getThemeButton("Test1", "alert", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button2 = barBuilder.getThemeButton("Test2", "grid", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button3 = barBuilder.getThemeButton("Test3", "day", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button4 = barBuilder.getThemeButton("Test4", "biome", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button5 = barBuilder.getThemeButton("Test5", "keys", b -> System.out.println("ALERT ALERT"));
+        IThemeButton button1 = barBuilder.getThemeButton("Test1", getIcon("alert"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button2 = barBuilder.getThemeButton("Test2", getIcon("grid"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button3 = barBuilder.getThemeButton("Test3", getIcon("day"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button4 = barBuilder.getThemeButton("Test4", getIcon("biome"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button5 = barBuilder.getThemeButton("Test5", getIcon("keys"), b -> System.out.println("ALERT ALERT"));
         IThemeToolBar bar = barBuilder.getNewToolbar(button1, button2, button3, button4, button5);
         bar.setLayoutCenteredHorizontal(screen.width / 2, bar.getHeight() * 2, 5, true);
 
 
-        IThemeButton button8 = barBuilder.getThemeButton("Test4", "biome", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button9 = barBuilder.getThemeButton("Test5", "keys", b -> System.out.println("ALERT ALERT"));
+        IThemeButton button8 = barBuilder.getThemeButton("Test4", getIcon("biome"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button9 = barBuilder.getThemeButton("Test5", getIcon("keys"), b -> System.out.println("ALERT ALERT"));
         IThemeToolBar bar3 = barBuilder.getNewToolbar(button8, button9);
         bar3.setLayoutDistributedHorizontal(startX, bar.getHeight() * 4, startX + 40, true);
 
-        IThemeButton button0 = barBuilder.getThemeButton("Test4", "biome", b -> System.out.println("ALERT ALERT"));
-        IThemeButton button11 = barBuilder.getThemeButton("Test5", "keys", b -> System.out.println("ALERT ALERT"));
+        IThemeButton button0 = barBuilder.getThemeButton("Test4", getIcon("biome"), b -> System.out.println("ALERT ALERT"));
+        IThemeButton button11 = barBuilder.getThemeButton("Test5", getIcon("keys"), b -> System.out.println("ALERT ALERT"));
         IThemeToolBar bar4 = barBuilder.getNewToolbar(button0, button11);
         bar4.setLayoutHorizontal(startX, bar.getHeight() * 5, 3, true);
     }
@@ -218,5 +219,10 @@ class EventListener
             return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getLevel().getServer().getWorldData().worldGenSettings().seed(), 987234911L).nextInt(10) == 0;
         }
         return false;
+    }
+
+    private ResourceLocation getIcon(String string)
+    {
+        return new ResourceLocation("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + string + ".png");
     }
 }
