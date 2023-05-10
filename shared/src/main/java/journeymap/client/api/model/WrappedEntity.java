@@ -223,6 +223,14 @@ public interface WrappedEntity
     void setCustomName(String customName);
 
     /**
+     * Sets the label color for the entity.
+     * Avoid if setting the color in the component.
+     *
+     * @param color - the color.
+     */
+    void setLabelColor(int color);
+
+    /**
      * Sets the icon color of the dot when the user has the display set to dots.
      *
      * @param color - the color.
