@@ -180,6 +180,13 @@ public interface WrappedEntity
     int getColor();
 
     /**
+     * Gets the label color of the icon displayed on the map.
+     *
+     * @return - the color
+     */
+    int getLabelColor();
+
+    /**
      * Is the entity disabled from being drawn on the map.
      *
      * @return - is disabled.
