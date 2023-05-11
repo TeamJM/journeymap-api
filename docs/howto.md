@@ -27,8 +27,8 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version_forge = `journeymap-api-2.0+1.19.3-forge-SNAPSHOT`
-journeymap_api_version_fabric = `journeymap-api-2.0+1.19.3-fabric-SNAPSHOT`
+journeymap_api_version_forge = `journeymap-api-2.0+1.19.4-forge-SNAPSHOT`
+journeymap_api_version_fabric = `journeymap-api-2.0+1.19.4-fabric-SNAPSHOT`
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
