@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Random;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class Waypoint
@@ -31,6 +32,9 @@ public class Waypoint
     @Since(1)
     protected String version = "1";
 
+    @Since(1)
+    protected final String guid;
+
     /**
      * The Id.
      */
@@ -50,12 +54,6 @@ public class Waypoint
      */
     @Since(1)
     protected String name;
-
-    /**
-     * The Group
-     */
-    @Since(1)
-    protected String group;
 
     /**
      * The Persistent.
@@ -135,6 +133,7 @@ public class Waypoint
      */
     protected Waypoint()
     {
+        this.guid = UUID.randomUUID().toString();
     }
 
     protected Waypoint(Waypoint original)
@@ -178,8 +177,7 @@ public class Waypoint
                 builder.icon
         );
         this.modId = builder.modId;
-        this.displayId = builder.displayId;
-        this.group = builder.group;
+        this.displayId = builder.displayId == null ? (this.modId + ":" + this.id) : builder.displayId;
     }
 
     private Waypoint(String name,
@@ -197,6 +195,7 @@ public class Waypoint
                      boolean showDeviation,
                      WaypointIcon icon)
     {
+        this.guid = UUID.randomUUID().toString();
         if (name == null)
         {
             name = createName(x, z);
@@ -276,7 +275,7 @@ public class Waypoint
 
     public String getDisplayId()
     {
-        return this.displayId == null ? (this.modId + ":" + this.id) : this.displayId;
+        return this.displayId;
     }
 
     public String getId()
@@ -284,6 +283,16 @@ public class Waypoint
         return id;
     }
 
+
+    /**
+     * This is a static ID used for group tracking, primary key.
+     *
+     * @return - the guid
+     */
+    public String getGuid()
+    {
+        return guid;
+    }
 
     public String getName()
     {
@@ -435,18 +444,6 @@ public class Waypoint
         this.markDirty();
     }
 
-    protected void setId(String id)
-    {
-        this.id = id;
-        this.setDirty(true);
-    }
-
-    protected void setDisplayId(String id)
-    {
-        this.displayId = displayId;
-        this.setDirty(true);
-    }
-
     /**
      * Sets location.
      *
@@ -582,8 +579,6 @@ public class Waypoint
         private WaypointIcon icon;
         private Collection<String> dimensions;
 
-        private String group;
-
         private String currentDimension;
 
         private boolean enabled = true;
@@ -592,12 +587,6 @@ public class Waypoint
         public Builder(String modId)
         {
             this.modId = modId;
-        }
-
-        public Builder withGroup(String group)
-        {
-            this.group = group;
-            return this;
         }
 
         public Builder isEnabled(boolean enabled)
