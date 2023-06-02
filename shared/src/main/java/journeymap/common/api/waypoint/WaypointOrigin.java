@@ -14,13 +14,19 @@ public enum WaypointOrigin
 
     final String value;
     private static final Map<String, WaypointOrigin> values;
-
+    private static final Map<String, WaypointOrigin> valueMap;
     static
     {
         values = new HashMap<>();
         for (WaypointOrigin o : values())
         {
             values.put(o.name(), o);
+        }
+
+        valueMap = new HashMap<>();
+        for (WaypointOrigin o : values())
+        {
+            valueMap.put(o.getValue(), o);
         }
     }
 
@@ -34,6 +40,10 @@ public enum WaypointOrigin
         return values.get(string);
     }
 
+    public static WaypointOrigin fromValue(String string)
+    {
+        return valueMap.get(string);
+    }
     public String getValue()
     {
         return value;
