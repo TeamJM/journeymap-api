@@ -17,8 +17,9 @@ import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -68,7 +69,7 @@ class EventListener
             {
                 if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint))
                 {
-                    SampleWaypointFactory.createBedWaypoint(jmAPI, pos, entity.level.dimension());
+                    SampleWaypointFactory.createBedWaypoint(jmAPI, pos, entity.level().dimension());
                 }
             }
         }
@@ -197,7 +198,7 @@ class EventListener
 
         if (event.getActiveUiState().ui.equals(Context.UI.Minimap))
         {
-            if (((TranslatableComponent) event.getWrappedEntity().getEntityLivingRef().get().getName()).getKey().contains("slime"))
+            if (((TranslatableContents) event.getWrappedEntity().getEntityLivingRef().get().getName()).getKey().contains("slime"))
             {
                 event.getWrappedEntity().setColor(0x0000FF);
                 event.getWrappedEntity().setCustomName("SLIME");
@@ -215,7 +216,7 @@ class EventListener
     {
         if (!chunk.getLevel().isClientSide())
         {
-            return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getLevel().getServer().getWorldData().worldGenSettings().seed(), 987234911L).nextInt(10) == 0;
+            return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, ((ServerLevel) chunk.getLevel()).getSeed(), 987234911L).nextInt(10) == 0;
         }
         return false;
     }

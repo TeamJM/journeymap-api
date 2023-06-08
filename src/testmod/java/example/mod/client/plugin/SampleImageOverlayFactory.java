@@ -11,14 +11,7 @@ import journeymap.client.api.util.UIState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -89,7 +82,7 @@ class SampleImageOverlayFactory
 
         imageOverlay.getImage().setOpacity(.8f);
 
-        imageOverlay.setDimension(Minecraft.getInstance().player.level.dimension());
+        imageOverlay.setDimension(Minecraft.getInstance().player.level().dimension());
         imageOverlay.setLabel("Image Overlay")
                 .setTitle(displayId)
                 .setOverlayListener(new ImageListener(jmAPI, imageOverlay));
