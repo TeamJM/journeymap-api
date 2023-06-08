@@ -30,7 +30,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
     }
 }
@@ -82,7 +82,7 @@ minecraft {
     }
 }
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.loader_version}"
+    minecraft "net.minecraftforge:forge:${project.loader_version}"
     runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
 }
 /* Replace tokens in resources files */
@@ -125,7 +125,7 @@ jar {
 task modJar(type: Jar, dependsOn: classes) {
     mustRunAfter = ['jar']
     from sourceSets.main.output
-    classifier = 'examplemod'
+    archiveClassifier.set('examplemod')
     include 'example/**'
     include 'mcmod.info'
     include 'assets/**'
@@ -148,13 +148,13 @@ javadoc {
 
 /* Jar for Javadocs */
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
 
 /* Jar for Sources */
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 
