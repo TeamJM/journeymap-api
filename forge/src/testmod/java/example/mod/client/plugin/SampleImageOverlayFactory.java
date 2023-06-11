@@ -82,7 +82,7 @@ class SampleImageOverlayFactory
 
         imageOverlay.getImage().setOpacity(.8f);
 
-        imageOverlay.setDimension(Minecraft.getInstance().player.level.dimension());
+        imageOverlay.setDimension(Minecraft.getInstance().player.level().dimension());
         imageOverlay.setLabel("Image Overlay")
                 .setTitle(displayId)
                 .setOverlayListener(new ImageListener(jmAPI, imageOverlay));

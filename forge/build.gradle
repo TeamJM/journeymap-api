@@ -30,7 +30,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
     }
 }
@@ -142,7 +142,7 @@ jar {
 task modJar(type: Jar, dependsOn: classes) {
     mustRunAfter = ['jar']
     from sourceSets.testmod.output
-    classifier = 'examplemod'
+    archiveClassifier.set("examplemod")
     manifest {
         attributes = [
                 "Manifest-Version"      : "1.0",
@@ -220,11 +220,11 @@ publishing {
             artifact jar
 
             artifact project.sourcesJar {
-                classifier 'sources'
+                archiveClassifier.set("sources")
             }
 
             artifact project.javadocJar {
-                classifier 'javadoc'
+                archiveClassifier.set("javadoc")
             }
         }
     }
