@@ -1,9 +1,9 @@
 [JourneyMap API](https://github.com/TeamJM/journeymap-api) Changelog
 ======================================================
-**API 2.0-SNAPSHOT**
+**API 2.0.0-SNAPSHOT**
 **Requires Journeymap v6.0.0**
 * Switched to multi-loader template.
-* Switched to SemVer versioning `journeymap-api-2.0+mcversion-loader-SNAPSHOT`
+* Switched to SemVer versioning `journeymap-api-loader-2.0.0-mcversion-SNAPSHOT`
 
 **API v1.19.3-1.9-SNAPSHOT**
 * Added new methods to ShapeProperties to assign a texture to PolygonOverlays, specifying its position and scale.

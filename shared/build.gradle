@@ -4,12 +4,12 @@ plugins {
     id 'maven-publish'
 }
 
-version = "${project.api_version}+${project.minecraft_version}-common"
+version = "${project.api_version}-${project.minecraft_version}"
 if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
 group = project.group
-archivesBaseName = project.mod_name
+archivesBaseName = "${project.mod_name}" + "-common"
 
 minecraft {
     version(minecraft_version)

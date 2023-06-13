@@ -42,11 +42,11 @@ apply plugin: 'signing'
 group 'info.journeymap'
 
 /* Artifact Version */
-version = "${project.api_version}+${project.minecraft_version}-fabric"
+version = "${project.api_version}-${project.minecraft_version}"
 if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
-archivesBaseName = project.mod_name
+archivesBaseName = "${project.mod_name}" + "-fabric"
 configurations {
     testmodImplementation.extendsFrom implementation
 }
