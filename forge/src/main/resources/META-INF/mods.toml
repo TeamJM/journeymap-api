@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[44,)"
+loaderVersion = "[46,)"
 issueTrackerURL = "https://github.com/TeamJM/journeymap-api/issues" #optional
 license = "All rights reserved"
 
@@ -20,4 +20,4 @@ API Mod for JourneyMap.
 [[dependencies.journeymap_api]]
 modId = "forge"
 mandatory = true
-versionRange = "[44.0.0,)"
+versionRange = "[46.0.0,)"

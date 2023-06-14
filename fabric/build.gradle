@@ -74,7 +74,7 @@ dependencies {
     // for annotations
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
-    compileOnly project(":shared")
+    compileOnly project(":common")
     testmodImplementation sourceSets.main.output
 }
 /* Replace tokens in resources files */
@@ -100,7 +100,7 @@ sourceSets {
 }
 
 tasks.withType(JavaCompile) {
-    source(project(":shared").sourceSets.main.allSource)
+    source(project(":common").sourceSets.main.allSource)
 }
 
 /* Add our attributes to every Jar task */

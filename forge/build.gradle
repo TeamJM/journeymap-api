@@ -94,7 +94,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
     runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}")
 
-    compileOnly project(":shared")
+    compileOnly project(":common")
     testmodImplementation sourceSets.main.output
 }
 
@@ -122,7 +122,7 @@ sourceSets {
     }
 }
 
-/* Reobfuscated jar for just the Example Mod */
+
 jar {
     manifest {
         attributes = ["Manifest-Version"      : "1.0",
@@ -139,13 +139,13 @@ javadoc {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    source(project(":shared").sourceSets.main.allSource)
+    source(project(":common").sourceSets.main.allSource)
 }
 tasks.withType(Javadoc).configureEach {
-    source(project(":shared").sourceSets.main.allJava)
+    source(project(":common").sourceSets.main.allJava)
 }
 tasks.named("sourcesJar", Jar) {
-    from(project(":shared").sourceSets.main.allSource)
+    from(project(":common").sourceSets.main.allSource)
 }
 
 jar.finalizedBy('reobfJar')
