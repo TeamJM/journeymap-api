@@ -7,7 +7,7 @@ subprojects {
     java.withJavadocJar()
 
     jar {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+//        duplicatesStrategy = DuplicatesStrategy.INCLUDE
         manifest {
             attributes([
                     "Specification-Title"     : project.name,

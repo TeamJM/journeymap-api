@@ -98,6 +98,7 @@ sourceSets {
         runtimeClasspath += main.runtimeClasspath
     }
 }
+
 tasks.withType(JavaCompile) {
     source(project(":shared").sourceSets.main.allSource)
 }

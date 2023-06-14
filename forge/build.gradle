@@ -31,16 +31,13 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
     }
 }
 
 /* Gradle Plugins */
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-apply plugin: 'signing'
 
 group 'info.journeymap'
 
@@ -100,22 +97,22 @@ dependencies {
     compileOnly project(":shared")
     testmodImplementation sourceSets.main.output
 }
-/* Replace tokens in resources files */
-processResources
-        {
-            duplicatesStrategy = DuplicatesStrategy.INCLUDE
-            // this will ensure that this task is redone when the versions change.
-            inputs.property "version", project.version
-            inputs.property "mcversion", project.minecraft_version
 
-            // replace stuff in mods.toml on copy
-            from(sourceSets.main.resources.srcDirs) {
-                include 'META-INF/mods.toml'
-                expand 'version': project.version,
-                        'mcversion': project.minecraft_version,
-                        'modVersion': modVersion
-            }
-        }
+/* Replace tokens in resources files */
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft_version
+
+    // replace stuff in mods.toml on copy
+    from(sourceSets.main.resources.srcDirs) {
+        include 'META-INF/mods.toml'
+        expand 'version': project.version,
+                'mcversion': project.minecraft_version,
+                'modVersion': modVersion
+    }
+}
 
 /* Use the same compile and runtime classpath in the Example Mod */
 sourceSets {
@@ -128,30 +125,11 @@ sourceSets {
 /* Reobfuscated jar for just the Example Mod */
 jar {
     manifest {
-        attributes = [
-                "Manifest-Version"      : "1.0",
+        attributes = ["Manifest-Version"      : "1.0",
 //                "FMLModType"            : "GAMELIBRARY",
-                "Implementation-Title"  : project.title,
-                "Implementation-Version": project.version,
-                "Implementation-URL"    : project.git_website
-        ]
-    }
-}
-
-/* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
-task modJar(type: Jar, dependsOn: classes) {
-    mustRunAfter = ['jar']
-    from sourceSets.testmod.output
-    archiveClassifier.set("examplemod")
-    manifest {
-        attributes = [
-                "Manifest-Version"      : "1.0",
-//                "FMLModType"            : "GAMELIBRARY",
-                "Implementation-Title"  : project.title_example,
-                "Implementation-Version": project.version,
-                "Implementation-URL"    : project.git_website
-
-        ]
+                      "Implementation-Title"  : project.title,
+                      "Implementation-Version": project.version,
+                      "Implementation-URL"    : project.git_website]
     }
 }
 
@@ -160,42 +138,18 @@ javadoc {
     title = project.title_javadoc
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     source(project(":shared").sourceSets.main.allSource)
 }
-
-
-/* Additional artifacts produced by build task */
-artifacts {
-    archives jar
-    archives modJar
-    archives javadocJar
-    archives sourcesJar
+tasks.withType(Javadoc).configureEach {
+    source(project(":shared").sourceSets.main.allJava)
+}
+tasks.named("sourcesJar", Jar) {
+    from(project(":shared").sourceSets.main.allSource)
 }
 
-def bintrayUser = project.findProperty("bintray.user") ?: System.getenv("BINTRAY_USER")
-def bintrayKey = project.findProperty("bintray.password") ?: System.getenv("BINTRAY_PASSWORD")
+jar.finalizedBy('reobfJar')
 
-if (project.hasProperty("production")) {
-    // Bintray is _only_ for releases, not snapshots
-    bintray {
-        user = bintrayUser
-        key = bintrayKey
-
-        pkg {
-            name = "api"
-            repo = "JourneyMap"
-            userOrg = "teamjm"
-
-            publications = ["maven"]
-
-            version {
-                name = project.version
-                released = new Date()
-            }
-        }
-    }
-}
 
 publishing {
     repositories {
