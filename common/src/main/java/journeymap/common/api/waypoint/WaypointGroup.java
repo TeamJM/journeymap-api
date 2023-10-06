@@ -33,9 +33,11 @@ public class WaypointGroup
         this.settings = (GroupSettings) new GroupSettings().setEnable(true).setDirty(true);
     }
 
-    public void addWaypoint(Waypoint waypoint)
+    public WaypointGroup addWaypoint(Waypoint waypoint)
     {
         waypoints.add(waypoint.getGuid());
+        this.setDirty()
+        ;return this;
     }
 
     public String getGuid()
@@ -61,6 +63,7 @@ public class WaypointGroup
     public WaypointGroup setEnabled(boolean enabled)
     {
         this.settings.setEnable(enabled);
+        this.setDirty();
         return this;
     }
 
