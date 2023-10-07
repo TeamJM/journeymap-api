@@ -21,9 +21,9 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
+import journeymap.client.api.JourneyMapPlugin;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
 import journeymap.client.api.event.ClientEvent;
@@ -52,7 +52,7 @@ import static journeymap.client.api.event.ClientEvent.Type.REGISTRY;
  * The
  */
 @ParametersAreNonnullByDefault
-@ClientPlugin
+@JourneyMapPlugin(apiVersion = "2.0")
 public class ExampleJourneymapPlugin implements IClientPlugin
 {
     // API reference

@@ -59,8 +59,9 @@ dependencies {
     modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version_fabric, changing: true
     modRuntimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.fabric_jm_file_id}"
 }
+
 ```
-Example mods.toml entry for a soft dependency. Set `mandatory=true` for a hard dependency if needed.
+Example forge mods.toml entry for a soft dependency. Set `mandatory=true` for a hard dependency if needed.
 ```
 [[dependencies.mymodId]]
 modId = "journeymap"
@@ -69,6 +70,7 @@ versionRange = "[6.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
 ```
+
 *Note that the journeymap-api.jar is built with deobfuscated code so that it can be used at compile time and when
 stepping through a debugger in your development environment.*
 

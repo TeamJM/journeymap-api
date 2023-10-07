@@ -21,6 +21,8 @@
 package journeymap.client.api;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
@@ -30,6 +32,15 @@ import java.lang.annotation.Target;
  * and must also implement the {@link IClientPlugin} interface.
  */
 @Target(ElementType.TYPE)
-public @interface ClientPlugin
+@Retention(RetentionPolicy.RUNTIME)
+public @interface JourneyMapPlugin
 {
+    /**
+     * Mod Devs need to supply the version of journeymap-api the mod was built against,
+     * so that it will not load the plugin if there is a breaking change.
+     *
+     * @return - The Api Version
+     */
+    String apiVersion();
+
 }

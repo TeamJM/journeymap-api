@@ -29,7 +29,7 @@ import java.util.EnumSet;
 /**
  * Interface used by JourneyMap to initialize client plugins and provide the Client API.
  * <p>
- * Implementation classes must have a no-arg constructor and also have the {@link ClientPlugin} annotation.
+ * Implementation classes must have a no-arg constructor and also have the {@link JourneyMapPlugin} annotation.
  */
 @ParametersAreNonnullByDefault
 public interface IClientPlugin

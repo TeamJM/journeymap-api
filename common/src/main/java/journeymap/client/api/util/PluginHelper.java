@@ -21,9 +21,9 @@
 package journeymap.client.api.util;
 
 import com.google.common.base.Strings;
-import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
+import journeymap.client.api.JourneyMapPlugin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +36,7 @@ import java.util.Map;
 
 /**
  * Enum singleton used by JourneyMap to load and initialize plugins.  A plugin class must be annotated with
- * the {@link ClientPlugin} annotation and also implement the {@link IClientPlugin} interface.
+ * the {@link JourneyMapPlugin} annotation and also implement the {@link IClientPlugin} interface.
  */
 @ParametersAreNonnullByDefault
 public enum PluginHelper
@@ -73,31 +73,49 @@ public enum PluginHelper
                     Class<?> pluginClass = Class.forName(className);
                     if (IClientPlugin.class.isAssignableFrom(pluginClass))
                     {
-                        Class<? extends IClientPlugin> interfaceImplClass = pluginClass.asSubclass(IClientPlugin.class);
-                        IClientPlugin instance = interfaceImplClass.getDeclaredConstructor().newInstance();
-                        String modId = instance.getModId();
-                        if (Strings.isNullOrEmpty(modId))
+                        if (pluginClass.isAnnotationPresent(JourneyMapPlugin.class))
                         {
-                            throw new Exception("IClientPlugin.getModId() must return a non-empty, non-null value");
+                            Class<? extends IClientPlugin> interfaceImplClass = pluginClass.asSubclass(IClientPlugin.class);
+                            JourneyMapPlugin annotationClass = pluginClass.getDeclaredAnnotation(JourneyMapPlugin.class);
+                            if (inVersionRange(annotationClass.apiVersion()))
+                            {
+                                IClientPlugin instance = interfaceImplClass.getDeclaredConstructor().newInstance();
+                                String modId = instance.getModId();
+                                if (Strings.isNullOrEmpty(modId))
+                                {
+                                    throw new Exception("IClientPlugin.getModId() must return a non-empty, non-null value");
+                                }
+                                if (discovered.containsKey(modId))
+                                {
+                                    Class otherPluginClass = discovered.get(modId).getClass();
+                                    throw new Exception(String.format("Multiple plugins trying to use the same modId: %s and %s", interfaceImplClass, otherPluginClass));
+                                }
+                                discovered.put(modId, instance);
+                                LOGGER.info(String.format("Found @%s: %s", JourneyMapPlugin.class.getSimpleName(), className));
+                            }
+                            else
+                            {
+                                LOGGER.error("Found @{}: {}, but there is a version incompatibility, skipping plugin version {}, required version {}",
+                                        PLUGIN_INTERFACE_NAME, className, annotationClass.apiVersion(), "2.0.0");
+                            }
                         }
-                        if (discovered.containsKey(modId))
+                        else
                         {
-                            Class otherPluginClass = discovered.get(modId).getClass();
-                            throw new Exception(String.format("Multiple plugins trying to use the same modId: %s and %s", interfaceImplClass, otherPluginClass));
+                            LOGGER.error(String.format("Found @%s: %s, but it is not annotated with %s",
+                                    PLUGIN_INTERFACE_NAME, className, JourneyMapPlugin.class.getSimpleName()));
                         }
-                        discovered.put(modId, instance);
-                        LOGGER.info(String.format("Found @%s: %s", ClientPlugin.class, className));
                     }
                     else
                     {
                         LOGGER.error(String.format("Found @%s: %s, but it doesn't implement %s",
-                                ClientPlugin.class, className, PLUGIN_INTERFACE_NAME));
+                                JourneyMapPlugin.class.getSimpleName(), className, PLUGIN_INTERFACE_NAME));
+                        System.out.println(List.of(pluginClass.getInterfaces()));
                     }
                 }
                 catch (Exception e)
                 {
                     LOGGER.error(String.format("Found @%s: %s, but failed to instantiate it: %s",
-                            ClientPlugin.class, className, e.getMessage()), e);
+                            JourneyMapPlugin.class.getSimpleName(), className, e.getMessage()), e);
                 }
             }
 
@@ -110,6 +128,12 @@ public enum PluginHelper
         }
 
         return plugins;
+    }
+
+    static boolean inVersionRange(String pluginApiVersion)
+    {
+        // TODO: add version parsing logic
+        return true;
     }
 
     /**

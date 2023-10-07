@@ -23,6 +23,7 @@ package example.mod.client.plugin;
 import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
+import journeymap.client.api.JourneyMapPlugin;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.DeathWaypointEvent;
@@ -47,6 +48,7 @@ import static journeymap.client.api.event.ClientEvent.Type.REGISTRY;
  * <p>
  * The
  */
+@JourneyMapPlugin(apiVersion = "2.0")
 public class ExampleJourneymapPlugin implements IClientPlugin
 {
     // API reference
@@ -204,8 +206,8 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         // will keep it updated if the player sleeps elsewhere.
 //        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) // TODO
 //        {
-            BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0, 0, 0));
-            SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
+        BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0, 0, 0));
+        SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
 //        }
 
         // Create some random complex polygon overlays
