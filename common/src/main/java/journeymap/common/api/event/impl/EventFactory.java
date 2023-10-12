@@ -1,23 +1,39 @@
 package journeymap.common.api.event.impl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class EventFactory
+public class EventFactory<T extends JourneyMapEvent>
 {
-    public static final Map<Class<?>, List<EventImpl<?>>> EVENTS;
+    private final Map<Class<T>, EventImpl<T>> events;
+
+    private static final EventFactory INSTANCE;
 
     static
     {
-        EVENTS = new HashMap<>();
+        INSTANCE = new EventFactory<>();
+    }
+
+    public EventFactory()
+    {
+        this.events = new HashMap<>();
     }
 
     public static <E> Event<E> create(Class<E> clazz)
     {
         EventImpl<E> impl = new EventImpl<>(clazz);
-        EVENTS.putIfAbsent(clazz, List.of(impl));
+        INSTANCE.events.putIfAbsent(clazz, impl);
         return impl;
+    }
+
+    public Map<Class<T>, EventImpl<T>> getEvents()
+    {
+        return this.events;
+    }
+
+    public static <K extends JourneyMapEvent> EventFactory<K> getInstance()
+    {
+        return INSTANCE;
     }
 }
 
