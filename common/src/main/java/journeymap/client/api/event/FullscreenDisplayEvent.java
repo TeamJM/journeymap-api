@@ -67,7 +67,7 @@ public class FullscreenDisplayEvent extends ClientEvent
      * USE SPARINGLY!
      */
     @Deprecated
-    public static class CustomToolbarEvent
+    public static class CustomToolbarEvent extends ClientEvent
     {
 
         private final CustomToolBarBuilder customToolBarBuilder;
@@ -75,6 +75,7 @@ public class FullscreenDisplayEvent extends ClientEvent
 
         public CustomToolbarEvent(IFullscreen fullscreen, CustomToolBarBuilder customToolBarBuilder)
         {
+            super(false);
             this.fullscreen = fullscreen;
             this.customToolBarBuilder = customToolBarBuilder;
         }
