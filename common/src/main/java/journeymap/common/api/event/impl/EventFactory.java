@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class EventFactory
 {
-    static final Map<Class<?>, List<EventImpl<?>>> EVENTS;
+    public static final Map<Class<?>, List<EventImpl<?>>> EVENTS;
 
     static
     {
