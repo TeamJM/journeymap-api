@@ -26,10 +26,10 @@ import journeymap.client.api.IClientPlugin;
 import journeymap.client.api.JourneyMapPlugin;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
-import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.event.DeathWaypointEvent;
 import journeymap.client.api.event.RegistryEvent;
 import journeymap.client.api.event.WaypointEvent;
+import journeymap.common.api.event.impl.ClientEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,10 +37,10 @@ import net.minecraftforge.common.MinecraftForge;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
-import static journeymap.client.api.event.ClientEvent.Type.DEATH_WAYPOINT;
-import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STARTED;
-import static journeymap.client.api.event.ClientEvent.Type.MAPPING_STOPPED;
-import static journeymap.client.api.event.ClientEvent.Type.REGISTRY;
+import static journeymap.common.api.event.impl.ClientEvent.Type.DEATH_WAYPOINT;
+import static journeymap.common.api.event.impl.ClientEvent.Type.MAPPING_STARTED;
+import static journeymap.common.api.event.impl.ClientEvent.Type.MAPPING_STOPPED;
+import static journeymap.common.api.event.impl.ClientEvent.Type.REGISTRY;
 
 /**
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
@@ -95,8 +95,6 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         forgeEventListener = new ForgeEventListener(jmAPI);
         MinecraftForge.EVENT_BUS.register(forgeEventListener);
 
-        // Subscribe to desired ClientEvent types from JourneyMap
-        this.jmAPI.subscribe(getModId(), EnumSet.of(DEATH_WAYPOINT, MAPPING_STARTED, MAPPING_STOPPED, REGISTRY));
 
         ExampleMod.LOGGER.info("Initialized " + getClass().getName());
     }

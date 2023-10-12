@@ -1,6 +1,7 @@
 package journeymap.client.api.event;
 
 import com.google.common.base.MoreObjects;
+import journeymap.common.api.event.impl.ClientEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -21,7 +22,7 @@ public class DeathWaypointEvent extends ClientEvent
      */
     public DeathWaypointEvent(BlockPos location, ResourceKey<Level> dimension)
     {
-        super(Type.DEATH_WAYPOINT, dimension);
+        super(true, dimension);
         this.location = location;
     }
 

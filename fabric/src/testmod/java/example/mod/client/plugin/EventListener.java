@@ -9,15 +9,19 @@ import journeymap.client.api.display.IThemeButton;
 import journeymap.client.api.display.IThemeToolBar;
 import journeymap.client.api.display.PolygonOverlay;
 import journeymap.client.api.display.ThemeButtonDisplay;
-import journeymap.client.api.event.fabric.EntityRadarUpdateEvent;
-import journeymap.client.api.event.fabric.FabricEvents;
-import journeymap.client.api.event.fabric.FullscreenDisplayEvent;
+import journeymap.client.api.event.DeathWaypointEvent;
+import journeymap.client.api.event.EntityRadarUpdateEvent;
+import journeymap.client.api.event.FullscreenDisplayEvent;
+import journeymap.client.api.event.MappingEvent;
+import journeymap.client.api.event.RegistryEvent;
+import journeymap.common.api.event.ClientEventRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,6 +37,8 @@ import java.util.HashMap;
  */
 class EventListener
 {
+
+    private ClientProperties clientProperties;
     IClientAPI jmAPI;
     HashMap<ChunkPos, PolygonOverlay> slimeChunkOverlays;
 
@@ -48,10 +54,92 @@ class EventListener
         EntitySleepEvents.START_SLEEPING.register(this::onPlayerSlept);
         ClientChunkEvents.CHUNK_LOAD.register(this::onChunkLoadEvent);
         ClientChunkEvents.CHUNK_UNLOAD.register((this::onChunkUnloadEvent));
-        FabricEvents.ADDON_BUTTON_DISPLAY_EVENT.register(this::onFullscreenAddonButton);
-        FabricEvents.MAP_TYPE_BUTTON_DISPLAY_EVENT.register(this::onFullscreenMapTypeButton);
-        FabricEvents.CUSTOM_TOOLBAR_UPDATE_EVENT.register(this::onCustomToolbarEvent);
-        FabricEvents.ENTITY_RADAR_UPDATE_EVENT.register(this::onRadarEntityUpdateEvent);
+        ClientEventRegistry.ADDON_BUTTON_DISPLAY_EVENT.subscribe(ExampleMod.MODID, this::onFullscreenAddonButton);
+        ClientEventRegistry.MAP_TYPE_BUTTON_DISPLAY_EVENT.subscribe(ExampleMod.MODID, this::onFullscreenMapTypeButton);
+        ClientEventRegistry.CUSTOM_TOOLBAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onCustomToolbarEvent);
+        ClientEventRegistry.ENTITY_RADAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onRadarEntityUpdateEvent);
+        ClientEventRegistry.MAPPING_EVENT.subscribe(ExampleMod.MODID, this::mappingStageEvent);
+        ClientEventRegistry.DEATH_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onDeathpoint);
+        ClientEventRegistry.REGISTRY_EVENT.subscribe(ExampleMod.MODID, this::registryEvent);
+    }
+
+    private void registryEvent(RegistryEvent event)
+    {
+
+        switch (event.getRegistryType())
+        {
+            case OPTIONS -> this.clientProperties = new ClientProperties();
+            case INFO_SLOT ->
+            {
+                ((RegistryEvent.InfoSlotRegistryEvent) event)
+                        .register(ExampleMod.MODID, "Current Millis", 1000, () -> "Millis: " + System.currentTimeMillis());
+                ((RegistryEvent.InfoSlotRegistryEvent) event)
+                        .register(ExampleMod.MODID, "Current Ticks", 10, EventListener::getTicks);
+            }
+        }
+    }
+
+    void mappingStageEvent(MappingEvent event)
+    {
+        if (event.getStage() == MappingEvent.Stage.MAPPING_STARTED)
+        {
+            onMappingStarted(event);
+        }
+        else
+        {
+            // When mapping has stopped, remove all overlays
+            // Clear everything
+            jmAPI.removeAll(ExampleMod.MODID);
+        }
+    }
+
+    /**
+     * When mapping has started, generate a bunch of random overlays.
+     *
+     * @param event client event
+     */
+    void onMappingStarted(MappingEvent event)
+    {
+        // Create a bunch of random Image Overlays around the player
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Image))
+        {
+            BlockPos pos = Minecraft.getInstance().player.blockPosition();
+            SampleImageOverlayFactory.create(jmAPI, pos, 5, 256, 128);
+        }
+
+        // Create a bunch of random Marker Overlays around the player
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
+        {
+            net.minecraft.core.BlockPos pos = Minecraft.getInstance().player.blockPosition();
+            SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
+        }
+
+        // Create a waypoint for the player's bed location.  The ForgeEventListener
+        // will keep it updated if the player sleeps elsewhere.
+//        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) // TODO
+//        {
+        BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0, 0, 0));
+        SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
+//        }
+
+        // Create some random complex polygon overlays
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
+        {
+            BlockPos playerPos = Minecraft.getInstance().player.blockPosition();
+            SampleComplexPolygonOverlayFactory.create(jmAPI, playerPos, event.dimension, 256);
+        }
+
+        // Slime chunk Polygon Overlays are created by the ForgeEventListener
+        // as chunks load, so no need to do anything here.
+    }
+
+    /**
+     * Do something when JourneyMap is about to create a Deathpoint.
+     */
+    void onDeathpoint(DeathWaypointEvent event)
+    {
+        // Could cancel the event, which would prevent the Deathpoint from actually being created.
+        // For now, don't do anything.
     }
 
     /**
@@ -69,7 +157,7 @@ class EventListener
             {
 //                if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) //TODO: add a player accepts for waypoints when player accepts is implemented
                 {
-                    SampleWaypointFactory.createBedWaypoint(jmAPI, pos, entity.level.dimension());
+                    SampleWaypointFactory.createBedWaypoint(jmAPI, pos, entity.level().dimension());
                 }
             }
         }
@@ -198,7 +286,7 @@ class EventListener
 
         if (event.getActiveUiState().ui.equals(Context.UI.Minimap))
         {
-            if (((TranslatableComponent) event.getWrappedEntity().getEntityLivingRef().get().getName()).getKey().contains("slime"))
+            if (((TranslatableContents) event.getWrappedEntity().getEntityLivingRef().get().getName()).getKey().contains("slime"))
             {
                 event.getWrappedEntity().setColor(0x0000FF);
                 event.getWrappedEntity().setCustomName("SLIME");
@@ -216,7 +304,7 @@ class EventListener
     {
         if (!chunk.getLevel().isClientSide())
         {
-            return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getLevel().getServer().getWorldData().worldGenSettings().seed(), 987234911L).nextInt(10) == 0;
+            return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getLevel().getServer().getWorldData().worldGenOptions().seed(), 987234911L).nextInt(10) == 0;
         }
         return false;
     }
@@ -224,5 +312,9 @@ class EventListener
     private ResourceLocation getIcon(String string)
     {
         return new ResourceLocation("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + string + ".png");
+    }
+
+    private static String getTicks() {
+        return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
     }
 }

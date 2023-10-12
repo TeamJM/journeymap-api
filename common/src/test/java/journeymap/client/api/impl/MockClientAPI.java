@@ -28,7 +28,6 @@ import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
-import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
 import journeymap.common.api.waypoint.Waypoint;
 import net.minecraft.client.Minecraft;
@@ -44,7 +43,6 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -87,12 +85,6 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
                 new BlockPos(128, 0, 128), null,
                 new AABB(new net.minecraft.core.BlockPos(0, 0, 0), new net.minecraft.core.BlockPos(256, 256, 256)),
                 new Rectangle2D.Double(0, 0, 1240, 960));
-    }
-
-    @Override
-    public void subscribe(String modId, EnumSet<ClientEvent.Type> eventTypes)
-    {
-        // Not implemented
     }
 
     @Override
@@ -222,12 +214,6 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
 
     @Override
     public void removeAllWaypoints(String modId)
-    {
-
-    }
-
-    @Override
-    public void setWorldId(String identifier)
     {
 
     }

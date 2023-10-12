@@ -1,14 +1,15 @@
-package journeymap.client.api.event.fabric;
+package journeymap.client.api.event;
 
 import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.model.IFullscreen;
 import journeymap.client.api.util.UIState;
+import journeymap.common.api.event.impl.ClientEvent;
 import journeymap.common.api.waypoint.Waypoint;
 import net.minecraft.core.BlockPos;
 
 import java.awt.geom.Point2D;
 
-public class PopupMenuEvent extends FabricEvent
+public class PopupMenuEvent extends ClientEvent
 {
     private final ModPopupMenu popupMenu;
     private final Layer layer;
@@ -25,6 +26,7 @@ public class PopupMenuEvent extends FabricEvent
      */
     public PopupMenuEvent(ModPopupMenu popupMenu, Layer layer, IFullscreen fullscreen)
     {
+        super(true);
         this.popupMenu = popupMenu;
         this.layer = layer;
         this.fullscreen = fullscreen;
@@ -43,12 +45,6 @@ public class PopupMenuEvent extends FabricEvent
     public IFullscreen getFullscreen()
     {
         return fullscreen;
-    }
-
-    @Override
-    public boolean isCancelable()
-    {
-        return true;
     }
 
     /**

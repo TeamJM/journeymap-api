@@ -1,5 +1,6 @@
 package journeymap.client.api.event;
 
+import journeymap.common.api.event.impl.ClientEvent;
 import journeymap.common.api.waypoint.Waypoint;
 import net.minecraft.client.Minecraft;
 
@@ -10,7 +11,7 @@ public class WaypointEvent extends ClientEvent
 
     private WaypointEvent(Waypoint waypoint, Context context)
     {
-        super(Type.WAYPOINT, Minecraft.getInstance().level.dimension());
+        super(false, Minecraft.getInstance().level.dimension());
         this.waypoint = waypoint;
         this.context = context;
     }

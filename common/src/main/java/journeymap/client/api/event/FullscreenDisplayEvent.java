@@ -1,19 +1,21 @@
-package journeymap.client.api.event.fabric;
+package journeymap.client.api.event;
 
 import journeymap.client.api.display.CustomToolBarBuilder;
 import journeymap.client.api.display.ThemeButtonDisplay;
 import journeymap.client.api.model.IFullscreen;
+import journeymap.common.api.event.impl.ClientEvent;
 
 /**
  * This event is used for adding buttons to existing tool bars or creating your own toolbars on the fullscreen map.
  */
-public class FullscreenDisplayEvent extends FabricEvent
+public class FullscreenDisplayEvent extends ClientEvent
 {
     private final IFullscreen fullscreen;
     private final ThemeButtonDisplay themeButtonDisplay;
 
     private FullscreenDisplayEvent(IFullscreen fullscreen, ThemeButtonDisplay themeButtonDisplay)
     {
+        super(false);
         this.fullscreen = fullscreen;
         this.themeButtonDisplay = themeButtonDisplay;
     }
