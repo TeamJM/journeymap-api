@@ -24,23 +24,9 @@ import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.client.api.IClientPlugin;
 import journeymap.client.api.JourneyMapPlugin;
-import journeymap.client.api.display.DisplayType;
-import journeymap.client.api.display.Displayable;
-import journeymap.client.api.event.DeathWaypointEvent;
-import journeymap.client.api.event.RegistryEvent;
-import journeymap.client.api.event.WaypointEvent;
-import journeymap.common.api.event.impl.ClientEvent;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.EnumSet;
-
-import static journeymap.common.api.event.impl.ClientEvent.Type.DEATH_WAYPOINT;
-import static journeymap.common.api.event.impl.ClientEvent.Type.MAPPING_STARTED;
-import static journeymap.common.api.event.impl.ClientEvent.Type.MAPPING_STOPPED;
-import static journeymap.common.api.event.impl.ClientEvent.Type.REGISTRY;
 
 /**
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
@@ -52,7 +38,7 @@ import static journeymap.common.api.event.impl.ClientEvent.Type.REGISTRY;
  * The
  */
 @ParametersAreNonnullByDefault
-@JourneyMapPlugin(apiVersion = "2.0")
+@JourneyMapPlugin(apiVersion = "2.0.0")
 public class ExampleJourneymapPlugin implements IClientPlugin
 {
     // API reference
@@ -106,139 +92,6 @@ public class ExampleJourneymapPlugin implements IClientPlugin
     public String getModId()
     {
         return ExampleMod.MODID;
-    }
-
-    /**
-     * Called by JourneyMap on the main Minecraft thread when a {@link ClientEvent} occurs.
-     * Be careful to minimize the time spent in this method so you don't lag the game.
-     * <p>
-     * You must call {@link IClientAPI#subscribe(String, EnumSet)} at some point to subscribe to these events, otherwise this
-     * method will never be called.
-     * <p>
-     * If the event type is {@link ClientEvent.Type#DISPLAY_UPDATE},
-     * this is a signal to {@link IClientAPI#show(Displayable)}
-     * all relevant Displayables for the {@link ClientEvent#dimension} indicated.
-     * (Note: ModWaypoints with persisted==true will already be shown.)
-     *
-     * @param event the event
-     */
-    @Override
-    public void onEvent(ClientEvent event)
-    {
-        try
-        {
-            switch (event.type)
-            {
-                case MAPPING_STARTED:
-                    onMappingStarted(event);
-                    break;
-
-                case MAPPING_STOPPED:
-                    onMappingStopped(event);
-                    break;
-                case WAYPOINT:
-                    onWaypointEvent((WaypointEvent) event);
-                    break;
-                case DEATH_WAYPOINT:
-                    onDeathpoint((DeathWaypointEvent) event);
-                    break;
-                case REGISTRY:
-                    RegistryEvent registryEvent = (RegistryEvent) event;
-                    switch(registryEvent.getRegistryType()) {
-                        case OPTIONS:
-                            this.clientProperties = new ClientProperties();
-                            break;
-                        case INFO_SLOT:
-                            ((RegistryEvent.InfoSlotRegistryEvent)registryEvent)
-                                    .register(getModId(), "Current Millis", 1000, ()-> "Millis: " + System.currentTimeMillis());
-                            ((RegistryEvent.InfoSlotRegistryEvent)registryEvent)
-                                    .register(getModId(), "Current Ticks", 10, ExampleJourneymapPlugin::getTicks);
-                            break;
-                    }
-                    break;
-            }
-        }
-        catch (Throwable t)
-        {
-            ExampleMod.LOGGER.error(t.getMessage(), t);
-        }
-    }
-
-    private static String getTicks() {
-        return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
-    }
-
-    public void onWaypointEvent(WaypointEvent event) {
-        switch(event.getContext()) {
-            case READ:
-                break;
-            case CREATE:
-                break;
-            case UPDATE:
-                break;
-            case DELETED:
-                break;
-        }
-    }
-
-    /**
-     * When mapping has started, generate a bunch of random overlays.
-     *
-     * @param event client event
-     */
-    void onMappingStarted(ClientEvent event)
-    {
-        // Create a bunch of random Image Overlays around the player
-        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Image))
-        {
-            BlockPos pos = Minecraft.getInstance().player.blockPosition();
-            SampleImageOverlayFactory.create(jmAPI, pos, 5, 256, 128);
-        }
-
-        // Create a bunch of random Marker Overlays around the player
-        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
-        {
-            net.minecraft.core.BlockPos pos = Minecraft.getInstance().player.blockPosition();
-            SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
-        }
-
-        // Create a waypoint for the player's bed location.  The ForgeEventListener
-        // will keep it updated if the player sleeps elsewhere.
-//        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) // TODO
-//        {
-        BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0, 0, 0));
-        SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
-//        }
-
-        // Create some random complex polygon overlays
-        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
-        {
-            BlockPos playerPos = Minecraft.getInstance().player.blockPosition();
-            SampleComplexPolygonOverlayFactory.create(jmAPI, playerPos, event.dimension, 256);
-        }
-
-        // Slime chunk Polygon Overlays are created by the ForgeEventListener
-        // as chunks load, so no need to do anything here.
-    }
-
-    /**
-     * When mapping has stopped, remove all overlays
-     *
-     * @param event client event
-     */
-    void onMappingStopped(ClientEvent event)
-    {
-        // Clear everything
-        jmAPI.removeAll(ExampleMod.MODID);
-    }
-
-    /**
-     * Do something when JourneyMap is about to create a Deathpoint.
-     */
-    void onDeathpoint(DeathWaypointEvent event)
-    {
-        // Could cancel the event, which would prevent the Deathpoint from actually being created.
-        // For now, don't do anything.
     }
 
 }
