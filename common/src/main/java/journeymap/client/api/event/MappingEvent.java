@@ -3,6 +3,7 @@ package journeymap.client.api.event;
 import journeymap.common.api.event.impl.ClientEvent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import static journeymap.client.api.event.MappingEvent.Stage.MAPPING_STARTED;
 
@@ -11,12 +12,11 @@ public class MappingEvent extends ClientEvent
     private String worldId;
     private final Stage stage;
 
-    public MappingEvent(boolean cancellable,
-                        Stage stage,
+    public MappingEvent(Stage stage,
                         ResourceKey<Level> dimension,
                         String worldId)
     {
-        super(cancellable, dimension);
+        super(false, dimension);
         this.stage = stage;
         this.worldId = worldId;
     }
@@ -32,10 +32,11 @@ public class MappingEvent extends ClientEvent
     }
 
     /**
-     * Gets the worldId for the current world.
+     * Gets the worldId for the current world. Will return null if no worldId has been set.
      *
      * @return worldId.
      */
+    @Nullable
     public String getWorldId()
     {
         return worldId;
@@ -46,7 +47,7 @@ public class MappingEvent extends ClientEvent
      *
      * @param worldId - the new worldId
      */
-    public void setWorldId(String worldId)
+    public void setWorldId(@Nullable String worldId)
     {
         if (MAPPING_STARTED == this.stage)
         {
