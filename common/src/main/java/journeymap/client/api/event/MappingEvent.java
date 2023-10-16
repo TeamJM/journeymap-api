@@ -7,6 +7,11 @@ import org.jetbrains.annotations.Nullable;
 
 import static journeymap.client.api.event.MappingEvent.Stage.MAPPING_STARTED;
 
+/**
+ * This event fires when mapping starts or stops.
+ * WorldId can be set when mapping starts.
+ * This event is not cancellable.
+ */
 public class MappingEvent extends ClientEvent
 {
     private String worldId;

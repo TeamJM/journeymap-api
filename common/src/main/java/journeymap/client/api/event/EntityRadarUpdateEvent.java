@@ -7,7 +7,8 @@ import journeymap.common.api.event.impl.ClientEvent;
 import javax.annotation.Nullable;
 
 /**
- * This event is fired when Journeymap updates an entity before it is displayed on the map.
+ * This event is fired when JourneyMap updates an entity before it is displayed on the map.
+ * This event is cancellable, when cancelled, it will prevent the entity from being displayed on the map.
  */
 public class EntityRadarUpdateEvent extends ClientEvent
 {

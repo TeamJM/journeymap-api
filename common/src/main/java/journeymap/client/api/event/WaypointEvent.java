@@ -4,6 +4,10 @@ import journeymap.common.api.event.impl.ClientEvent;
 import journeymap.common.api.waypoint.Waypoint;
 import net.minecraft.client.Minecraft;
 
+/**
+ * This event handles all the CRUD operations of a waypoints.
+ * This event is not cancellable.
+ */
 public class WaypointEvent extends ClientEvent
 {
     public final Waypoint waypoint;

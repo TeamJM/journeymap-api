@@ -9,6 +9,11 @@ import net.minecraft.core.BlockPos;
 
 import java.awt.geom.Point2D;
 
+/**
+ * This event is used for adding items to the right click menu on the fullscreen map.
+ * It is fired when a user right-clicks on the fullscreen map before drawing the popup menu.
+ * This event is not cancellable, when cancelled no popup will appear on right click.
+ */
 public class PopupMenuEvent extends ClientEvent
 {
     private final ModPopupMenu popupMenu;
@@ -18,7 +23,8 @@ public class PopupMenuEvent extends ClientEvent
 
     /**
      * This event is used for adding items to the right click menu on the fullscreen map.
-     * It is fired when a user right clicks on the fullscreen map before drawing the popup menu.
+     * It is fired when a user right-clicks on the fullscreen map before drawing the popup menu.
+     * This event is cancellable.
      *
      * @param popupMenu  - The menu builder.
      * @param layer      - The mapping layer which fired the event.
@@ -50,6 +56,7 @@ public class PopupMenuEvent extends ClientEvent
     /**
      * This event is fired when a user right clicks anywhere on the fullscreen map that is not an overlay or waypoint.
      * To target overlays, see {@link journeymap.client.api.display.IOverlayListener#onOverlayMenuPopup(UIState, Point2D.Double, BlockPos, ModPopupMenu)}
+     * This event is cancellable
      */
     public static class FullscreenPopupMenuEvent extends PopupMenuEvent
     {
@@ -62,6 +69,7 @@ public class PopupMenuEvent extends ClientEvent
 
     /**
      * This event is fired when a user right-clicks on a waypoint icon.
+     * This event is cancellable.
      */
     public static class WaypointPopupMenuEvent extends PopupMenuEvent
     {

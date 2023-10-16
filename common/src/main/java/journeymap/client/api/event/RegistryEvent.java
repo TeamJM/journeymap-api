@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 /**
  * Event classes for journeymap registries.
+ * This event is not cancellable.
  */
 public class RegistryEvent extends ClientEvent
 {
