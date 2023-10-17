@@ -1,14 +1,12 @@
 package journeymap.client.api.event;
 
 import journeymap.client.api.model.IBlockInfo;
+import journeymap.common.api.event.impl.ClientEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
 import java.awt.geom.Point2D;
-
-import static journeymap.client.api.event.ClientEvent.Type.MAP_CLICKED;
-import static journeymap.client.api.event.ClientEvent.Type.MAP_DRAGGED;
 
 /**
  * Event classes for the Fullscreen map.
@@ -21,13 +19,13 @@ public class FullscreenMapEvent extends ClientEvent
      * Map clicked event, fired when a user clicks on the map.
      * Can be canceled.
      *
-     * @param type     - The event type.
-     * @param location - The BlockPos of the click.
-     * @param level    - The dimension.
+     * @param cancellable - The event is cancellable.
+     * @param location    - The BlockPos of the click.
+     * @param level       - The dimension.
      */
-    private FullscreenMapEvent(Type type, BlockPos location, ResourceKey<Level> level)
+    private FullscreenMapEvent(boolean cancellable, BlockPos location, ResourceKey<Level> level)
     {
-        super(type, level);
+        super(cancellable, level);
         this.location = location;
     }
 
@@ -63,7 +61,7 @@ public class FullscreenMapEvent extends ClientEvent
          */
         public ClickEvent(Stage stage, BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
         {
-            super(MAP_CLICKED, location, level);
+            super(true, location, level);
             this.stage = stage;
             this.mousePosition = mousePosition;
             this.button = button;
@@ -146,7 +144,7 @@ public class FullscreenMapEvent extends ClientEvent
          */
         public MouseDraggedEvent(Stage stage, BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
         {
-            super(MAP_DRAGGED, location, level);
+            super(true, location, level);
             this.stage = stage;
             this.mousePosition = mousePosition;
             this.button = button;
@@ -225,7 +223,7 @@ public class FullscreenMapEvent extends ClientEvent
          */
         public MouseMoveEvent(ResourceKey<Level> level, IBlockInfo info, Point2D.Double mousePosition)
         {
-            super(Type.MAP_MOUSE_MOVED, info.getBlockPos(), level);
+            super(false, info.getBlockPos(), level);
             this.mousePosition = mousePosition;
             this.info = info;
         }

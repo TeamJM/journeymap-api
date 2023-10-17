@@ -1,18 +1,16 @@
-package journeymap.client.api.event.forge;
+package journeymap.client.api.event;
 
-import journeymap.client.api.event.util.EntityType;
 import journeymap.client.api.model.WrappedEntity;
 import journeymap.client.api.util.UIState;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
+import journeymap.common.api.event.impl.ClientEvent;
 
 import javax.annotation.Nullable;
 
 /**
- * This event is fired when Journeymap updates an entity before it is displayed on the map.
+ * This event is fired when JourneyMap updates an entity before it is displayed on the map.
+ * This event is cancellable, when cancelled, it will prevent the entity from being displayed on the map.
  */
-@Cancelable
-public class EntityRadarUpdateEvent extends Event
+public class EntityRadarUpdateEvent extends ClientEvent
 {
     private final UIState activeUiState;
     private final EntityType entityType;
@@ -20,6 +18,7 @@ public class EntityRadarUpdateEvent extends Event
 
     public EntityRadarUpdateEvent(UIState activeUiState, EntityType entityType, WrappedEntity wrappedEntity)
     {
+        super(true);
         this.activeUiState = activeUiState;
         this.entityType = entityType;
         this.wrappedEntity = wrappedEntity;
@@ -56,4 +55,9 @@ public class EntityRadarUpdateEvent extends Event
         return wrappedEntity;
     }
 
+    public enum EntityType
+    {
+        MOB,
+        PLAYER
+    }
 }

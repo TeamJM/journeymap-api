@@ -24,7 +24,6 @@ import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.client.api.display.Context;
 import journeymap.client.api.display.DisplayType;
 import journeymap.client.api.display.Displayable;
-import journeymap.client.api.event.ClientEvent;
 import journeymap.client.api.util.UIState;
 import journeymap.common.api.waypoint.Waypoint;
 import net.minecraft.resources.ResourceKey;
@@ -34,7 +33,6 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -45,7 +43,7 @@ import java.util.function.Consumer;
 public interface IClientAPI
 {
     String API_OWNER = "journeymap";
-    String API_VERSION = "2.0-SNAPSHOT";
+    String API_VERSION = "2.0.0-SNAPSHOT";
 
     /**
      * Returns the current UIState of the UI specified.
@@ -58,14 +56,6 @@ public interface IClientAPI
     @Nullable
     UIState getUIState(Context.UI ui);
 
-    /**
-     * Subscribes to all of the eventTypes specified. Use EnumSet.noneOf(ClientEvent.Type)
-     * if no event subscriptions are needed. (This is the default).
-     *
-     * @param modId      Mod id
-     * @param eventTypes set of types
-     */
-    void subscribe(String modId, EnumSet<ClientEvent.Type> eventTypes);
 
     /**
      * Add (or update) a displayable object to the player's maps. If you modify a Displayable after it
@@ -203,11 +193,11 @@ public interface IClientAPI
      * This call gets the current user's data path for saving custom addon data specific to the game/world the user is playing in.
      * <p>
      * This is only valid when Journeymap is mapping. Mods ideally should store this value on
-     * {@link ClientEvent.Type#MAPPING_STARTED} event.
+     * {@link journeymap.client.api.event.MappingEvent.Stage#MAPPING_STARTED} event.
      * <p>
      * Note: Will method return null if not in world or not mapping.
      * The path is flushed right after
-     * {@link ClientEvent.Type#MAPPING_STOPPED}
+     * {@link journeymap.client.api.event.MappingEvent.Stage#MAPPING_STOPPED}
      *
      * @param modId The ModId
      * @return a path similar to ./journeymap/data/{sp|mp}/{worldname}/addon-data/{modid}/
@@ -272,20 +262,6 @@ public interface IClientAPI
      * @param modId - The modId
      */
     void removeAllWaypoints(final String modId);
-
-    /**
-     * NOTE: Mod Devs, please only use when connected to specific servers or use the getter to verify. If multiple mods use this hook
-     * it can lead to an infinite loop on the client. Because mapping is restarted and the MAPPING_STARTED is fired again after the worldId is set.
-     * If the worldId is the same on the second firing of the event, it ignores it. But, if another mod changes it, it may be different which would cause a reset loop.
-     * <p>
-     * Sets a custom worldId to identify servers and or worlds when bungeecord style servers send all dims as overworld or such.
-     * This is intended to be used on the {@link ClientEvent.Type#MAPPING_STARTED} event.
-     *
-     * @param identifier - the new worldId
-     * @deprecated due to the inherent risk associated with this setter. This may be switched to a singular event in the future.
-     */
-    @Deprecated
-    void setWorldId(String identifier);
 
     /**
      * Gets the worldId for the current world.

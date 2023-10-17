@@ -2,6 +2,7 @@ package journeymap.client.api.event;
 
 import com.google.common.base.MoreObjects;
 import journeymap.client.api.util.UIState;
+import journeymap.common.api.event.impl.ClientEvent;
 
 /**
  * Indicates a change in the display characteristics of the specified UI.
@@ -21,7 +22,7 @@ public class DisplayUpdateEvent extends ClientEvent
      */
     public DisplayUpdateEvent(UIState uiState)
     {
-        super(Type.DISPLAY_UPDATE, uiState.dimension);
+        super(false, uiState.dimension);
         this.uiState = uiState;
     }
 

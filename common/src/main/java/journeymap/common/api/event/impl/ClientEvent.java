@@ -18,32 +18,42 @@
  *
  */
 
-package journeymap.client.api;
+package journeymap.common.api.event.impl;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 /**
- * Interface used by JourneyMap to initialize client plugins and provide the Client API.
- * <p>
- * Implementation classes must have a no-arg constructor and also have the {@link JourneyMapPlugin} annotation.
+ * Parent class for events propagated by the Client API to IClientPlugin implementations.
  */
-@ParametersAreNonnullByDefault
-public interface IClientPlugin
+public abstract class ClientEvent extends JourneyMapEvent
 {
-    /**
-     * Called by JourneyMap during the init phase of mod loading.  Your implementation
-     * should retain a reference to the IClientAPI passed in, since that is what your plugin
-     * will use to add overlays, etc. to JourneyMap.
-     * <p>
-     * This is also a good time to call {@link journeymap.common.api.event.ClientEventRegistry} to subscribe to any
-     * desired Events.
-     *
-     * @param jmClientApi Client API implementation
-     */
-    void initialize(final IClientAPI jmClientApi);
 
     /**
-     * Used by JourneyMap to associate your mod id with your plugin instance.
+     * World dimension where event occurred.
      */
-    String getModId();
+    public final ResourceKey<Level> dimension;
+
+    /**
+     * Whether event has been cancelled.
+     */
+    private boolean cancelled;
+
+    /**
+     * Constructor.
+     */
+    public ClientEvent(boolean cancellable, ResourceKey<Level> dimension)
+    {
+        super(cancellable);
+        this.dimension = dimension;
+
+    }
+
+    /**
+     * Constructor.
+     */
+    public ClientEvent(boolean cancellable)
+    {
+        this(cancellable, Level.OVERWORLD);
+    }
 }

@@ -9,9 +9,15 @@ import journeymap.client.api.display.IThemeButton;
 import journeymap.client.api.display.IThemeToolBar;
 import journeymap.client.api.display.PolygonOverlay;
 import journeymap.client.api.display.ThemeButtonDisplay;
-import journeymap.client.api.event.forge.EntityRadarUpdateEvent;
-import journeymap.client.api.event.forge.FullscreenDisplayEvent;
+import journeymap.client.api.event.DeathWaypointEvent;
+import journeymap.client.api.event.EntityRadarUpdateEvent;
+import journeymap.client.api.event.FullscreenDisplayEvent;
+import journeymap.client.api.event.MappingEvent;
+import journeymap.client.api.event.RegistryEvent;
+import journeymap.common.api.event.ClientEventRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +29,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.level.ChunkEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
@@ -36,6 +41,8 @@ class ForgeEventListener
     IClientAPI jmAPI;
     HashMap<ChunkPos, PolygonOverlay> slimeChunkOverlays;
 
+    private ClientProperties clientProperties;
+
     /**
      * Constructor.
      *
@@ -45,7 +52,94 @@ class ForgeEventListener
     {
         this.jmAPI = jmAPI;
         this.slimeChunkOverlays = new HashMap<>();
+        ClientEventRegistry.ADDON_BUTTON_DISPLAY_EVENT.subscribe(ExampleMod.MODID, this::onFullscreenAddonButton);
+        ClientEventRegistry.MAP_TYPE_BUTTON_DISPLAY_EVENT.subscribe(ExampleMod.MODID, this::onFullscreenMapTypeButton);
+        ClientEventRegistry.CUSTOM_TOOLBAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onCustomToolbarEvent);
+        ClientEventRegistry.ENTITY_RADAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onRadarEntityUpdateEvent);
+        ClientEventRegistry.MAPPING_EVENT.subscribe(ExampleMod.MODID, this::mappingStageEvent);
+        ClientEventRegistry.DEATH_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onDeathpoint);
+        ClientEventRegistry.REGISTRY_EVENT.subscribe(ExampleMod.MODID, this::registryEvent);
     }
+
+    private void registryEvent(RegistryEvent event)
+    {
+
+        switch (event.getRegistryType())
+        {
+            case OPTIONS -> this.clientProperties = new ClientProperties();
+            case INFO_SLOT ->
+            {
+                ((RegistryEvent.InfoSlotRegistryEvent) event)
+                        .register(ExampleMod.MODID, "Current Millis", 1000, () -> "Millis: " + System.currentTimeMillis());
+                ((RegistryEvent.InfoSlotRegistryEvent) event)
+                        .register(ExampleMod.MODID, "Current Ticks", 10, ForgeEventListener::getTicks);
+            }
+        }
+    }
+
+    void mappingStageEvent(MappingEvent event)
+    {
+        if (event.getStage() == MappingEvent.Stage.MAPPING_STARTED)
+        {
+            onMappingStarted(event);
+        }
+        else
+        {
+            // When mapping has stopped, remove all overlays
+            // Clear everything
+            jmAPI.removeAll(ExampleMod.MODID);
+        }
+    }
+
+    /**
+     * When mapping has started, generate a bunch of random overlays.
+     *
+     * @param event client event
+     */
+    void onMappingStarted(MappingEvent event)
+    {
+        // Create a bunch of random Image Overlays around the player
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Image))
+        {
+            BlockPos pos = Minecraft.getInstance().player.blockPosition();
+            SampleImageOverlayFactory.create(jmAPI, pos, 5, 256, 128);
+        }
+
+        // Create a bunch of random Marker Overlays around the player
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Marker))
+        {
+            net.minecraft.core.BlockPos pos = Minecraft.getInstance().player.blockPosition();
+            SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
+        }
+
+        // Create a waypoint for the player's bed location.  The ForgeEventListener
+        // will keep it updated if the player sleeps elsewhere.
+//        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) // TODO
+//        {
+        BlockPos pos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0, 0, 0));
+        SampleWaypointFactory.createBedWaypoint(jmAPI, pos, event.dimension);
+//        }
+
+        // Create some random complex polygon overlays
+        if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
+        {
+            BlockPos playerPos = Minecraft.getInstance().player.blockPosition();
+            SampleComplexPolygonOverlayFactory.create(jmAPI, playerPos, event.dimension, 256);
+        }
+
+        // Slime chunk Polygon Overlays are created by the ForgeEventListener
+        // as chunks load, so no need to do anything here.
+    }
+
+    /**
+     * Do something when JourneyMap is about to create a Deathpoint.
+     */
+    void onDeathpoint(DeathWaypointEvent event)
+    {
+        // Could cancel the event, which would prevent the Deathpoint from actually being created.
+        // For now, don't do anything.
+    }
+
 
     /**
      * Listen for Forge PlayerSleepInBedEvents, create a waypoint for the bed.
@@ -131,8 +225,6 @@ class ForgeEventListener
      *
      * @param event - The event
      */
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onFullscreenAddonButton(FullscreenDisplayEvent.AddonButtonDisplayEvent event)
     {
         ThemeButtonDisplay buttonDisplay = event.getThemeButtonDisplay();
@@ -160,7 +252,7 @@ class ForgeEventListener
      *
      * @param event - the event.
      */
-    @OnlyIn(Dist.CLIENT)
+
     public void onCustomToolbarEvent(FullscreenDisplayEvent.CustomToolbarEvent event)
     {
         CustomToolBarBuilder barBuilder = event.getCustomToolBarBuilder();
@@ -187,8 +279,6 @@ class ForgeEventListener
         bar4.setLayoutHorizontal(startX, bar.getHeight() * 5, 3, true);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRadarEntityUpdateEvent(EntityRadarUpdateEvent event)
     {
 
@@ -220,5 +310,10 @@ class ForgeEventListener
     private ResourceLocation getIcon(String string)
     {
         return new ResourceLocation("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + string + ".png");
+    }
+
+    private static String getTicks()
+    {
+        return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
     }
 }

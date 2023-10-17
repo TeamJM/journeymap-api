@@ -1,9 +1,12 @@
 package journeymap.client.api.event;
 
+import journeymap.common.api.event.impl.ClientEvent;
+
 import java.util.function.Supplier;
 
 /**
  * Event classes for journeymap registries.
+ * This event is not cancellable.
  */
 public class RegistryEvent extends ClientEvent
 {
@@ -16,7 +19,7 @@ public class RegistryEvent extends ClientEvent
      */
     private RegistryEvent(RegistryType registryType)
     {
-        super(Type.REGISTRY);
+        super(false);
         this.registryType = registryType;
     }
 
