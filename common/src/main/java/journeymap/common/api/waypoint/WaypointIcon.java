@@ -17,7 +17,7 @@ public class WaypointIcon
     private Double displayHeight;
 
     @Since(1.0)
-    private ResourceLocation resourceLocation;
+    private String resourceLocation;
 
     @Since(1.0)
     private Integer color = -1;
@@ -48,7 +48,7 @@ public class WaypointIcon
      */
     public WaypointIcon(ResourceLocation resourceLocation)
     {
-        this.resourceLocation = resourceLocation;
+        this.resourceLocation = resourceLocation.toString();
         this.opacity = 1f;
     }
 
@@ -76,7 +76,7 @@ public class WaypointIcon
      */
     public WaypointIcon(ResourceLocation resourceLocation, int textureWidth, int textureHeight, int color, float opacity)
     {
-        this.resourceLocation = resourceLocation;
+        this.resourceLocation = resourceLocation.toString();
         this.textureWidth = Math.max(1, textureWidth);
         this.textureHeight = Math.max(1, textureHeight);
         setDisplayWidth(this.textureWidth);
@@ -248,7 +248,7 @@ public class WaypointIcon
 
     public ResourceLocation getResourceLocation()
     {
-        return resourceLocation;
+        return ResourceLocation.tryParse(resourceLocation);
     }
 
     /**
