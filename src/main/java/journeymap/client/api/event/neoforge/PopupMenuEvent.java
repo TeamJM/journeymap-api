@@ -1,17 +1,17 @@
-package journeymap.client.api.event.forge;
+package journeymap.client.api.event.neoforge;
 
 import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.display.Waypoint;
 import journeymap.client.api.model.IFullscreen;
 import journeymap.client.api.util.UIState;
 import net.minecraft.core.BlockPos;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
 import java.awt.geom.Point2D;
 
-@Cancelable
-public class PopupMenuEvent extends Event
+
+public class PopupMenuEvent extends Event implements ICancellableEvent
 {
     private final ModPopupMenu popupMenu;
     private final Layer layer;

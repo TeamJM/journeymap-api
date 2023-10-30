@@ -1,9 +1,10 @@
-package journeymap.client.api.event.forge;
+package journeymap.client.api.event.neoforge;
 
 import journeymap.client.api.display.CustomToolBarBuilder;
 import journeymap.client.api.display.ThemeButtonDisplay;
 import journeymap.client.api.model.IFullscreen;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+
 
 /**
  * This event is used for adding buttons to existing tool bars or creating your own toolbars on the fullscreen map.
@@ -71,6 +72,7 @@ public class FullscreenDisplayEvent extends Event
 
         private final CustomToolBarBuilder customToolBarBuilder;
         private final IFullscreen fullscreen;
+
         public CustomToolbarEvent(IFullscreen fullscreen, CustomToolBarBuilder customToolBarBuilder)
         {
             this.fullscreen = fullscreen;

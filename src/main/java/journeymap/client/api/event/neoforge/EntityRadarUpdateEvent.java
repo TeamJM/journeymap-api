@@ -1,17 +1,17 @@
-package journeymap.client.api.event.forge;
+package journeymap.client.api.event.neoforge;
 
 import journeymap.client.api.model.WrappedEntity;
 import journeymap.client.api.util.UIState;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
 import javax.annotation.Nullable;
 
 /**
  * This event is fired when Journeymap updates an entity before it is displayed on the map.
  */
-@Cancelable
-public class EntityRadarUpdateEvent extends Event
+
+public class EntityRadarUpdateEvent extends Event implements ICancellableEvent
 {
     private final UIState activeUiState;
     private final EntityType entityType;

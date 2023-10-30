@@ -17,30 +17,26 @@
  *  - Use code or artifacts from the repository in any way not explicitly granted by this license.
  *
  */
-
 /* Repos */
 buildscript {
     repositories {
-        maven {
-            name = "forge"
-            url = "https://maven.minecraftforge.net"
-        }
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+
     }
 }
 
 /* Gradle Plugins */
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'net.minecraftforge.gradle'
+plugins {
+    id 'net.neoforged.gradle.userdev' version '[7.0.5,)'
+    id 'net.neoforged.gradle.mixin' version '[7.0.5,)'
+}
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-apply plugin: 'signing'
+
 
 group 'info.journeymap'
 
@@ -60,30 +56,26 @@ repositories {
 }
 
 /* ForgeGradle spec for Minecraft */
-minecraft {
-    mappings channel: project.channel, version: project.mappings
-    runs {
-        client = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'info'
-            workingDirectory project.file('run/client').canonicalPath
-            source sourceSets.main
-        }
-        server = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
-        }
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'info'
+        modSource project.sourceSets.main
+    }
+
+    client {
+        workingDirectory project.file('run/client')
+    }
+
+    server {
+        programArgument '--nogui'
+        workingDirectory project.file('run/server')
     }
 }
+
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.loader_version}"
-    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
+    implementation "net.neoforged:neoforge:${loader_version}"
+//    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
 }
 /* Replace tokens in resources files */
 processResources
@@ -164,30 +156,6 @@ artifacts {
     archives modJar
     archives javadocJar
     archives sourcesJar
-}
-
-def bintrayUser = project.findProperty("bintray.user") ?: System.getenv("BINTRAY_USER")
-def bintrayKey = project.findProperty("bintray.password") ?: System.getenv("BINTRAY_PASSWORD")
-
-if (project.hasProperty("production")) {
-    // Bintray is _only_ for releases, not snapshots
-    bintray {
-        user = bintrayUser
-        key = bintrayKey
-
-        pkg {
-            name = "api"
-            repo = "JourneyMap"
-            userOrg = "teamjm"
-
-            publications = ["maven"]
-
-            version {
-                name = project.version
-                released = new Date()
-            }
-        }
-    }
 }
 
 publishing {
