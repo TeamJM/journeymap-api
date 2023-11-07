@@ -18,6 +18,6 @@ API Mod for JourneyMap.
 '''
 
 [[dependencies.journeymap_api]]
-modId = "forge"
+modId = "neoforge"
 mandatory = true
-versionRange = "[46.0.0,)"
+versionRange="[1.0.0,)"
