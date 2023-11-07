@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[46,)"
+loaderVersion = "[1,)"
 issueTrackerURL = "https://github.com/TeamJM/journeymap-api/issues" #optional
 license = "All rights reserved"
 
