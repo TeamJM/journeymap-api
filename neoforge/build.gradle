@@ -18,22 +18,12 @@
  *
  */
 
-/* Repos */
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-}
-
 plugins {
-    id 'net.neoforged.gradle.userdev' version '[7.0.5,)'
+    id "java-library"
+    id "idea"
+    id "maven-publish"
+    id 'net.neoforged.gradle.userdev' version '[7.0.45,)'
 }
-/* Gradle Plugins */
-
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
 
 group 'info.journeymap'
 
@@ -134,9 +124,14 @@ javadoc {
     title = project.title_javadoc
 }
 
-tasks.withType(JavaCompile).configureEach {
+TaskCollection.metaClass.excludingNeoTasks = { ->
+    delegate.matching { !it.name.startsWith("neo") }
+}
+
+tasks.withType(JavaCompile).excludingNeoTasks().configureEach {
     source(project(":common").sourceSets.main.allSource)
 }
+
 tasks.withType(Javadoc).configureEach {
     source(project(":common").sourceSets.main.allJava)
 }

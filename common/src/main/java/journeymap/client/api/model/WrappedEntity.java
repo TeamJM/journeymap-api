@@ -5,7 +5,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
@@ -28,7 +27,7 @@ public interface WrappedEntity
      *
      * @return The entity reference.
      */
-    WeakReference<LivingEntity> getEntityLivingRef();
+    WeakReference<Entity> getEntityRef();
 
     /**
      * The entity id, typically a UUID string.

@@ -15,5 +15,12 @@ pluginManagement {
         }
     }
 }
-rootProject.name = 'Journeymap'
-include("common", "forge", "fabric", "neoforge")
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
+}
+
+rootProject.name = 'journeymap-api'
+include("common")
+include("fabric")
+include("forge")
+include("neoforge")

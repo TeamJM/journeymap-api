@@ -5,6 +5,7 @@ import journeymap.client.api.display.ModPopupMenu;
 import journeymap.client.api.event.DeathWaypointEvent;
 import journeymap.client.api.event.DisplayUpdateEvent;
 import journeymap.client.api.event.EntityRadarUpdateEvent;
+import journeymap.client.api.event.EntityRegistrationEvent;
 import journeymap.client.api.event.FullscreenDisplayEvent;
 import journeymap.client.api.event.FullscreenMapEvent;
 import journeymap.client.api.event.MappingEvent;
@@ -110,7 +111,7 @@ public class ClientEventRegistry
 
     /**
      * This event is used for adding buttons to the right panel on the fullscreen map.
-     * This event is not cancellable
+     * This event is not cancellable.
      */
     public static final Event<FullscreenDisplayEvent.AddonButtonDisplayEvent> ADDON_BUTTON_DISPLAY_EVENT = EventFactory.create(FullscreenDisplayEvent.AddonButtonDisplayEvent.class);
 
@@ -119,5 +120,11 @@ public class ClientEventRegistry
      * This event is cancellable, when cancelled, it will prevent the entity from being displayed on the map.
      */
     public static final Event<EntityRadarUpdateEvent> ENTITY_RADAR_UPDATE_EVENT = EventFactory.create(EntityRadarUpdateEvent.class);
+
+    /**
+     * This event is fired very early in mod loading so that JourneyMap has a handle on possible entities to display on the map
+     * This event is not cancellable.
+     */
+    public static final Event<EntityRegistrationEvent> ENTITY_REGISTRATION_EVENT = EventFactory.create(EntityRegistrationEvent.class);
 
 }

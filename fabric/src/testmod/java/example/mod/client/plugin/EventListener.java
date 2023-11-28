@@ -286,7 +286,7 @@ class EventListener
 
         if (event.getActiveUiState().ui.equals(Context.UI.Minimap))
         {
-            if (((TranslatableContents) event.getWrappedEntity().getEntityLivingRef().get().getName()).getKey().contains("slime"))
+            if (((TranslatableContents) event.getWrappedEntity().getEntityRef().get().getName()).getKey().contains("slime"))
             {
                 event.getWrappedEntity().setColor(0x0000FF);
                 event.getWrappedEntity().setCustomName("SLIME");

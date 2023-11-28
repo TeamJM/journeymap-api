@@ -284,7 +284,7 @@ class ForgeEventListener
 
         if (event.getActiveUiState().ui.equals(Context.UI.Minimap))
         {
-            if (((Component) event.getWrappedEntity().getEntityLivingRef().get().getName()).getString().contains("slime"))
+            if (((Component) event.getWrappedEntity().getEntityRef().get().getName()).getString().contains("slime"))
             {
                 event.getWrappedEntity().setColor(0x0000FF);
                 event.getWrappedEntity().setCustomName("SLIME");

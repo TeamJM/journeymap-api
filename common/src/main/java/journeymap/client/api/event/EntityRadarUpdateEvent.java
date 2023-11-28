@@ -46,7 +46,7 @@ public class EntityRadarUpdateEvent extends ClientEvent
     }
 
     /**
-     * Gets the wrapped entity, modifying the LivingEntity itself will not change anything.
+     * Gets the wrapped entity, modifying the Entity itself will not change anything.
      *
      * @return - The wrapped entity.
      */

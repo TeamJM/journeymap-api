@@ -18,7 +18,6 @@ import journeymap.common.api.event.ClientEventRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -284,7 +283,7 @@ class ForgeEventListener
 
         if (event.getActiveUiState().ui.equals(Context.UI.Minimap))
         {
-            if (((Component) event.getWrappedEntity().getEntityLivingRef().get().getName()).getString().contains("slime"))
+            if ((event.getWrappedEntity().getEntityRef().get().getName()).getString().contains("slime"))
             {
                 event.getWrappedEntity().setColor(0x0000FF);
                 event.getWrappedEntity().setCustomName("SLIME");
