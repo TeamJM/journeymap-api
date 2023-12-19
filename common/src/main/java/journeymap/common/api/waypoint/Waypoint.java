@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.awt.Color;
 import java.util.Collection;
@@ -64,37 +65,13 @@ public class Waypoint
      * The X.
      */
     @Since(1)
-    protected int x;
-
-    /**
-     * The Y.
-     */
-    @Since(1)
-    protected int y;
-
-    /**
-     * The Z.
-     */
-    @Since(1)
-    protected int z;
+    protected WaypointPos pos;
 
     /**
      * The red.
      */
     @Since(1)
-    protected int red;
-
-    /**
-     * The green.
-     */
-    @Since(1)
-    protected int green;
-
-    /**
-     * The blue.
-     */
-    @Since(1)
-    protected int blue;
+    protected int color;
 
     /**
      * The Type.
@@ -131,30 +108,35 @@ public class Waypoint
     /**
      * This constructor is for internal use only. Will cause problems when using it.
      */
+    @ApiStatus.Internal
     protected Waypoint()
     {
         this.guid = UUID.randomUUID().toString();
     }
 
+    /**
+     * This constructor is for internal use only. Will cause problems when using it.
+     */
+    @ApiStatus.Internal
+    protected Waypoint(String guid)
+    {
+        this.guid = guid;
+    }
+
+    @ApiStatus.Internal
     protected Waypoint(Waypoint original)
     {
         this(original.name,
-                original.x,
-                original.y,
-                original.z,
+                original.pos,
                 original.settings.enable,
-                original.red,
-                original.green,
-                original.blue,
+                original.color,
                 original.type,
                 original.origin,
                 original.dimensions == null || original.dimensions.isEmpty() ? null : original.dimensions.first(),
                 original.dimensions,
                 original.settings.showDeviation,
                 original.icon != null ? new WaypointIcon(original.icon) : null);
-        this.x = original.x;
-        this.y = original.y;
-        this.z = original.z;
+        this.pos = original.pos;
         this.modId = original.modId;
     }
 
@@ -162,13 +144,9 @@ public class Waypoint
     {
         this(
                 builder.name,
-                builder.x,
-                builder.y,
-                builder.z,
+                builder.pos,
                 builder.enabled,
-                builder.red,
-                builder.green,
-                builder.blue,
+                builder.color,
                 builder.type,
                 builder.origin,
                 builder.currentDimension,
@@ -180,14 +158,11 @@ public class Waypoint
         this.displayId = builder.displayId == null ? (this.modId + ":" + this.id) : builder.displayId;
     }
 
+
     private Waypoint(String name,
-                     int x,
-                     int y,
-                     int z,
+                     WaypointPos pos,
                      boolean enable,
-                     int red,
-                     int green,
-                     int blue,
+                     int color,
                      WaypointType type,
                      String origin,
                      String currentDimension,
@@ -198,7 +173,7 @@ public class Waypoint
         this.guid = UUID.randomUUID().toString();
         if (name == null)
         {
-            name = createName(x, z);
+            name = createName(pos);
         }
 
         if (dimensions == null)
@@ -215,16 +190,14 @@ public class Waypoint
             this.dimensions.add(currentDimension);
         }
         this.name = name;
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
+        this.color = color;
         this.type = type;
         this.origin = origin;
         this.persistent = true;
 
         if (settings == null)
         {
-            this.settings = new WaypointSettings();
+            this.settings = new WaypointSettings(true, false);
         }
 
         settings.setEnable(enable);
@@ -240,7 +213,8 @@ public class Waypoint
                 case Death -> this.setIcon(new WaypointIcon(DEFAULT_ICON_DEATH));
             }
         }
-        setLocation(x, y, z, currentDimension);
+        this.pos = pos;
+        setLocation(pos.x, pos.y, pos.z, currentDimension);
     }
 
 
@@ -262,9 +236,9 @@ public class Waypoint
         }
     }
 
-    private static String createName(int x, int z)
+    private static String createName(WaypointPos pos)
     {
-        return String.format("%s, %s", x, z);
+        return String.format("%s, %s", pos.x, pos.y);
     }
 
     public void markDirty()
@@ -283,6 +257,15 @@ public class Waypoint
         return id;
     }
 
+    public String getVersion()
+    {
+        return version;
+    }
+
+    public String getModId()
+    {
+        return modId;
+    }
 
     /**
      * This is a static ID used for group tracking, primary key.
@@ -312,70 +295,77 @@ public class Waypoint
         this.setY(pos.getY());
     }
 
+    public WaypointPos getPos()
+    {
+        return pos;
+    }
+
+    public void setPos(WaypointPos pos)
+    {
+        this.pos = pos;
+    }
+
     public int getX()
     {
-        return x;
+        return this.pos.x;
     }
 
     public void setX(int x)
     {
-        this.x = x;
+        this.pos.setX(x);
         this.markDirty();
     }
 
     public int getY()
     {
-        return y;
+        return this.pos.y;
     }
 
     public void setY(int y)
     {
-        this.y = y;
+        this.pos.setY(y);
         this.markDirty();
     }
 
     public int getZ()
     {
-        return z;
+        return this.pos.z;
     }
 
     public void setZ(int z)
     {
-        this.z = z;
+        this.pos.setZ(z);
         this.markDirty();
     }
 
     public int getRed()
     {
-        return red;
+        return (this.color >> 16) & 0xFF;
     }
 
     public void setRed(int red)
     {
-        this.red = red;
-        this.markDirty();
+        this.updateColors(red, getGreen(), getBlue());
     }
 
     public int getGreen()
     {
-        return green;
+        return (this.color >> 8) & 0xFF;
     }
 
     public void setGreen(int green)
     {
-        this.green = green;
-        this.markDirty();
+        this.updateColors(getRed(), green, getBlue());
     }
 
     public int getBlue()
     {
-        return blue;
+        return (this.color) & 0xFF;
     }
 
     public void setBlue(int blue)
     {
-        this.blue = blue;
-        this.markDirty();
+        this.updateColors(getRed(), getGreen(), blue);
     }
 
     public WaypointType getType()
@@ -455,32 +445,36 @@ public class Waypoint
      */
     public Waypoint setLocation(int x, int y, int z, String currentDimension)
     {
-        this.x = ("minecraft:the_nether".equalsIgnoreCase(currentDimension)) ? x * 8 : x;
-        this.y = y;
-        this.z = ("minecraft:the_nether".equalsIgnoreCase(currentDimension)) ? z * 8 : z;
+        this.pos.setX(("minecraft:the_nether".equalsIgnoreCase(currentDimension)) ? x * 8 : x);
+        this.pos.setY(y);
+        this.pos.setZ(("minecraft:the_nether".equalsIgnoreCase(currentDimension)) ? z * 8 : z);
         this.markDirty();
         return this;
     }
 
     private void updateId()
     {
-        String newId = String.format("%s_%s,%s,%s", this.name, this.x, this.y, this.z);
+        String newId = String.format("%s_%s,%s,%s", this.name, this.pos.x, this.pos.y, this.pos.z);
         this.id = newId.replaceAll(CSS_SAFE_PATTERN.pattern(), "-");
     }
 
     public int getColor()
     {
-        return ((0xFF) << 24) |
-                ((this.red & 0xFF) << 16) |
-                ((this.green & 0xFF) << 8) |
-                ((this.blue & 0xFF));
+        return this.color;
     }
 
     public void setColor(int color)
     {
-        this.red = (color >> 16) & 0xFF;
-        this.green = (color >> 8) & 0xFF;
-        this.blue = (color) & 0xFF;
+        this.color = color;
+    }
+
+    private void updateColors(int red, int green, int blue)
+    {
+        this.color = ((0xFF) << 24) |
+                ((red & 0xFF) << 16) |
+                ((green & 0xFF) << 8) |
+                ((blue & 0xFF));
+        this.markDirty();
     }
 
     @Override
@@ -502,27 +496,19 @@ public class Waypoint
         {
             return false;
         }
-        if (green != waypoint.green)
+        if (color != waypoint.color)
         {
             return false;
         }
-        if (blue != waypoint.blue)
+        if (pos.x != waypoint.pos.x)
         {
             return false;
         }
-        if (red != waypoint.red)
+        if (pos.y != waypoint.pos.y)
         {
             return false;
         }
-        if (x != waypoint.x)
-        {
-            return false;
-        }
-        if (y != waypoint.y)
-        {
-            return false;
-        }
-        if (z != waypoint.z)
+        if (pos.z != waypoint.pos.z)
         {
             return false;
         }
@@ -567,12 +553,8 @@ public class Waypoint
         private final String modId;
         private String name;
         private boolean persistent = true;
-        private Integer x;
-        private Integer y;
-        private Integer z;
-        private Integer red;
-        private Integer green;
-        private Integer blue;
+        private WaypointPos pos;
+        private Integer color;
         private WaypointType type;
         private String origin;
         private WaypointSettings settings;
@@ -658,9 +640,7 @@ public class Waypoint
 
         public Builder withPos(int x, int y, int z)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.pos = new WaypointPos(x, y, z);
             return this;
         }
 
@@ -669,9 +649,10 @@ public class Waypoint
             return withPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
         }
 
-        public Builder withColorInt(int color)
+        public Builder withColor(int color)
         {
-            return withRgb((color >> 16) & 0xFF, (color >> 8) & 0xFF, (color) & 0xFF);
+            this.color = color;
+            return this;
         }
 
         public Builder withColor(Color color)
@@ -681,9 +662,11 @@ public class Waypoint
 
         public Builder withRgb(int red, int green, int blue)
         {
-            this.red = red;
-            this.blue = blue;
-            this.green = green;
+            this.color = ((0xFF) << 24) |
+                    ((red & 0xFF) << 16) |
+                    ((green & 0xFF) << 8) |
+                    ((blue & 0xFF));
+
             return this;
         }
 
@@ -695,7 +678,7 @@ public class Waypoint
 
         private void validate()
         {
-            if (x == null || y == null || z == null)
+            if (this.pos == null)
             {
                 throw new RuntimeException("Must provide waypoint position.");
             }
@@ -713,7 +696,7 @@ public class Waypoint
             this.origin = this.origin == null ? this.modId : this.origin;
 
             // if no color provided, set to random.
-            if (red == null || green == null || blue == null)
+            if (color == null)
             {
                 Random random = new Random();
                 int r = random.nextInt(255);

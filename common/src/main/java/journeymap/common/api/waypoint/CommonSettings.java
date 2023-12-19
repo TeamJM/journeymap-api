@@ -4,6 +4,12 @@ import com.google.gson.annotations.Since;
 
 public class CommonSettings
 {
+
+    public CommonSettings(boolean enable)
+    {
+        this.enable = enable;
+    }
+
     /**
      * The Enable.
      */

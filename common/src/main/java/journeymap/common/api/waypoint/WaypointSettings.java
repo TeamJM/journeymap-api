@@ -4,6 +4,13 @@ import com.google.gson.annotations.Since;
 
 public class WaypointSettings extends CommonSettings
 {
+
+    public WaypointSettings(boolean enable, boolean showDeviation)
+    {
+        super(enable);
+        this.showDeviation = showDeviation;
+    }
+
     @Since(1)
     protected boolean showDeviation = false;
 

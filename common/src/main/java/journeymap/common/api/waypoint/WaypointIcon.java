@@ -5,8 +5,10 @@ import com.google.common.base.Objects;
 import com.google.gson.annotations.Since;
 import journeymap.client.api.display.Displayable;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.ApiStatus;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class WaypointIcon
 {
@@ -77,12 +79,36 @@ public class WaypointIcon
     public WaypointIcon(ResourceLocation resourceLocation, int textureWidth, int textureHeight, int color, float opacity)
     {
         this.resourceLocation = resourceLocation.toString();
-        this.textureWidth = Math.max(1, textureWidth);
-        this.textureHeight = Math.max(1, textureHeight);
+        setTextureWidth(this.textureWidth);
+        setTextureHeight(this.textureHeight);
         setDisplayWidth(this.textureWidth);
         setDisplayHeight(this.textureHeight);
         setColor(color);
         setOpacity(opacity);
+    }
+
+    @ApiStatus.Internal
+    public WaypointIcon(ResourceLocation resourceLocation,
+                        Optional<Double> displayWidth,
+                        Optional<Double> displayHeight,
+                        Optional<Integer> rotation,
+                        Optional<Boolean> useBeaconColor,
+                        Optional<Integer> textureWidth,
+                        Optional<Integer> textureHeight,
+                        Optional<Integer> color,
+                        Optional<Float> opacity)
+    {
+        this.resourceLocation = resourceLocation.toString();
+        textureWidth.ifPresent(this::setDisplayWidth);
+        textureHeight.ifPresent(this::setDisplayHeight);
+        rotation.ifPresent(this::setRotation);
+        useBeaconColor.ifPresent(this::setUseBeaconColor);
+        color.ifPresent(this::setColor);
+        opacity.ifPresent(this::setOpacity);
+        textureHeight.ifPresent(this::setTextureHeight);
+        textureWidth.ifPresent(this::setTextureWidth);
+        displayWidth.ifPresent(this::setDisplayWidth);
+        displayHeight.ifPresent(this::setDisplayHeight);
     }
 
     public WaypointIcon(WaypointIcon original)
@@ -269,6 +295,17 @@ public class WaypointIcon
     public int getTextureHeight()
     {
         return textureHeight;
+    }
+
+    public void setTextureWidth(Integer textureWidth)
+    {
+        this.textureWidth = Math.max(1, textureWidth);
+    }
+
+
+    public void setTextureHeight(Integer textureHeight)
+    {
+        this.textureHeight = Math.max(1, textureHeight);
     }
 
     @Override

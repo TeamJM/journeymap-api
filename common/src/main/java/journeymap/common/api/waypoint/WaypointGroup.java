@@ -30,7 +30,7 @@ public class WaypointGroup
         this.waypoints = new ArrayList<>();
         this.modId = modId;
         this.name = name;
-        this.settings = (GroupSettings) new GroupSettings().setEnable(true).setDirty(true);
+        this.settings = (GroupSettings) new GroupSettings(true).setDirty(true);
     }
 
     public WaypointGroup addWaypoint(Waypoint waypoint)

@@ -1,9 +1,11 @@
 package journeymap.common.api.waypoint;
 
+import net.minecraft.util.StringRepresentable;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public enum WaypointType
+public enum WaypointType implements StringRepresentable
 {
     /**
      * Normal type.
@@ -15,14 +17,14 @@ public enum WaypointType
     Death("Death");
 
     final String value;
-    private static final Map<String, WaypointType> values;
+    public static final Map<String, WaypointType> types;
 
     static
     {
-        values = new HashMap<>();
+        types = new HashMap<>();
         for (WaypointType o : values())
         {
-            values.put(o.name(), o);
+            types.put(o.name(), o);
         }
     }
 
@@ -33,11 +35,17 @@ public enum WaypointType
 
     public static WaypointType from(String string)
     {
-        return values.get(string);
+        return types.get(string);
     }
 
     public String getValue()
     {
         return value;
+    }
+
+    @Override
+    public String getSerializedName()
+    {
+        return this.value;
     }
 }
