@@ -23,7 +23,7 @@ package example.mod.client.plugin;
 import example.mod.ExampleMod;
 import journeymap.client.api.IClientAPI;
 import journeymap.common.api.waypoint.Waypoint;
-import journeymap.common.api.waypoint.WaypointIcon;
+import journeymap.common.api.waypoint.WaypointFactory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -48,18 +48,24 @@ class SampleWaypointFactory
         try
         {
             // Icon for waypoint
-            WaypointIcon bedIcon = new WaypointIcon(new ResourceLocation("examplemod:images/bed.png"), 32, 32);
-            bedIcon.setColor(0x00ffff);
-            bedIcon.setUseBeaconColor(false);
+//            WaypointIcon bedIcon = new WaypointIcon(new ResourceLocation("examplemod:images/bed.png"), 32, 32);
+//            bedIcon.setColor(0x00ffff);
+//            bedIcon.setUseBeaconColor(false);
+//
+//            // Waypoint itself
+//            bedWaypoint = new Waypoint.Builder(ExampleMod.MODID)
+//                    .withDisplayId("bed_" + dimension.registry().getPath())
+//                    .withBlockPos(bedLocation)
+//                    .withColor(Color.BLUE)
+//                    .withDimension(dimension)
+//                    .withIcon(bedIcon)
+//                    .build();
 
-            // Waypoint itself
-            bedWaypoint = new Waypoint.Builder(ExampleMod.MODID)
-                    .withDisplayId("bed_" + dimension.registry().getPath())
-                    .withBlockPos(bedLocation)
-                    .withColor(Color.BLUE)
-                    .withDimension(dimension)
-                    .withIcon(bedIcon)
-                    .build();
+            bedWaypoint = WaypointFactory.createClientWaypoint(ExampleMod.MODID, bedLocation, dimension);
+            bedWaypoint.setColor(Color.BLUE.getRGB());
+            bedWaypoint.setIconResourceLoctaion(new ResourceLocation("examplemod:images/bed.png"));
+            bedWaypoint.setIconTextureSize(32, 32);
+            bedWaypoint.setIconColor(0x00ffff);;
             // Add or update
             jmAPI.addWaypoint(ExampleMod.MODID, bedWaypoint);
 

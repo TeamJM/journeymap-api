@@ -225,12 +225,12 @@ public interface IClientAPI
     /**
      * Gets the waypoint by display Id for the modId provided.
      *
-     * @param modId     - The modId
-     * @param displayId - The display ID
+     * @param modId - The modId
+     * @param guid  - The guid
      * @return The waypoint.
      */
     @Nullable
-    Waypoint getWaypoint(final String modId, final String displayId);
+    Waypoint getWaypoint(final String modId, final String guid);
 
     /**
      * Gets all waypoints for the provided modId
