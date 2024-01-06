@@ -2,13 +2,15 @@ package journeymap.common.api.waypoint;
 
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.List;
+import java.util.Map;
 
 public interface WaypointGroup
 {
-    List<Waypoint> getWaypoints();
+    Map<String, Waypoint> getWaypoints();
 
     void addWaypoint(Waypoint waypoint);
+
+    Waypoint getWaypoint(String guid);
 
     String getGuid();
 

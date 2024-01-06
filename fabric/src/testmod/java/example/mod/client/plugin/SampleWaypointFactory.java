@@ -61,7 +61,7 @@ class SampleWaypointFactory
 //                    .withIcon(bedIcon)
 //                    .build();
 
-            bedWaypoint = WaypointFactory.createClientWaypoint(ExampleMod.MODID, bedLocation, dimension);
+            bedWaypoint = WaypointFactory.createClientWaypoint(ExampleMod.MODID, bedLocation, dimension, true);
             bedWaypoint.setColor(Color.BLUE.getRGB());
             bedWaypoint.setIconResourceLoctaion(new ResourceLocation("examplemod:images/bed.png"));
             bedWaypoint.setIconTextureSize(32, 32);
