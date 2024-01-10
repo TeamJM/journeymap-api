@@ -211,7 +211,7 @@ public interface IClientAPI
      *
      * @return - List of all waypoints.
      */
-    List<Waypoint> getAllWaypoints();
+    List<? extends Waypoint> getAllWaypoints();
 
     /**
      * Gets all waypoints for the provided dimension from all of journeymap's waypoints.
@@ -220,7 +220,7 @@ public interface IClientAPI
      * @param dim - The dimension
      * @return The waypoints.
      */
-    List<Waypoint> getAllWaypoints(ResourceKey<Level> dim);
+    List<? extends Waypoint> getAllWaypoints(ResourceKey<Level> dim);
 
     /**
      * Gets the waypoint by display Id for the modId provided.
@@ -238,7 +238,7 @@ public interface IClientAPI
      * @param modId - The modId
      * @return the waypoint list
      */
-    List<Waypoint> getWaypoints(final String modId);
+    List<? extends Waypoint> getWaypoints(final String modId);
 
     /**
      * Remove a waypoint.
