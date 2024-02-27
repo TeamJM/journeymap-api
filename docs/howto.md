@@ -27,7 +27,7 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version = 1.19.4-1.9-SNAPSHOT
+journeymap_api_version = 1.20-1.9-SNAPSHOT for "1.20 and 1.20.1" or 1.20.2-SNAPSHOT for "1.20.2, 1.20.3, and 1.20.4"
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
