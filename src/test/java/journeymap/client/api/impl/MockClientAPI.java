@@ -83,7 +83,7 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
         return new UIState(ui, true, Level.OVERWORLD, 1,
                 Context.MapType.Day,
                 new BlockPos(128, 0, 128), null,
-                new AABB(new net.minecraft.core.BlockPos(0, 0, 0), new net.minecraft.core.BlockPos(256, 256, 256)),
+                new AABB(BlockPos.containing(0, 0, 0).getCenter(), BlockPos.containing(256, 256, 256).getCenter()),
                 new Rectangle2D.Double(0, 0, 1240, 960));
     }
 
