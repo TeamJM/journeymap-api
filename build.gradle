@@ -30,7 +30,7 @@ buildscript {
     }
 }
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
+    id 'fabric-loom' version '1.5-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 /* Gradle Plugins */
@@ -67,7 +67,7 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.loader_version}"
-
+    modRuntimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
     // for annotations
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
