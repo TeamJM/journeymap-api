@@ -1,12 +1,12 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import journeymap.client.api.IClientAPI;
-import journeymap.client.api.display.IOverlayListener;
-import journeymap.client.api.display.MarkerOverlay;
-import journeymap.client.api.display.ModPopupMenu;
-import journeymap.client.api.model.MapImage;
-import journeymap.client.api.util.UIState;
+import journeymap.api.v2.client.display.IOverlayListener;
+import journeymap.api.v2.client.display.MarkerOverlay;
+import journeymap.api.v2.client.fullscreen.ModPopupMenu;
+import journeymap.api.v2.client.model.MapImage;
+import journeymap.api.v2.client.util.UIState;
+import journeymap.client.api.v2.IClientAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -59,7 +59,7 @@ class SampleMarkerOverlayFactory
             MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f);
             icon.centerAnchors();
             // Build the overlay
-            MarkerOverlay markerOverlay = new MarkerOverlay(ExampleMod.MODID, "sampleMarker" + i, pos, icon);
+            MarkerOverlay markerOverlay = new MarkerOverlay(ExampleMod.MODID, pos, icon);
             markerOverlay.setDimension(Level.OVERWORLD).setTitle("Marker Overlay").setLabel("" + i);
 
             // Add a listener to it

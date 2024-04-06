@@ -2,12 +2,12 @@ package example.mod.client.plugin;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import example.mod.ExampleMod;
-import journeymap.client.api.IClientAPI;
-import journeymap.client.api.display.IOverlayListener;
-import journeymap.client.api.display.ImageOverlay;
-import journeymap.client.api.display.ModPopupMenu;
-import journeymap.client.api.model.MapImage;
-import journeymap.client.api.util.UIState;
+import journeymap.api.v2.client.display.IOverlayListener;
+import journeymap.api.v2.client.display.ImageOverlay;
+import journeymap.api.v2.client.fullscreen.ModPopupMenu;
+import journeymap.api.v2.client.model.MapImage;
+import journeymap.api.v2.client.util.UIState;
+import journeymap.client.api.v2.IClientAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 
@@ -78,7 +78,7 @@ class SampleImageOverlayFactory
         // Generate a deterministic displayId in case we need to refer to it again
         String displayId = String.format("image%s,%s,%s,%s", upperLeft.getX(), upperLeft.getZ(), blocksWide, blocksTall);
 
-        ImageOverlay imageOverlay = new ImageOverlay(ExampleMod.MODID, displayId, upperLeft, lowerRight, image);
+        ImageOverlay imageOverlay = new ImageOverlay(ExampleMod.MODID, upperLeft, lowerRight, image);
 
         imageOverlay.getImage().setOpacity(.8f);
 

@@ -1,13 +1,13 @@
 package example.mod.client.plugin;
 
-import journeymap.client.api.option.BooleanOption;
-import journeymap.client.api.option.CustomIntegerOption;
-import journeymap.client.api.option.CustomTextOption;
-import journeymap.client.api.option.EnumOption;
-import journeymap.client.api.option.FloatOption;
-import journeymap.client.api.option.IntegerOption;
-import journeymap.client.api.option.KeyedEnum;
-import journeymap.client.api.option.OptionCategory;
+import journeymap.api.v2.client.option.BooleanOption;
+import journeymap.api.v2.client.option.CustomIntegerOption;
+import journeymap.api.v2.client.option.CustomTextOption;
+import journeymap.api.v2.client.option.EnumOption;
+import journeymap.api.v2.client.option.FloatOption;
+import journeymap.api.v2.client.option.IntegerOption;
+import journeymap.api.v2.client.option.KeyedEnum;
+import journeymap.api.v2.client.option.OptionCategory;
 
 public class ClientProperties
 {

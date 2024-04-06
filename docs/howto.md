@@ -89,8 +89,8 @@ to see the Example Mod code in action.  To get the examplemod.jar, download it f
 III. Write your Plugin
 =============================
 
-1. Write a class that implements the JourneyMap *[journeymap.client.api.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
-    - Annotate the class with *[@journeymap.client.api.ClientPlugin](src/main/java/journeymap/client/api/ClientPlugin.java)* so that JourneyMap can find and instantiate it
+1. Write a class that implements the JourneyMap *[journeymap.client.api.v2.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
+    - Annotate the class with *[@journeymap.api.v2.client.JourneyMapPlugin](common/src/main/java/journeymap/api/v2/client/ClientPlugin.java)* so that JourneyMap can find and instantiate it
     - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
 2. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
     - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't loaded.

@@ -21,17 +21,17 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import journeymap.client.api.IClientAPI;
-import journeymap.client.api.IClientPlugin;
-import journeymap.client.api.JourneyMapPlugin;
-import journeymap.client.api.event.WaypointEvent;
+import journeymap.api.v2.client.event.WaypointEvent;
+import journeymap.client.api.v2.IClientAPI;
+import journeymap.client.api.v2.IClientPlugin;
+import journeymap.client.api.v2.JourneyMapPlugin;
 import net.minecraft.client.Minecraft;
 
 /**
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
  * (and thus the API classes aren't loaded), this class isn't referenced anywhere directly in the mod.
  * <p>
- * The @journeymap.client.api.JourneyMapPlugin annotation makes this plugin class discoverable to JourneyMap,
+ * The @journeymap.client.api.v2.JourneyMapPlugin annotation makes this plugin class discoverable to JourneyMap,
  * which will create an instance of it and then call initialize on it.
  * <p>
  * The

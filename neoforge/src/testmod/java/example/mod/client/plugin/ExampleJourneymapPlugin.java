@@ -21,9 +21,9 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
-import journeymap.client.api.IClientAPI;
-import journeymap.client.api.IClientPlugin;
-import journeymap.client.api.JourneyMapPlugin;
+import journeymap.client.api.v2.IClientAPI;
+import journeymap.client.api.v2.IClientPlugin;
+import journeymap.client.api.v2.JourneyMapPlugin;
 import net.neoforged.neoforge.common.NeoForge;
 
 import javax.annotation.ParametersAreNonnullByDefault;
