@@ -46,6 +46,7 @@ version = project.minecraft_version + '-' + project.api_version
 
 configurations {
     testmodImplementation.extendsFrom implementation
+    testmodRuntimeOnly.extendsFrom modRuntimeOnly
 }
 
 java {
