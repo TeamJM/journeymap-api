@@ -67,7 +67,7 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.loader_version}"
-    testmodImplementation "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
+    testmodRuntimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
     // for annotations
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
