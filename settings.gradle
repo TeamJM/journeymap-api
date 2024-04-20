@@ -3,9 +3,19 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         maven { url = 'https://maven.neoforged.net/releases' }
+        maven {
+            name 'Maven for PR #794' // https://github.com/neoforged/NeoForge/pull/794
+            url 'https://prmaven.neoforged.net/NeoForge/pr794'
+            content {
+                includeModule('net.neoforged', 'testframework')
+                includeModule('net.neoforged', 'neoforge')
+            }
+        }
     }
 }
 
 plugins {
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }
+
+rootProject.name = 'journeymap-api'

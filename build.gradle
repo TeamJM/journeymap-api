@@ -31,8 +31,8 @@ buildscript {
 
 /* Gradle Plugins */
 plugins {
-    id 'net.neoforged.gradle.userdev' version '[7.0.5,)'
-    id 'net.neoforged.gradle.mixin' version '[7.0.5,)'
+    id 'net.neoforged.gradle.userdev' version '[7.0.57,)'
+    id 'net.neoforged.gradle.mixin' version '[7.0.57,)'
 }
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
@@ -45,13 +45,21 @@ version = project.minecraft_version + '-' + project.api_version
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
 repositories {
     maven {
         url "https://www.cursemaven.com"
+    }
+    maven {
+        name 'Maven for PR #794' // https://github.com/neoforged/NeoForge/pull/794
+        url 'https://prmaven.neoforged.net/NeoForge/pr794'
+        content {
+            includeModule('net.neoforged', 'testframework')
+            includeModule('net.neoforged', 'neoforge')
+        }
     }
 }
 
@@ -75,7 +83,7 @@ runs {
 
 dependencies {
     implementation "net.neoforged:neoforge:${loader_version}"
-//    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
+//    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
 }
 /* Replace tokens in resources files */
 processResources
