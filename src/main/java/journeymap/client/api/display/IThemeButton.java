@@ -4,6 +4,7 @@ import net.minecraft.client.gui.components.Button;
 
 public interface IThemeButton
 {
+
     /**
      * Sets the toggled to value.
      *
