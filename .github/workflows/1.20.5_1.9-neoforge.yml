@@ -1,9 +1,9 @@
-name: 1.20.5_1.9-neoforge
+name: 1.20.5-1.9-neoforge
 
 on:
   push:
     branches:
-      - '1.20.5_1.9-neoforge'
+      - '1.20.5-1.9-neoforge'
 
 jobs:
   build:
