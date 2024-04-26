@@ -1,9 +1,9 @@
-name: 1.20.x_1.9-forge
+name: 1.20.5_1.9-neoforge
 
 on:
   push:
     branches:
-      - '1.20.x_1.9-forge'
+      - '1.20.5_1.9-neoforge'
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v1
         with:
-          version: 17
+          version: 21
 
       - name: Gradle Build
         run: /bin/sh ./gradlew build
