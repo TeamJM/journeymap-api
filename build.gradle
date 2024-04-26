@@ -53,14 +53,6 @@ repositories {
     maven {
         url "https://www.cursemaven.com"
     }
-    maven {
-        name 'Maven for PR #794' // https://github.com/neoforged/NeoForge/pull/794
-        url 'https://prmaven.neoforged.net/NeoForge/pr794'
-        content {
-            includeModule('net.neoforged', 'testframework')
-            includeModule('net.neoforged', 'neoforge')
-        }
-    }
 }
 
 /* ForgeGradle spec for Minecraft */

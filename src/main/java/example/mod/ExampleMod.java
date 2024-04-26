@@ -40,7 +40,6 @@ import org.apache.logging.log4j.Logger;
  * Example mod showing how to use the JourneyMap API.
  */
 @Mod(ExampleMod.MODID)
-@Mod.EventBusSubscriber(modid = ExampleMod.MODID)
 public class ExampleMod
 {
     public static final String MODID = "examplemodjm";

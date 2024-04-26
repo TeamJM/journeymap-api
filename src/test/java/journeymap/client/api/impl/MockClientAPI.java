@@ -66,12 +66,11 @@ enum MockClientAPI implements journeymap.client.api.IClientAPI
     // and avoids all the boilerplate check-and-create-if-missing mess.
     private final LoadingCache<String, LinkedHashMultimap<DisplayType, String>> modDisplayables =
             CacheBuilder.newBuilder().build(
-                    new CacheLoader<String, LinkedHashMultimap<DisplayType, String>>()
+                    new CacheLoader<>()
                     {
                         public LinkedHashMultimap<DisplayType, String> load(String key)
                         {
-                            LinkedHashMultimap<DisplayType, String> multimap = LinkedHashMultimap.create();
-                            return multimap;
+                            return LinkedHashMultimap.create();
                         }
                     });
 
