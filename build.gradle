@@ -30,7 +30,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0.16,6.2)', changing: true
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
     }
 }
@@ -83,7 +83,7 @@ minecraft {
 }
 dependencies {
     minecraft "net.minecraftforge:forge:${project.loader_version}"
-    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}")
+    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.jm_file_id}"
 }
 /* Replace tokens in resources files */
 processResources
@@ -105,7 +105,6 @@ processResources
             }
         }
 
-/* Reobfuscated jar for just the Example Mod */
 jar {
     dependsOn classes
     from sourceSets.main.output
@@ -121,7 +120,6 @@ jar {
     }
 }
 
-/* Jar for just the API - Stays deobfuscated so it can be added as a mod project dependency */
 task modJar(type: Jar, dependsOn: classes) {
     mustRunAfter = ['jar']
     from sourceSets.main.output
