@@ -27,7 +27,7 @@ For example:
 ```gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version = 1.19.4-1.9-fabric-SNAPSHOT
+journeymap_api_version = 1.20.4-1.9-fabric-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
@@ -69,7 +69,7 @@ III. Write your Plugin
     - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
 2. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
     - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't loaded.
-3. In your `fabric.mod.json file` add the path to your class that implements `IClientPlug` to your entrypoint Example:  
+3. In your `fabric.mod.json file` add the path to your class that implements `IClientPlugin` to your entrypoint Example:  
 ```
     "journeymap": [
       "mymod.modhooks.MyJourneymapPlugin"
