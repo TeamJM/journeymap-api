@@ -19,5 +19,5 @@ API Mod for JourneyMap.
 
 [[dependencies.journeymap_api]]
 modId = "neoforge"
-mandatory = true
+type = "required"
 versionRange="[1.0.0,)"
