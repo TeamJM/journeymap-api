@@ -85,7 +85,7 @@ minecraft {
 }
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
-    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}")
+    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
 
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 
@@ -102,7 +102,7 @@ processResources {
 
     // replace stuff in neoforge.mods.toml on copy
     from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/neoforge.mods.toml'
+        include 'META-INF/forge.mods.toml'
         expand 'version': project.version,
                 'mcversion': project.minecraft_version,
                 'modVersion': modVersion
