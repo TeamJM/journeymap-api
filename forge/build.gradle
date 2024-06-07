@@ -102,7 +102,7 @@ processResources {
 
     // replace stuff in neoforge.mods.toml on copy
     from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/forge.mods.toml'
+        include 'META-INF/mods.toml'
         expand 'version': project.version,
                 'mcversion': project.minecraft_version,
                 'modVersion': modVersion
