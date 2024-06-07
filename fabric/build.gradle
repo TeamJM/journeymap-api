@@ -30,11 +30,10 @@ buildscript {
     }
 }
 plugins {
-    id 'fabric-loom' version '1.4+'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 /* Gradle Plugins */
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
@@ -51,13 +50,8 @@ configurations {
     testmodImplementation.extendsFrom implementation
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-    withJavadocJar()
-    withSourcesJar()
-}
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21
 
 repositories {
     maven {
@@ -67,7 +61,9 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
+    mappings loom.layered() {
+        officialMojangMappings()
+    }
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
@@ -99,8 +95,9 @@ sourceSets {
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     source(project(":common").sourceSets.main.allSource)
+    options.encoding = "UTF-8"
 }
 
 /* Add our attributes to every Jar task */
@@ -118,30 +115,6 @@ jar {
 /* Javadoc properties */
 javadoc {
     title = project.title_javadoc
-}
-
-def bintrayUser = project.findProperty("bintray.user") ?: System.getenv("BINTRAY_USER")
-def bintrayKey = project.findProperty("bintray.password") ?: System.getenv("BINTRAY_PASSWORD")
-
-if (project.hasProperty("production")) {
-    // Bintray is _only_ for releases, not snapshots
-    bintray {
-        user = bintrayUser
-        key = bintrayKey
-
-        pkg {
-            name = "api"
-            repo = "JourneyMap"
-            userOrg = "teamjm"
-
-            publications = ["maven"]
-
-            version {
-                name = project.version
-                released = new Date()
-            }
-        }
-    }
 }
 
 publishing {

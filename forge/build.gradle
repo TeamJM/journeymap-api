@@ -30,7 +30,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.23+', changing: true
     }
 }
 
@@ -54,23 +54,16 @@ configurations {
     testmodImplementation.extendsFrom implementation
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-    withJavadocJar()
-    withSourcesJar()
-}
-
 repositories {
     maven {
         url "https://www.cursemaven.com"
     }
 }
-
+minecraft.reobf = false
 /* ForgeGradle spec for Minecraft */
 minecraft {
     mappings channel: project.channel, version: project.mappings
+    copyIdeResources = true
     runs {
         client = {
             // recommended logging data for a userdev environment
@@ -94,6 +87,8 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
     runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}")
 
+    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
+
     compileOnly project(":common")
     testmodImplementation sourceSets.main.output
 }
@@ -105,9 +100,9 @@ processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft_version
 
-    // replace stuff in mods.toml on copy
+    // replace stuff in neoforge.mods.toml on copy
     from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
+        include 'META-INF/neoforge.mods.toml'
         expand 'version': project.version,
                 'mcversion': project.minecraft_version,
                 'modVersion': modVersion
@@ -147,9 +142,6 @@ tasks.withType(Javadoc).configureEach {
 tasks.named("sourcesJar", Jar) {
     from(project(":common").sourceSets.main.allSource)
 }
-
-jar.finalizedBy('reobfJar')
-
 
 publishing {
     repositories {

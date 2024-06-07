@@ -22,7 +22,7 @@ plugins {
     id "java-library"
     id "idea"
     id "maven-publish"
-    id 'net.neoforged.gradle.userdev' version '[7.0.64,)'
+    id 'net.neoforged.gradle.userdev' version '[7.0.120,)'
 }
 
 group 'info.journeymap'
@@ -40,12 +40,12 @@ configurations {
     testmodImplementation.extendsFrom implementation
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+/* Use the same compile and runtime classpath in the Example Mod */
+sourceSets {
+    testmod {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
     }
-    withJavadocJar()
-    withSourcesJar()
 }
 
 repositories {
@@ -91,23 +91,14 @@ processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft_version
 
-    // replace stuff in mods.toml on copy
+    // replace stuff in neoforge.mods.toml on copy
     from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
+        include 'META-INF/neoforge.mods.toml'
         expand 'version': project.version,
                 'mcversion': project.minecraft_version,
                 'modVersion': modVersion
     }
 }
-
-/* Use the same compile and runtime classpath in the Example Mod */
-sourceSets {
-    testmod {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-    }
-}
-
 
 jar {
     manifest {

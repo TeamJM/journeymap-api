@@ -1,12 +1,9 @@
-package journeymap.client.ui.component;
+package journeymap.api.v2.client.ui.component;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-
-import javax.annotation.Nullable;
 
 public abstract class LayeredScreen extends Screen
 {

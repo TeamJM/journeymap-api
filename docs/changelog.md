@@ -2,6 +2,9 @@
 ======================================================
 **API 2.0.0-SNAPSHOT**
 **Requires Journeymap v6.0.0**
+* Added LayeredScreen abstraction for layirng screens.
+* Refactored Waypoint and WaypointGroups to be more concrete. 
+* Refactored events to be loader agnostic.
 * Switched to multi-loader template.
 * Switched to SemVer versioning `journeymap-api-loader-2.0.0-mcversion-SNAPSHOT`
 
