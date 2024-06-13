@@ -46,7 +46,6 @@ javadoc {
     title = project.title_javadoc
 }
 
-
 publishing {
     repositories {
         maven {

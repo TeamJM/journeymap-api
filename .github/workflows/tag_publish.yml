@@ -1,9 +1,9 @@
-name: Master
+name: tag_publish
 
 on:
   push:
-    branches:
-      - 'master'
+    tags:
+      - '*'
 
 jobs:
   build:

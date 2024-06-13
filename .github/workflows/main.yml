@@ -2,11 +2,6 @@ name: CI
 
 on:
   push:
-    branches-ignore:
-      - 'master'
-      - '1.19.x_2.0'
-
-  pull_request:
 
 jobs:
   build:
