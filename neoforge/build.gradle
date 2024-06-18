@@ -103,7 +103,6 @@ processResources {
 jar {
     manifest {
         attributes = ["Manifest-Version"      : "1.0",
-//                "FMLModType"            : "GAMELIBRARY",
                       "Implementation-Title"  : project.title,
                       "Implementation-Version": project.version,
                       "Implementation-URL"    : project.git_website]

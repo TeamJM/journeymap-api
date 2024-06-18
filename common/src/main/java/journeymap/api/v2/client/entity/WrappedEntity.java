@@ -249,4 +249,11 @@ public interface WrappedEntity
      * @param disable - the disable.
      */
     void setDisable(boolean disable);
+
+    /**
+     * When setting a custom image via `setEntityIconLocation` if you want to disable the outline when users have their
+     * entity icons drawing outlines. Set to false, this is Default: true.
+     * @param drawOutline - to draw the icons outlines.
+     */
+    void setDrawOutline(boolean drawOutline);
 }
