@@ -1,6 +1,7 @@
 package journeymap.api.v2.common.waypoint;
 
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -173,4 +174,18 @@ public interface WaypointGroup
         setIconTextureWidth(width);
         setIconTextureHeight(height);
     }
+
+    /**
+     * Allows add-on devs to set custom data on their waypoint groups for use, this is not used by journeymap.
+     *
+     * @param data - String
+     */
+    void setCustomData(@Nullable String data);
+
+    /**
+     * Gets the custom data stored on a waypoint group
+     * @return
+     */
+    @Nullable
+    String getCustomData();
 }

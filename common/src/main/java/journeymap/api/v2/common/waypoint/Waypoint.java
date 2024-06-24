@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.TreeSet;
@@ -209,4 +210,18 @@ public interface Waypoint
         setIconTextureWidth(width);
         setIconTextureHeight(height);
     }
+
+    /**
+     * Allows add-on devs to set custom data on their waypoints for use, this is not used by journeymap.
+     *
+     * @param data - String
+     */
+    void setCustomData(@Nullable String data);
+
+    /**
+     * Gets the custom data stored on a waypoint
+     * @return
+     */
+    @Nullable
+    String getCustomData();
 }
