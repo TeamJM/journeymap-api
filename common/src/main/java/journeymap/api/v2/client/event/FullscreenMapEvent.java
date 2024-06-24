@@ -92,34 +92,10 @@ public class FullscreenMapEvent extends ClientEvent
             return button;
         }
 
-        /**
-         * Fired before the click, can be cancelled
-         */
-        public static class Pre extends ClickEvent
+        @Override
+        public boolean isCancellable()
         {
-
-            public Pre(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
-            {
-                super(Stage.PRE, location, level, mousePosition, button);
-            }
-        }
-
-        /**
-         * Fired before the click, can not be cancelled
-         */
-        public static class Post extends ClickEvent
-        {
-
-            public Post(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
-            {
-                super(Stage.POST, location, level, mousePosition, button);
-            }
-
-            @Override
-            public boolean isCancellable()
-            {
-                return false;
-            }
+            return this.stage == Stage.PRE;
         }
     }
 
@@ -175,34 +151,10 @@ public class FullscreenMapEvent extends ClientEvent
             return button;
         }
 
-        /**
-         * Fired at the start of the drag, can be cancelled
-         */
-        public static class Pre extends MouseDraggedEvent
+        @Override
+        public boolean isCancellable()
         {
-
-            public Pre(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
-            {
-                super(Stage.PRE, location, level, mousePosition, button);
-            }
-        }
-
-        /**
-         * Fired at the end of the drag, when user releases mouse button, can not be cancelled
-         */
-        public static class Post extends MouseDraggedEvent
-        {
-
-            public Post(BlockPos location, ResourceKey<Level> level, Point2D.Double mousePosition, int button)
-            {
-                super(Stage.POST, location, level, mousePosition, button);
-            }
-
-            @Override
-            public boolean isCancellable()
-            {
-                return false;
-            }
+            return this.stage == Stage.PRE;
         }
     }
 

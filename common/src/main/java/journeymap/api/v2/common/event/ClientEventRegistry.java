@@ -50,24 +50,35 @@ public class ClientEventRegistry
     public static final Event<MappingEvent> MAPPING_EVENT = EventFactory.create(MappingEvent.class);
 
     /**
-     * Indicates that the fullscreen map is going to have a mouse click
-     * {@link FullscreenMapEvent.ClickEvent.Pre}, which can be cancelled.
-     * {@link FullscreenMapEvent.ClickEvent.Post}, which can not be cancelled.
-     * <p>
+     * Indicates that the fullscreen map is going to have a mouse click.
+     * This is a staged event. Pre can be canceled, post cannot be canceled.
+     * {@link FullscreenMapEvent.ClickEvent}, which can be cancelled.
+     */
+    public static final Event<FullscreenMapEvent.ClickEvent> FULLSCREEN_MAP_CLICK_EVENT = EventFactory.create(FullscreenMapEvent.ClickEvent.class);
+
+    /**
      * Indicates the start of the mouse dragging.
-     * {@link FullscreenMapEvent.MouseDraggedEvent.Pre}, which can be cancelled.
-     * {@link FullscreenMapEvent.MouseDraggedEvent.Post}, which can not be cancelled.
-     * <p>
+     * This is a staged event. Pre can be canceled, post cannot be canceled.
+     * {@link FullscreenMapEvent.MouseDraggedEvent}, which can be cancelled.
+     */
+    public static final Event<FullscreenMapEvent.MouseDraggedEvent> FULLSCREEN_MAP_DRAG_EVENT = EventFactory.create(FullscreenMapEvent.MouseDraggedEvent.class);
+
+    /**
      * Indicates moving of the mouse, gets block info where the cursor is pointing.
      * {@link FullscreenMapEvent.MouseMoveEvent}, which can not be cancelled.
      */
-    public static final Event<FullscreenMapEvent> FULLSCREEN_MAP_EVENT = EventFactory.create(FullscreenMapEvent.class);
-
+    public static final Event<FullscreenMapEvent.MouseMoveEvent> FULLSCREEN_MAP_MOVE_EVENT = EventFactory.create(FullscreenMapEvent.MouseMoveEvent.class);
     /**
-     * Indicates registry events.
+     * Register info slots.
      * {@link RegistryEvent}
      */
-    public static final Event<RegistryEvent> REGISTRY_EVENT = EventFactory.create(RegistryEvent.class);
+    public static final Event<RegistryEvent.InfoSlotRegistryEvent> INFO_SLOT_REGISTRY_EVENT_EVENT = EventFactory.create(RegistryEvent.InfoSlotRegistryEvent.class);
+
+    /**
+     * Register options in the addon options screen.
+     * {@link RegistryEvent}
+     */
+    public static final Event<RegistryEvent.OptionsRegistryEvent> OPTIONS_REGISTRY_EVENT_EVENT = EventFactory.create(RegistryEvent.OptionsRegistryEvent.class);
 
     /**
      * This event handles all the CRUD operations of a waypoints.
