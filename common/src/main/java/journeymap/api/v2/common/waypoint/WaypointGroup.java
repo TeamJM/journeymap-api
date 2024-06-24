@@ -8,6 +8,9 @@ public interface WaypointGroup
 {
     List<String> getWaypointIds();
 
+
+    boolean addWaypoint(Waypoint waypoint);
+
     String getGuid();
 
     String getName();
