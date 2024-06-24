@@ -1,6 +1,7 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
+import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.PolygonOverlay;
 import journeymap.api.v2.client.model.MapPolygon;
@@ -8,7 +9,6 @@ import journeymap.api.v2.client.model.MapPolygonWithHoles;
 import journeymap.api.v2.client.model.ShapeProperties;
 import journeymap.api.v2.client.model.TextProperties;
 import journeymap.api.v2.client.util.PolygonHelper;
-import journeymap.client.api.v2.IClientAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
@@ -117,7 +117,7 @@ class SampleComplexPolygonOverlayFactory
                 for (final MapPolygonWithHoles polygon : polygons)
                 {
                     final String displayId = name + "_" + ++index;
-                    final PolygonOverlay overlay = new PolygonOverlay(ExampleMod.MODID, displayId, dimension, shapeProps, polygon);
+                    final PolygonOverlay overlay = new PolygonOverlay(ExampleMod.MODID, dimension, shapeProps, polygon);
                     overlay.setOverlayGroupName(name)
                             .setTextProperties(textProps)
                             .setLabel(label);

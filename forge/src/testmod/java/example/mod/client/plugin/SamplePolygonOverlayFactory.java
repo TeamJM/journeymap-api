@@ -55,7 +55,7 @@ class SamplePolygonOverlayFactory
         MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.x, 70, chunkCoords.z);
 
         // Create the overlay
-        PolygonOverlay slimeChunkOverlay = new PolygonOverlay(ExampleMod.MODID, displayId, dimension, shapeProps, polygon);
+        PolygonOverlay slimeChunkOverlay = new PolygonOverlay(ExampleMod.MODID, dimension, shapeProps, polygon);
 
         // Set the text
         slimeChunkOverlay.setOverlayGroupName(groupName)

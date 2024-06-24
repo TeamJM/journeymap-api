@@ -1,6 +1,7 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
+import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.display.Context;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.PolygonOverlay;
@@ -14,7 +15,6 @@ import journeymap.api.v2.client.fullscreen.IThemeButton;
 import journeymap.api.v2.client.fullscreen.IThemeToolBar;
 import journeymap.api.v2.client.fullscreen.ThemeButtonDisplay;
 import journeymap.api.v2.common.event.ClientEventRegistry;
-import journeymap.client.api.v2.IClientAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -25,10 +25,10 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerSleepInBedEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 
 import java.util.HashMap;
@@ -58,23 +58,19 @@ class ForgeEventListener
         ClientEventRegistry.ENTITY_RADAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onRadarEntityUpdateEvent);
         ClientEventRegistry.MAPPING_EVENT.subscribe(ExampleMod.MODID, this::mappingStageEvent);
         ClientEventRegistry.DEATH_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onDeathpoint);
-        ClientEventRegistry.REGISTRY_EVENT.subscribe(ExampleMod.MODID, this::registryEvent);
+        ClientEventRegistry.OPTIONS_REGISTRY_EVENT_EVENT.subscribe(ExampleMod.MODID, this::optionsRegistryEvent);
+        ClientEventRegistry.INFO_SLOT_REGISTRY_EVENT_EVENT.subscribe(ExampleMod.MODID, this::infoSlotRegistryEvent);
     }
 
-    private void registryEvent(RegistryEvent event)
+    private void infoSlotRegistryEvent(RegistryEvent.InfoSlotRegistryEvent event)
     {
+        event.register(ExampleMod.MODID, "Current Millis", 1000, () -> "Millis: " + System.currentTimeMillis());
+        event.register(ExampleMod.MODID, "Current Ticks", 10, ForgeEventListener::getTicks);
+    }
 
-        switch (event.getRegistryType())
-        {
-            case OPTIONS -> this.clientProperties = new ClientProperties();
-            case INFO_SLOT ->
-            {
-                ((RegistryEvent.InfoSlotRegistryEvent) event)
-                        .register(ExampleMod.MODID, "Current Millis", 1000, () -> "Millis: " + System.currentTimeMillis());
-                ((RegistryEvent.InfoSlotRegistryEvent) event)
-                        .register(ExampleMod.MODID, "Current Ticks", 10, ForgeEventListener::getTicks);
-            }
-        }
+    private void optionsRegistryEvent(RegistryEvent.OptionsRegistryEvent optionsRegistryEvent)
+    {
+        this.clientProperties = new ClientProperties();
     }
 
     void mappingStageEvent(MappingEvent event)
@@ -309,7 +305,7 @@ class ForgeEventListener
 
     private ResourceLocation getIcon(String string)
     {
-        return new ResourceLocation("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + string + ".png");
+        return ResourceLocation.fromNamespaceAndPath("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + string + ".png");
     }
 
     private static String getTicks()

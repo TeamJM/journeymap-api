@@ -1,6 +1,7 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
+import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.display.Context;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.PolygonOverlay;
@@ -14,7 +15,6 @@ import journeymap.api.v2.client.fullscreen.IThemeButton;
 import journeymap.api.v2.client.fullscreen.IThemeToolBar;
 import journeymap.api.v2.client.fullscreen.ThemeButtonDisplay;
 import journeymap.api.v2.common.event.ClientEventRegistry;
-import journeymap.client.api.v2.IClientAPI;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.minecraft.client.Minecraft;
@@ -60,24 +60,21 @@ class EventListener
         ClientEventRegistry.ENTITY_RADAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onRadarEntityUpdateEvent);
         ClientEventRegistry.MAPPING_EVENT.subscribe(ExampleMod.MODID, this::mappingStageEvent);
         ClientEventRegistry.DEATH_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onDeathpoint);
-        ClientEventRegistry.REGISTRY_EVENT.subscribe(ExampleMod.MODID, this::registryEvent);
+        ClientEventRegistry.OPTIONS_REGISTRY_EVENT_EVENT.subscribe(ExampleMod.MODID, this::optionsRegistryEvent);
+        ClientEventRegistry.INFO_SLOT_REGISTRY_EVENT_EVENT.subscribe(ExampleMod.MODID, this::infoSlotRegistryEvent);
     }
 
-    private void registryEvent(RegistryEvent event)
+    private void infoSlotRegistryEvent(RegistryEvent.InfoSlotRegistryEvent event)
     {
-
-        switch (event.getRegistryType())
-        {
-            case OPTIONS -> this.clientProperties = new ClientProperties();
-            case INFO_SLOT ->
-            {
-                ((RegistryEvent.InfoSlotRegistryEvent) event)
-                        .register(ExampleMod.MODID, "Current Millis", 1000, () -> "Millis: " + System.currentTimeMillis());
-                ((RegistryEvent.InfoSlotRegistryEvent) event)
-                        .register(ExampleMod.MODID, "Current Ticks", 10, EventListener::getTicks);
-            }
-        }
+        event.register(ExampleMod.MODID, "Current Millis", 1000, () -> "Millis: " + System.currentTimeMillis());
+        event.register(ExampleMod.MODID, "Current Ticks", 10, EventListener::getTicks);
     }
+
+    private void optionsRegistryEvent(RegistryEvent.OptionsRegistryEvent optionsRegistryEvent)
+    {
+        this.clientProperties = new ClientProperties();
+    }
+
 
     void mappingStageEvent(MappingEvent event)
     {
@@ -311,10 +308,11 @@ class EventListener
 
     private ResourceLocation getIcon(String string)
     {
-        return new ResourceLocation("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + string + ".png");
+        return ResourceLocation.fromNamespaceAndPath("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + string + ".png");
     }
 
-    private static String getTicks() {
+    private static String getTicks()
+    {
         return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
     }
 }

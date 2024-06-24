@@ -21,9 +21,9 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
+import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointFactory;
-import journeymap.client.api.v2.IClientAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -63,7 +63,7 @@ class SampleWaypointFactory
 
             bedWaypoint = WaypointFactory.createClientWaypoint(ExampleMod.MODID, bedLocation, dimension, true);
             bedWaypoint.setColor(Color.BLUE.getRGB());
-            bedWaypoint.setIconResourceLoctaion(new ResourceLocation("examplemod:images/bed.png"));
+            bedWaypoint.setIconResourceLoctaion(ResourceLocation.parse("examplemod:images/bed.png"));
             bedWaypoint.setIconTextureSize(32, 32);
             bedWaypoint.setIconColor(0x00ffff);
             // Add or update

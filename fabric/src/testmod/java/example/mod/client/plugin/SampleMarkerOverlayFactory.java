@@ -1,12 +1,12 @@
 package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
+import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.display.IOverlayListener;
 import journeymap.api.v2.client.display.MarkerOverlay;
 import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.model.MapImage;
 import journeymap.api.v2.client.util.UIState;
-import journeymap.client.api.v2.IClientAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -32,7 +32,7 @@ class SampleMarkerOverlayFactory
     static List<MarkerOverlay> create(IClientAPI jmAPI, net.minecraft.core.BlockPos center, int quantity, int maxDistance)
     {
         // Use a sprite sheet to vary the icons
-        ResourceLocation sprites = new net.minecraft.resources.ResourceLocation("examplemod:images/sprites.png");
+        ResourceLocation sprites = ResourceLocation.parse("examplemod:images/sprites.png");
         int spriteX = 0, spriteY = 0;
         int iconSize = 64;
         int iconColumns = 8;
