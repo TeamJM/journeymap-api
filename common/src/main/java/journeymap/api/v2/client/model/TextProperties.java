@@ -251,7 +251,7 @@ public class TextProperties
     }
 
     /**
-     * The minimum zoom level (0 is lowest) where the polygon should be visible.
+     * The minimum zoom level (UIState.FULLSCREEN_ZOOM_MIN is lowest) where the polygon should be visible.
      *
      * @return the min zoom
      */
@@ -261,7 +261,7 @@ public class TextProperties
     }
 
     /**
-     * Sets the minimum zoom level (0 is lowest) where text should be visible.
+     * Sets the minimum zoom level (UIState.FULLSCREEN_ZOOM_MIN is lowest) where text should be visible.
      *
      * @param minZoom the min zoom
      * @return this
@@ -273,7 +273,7 @@ public class TextProperties
     }
 
     /**
-     * The maximum zoom level (8 is highest) where text should be visible.
+     * The maximum zoom level (UIState.ZOOM_IN_MAX is highest) where text should be visible.
      *
      * @return the max zoom
      */
@@ -283,7 +283,7 @@ public class TextProperties
     }
 
     /**
-     * Sets the maximum zoom level (8 is highest) where the polygon should be visible.
+     * Sets the maximum zoom level (UIState.ZOOM_IN_MAX is highest) where the polygon should be visible.
      *
      * @param maxZoom the max zoom
      * @return this
