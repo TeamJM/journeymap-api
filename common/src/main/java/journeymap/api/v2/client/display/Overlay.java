@@ -153,7 +153,7 @@ public abstract class Overlay extends Displayable
     }
 
     /**
-     * The minimum zoom level (0 is lowest) where the polygon should be visible.
+     * The minimum zoom level (UIState.FULLSCREEN_ZOOM_MIN is lowest) where the overlay should be visible.
      *
      * @return the min zoom
      */
@@ -163,19 +163,19 @@ public abstract class Overlay extends Displayable
     }
 
     /**
-     * Sets the minimum zoom level (0 is lowest) where the polygon should be visible.
+     * Sets the minimum zoom level (UIState.FULLSCREEN_ZOOM_MIN is lowest) where the overlay should be visible.
      *
      * @param minZoom the min zoom
      * @return this
      */
     public Overlay setMinZoom(int minZoom)
     {
-        this.minZoom = Math.max(0, minZoom);
+        this.minZoom = Math.max(FULLSCREEN_ZOOM_MIN, minZoom);
         return this;
     }
 
     /**
-     * The maximum zoom level (8 is highest) where the polygon should be visible.
+     * The maximum zoom level (UIState.ZOOM_IN_MAX is highest) where the overlay should be visible.
      *
      * @return the max zoom
      */
@@ -185,14 +185,14 @@ public abstract class Overlay extends Displayable
     }
 
     /**
-     * Sets the maximum zoom level (8 is highest) where the polygon should be visible.
+     * Sets the maximum zoom level (UIState.ZOOM_IN_MAX is highest) where the overlay should be visible.
      *
      * @param maxZoom the max zoom
      * @return this
      */
     public Overlay setMaxZoom(int maxZoom)
     {
-        this.maxZoom = Math.min(8, maxZoom);
+        this.maxZoom = Math.min(ZOOM_IN_MAX, maxZoom);
         return this;
     }
 
@@ -297,8 +297,18 @@ public abstract class Overlay extends Displayable
     {
         return ((uiState.active && this.dimension == uiState.dimension)
                 && activeUIs.contains(uiState.ui)
-                && activeMapTypes.contains(uiState.mapType)
-                && (this.minZoom <= uiState.zoom && this.maxZoom >= uiState.zoom));
+                && activeMapTypes.contains(uiState.mapType));
+    }
+
+    /**
+     * Whether the zoom of the given context is within the zoom range of the overlay.
+     *
+     * @param uiState    UIState
+     * @return true if the zoom of uiState is within the zoom range of the overlay
+     */
+    public boolean isInZoomRange(UIState uiState)
+    {
+        return (this.minZoom <= uiState.zoom && this.maxZoom >= uiState.zoom);
     }
 
     /**
