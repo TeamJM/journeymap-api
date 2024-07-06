@@ -27,9 +27,10 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version_forge = `journeymap-api-forge-2.0.0-1.20.1-SNAPSHOT`
-journeymap_api_version_fabric = `journeymap-api-fabric-2.0.0-1.20.1-SNAPSHOT`
-journeymap_api_version_common = `journeymap-api-common-2.0.0-1.20.1-SNAPSHOT`
+journeymap_api_version_forge = `journeymap-api-forge-2.0.0-1.21-SNAPSHOT`
+journeymap_api_version_neoforge = `journeymap-api-neoforge-2.0.0-1.21-SNAPSHOT`
+journeymap_api_version_fabric = `journeymap-api-fabric-2.0.0-1.21-SNAPSHOT`
+journeymap_api_version_common = `journeymap-api-common-2.0.0-1.21-SNAPSHOT`
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
@@ -50,8 +51,14 @@ configurations.all {
 
 // FORGE
 dependencies {
-    compileOnly fg.deobf(group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version_forge, changing: true)
-    runtimeOnly fg.deobf("curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}")
+    compileOnly group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version_forge, changing: true
+    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
+}
+
+// NEOFORGE
+dependencies {
+    compileOnly group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version_neoforge, changing: true
+    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
 }
 
 // FABRIC/QUILT
