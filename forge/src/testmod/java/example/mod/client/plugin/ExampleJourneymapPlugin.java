@@ -32,7 +32,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * Example plugin implementation by the example mod. To prevent classloader errors if JourneyMap isn't loaded
  * (and thus the API classes aren't loaded), this class isn't referenced anywhere directly in the mod.
  * <p>
- * The @journeymap.client.api.ClientPlugin annotation makes this plugin class discoverable to JourneyMap,
+ * The @journeymap.api.v2.client.JourneyMapPlugin annotation makes this plugin class discoverable to JourneyMap,
  * which will create an instance of it and then call initialize on it.
  * <p>
  * The
