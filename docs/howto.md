@@ -20,6 +20,7 @@ and you'll see the API version in the corner of the screen.  The mod info dialog
 
 1. Add [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api) to your list of repositories
 2. Add a compile dependency on 'info.journeymap:journeymap-api:#version'
+3. Add journeymap mod in your run/mods folder or as a runtimeOnly/modRuntimeOnly dependency from cursemaven or modrinth's maven.
 
 For example:
 
@@ -27,10 +28,14 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-journeymap_api_version_forge = `journeymap-api-forge-2.0.0-1.21-SNAPSHOT`
-journeymap_api_version_neoforge = `journeymap-api-neoforge-2.0.0-1.21-SNAPSHOT`
-journeymap_api_version_fabric = `journeymap-api-fabric-2.0.0-1.21-SNAPSHOT`
-journeymap_api_version_common = `journeymap-api-common-2.0.0-1.21-SNAPSHOT`
+`journeymap-api-forge:2.0.0-1.21-SNAPSHOT`
+`journeymap-api-neoforge:2.0.0-1.21-SNAPSHOT`
+`journeymap-api-fabric:2.0.0-1.21-SNAPSHOT`
+
+// for multiloader setups, common jar
+`journeymap-api-common:2.0.0-1.21-SNAPSHOT`
+
+journeymap_api_version = 2.0.0-1.21-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
@@ -39,8 +44,15 @@ repositories {
         name = "JourneyMap (Public)"
         url = "https://jm.gserv.me/repository/maven-public/"
     }
+    // Optional cursemaven
     maven {
+        name = "Curse Maven"
         url "https://www.cursemaven.com"
+    }
+    // Optional Modrinth Maven
+    maven {
+        name = "Modrinth Maven"
+        url = "https://api.modrinth.com/maven"
     }
 }
 
@@ -51,29 +63,36 @@ configurations.all {
 
 // FORGE
 dependencies {
-    compileOnly group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version_forge, changing: true
-    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
+    compileOnly group: 'info.journeymap', name: 'journeymap-api-forge', version: project.journeymap_api_version, changing: true
 }
 
 // NEOFORGE
 dependencies {
-    compileOnly group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version_neoforge, changing: true
-    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
+    compileOnly group: 'info.journeymap', name: 'journeymap-api-neoforge', version: project.journeymap_api_version, changing: true
 }
 
 // FABRIC/QUILT
 dependencies {
-    modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api', version: project.journeymap_api_version_fabric, changing: true
-    modRuntimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.fabric_jm_file_id}"
+    modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api-fabric', version: project.journeymap_api_version, changing: true
 }
 
 ```
-Example forge mods.toml entry for a soft dependency. Set `mandatory=true` for a hard dependency if needed.
+Example forge: mods.toml entry for a soft dependency. Set `mandatory=true` for a hard dependency if needed.
 ```
 [[dependencies.mymodId]]
 modId = "journeymap"
 mandatory = false
-versionRange = "[6.0.0,)"
+versionRange = "[1.21-6.0.0-beta.1,)"
+ordering = "NONE"
+side = "CLIENT"
+```
+
+Example neoforge: neoforge.mods.toml entry for a soft dependency. Set `type = "required"` for a hard dependency if needed.
+```
+[[dependencies.mymodId]]
+modId = "journeymap"
+type = "required"
+versionRange = "[1.21-6.0.0-beta.1,)"
 ordering = "NONE"
 side = "CLIENT"
 ```
@@ -101,7 +120,7 @@ III. Write your Plugin
     - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
 2. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
     - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't loaded.
-3. For Forge: automatically detects the plugin.
+3. For Forge/NeoForge: automatically detects the plugin.
 4. For Fabric: In your `fabric.mod.json file` add the path to your class that implements `IClientPlugin` to your entrypoint Example:
 ```
     "journeymap": [
