@@ -11,11 +11,22 @@ import java.util.TreeSet;
 
 public interface Waypoint
 {
+    /**
+     * Non-unique id that is a comibination of modId and waypoint position.
+     */
     String getId();
 
+    /**
+     * Unique Id for each waypoint, will not change.
+     */
     String getGuid();
 
+    /**
+     * Unique id of the group this waypoint belongs to.
+     */
     String getGroupId();
+
+    String getModId();
 
     String getName();
 
