@@ -16,7 +16,7 @@ public class WaypointGroupEvent extends JourneyMapEvent
     }
 
     /**
-     * Gets the waypoint that the event is handling.
+     * Gets the waypoint group that the event is handling.
      *
      * @return - The waypoint group.
      */

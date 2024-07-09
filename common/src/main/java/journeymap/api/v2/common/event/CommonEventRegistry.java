@@ -4,6 +4,7 @@ import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.IClientPlugin;
 import journeymap.api.v2.common.event.common.WaypointEvent;
 import journeymap.api.v2.common.event.common.WaypointGroupEvent;
+import journeymap.api.v2.common.event.common.WaypointGroupTransferEvent;
 import journeymap.api.v2.common.event.impl.Event;
 import journeymap.api.v2.common.event.impl.EventFactory;
 
@@ -25,4 +26,9 @@ public class CommonEventRegistry
      * This event handles all the CRUD operations of a waypoint groups on client and server.
      */
     public static final Event<WaypointGroupEvent> WAYPOINT_GROUP_EVENT = EventFactory.create(WaypointGroupEvent.class);
+
+    /**
+     * This event fires when a waypoint is transferred from one group to another, from may be null.
+     */
+    public static final Event<WaypointGroupTransferEvent> WAYPOINT_GROUP_TRANSFER_EVENT = EventFactory.create(WaypointGroupTransferEvent.class);
 }
