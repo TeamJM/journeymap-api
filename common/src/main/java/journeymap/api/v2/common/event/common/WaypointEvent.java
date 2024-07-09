@@ -1,26 +1,34 @@
-package journeymap.api.v2.client.event;
+package journeymap.api.v2.common.event.common;
 
-import journeymap.api.v2.common.event.CommonEventRegistry;
 import journeymap.api.v2.common.event.impl.ClientEvent;
 import journeymap.api.v2.common.waypoint.Waypoint;
-import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 /**
  * This event handles all the CRUD operations of a waypoints.
- * @deprecated this event will be deleted, use same event in {@link journeymap.api.v2.common.event.common.WaypointEvent}
- * Switch your registration to use {@link CommonEventRegistry#WAYPOINT_EVENT}
  */
-@Deprecated(forRemoval = true)
+
 public class WaypointEvent extends ClientEvent
 {
     public final Waypoint waypoint;
     public final Context context;
+    public final ResourceKey<Level> dimension;
 
-    public WaypointEvent(Waypoint waypoint, Context context)
+    public WaypointEvent(Waypoint waypoint, Context context, ResourceKey<Level> dimension)
     {
-        super(false, Minecraft.getInstance().level.dimension());
+        super(context.cancelable);
+        this.dimension = dimension;
         this.waypoint = waypoint;
         this.context = context;
+    }
+
+    /**
+     * World dimension where event occurred.
+     */
+    public ResourceKey<Level> getDimension()
+    {
+        return dimension;
     }
 
     /**
@@ -49,17 +57,17 @@ public class WaypointEvent extends ClientEvent
         /**
          * Fired when a new waypoint is created.
          */
-        CREATE,
+        CREATE(true),
 
         /**
          * Fired when an existing waypoint is updated.
          */
-        UPDATE,
+        UPDATE(true),
 
         /**
          * Fired when a waypoint is deleted.
          */
-        DELETED,
+        DELETED(false),
 
         /**
          * Fired when a waypoint is read from disk, waypoints are always read in batches.
@@ -67,6 +75,13 @@ public class WaypointEvent extends ClientEvent
          * <p>
          * This will happen periodically as the waypoint cache gets refreshed on dimension change, modifying some options, and at world join.
          */
-        READ
+        READ(false);
+
+        final boolean cancelable;
+
+        Context(boolean cancelable)
+        {
+            this.cancelable = cancelable;
+        }
     }
 }

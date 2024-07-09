@@ -83,7 +83,9 @@ public class ClientEventRegistry
     /**
      * This event handles all the CRUD operations of a waypoints.
      * This event is not cancellable.
+     * @deprecated use {@link CommonEventRegistry#WAYPOINT_EVENT}
      */
+    @Deprecated(forRemoval = true)
     public static final Event<WaypointEvent> WAYPOINT_EVENT = EventFactory.create(WaypointEvent.class);
 
     /**

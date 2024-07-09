@@ -35,18 +35,12 @@ public abstract class ClientEvent extends JourneyMapEvent
     public final ResourceKey<Level> dimension;
 
     /**
-     * Whether event has been cancelled.
-     */
-    private boolean cancelled;
-
-    /**
      * Constructor.
      */
     public ClientEvent(boolean cancellable, ResourceKey<Level> dimension)
     {
         super(cancellable);
         this.dimension = dimension;
-
     }
 
     /**
