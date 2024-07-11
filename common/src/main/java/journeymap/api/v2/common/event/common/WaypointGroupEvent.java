@@ -8,7 +8,7 @@ public class WaypointGroupEvent extends JourneyMapEvent
     public final WaypointGroup group;
     public final Context context;
 
-    protected WaypointGroupEvent(WaypointGroup group, Context context)
+    public WaypointGroupEvent(WaypointGroup group, Context context)
     {
         super(context.cancelable);
         this.group = group;

@@ -11,7 +11,7 @@ public class WaypointGroupTransferEvent extends JourneyMapEvent
     private final WaypointGroup from;
     private final Waypoint waypoint;
 
-    protected WaypointGroupTransferEvent(@Nullable WaypointGroup from, WaypointGroup to, Waypoint waypoint)
+    public WaypointGroupTransferEvent(@Nullable WaypointGroup from, WaypointGroup to, Waypoint waypoint)
     {
         super(true);
         this.from = from;
