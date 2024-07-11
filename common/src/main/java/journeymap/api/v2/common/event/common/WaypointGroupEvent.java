@@ -5,14 +5,25 @@ import journeymap.api.v2.common.waypoint.WaypointGroup;
 
 public class WaypointGroupEvent extends JourneyMapEvent
 {
-    public final WaypointGroup group;
-    public final Context context;
+    private final WaypointGroup group;
+    private final Context context;
+
+    /**
+     * On DELETED if all waypoints are deleted.
+     */
+    final boolean deleteWaypoints;
 
     public WaypointGroupEvent(WaypointGroup group, Context context)
+    {
+        this(group, context, false);
+    }
+
+    public WaypointGroupEvent(WaypointGroup group, Context context, boolean deleteWaypoints)
     {
         super(context.cancelable);
         this.group = group;
         this.context = context;
+        this.deleteWaypoints = deleteWaypoints;
     }
 
     /**
