@@ -3,6 +3,8 @@ package journeymap.api.v2.common.event.common;
 import journeymap.api.v2.common.event.impl.JourneyMapEvent;
 import journeymap.api.v2.common.waypoint.WaypointGroup;
 
+import static journeymap.api.v2.common.event.common.WaypointGroupEvent.Context.DELETED;
+
 public class WaypointGroupEvent extends JourneyMapEvent
 {
     private final WaypointGroup group;
@@ -11,7 +13,7 @@ public class WaypointGroupEvent extends JourneyMapEvent
     /**
      * On DELETED if all waypoints are deleted.
      */
-    final boolean deleteWaypoints;
+    private final boolean deleteWaypoints;
 
     public WaypointGroupEvent(WaypointGroup group, Context context)
     {
@@ -24,6 +26,23 @@ public class WaypointGroupEvent extends JourneyMapEvent
         this.group = group;
         this.context = context;
         this.deleteWaypoints = deleteWaypoints;
+    }
+
+    /**
+     * If the delete group event is also deleting all the waypoints in the group
+     *
+     * @return - the boolean
+     */
+    public boolean deleteWaypoints()
+    {
+        if (DELETED == this.context)
+        {
+            return this.deleteWaypoints;
+        }
+        else
+        {
+            throw new UnsupportedOperationException("deleteWaypoint can only be called on context DELETED!");
+        }
     }
 
     /**
