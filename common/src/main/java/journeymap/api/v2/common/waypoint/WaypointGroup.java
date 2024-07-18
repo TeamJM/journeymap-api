@@ -66,6 +66,24 @@ public interface WaypointGroup
      */
     void setLocked(boolean locked);
 
+    Integer getColor();
+
+    void setColor(Integer color);
+    /**
+     * Does waypoint group override individual waypoint colors.
+     *
+     * @return if override
+     */
+    boolean colorOverride();
+
+    /**
+     * Setting this to true, waypoints will use the group color instead of individual colors.
+     * Setting to false, waypoints will use their individual colors
+     *
+     * @param override to override
+     */
+    void setColorOverride(boolean override);
+
     // ############ ICON ############
     /*
      * These values do not need to be set if using the default icon.
@@ -75,6 +93,7 @@ public interface WaypointGroup
      *
      * All Icon setters are optional.
      */
+
 
     /**
      * Gets the rotation in degrees the image should be oriented.
@@ -184,6 +203,7 @@ public interface WaypointGroup
 
     /**
      * Gets the custom data stored on a waypoint group
+     *
      * @return
      */
     @Nullable
