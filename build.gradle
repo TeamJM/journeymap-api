@@ -25,16 +25,12 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
-    }
 }
 plugins {
     id 'fabric-loom' version '1.5-SNAPSHOT'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 /* Gradle Plugins */
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
@@ -118,23 +114,23 @@ def bintrayKey = project.findProperty("bintray.password") ?: System.getenv("BINT
 
 if (project.hasProperty("production")) {
     // Bintray is _only_ for releases, not snapshots
-    bintray {
-        user = bintrayUser
-        key = bintrayKey
-
-        pkg {
-            name = "api"
-            repo = "JourneyMap"
-            userOrg = "teamjm"
-
-            publications = ["maven"]
-
-            version {
-                name = project.version
-                released = new Date()
-            }
-        }
-    }
+//    bintray {
+//        user = bintrayUser
+//        key = bintrayKey
+//
+//        pkg {
+//            name = "api"
+//            repo = "JourneyMap"
+//            userOrg = "teamjm"
+//
+//            publications = ["maven"]
+//
+//            version {
+//                name = project.version
+//                released = new Date()
+//            }
+//        }
+//    }
 }
 
 publishing {
