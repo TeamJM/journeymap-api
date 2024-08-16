@@ -31,6 +31,7 @@ import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.Displayable;
 import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.waypoint.Waypoint;
+import journeymap.api.v2.common.waypoint.WaypointGroup;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -210,6 +211,48 @@ enum MockClientAPI implements IClientAPI
 
     @Override
     public void removeAllWaypoints(String modId)
+    {
+
+    }
+
+    @Override
+    public void addWaypointGroup(WaypointGroup group)
+    {
+
+    }
+
+    @Override
+    public WaypointGroup getWaypointGroup(String groupGuid)
+    {
+        return null;
+    }
+
+    @Override
+    public WaypointGroup getWaypointGroupByName(String modId, String name)
+    {
+        return null;
+    }
+
+    @Override
+    public List<? extends WaypointGroup> getWaypointGroups(String modId)
+    {
+        return null;
+    }
+
+    @Override
+    public List<? extends WaypointGroup> getAllWaypointGroups()
+    {
+        return null;
+    }
+
+    @Override
+    public void removeWaypointGroup(WaypointGroup group, boolean deleteWaypoints)
+    {
+
+    }
+
+    @Override
+    public void removeWaypointGroups(String modId, boolean deleteWaypoints)
     {
 
     }
