@@ -14,6 +14,8 @@ public interface WaypointGroup
 
     String getGuid();
 
+    String getModId();
+
     String getName();
 
     void setName(String name);

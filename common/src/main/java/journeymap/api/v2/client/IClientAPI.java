@@ -27,6 +27,7 @@ import journeymap.api.v2.client.display.Displayable;
 import journeymap.api.v2.client.event.MappingEvent;
 import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.waypoint.Waypoint;
+import journeymap.api.v2.common.waypoint.WaypointGroup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -263,6 +264,62 @@ public interface IClientAPI
      * @param modId - The modId
      */
     void removeAllWaypoints(final String modId);
+
+    /**
+     * Adds a Waypoint group to the system.
+     */
+    void addWaypointGroup(WaypointGroup group);
+
+    /**
+     * Gets a waypoint group from the group's guid.
+     *
+     * @param groupGuid the guid
+     * @return the group.
+     */
+    WaypointGroup getWaypointGroup(final String groupGuid);
+
+    /**
+     * Gets a waypoint group from the name. (not case-sensitive)
+     * If multiple are found, returns the first one.
+     *
+     * @param name  the group name
+     * @param modId the modId
+     * @return the group.
+     */
+    WaypointGroup getWaypointGroupByName(final String modId, final String name);
+
+    /**
+     * Gets all waypoint groups for a modid.
+     *
+     * @param modId the modId
+     * @return the immutable list of groups
+     */
+    List<? extends WaypointGroup> getWaypointGroups(final String modId);
+
+    /**
+     * Gets an immutable list of all waypoint groups.
+     *
+     * @return the immutable list of groups
+     */
+    List<? extends WaypointGroup> getAllWaypointGroups();
+
+    /**
+     * Removes a waypoint group.
+     * Setting deleteWaypoints to false, will move all waypoints in the Default group.
+     *
+     * @param group           the group
+     * @param deleteWaypoints to delete all waypoints in group
+     */
+    void removeWaypointGroup(WaypointGroup group, boolean deleteWaypoints);
+
+    /**
+     * Removes groups for a modId.
+     * Setting deleteWaypoints to false, will move all waypoints in the Default group.
+     *
+     * @param modId           - the modId
+     * @param deleteWaypoints to delete all waypoints in group
+     */
+    void removeWaypointGroups(String modId, boolean deleteWaypoints);
 
     /**
      * Gets the worldId for the current world.
