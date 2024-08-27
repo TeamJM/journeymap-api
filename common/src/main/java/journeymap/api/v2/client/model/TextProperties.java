@@ -210,6 +210,7 @@ public class TextProperties
      */
     public TextProperties setActiveUIs(Context.UI... activeUIs)
     {
+        this.activeUIs = new HashSet<>();
         this.activeUIs.addAll(Arrays.asList(activeUIs));
         return this;
     }
@@ -232,6 +233,7 @@ public class TextProperties
      */
     public TextProperties setActiveMapTypes(Context.MapType... activeMapTypes)
     {
+        this.activeMapTypes = new HashSet<>();
         this.activeMapTypes.addAll(Arrays.asList(activeMapTypes));
         return this;
     }

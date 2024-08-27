@@ -261,6 +261,7 @@ public abstract class Overlay extends Displayable
      */
     public Overlay setActiveUIs(Context.UI... activeUIs)
     {
+        this.activeUIs = new HashSet<>();
         this.activeUIs.addAll(Arrays.asList(activeUIs));
         return this;
     }
@@ -283,6 +284,7 @@ public abstract class Overlay extends Displayable
      */
     public Overlay setActiveMapTypes(Context.MapType... activeMapTypes)
     {
+        this.activeMapTypes = new HashSet<>();
         this.activeMapTypes.addAll(Arrays.asList(activeMapTypes));
         return this;
     }
