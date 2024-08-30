@@ -78,6 +78,8 @@ public final class MapImage
 
     @Since(1.1)
     private Double anchorY;
+
+    private boolean blur = true;
     /**
      * Constructor.
      * <p>
@@ -273,6 +275,25 @@ public final class MapImage
     {
         setAnchorX(this.displayWidth / 2.0);
         setAnchorY(this.displayHeight / 2.0);
+        return this;
+    }
+
+    public boolean isBlur()
+    {
+        return blur;
+    }
+
+    /**
+     * Sets the blur,
+     * True will use GL_LINEAR which will give AA to the image. This is the default
+     * False will use GL_NEAREST which will keep the image pixelated.
+     *
+     * @param blur
+     * @return
+     */
+    public MapImage setBlur(boolean blur)
+    {
+        this.blur = blur;
         return this;
     }
 
