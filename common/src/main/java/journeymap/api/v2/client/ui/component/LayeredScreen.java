@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 
 public abstract class LayeredScreen extends Screen
 {
-
     protected Minecraft minecraft;
     protected Screen backgroundScreen;
 
@@ -19,7 +18,10 @@ public abstract class LayeredScreen extends Screen
 
     public void display()
     {
-        this.backgroundScreen = this.minecraft.screen;
+        if (this.minecraft.screen != null)
+        {
+            this.backgroundScreen = this.minecraft.screen;
+        }
         this.minecraft.setScreen(this);
     }
 
@@ -76,7 +78,14 @@ public abstract class LayeredScreen extends Screen
         {
             this.minecraft.screen.removed();
         }
-        this.minecraft.screen = this.backgroundScreen;
+        if (this.backgroundScreen != null)
+        {
+            this.minecraft.screen = this.backgroundScreen;
+        }
+        else
+        {
+            this.minecraft.setScreen(null);
+        }
     }
 
     public Screen getBackgroundScreen()
