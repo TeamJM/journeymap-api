@@ -1,6 +1,7 @@
 package journeymap.api.v2.client.event;
 
 import journeymap.api.v2.common.event.impl.ClientEvent;
+import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
 
@@ -61,6 +62,8 @@ public class RegistryEvent extends ClientEvent
 
         /**
          * Registers an infoslot.
+         * <p>
+         * Please supply a key.tooltip in your lang files so that the dropdown item has a tool tip.
          *
          * @param modId      - The ModId
          * @param key        - The i18n key or Label for the InfoSlot dropdown in the options menu.
@@ -68,6 +71,24 @@ public class RegistryEvent extends ClientEvent
          * @param supplier   - The supplier that gets the value to be displayed.
          */
         public void register(String modId, String key, long updateTime, Supplier<String> supplier)
+        {
+            registrar.register(modId, Component.translatable(key), updateTime, () -> Component.literal(supplier.get()));
+        }
+
+        /**
+         * Registers an infoslot.
+         * <p>
+         * Please supply a key.tooltip in your lang files so that the dropdown item has a tool tip.
+         * <p>
+         * For key please use Component.translateable("key") here will also only render as white and does not support param arguments at this time.
+         * In the future, the dropdown will fully support Components and formatting.
+         *
+         * @param modId      - The ModId
+         * @param key        - The i18n key for the InfoSlot dropdown in the options menu.
+         * @param updateTime - How often in milliseconds to update.
+         * @param supplier   - The supplier that gets the value to be displayed.
+         */
+        public void register(String modId, Component key, long updateTime, Supplier<Component> supplier)
         {
             registrar.register(modId, key, updateTime, supplier);
         }
@@ -78,11 +99,11 @@ public class RegistryEvent extends ClientEvent
              * Registers an infoslot.
              *
              * @param modId      - The ModId
-             * @param key        - The i18n key or Label for the InfoSlot dropdown in the options menu.
+             * @param component  - The i18n key or Label for the InfoSlot dropdown in the options menu.
              * @param updateTime - How often in milliseconds to update.
              * @param supplier   - The supplier that gets the value to be displayed.
              */
-            void register(String modId, String key, long updateTime, Supplier<String> supplier);
+            void register(String modId, Component component, long updateTime, Supplier<Component> supplier);
         }
     }
 
