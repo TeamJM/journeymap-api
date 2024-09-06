@@ -53,36 +53,52 @@ public class ClientEventRegistry
      * Indicates that the fullscreen map is going to have a mouse click.
      * This is a staged event. Pre can be canceled, post cannot be canceled.
      * {@link FullscreenMapEvent.ClickEvent}, which can be cancelled.
+     *
+     * @deprecated use FullscreenEventRegistry
      */
+    @Deprecated(forRemoval = true) // use FullscreenEventRegistry
     public static final Event<FullscreenMapEvent.ClickEvent> FULLSCREEN_MAP_CLICK_EVENT = EventFactory.create(FullscreenMapEvent.ClickEvent.class);
 
     /**
      * Indicates the start of the mouse dragging.
      * This is a staged event. Pre can be canceled, post cannot be canceled.
      * {@link FullscreenMapEvent.MouseDraggedEvent}, which can be cancelled.
+     *
+     * @deprecated use FullscreenEventRegistry
      */
+    @Deprecated(forRemoval = true) // use FullscreenEventRegistry
     public static final Event<FullscreenMapEvent.MouseDraggedEvent> FULLSCREEN_MAP_DRAG_EVENT = EventFactory.create(FullscreenMapEvent.MouseDraggedEvent.class);
 
     /**
      * Indicates moving of the mouse, gets block info where the cursor is pointing.
      * {@link FullscreenMapEvent.MouseMoveEvent}, which can not be cancelled.
+     *
+     * @deprecated use FullscreenEventRegistry
      */
+    @Deprecated(forRemoval = true) // use FullscreenEventRegistry
     public static final Event<FullscreenMapEvent.MouseMoveEvent> FULLSCREEN_MAP_MOVE_EVENT = EventFactory.create(FullscreenMapEvent.MouseMoveEvent.class);
     /**
      * Register info slots.
      * {@link RegistryEvent}
+     *
+     * @deprecated due to rename use {@link ClientEventRegistry#INFO_SLOT_REGISTRY_EVENT}
      */
+    @Deprecated(forRemoval = true)
     public static final Event<RegistryEvent.InfoSlotRegistryEvent> INFO_SLOT_REGISTRY_EVENT_EVENT = EventFactory.create(RegistryEvent.InfoSlotRegistryEvent.class);
-
+    public static final Event<RegistryEvent.InfoSlotRegistryEvent> INFO_SLOT_REGISTRY_EVENT = INFO_SLOT_REGISTRY_EVENT_EVENT;
     /**
      * Register options in the addon options screen.
      * {@link RegistryEvent}
+     *
+     * @deprecated due to rename use {@link ClientEventRegistry#OPTIONS_REGISTRY_EVENT}
      */
+    @Deprecated(forRemoval = true)
     public static final Event<RegistryEvent.OptionsRegistryEvent> OPTIONS_REGISTRY_EVENT_EVENT = EventFactory.create(RegistryEvent.OptionsRegistryEvent.class);
-
+    public static final Event<RegistryEvent.OptionsRegistryEvent> OPTIONS_REGISTRY_EVENT = OPTIONS_REGISTRY_EVENT_EVENT;
     /**
      * This event handles all the CRUD operations of a waypoints.
      * This event is not cancellable.
+     *
      * @deprecated use {@link CommonEventRegistry#WAYPOINT_EVENT}
      */
     @Deprecated(forRemoval = true)
@@ -92,24 +108,27 @@ public class ClientEventRegistry
      * This event is fired when a user right clicks anywhere on the fullscreen map that is not an overlay or waypoint.
      * To target overlays, see {@link IOverlayListener#onOverlayMenuPopup(UIState, Point2D.Double, BlockPos, ModPopupMenu)}
      * This event is cancellable
+     *
+     * @deprecated use FullscreenEventRegistry
      */
+    @Deprecated(forRemoval = true) // use FullscreenEventRegistry
     public static final Event<PopupMenuEvent.FullscreenPopupMenuEvent> FULLSCREEN_POPUP_MENU_EVENT = EventFactory.create(PopupMenuEvent.FullscreenPopupMenuEvent.class);
 
     /**
      * This event is fired when a user right-clicks on a waypoint icon.
      * This event is cancellable.
+     *
+     * @deprecated use FullscreenEventRegistry
      */
+    @Deprecated(forRemoval = true) // use FullscreenEventRegistry
     public static final Event<PopupMenuEvent.WaypointPopupMenuEvent> WAYPOINT_POPUP_MENU_EVENT = EventFactory.create(PopupMenuEvent.WaypointPopupMenuEvent.class);
 
     /**
      * Used to create custom toolbars on the fullscreen map.
      *
-     * @deprecated this event should be a rare usage event, most mods should use {@link FullscreenDisplayEvent.AddonButtonDisplayEvent}.
-     * Overuse of this event can cause toolbars to display over other mod's toolbars.
-     * USE SPARINGLY!
-     * This event is not cancellable
+     * @deprecated use FullscreenEventRegistry
      */
-    @Deprecated
+    @Deprecated(forRemoval = true) // use FullscreenEventRegistry
     public static final Event<FullscreenDisplayEvent.CustomToolbarEvent> CUSTOM_TOOLBAR_UPDATE_EVENT = EventFactory.create(FullscreenDisplayEvent.CustomToolbarEvent.class);
 
     /**
@@ -118,16 +137,18 @@ public class ClientEventRegistry
      * those that want to add maptypes through your own means.
      * This event is not cancellable
      *
-     * @deprecated since this is a special event that requires special modification to use,
-     * it is suggested to not use it without first discussing with TeamJM developers.
+     * @deprecated use FullscreenEventRegistry
      */
-    @Deprecated
+    @Deprecated(forRemoval = true) // use FullscreenEventRegistry
     public static final Event<FullscreenDisplayEvent.MapTypeButtonDisplayEvent> MAP_TYPE_BUTTON_DISPLAY_EVENT = EventFactory.create(FullscreenDisplayEvent.MapTypeButtonDisplayEvent.class);
 
     /**
      * This event is used for adding buttons to the right panel on the fullscreen map.
      * This event is not cancellable.
+     *
+     * @deprecated use FullscreenEventRegistry
      */
+    @Deprecated(forRemoval = true) // use FullscreenEventRegistry
     public static final Event<FullscreenDisplayEvent.AddonButtonDisplayEvent> ADDON_BUTTON_DISPLAY_EVENT = EventFactory.create(FullscreenDisplayEvent.AddonButtonDisplayEvent.class);
 
     /**
