@@ -21,6 +21,7 @@ and you'll see the API version in the corner of the screen.  The mod info dialog
 1. Add [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api) to your list of repositories
 2. Add a compile dependency on 'info.journeymap:journeymap-api:#version'
 3. Add journeymap mod in your run/mods folder or as a runtimeOnly/modRuntimeOnly dependency from cursemaven or modrinth's maven.
+    If set as a runtime dependency, you will also need to add [common-networking](https://github.com/mysticdrew/common-networking) as a dependency.
 
 For example:
 
@@ -28,14 +29,14 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-`journeymap-api-forge:2.0.0-1.21-SNAPSHOT`
-`journeymap-api-neoforge:2.0.0-1.21-SNAPSHOT`
-`journeymap-api-fabric:2.0.0-1.21-SNAPSHOT`
+`journeymap-api-forge:2.0.0-1.21.1-SNAPSHOT`
+`journeymap-api-neoforge:2.0.0-1.21.1-SNAPSHOT`
+`journeymap-api-fabric:2.0.0-1.21.1-SNAPSHOT`
 
 // for multiloader setups, common jar
-`journeymap-api-common:2.0.0-1.21-SNAPSHOT`
+`journeymap-api-common:2.0.0-1.21.1-SNAPSHOT`
 
-journeymap_api_version = 2.0.0-1.21-SNAPSHOT
+journeymap_api_version = 2.0.0-1.21.1-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
