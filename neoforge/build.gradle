@@ -133,10 +133,6 @@ javadoc {
     title = project.title_javadoc
 }
 
-tasks.withType(JavaCompile).excludingNeoTasks().configureEach {
-    source(project(":common").sourceSets.main.allSource)
-}
-
 tasks.withType(Javadoc).configureEach {
     source(project(":common").sourceSets.main.allJava)
 }
