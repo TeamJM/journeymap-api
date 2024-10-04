@@ -17,12 +17,11 @@
  *  - Use code or artifacts from the repository in any way not explicitly granted by this license.
  *
  */
-
 plugins {
     id "java-library"
     id "idea"
+    id 'net.neoforged.moddev'
     id "maven-publish"
-    id 'net.neoforged.gradle.userdev' version '[7.0.140,)'
 }
 
 group 'info.journeymap'
@@ -54,30 +53,12 @@ repositories {
     }
 }
 
-
-runs {
-    configureEach {
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-        systemProperty 'mixin.debug.export', 'true'
-        systemProperty 'forge.logging.console.level', 'info'
-        systemProperty 'journeymap.map_testing', 'true'
-//        ideaModule "${rootProject.name}.${project.name}.main"
-        modSource project.sourceSets.main
-    }
-
-    client {
-        workingDirectory project.file('run/client')
-//        taskName 'Client'
-    }
-
-    server {
-        workingDirectory project.file('run/server')
-//        taskName 'Server'
-    }
+tasks.named("test").configure {
+    enabled = false
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${project.neoforge_version}"
+//    implementation "net.neoforged:neoforge:${project.neoforge_version}"
     runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
 
     compileOnly project(":common")
@@ -100,6 +81,44 @@ processResources {
     }
 }
 
+neoForge {
+    version = neoforge_version
+    // Automatically enable neoforge AccessTransformers if the file exists
+    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.add(at.absolutePath)
+    }
+    addModdingDependenciesTo(sourceSets["test"])
+    parchment {
+        minecraftVersion = mappings_mc_version
+        mappingsVersion = mappings_date
+    }
+    runs {
+        configureEach {
+//            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+            jvmArgument("-Dmixin.debug.export=true")
+        }
+        client {
+            client()
+            gameDirectory = project.file('run/client')
+        }
+        server {
+            server()
+            gameDirectory = project.file("run/server")
+        }
+    }
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    source(project(":common").sourceSets.main.allSource)
+}
+
 jar {
     manifest {
         attributes = ["Manifest-Version"      : "1.0",
@@ -112,10 +131,6 @@ jar {
 /* Javadoc properties */
 javadoc {
     title = project.title_javadoc
-}
-
-TaskCollection.metaClass.excludingNeoTasks = { ->
-    delegate.matching { !it.name.startsWith("neo") }
 }
 
 tasks.withType(JavaCompile).excludingNeoTasks().configureEach {

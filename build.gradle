@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
+    id 'net.neoforged.moddev' version '1.0.11' apply false
 }
 
 subprojects {
@@ -61,7 +61,7 @@ subprojects {
 
     tasks.withType(JavaCompile).configureEach {
         it.options.encoding = 'UTF-8'
-        it.options.release = 21
+        it.options.getRelease().set(21)
     }
 
 
