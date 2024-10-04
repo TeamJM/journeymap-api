@@ -25,10 +25,10 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerWakeUpEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 
 import java.util.HashMap;
@@ -142,7 +142,7 @@ class ForgeEventListener
      * This is just a quick example, and doesn't take into account whether the player successfully slept.
      */
     @SubscribeEvent
-    public void onPlayerSlept(PlayerSleepInBedEvent event)
+    public void onPlayerSlept(PlayerWakeUpEvent event)
     {
         try
         {
@@ -150,7 +150,7 @@ class ForgeEventListener
             {
 //                if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) // TODO
 //                {
-                SampleWaypointFactory.createBedWaypoint(jmAPI, event.getPos(), event.getEntity().level().dimension());
+                SampleWaypointFactory.createBedWaypoint(jmAPI, event.getEntity().blockPosition(), event.getEntity().level().dimension());
 //                }
             }
         }

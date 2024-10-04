@@ -107,11 +107,9 @@ II. Look at the Example Code
 * Look in the [example package](src/main/java/example) for a complete 
 example of a mod that has implemented a plugin for the JourneyMap API.
 
-* You can put the `journeymap-api-*-examplemod.jar` in your runtime mods directory (usually `/run/mods`)
-to see the Example Mod code in action.  To get the examplemod.jar, download it from 
-[Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api) or build this project.
+* In intellij, you can set your run config module to `journeymap-api.{modloadder}.testmod` 
+* to run the test mod. Be sure to add the JourneyMap jar to the {modloader}/run/client/mods folder.
 
-*Note that the examplemod.jar is built with re-obfuscated code so that it can be used like a normal mod.*
 
 III. Write your Plugin
 =============================

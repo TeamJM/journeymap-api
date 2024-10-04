@@ -27,26 +27,51 @@ minecraft.reobf = false
 /* ForgeGradle spec for Minecraft */
 minecraft {
     mappings channel: project.channel, version: project.mappings
-    copyIdeResources = true
+
+    copyIdeResources = true //Calls processResources when in dev
+
     runs {
         client = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'info'
-            workingDirectory project.file('run/client').canonicalPath
-            source sourceSets.main
+            property "mixin.debug.export", "true"
+            property "mixin.env.remapRefMap", "true"
+            property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
+            properties "forge.logging.console.level": "info"
+            properties "journeymap.map_testing": "true"
+
+
+            workingDirectory project.file("run/client")
+            mods {
+                modClientRun {
+                    source sourceSets.main
+                    source project(":common").sourceSets.main
+                }
+            }
         }
         server = {
-            // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
+            arg "nogui"
+            property "mixin.debug.export", "true"
+            property "mixin.env.remapRefMap", "true"
+            property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
+            properties "forge.logging.console.level": "info"
+            properties "mixin.env.disableRefMap": "true"
+            properties "forge.logging.markers": "SCAN,REGISTRIES,REGISTRYDUMP"
+            workingDirectory project.file("run/server")
+            mods {
+                modServerRun {
+                    source sourceSets.main
+                    source project(":common").sourceSets.main
+                }
+            }
         }
     }
 }
+
+minecraft.runs.all {
+    lazyToken("minecraft_classpath") {
+        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+    }
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
     runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"

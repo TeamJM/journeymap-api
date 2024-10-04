@@ -23,7 +23,6 @@ package example.mod;
 import example.mod.client.ClientProxy;
 import example.mod.server.ServerProxy;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -31,6 +30,7 @@ import net.neoforged.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
@@ -40,21 +40,21 @@ import org.apache.logging.log4j.Logger;
  * Example mod showing how to use the JourneyMap API.
  */
 @Mod(ExampleMod.MODID)
-@Mod.EventBusSubscriber(modid = ExampleMod.MODID)
 public class ExampleMod
 {
     public static final String MODID = "examplemodjm";
-    public static final String VERSION = "1.9";
+    public static final String VERSION = "2.0.0";
     public static final Logger LOGGER = LogManager.getFormatterLogger(MODID);
 
 
     /**
      * The constant proxy.
      */
-    public static final CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+    public final CommonProxy proxy;
 
     public ExampleMod()
     {
+        proxy = FMLEnvironment.dist.isClient() ? new ClientProxy() : new ServerProxy();
         NeoForge.EVENT_BUS.register(this);
     }
 
