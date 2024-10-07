@@ -16,6 +16,12 @@ test {
     useJUnitPlatform()
 }
 
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+    withJavadocJar()
+}
+
 neoForge {
     neoFormVersion = neo_form_version
     // Automatically enable AccessTransformers if the file exists
