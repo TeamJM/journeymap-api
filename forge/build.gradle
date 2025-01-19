@@ -3,7 +3,6 @@ plugins {
     id "maven-publish"
     id "net.minecraftforge.gradle" version "[6.0,6.2)"
 }
-
 group 'info.journeymap'
 
 /* Artifact Version */
@@ -14,6 +13,12 @@ if (project.snapshot) {
 archivesBaseName = "${project.mod_name}" + "-forge"
 def modVersion = project.api_version
 
+
+if(hasProperty("buildProfile") && "local".equals(property("buildProfile"))) {
+    apply from: "${rootDir}/gradle/publishlocal.gradle"
+} else {
+    apply from: "${rootDir}/gradle/publishsnapshot.gradle"
+}
 configurations {
     testmodImplementation.extendsFrom implementation
 }
@@ -130,37 +135,4 @@ tasks.withType(Javadoc).configureEach {
 }
 tasks.named("sourcesJar", Jar) {
     from(project(":common").sourceSets.main.allSource)
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "JourneyMap"
-            url = uri("https://jm.gserv.me/repository/maven-snapshots/")
-
-            credentials {
-                username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
-                password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
-            }
-
-            version = project.version
-        }
-    }
-
-    publications {
-        maven(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            artifact jar
-
-            artifact project.sourcesJar {
-                archiveClassifier.set("sources")
-            }
-
-            artifact project.javadocJar {
-                archiveClassifier.set("javadoc")
-            }
-        }
-    }
 }

@@ -12,6 +12,13 @@ if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
 archivesBaseName = "${project.mod_name}" + "-fabric"
+
+if(hasProperty("buildProfile") && "local".equals(property("buildProfile"))) {
+    apply from: "${rootDir}/gradle/publishlocal.gradle"
+} else {
+    apply from: "${rootDir}/gradle/publishsnapshot.gradle"
+}
+
 configurations {
     testmodImplementation.extendsFrom implementation
 }
@@ -111,30 +118,4 @@ jar {
 /* Javadoc properties */
 javadoc {
     title = project.title_javadoc
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "JourneyMap"
-            url = uri("https://jm.gserv.me/repository/maven-snapshots/")
-
-            credentials {
-                username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
-                password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
-            }
-
-            version = project.version
-        }
-    }
-
-    publications {
-        maven(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-
-            from(components["java"])
-        }
-    }
 }
