@@ -20,7 +20,7 @@
   "environment": "*",
   "depends": {
     "fabricloader": ">=0.14.11",
-    "fabric": "*",
+    "fabric-api": "*",
     "minecraft": ">=1.19.3",
     "java": ">=17"
   },
