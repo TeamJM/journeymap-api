@@ -4,24 +4,28 @@ How to use the [JourneyMap API](https://github.com/TeamJM/journeymap-api)
 To hook into JourneyMap from your mod, you'll write a plugin class that handles all interactions with JourneyMap
 via the API interfaces in this repository.
 
-The JourneyMap API is designed so that your mod will only have a **soft dependency** on it:  
+The JourneyMap API is designed so that your mod will only have a **soft dependency** on it:
 
- * You should **only** have a compile-time dependency via your plugin implementation.
- * You should **not** need a runtime dependency. As long as you don't declare a dependency on "journeymap" in your mods.toml file, your mod should load even if JourneyMap doesn't.
- * You should **never** include any JourneyMap API classes in your mod's jar. (No shading is needed.)
+* You should **only** have a compile-time dependency via your plugin implementation.
+* You should **not** need a runtime dependency. As long as you don't declare a dependency on "journeymap" in your
+  mods.toml file, your mod should load even if JourneyMap doesn't.
+* You should **never** include any JourneyMap API classes in your mod's jar. (No shading is needed.)
 
 This page describes the recommended approach to writing a plugin for the JourneyMap API:
- 
+
 I. Add the API Dependency
 =============================
 
-To find out which API version to use, run Minecraft with JourneyMap. Open the Options manager or any other dialog in JourneyMap,
-and you'll see the API version in the corner of the screen.  The mod info dialog also displays this information.
+To find out which API version to use, run Minecraft with JourneyMap. Open the Options manager or any other dialog in
+JourneyMap,
+and you'll see the API version in the corner of the screen. The mod info dialog also displays this information.
 
 1. Add [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjourneymap-api) to your list of repositories
 2. Add a compile dependency on 'info.journeymap:journeymap-api:#version'
-3. Add journeymap mod in your run/mods folder or as a runtimeOnly/modRuntimeOnly dependency from cursemaven or modrinth's maven.
-    If set as a runtime dependency, you will also need to add [common-networking](https://github.com/mysticdrew/common-networking) as a dependency.
+3. Add journeymap mod in your run/mods folder or as a runtimeOnly/modRuntimeOnly dependency from cursemaven or
+   modrinth's maven.
+   If set as a runtime dependency, you will also need to
+   add [common-networking](https://github.com/mysticdrew/common-networking) as a dependency.
 
 For example:
 
@@ -44,6 +48,12 @@ repositories {
     maven {
         name = "JourneyMap (Public)"
         url = "https://jm.gserv.me/repository/maven-public/"
+    }
+    // New maven repo our API. Please switch to this maven.
+    // We will continue to upload to jm.gserve.me, but that maven goes down more than we'd like.
+    maven {
+        name = "New JourneyMap Maven"
+        url = 'https://maven.blamejared.com'
     }
     // Optional cursemaven
     maven {
@@ -78,7 +88,9 @@ dependencies {
 }
 
 ```
+
 Example forge: mods.toml entry for a soft dependency. Set `mandatory=true` for a hard dependency if needed.
+
 ```
 [[dependencies.mymodId]]
 modId = "journeymap"
@@ -88,7 +100,9 @@ ordering = "NONE"
 side = "CLIENT"
 ```
 
-Example neoforge: neoforge.mods.toml entry for a soft dependency. Set `type = "required"` for a hard dependency if needed.
+Example neoforge: neoforge.mods.toml entry for a soft dependency. Set `type = "required"` for a hard dependency if
+needed.
+
 ```
 [[dependencies.mymodId]]
 modId = "journeymap"
@@ -104,23 +118,30 @@ stepping through a debugger in your development environment.*
 II. Look at the Example Code
 =============================
 
-* Look in the [example package](src/main/java/example) for a complete 
-example of a mod that has implemented a plugin for the JourneyMap API.
+* Look in the [example package](src/main/java/example) for a complete
+  example of a mod that has implemented a plugin for the JourneyMap API.
 
-* In intellij, you can set your run config module to `journeymap-api.{modloadder}.testmod` 
+* In intellij, you can set your run config module to `journeymap-api.{modloadder}.testmod`
 * to run the test mod. Be sure to add the JourneyMap jar to the {modloader}/run/client/mods folder.
-
 
 III. Write your Plugin
 =============================
 
-1. Write a class that implements the JourneyMap *[journeymap.client.api.v2.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
-    - Annotate the class with *[@journeymap.api.v2.client.JourneyMapPlugin](common/src/main/java/journeymap/api/v2/client/ClientPlugin.java)* so that JourneyMap can find and instantiate it
-    - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't loaded.
+1. Write a class that implements the JourneyMap
+   *[journeymap.client.api.v2.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (
+   like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
+    - Annotate the class with
+      *[@journeymap.api.v2.client.JourneyMapPlugin](common/src/main/java/journeymap/api/v2/client/ClientPlugin.java)* so
+      that JourneyMap can find and instantiate it
+    - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't
+      loaded.
 2. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
-    - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't loaded.
+    - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't
+      loaded.
 3. For Forge/NeoForge: automatically detects the plugin.
-4. For Fabric: In your `fabric.mod.json file` add the path to your class that implements `IClientPlugin` to your entrypoint Example:
+4. For Fabric: In your `fabric.mod.json file` add the path to your class that implements `IClientPlugin` to your
+   entrypoint Example:
+
 ```
     "journeymap": [
       "mymod.modhooks.MyJourneymapPlugin"
@@ -130,5 +151,7 @@ III. Write your Plugin
 IV. Test your Plugin
 =============================
 
-1. Using the following gradle configuration above, your mod will load journeymap and the api in your development environment.
-2. Run Minecraft in your development environment.  Forge will load JourneyMap and your mod, and the JourneyMap API will activate your plugin.
+1. Using the following gradle configuration above, your mod will load journeymap and the api in your development
+   environment.
+2. Run Minecraft in your development environment. Forge will load JourneyMap and your mod, and the JourneyMap API will
+   activate your plugin.

@@ -1,0 +1,17 @@
+publishing {
+    repositories {
+        maven {
+            url System.getenv("local_maven_url") // or `url "file://" + System.getenv("local_maven")`
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+
+            from(components["java"])
+        }
+    }
+}
