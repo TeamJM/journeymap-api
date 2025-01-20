@@ -22,7 +22,10 @@ public abstract class LayeredScreen extends Screen
         {
             this.backgroundScreen = this.minecraft.screen;
         }
-        this.minecraft.setScreen(this);
+
+        this.added();
+        this.init(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
+        minecraft.getNarrator().sayNow(this.getNarrationMessage());
     }
 
     public void resize(Minecraft minecraft, int width, int height)
