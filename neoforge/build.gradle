@@ -32,11 +32,6 @@ if (project.snapshot) {
 }
 archivesBaseName = "${project.mod_name}" + "-neoforge"
 
-if(hasProperty("buildProfile") && "local".equals(property("buildProfile"))) {
-    apply from: "${rootDir}/gradle/publishlocal.gradle"
-} else {
-    apply from: "${rootDir}/gradle/publishsnapshot.gradle"
-}
 
 def modVersion = project.api_version
 
@@ -143,4 +138,47 @@ tasks.withType(Javadoc).configureEach {
 }
 tasks.named("sourcesJar", Jar) {
     from(project(":common").sourceSets.main.allSource)
+}
+
+publishing {
+    repositories {
+
+        if (hasProperty("buildProfile") && "local".equals(property("buildProfile"))) {
+            repositories {
+                maven {
+                    url System.getenv("local_maven_url") // or `url "file://" + System.getenv("local_maven")`
+                }
+            }
+        } else {
+            maven {
+                name = "JourneyMap"
+                url = uri("https://jm.gserv.me/repository/maven-snapshots/")
+
+                credentials {
+                    username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
+                    password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
+                }
+
+                version = project.version
+            }
+        }
+
+    }
+
+    publications {
+        maven(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            artifact jar
+
+            artifact project.sourcesJar {
+                archiveClassifier.set("sources")
+            }
+
+            artifact project.javadocJar {
+                archiveClassifier.set("javadoc")
+            }
+        }
+    }
 }
