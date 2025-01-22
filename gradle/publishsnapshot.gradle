@@ -18,15 +18,8 @@ publishing {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
-            artifact jar
 
-            artifact project.sourcesJar {
-                archiveClassifier.set("sources")
-            }
-
-            artifact project.javadocJar {
-                archiveClassifier.set("javadoc")
-            }
+            from(components["java"])
         }
     }
 }
