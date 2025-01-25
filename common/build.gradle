@@ -11,6 +11,8 @@ if (project.snapshot) {
 }
 group = project.group
 archivesBaseName = "${project.mod_name}" + "-common"
+boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
+
 
 test {
     useJUnitPlatform()
@@ -64,7 +66,7 @@ javadoc {
 publishing {
     repositories {
 
-        if (hasProperty("buildProfile") && "local".equals(property("buildProfile"))) {
+        if (localBuild) {
             repositories {
                 maven {
                     url System.getenv("local_maven_url") // or `url "file://" + System.getenv("local_maven")`
