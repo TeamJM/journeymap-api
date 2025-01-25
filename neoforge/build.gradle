@@ -32,6 +32,7 @@ if (project.snapshot) {
 }
 archivesBaseName = "${project.mod_name}" + "-neoforge"
 
+boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
 
 def modVersion = project.api_version
 
@@ -143,7 +144,7 @@ tasks.named("sourcesJar", Jar) {
 publishing {
     repositories {
 
-        if (hasProperty("buildProfile") && "local".equals(property("buildProfile"))) {
+        if (localBuild) {
             repositories {
                 maven {
                     url System.getenv("local_maven_url") // or `url "file://" + System.getenv("local_maven")`

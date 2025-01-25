@@ -11,7 +11,9 @@ if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
 archivesBaseName = "${project.mod_name}" + "-forge"
+
 def modVersion = project.api_version
+boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
 
 configurations {
     testmodImplementation.extendsFrom implementation
@@ -134,7 +136,7 @@ tasks.named("sourcesJar", Jar) {
 publishing {
     repositories {
 
-        if (hasProperty("buildProfile") && "local".equals(property("buildProfile"))) {
+        if (localBuild) {
             repositories {
                 maven {
                     url System.getenv("local_maven_url") // or `url "file://" + System.getenv("local_maven")`
