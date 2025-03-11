@@ -24,7 +24,7 @@ public class CommonEventRegistry
     public static final Event<WaypointEvent> WAYPOINT_EVENT = EventFactory.create(WaypointEvent.class);
 
     /**
-     * This event handles all the CRUD operations of a waypoints on client and server.
+     * This event fires when waypoint or map context menu teleporting
      */
     public static final Event<TeleportEvent> TELEPORT_EVENT = EventFactory.create(TeleportEvent.class);
     /**
