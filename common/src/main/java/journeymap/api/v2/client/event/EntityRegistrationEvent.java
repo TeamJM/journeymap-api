@@ -1,6 +1,5 @@
 package journeymap.api.v2.client.event;
 
-import journeymap.api.v2.common.event.impl.ClientEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;

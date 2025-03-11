@@ -2,7 +2,6 @@ package journeymap.api.v2.client.event;
 
 import journeymap.api.v2.client.entity.WrappedEntity;
 import journeymap.api.v2.client.util.UIState;
-import journeymap.api.v2.common.event.impl.ClientEvent;
 
 import javax.annotation.Nullable;
 

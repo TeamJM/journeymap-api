@@ -2,7 +2,6 @@ package journeymap.api.v2.client.event;
 
 import com.google.common.base.MoreObjects;
 import journeymap.api.v2.client.util.UIState;
-import journeymap.api.v2.common.event.impl.ClientEvent;
 
 /**
  * Indicates a change in the display characteristics of the specified UI.

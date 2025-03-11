@@ -1,15 +1,16 @@
 package journeymap.api.v2.common.event.common;
 
-import journeymap.api.v2.common.event.impl.ClientEvent;
+import journeymap.api.v2.common.event.impl.CommonEvent;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
 /**
  * This event handles all the CRUD operations of a waypoints.
+ * TODO: Currently only a client side event, will be a common event eventually.
  */
 
-public class WaypointEvent extends ClientEvent
+public class WaypointEvent extends CommonEvent
 {
     public final Waypoint waypoint;
     public final Context context;
@@ -17,7 +18,7 @@ public class WaypointEvent extends ClientEvent
 
     public WaypointEvent(Waypoint waypoint, Context context, ResourceKey<Level> dimension)
     {
-        super(context.cancelable);
+        super(context.cancelable, Side.Client);
         this.dimension = dimension;
         this.waypoint = waypoint;
         this.context = context;
