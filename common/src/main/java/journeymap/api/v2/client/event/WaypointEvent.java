@@ -1,7 +1,6 @@
 package journeymap.api.v2.client.event;
 
 import journeymap.api.v2.common.event.CommonEventRegistry;
-import journeymap.api.v2.common.event.impl.ClientEvent;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import net.minecraft.client.Minecraft;
 

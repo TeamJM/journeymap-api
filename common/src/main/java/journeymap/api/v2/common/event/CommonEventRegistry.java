@@ -2,6 +2,7 @@ package journeymap.api.v2.common.event;
 
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.IClientPlugin;
+import journeymap.api.v2.common.event.common.TeleportEvent;
 import journeymap.api.v2.common.event.common.WaypointEvent;
 import journeymap.api.v2.common.event.common.WaypointGroupEvent;
 import journeymap.api.v2.common.event.common.WaypointGroupTransferEvent;
@@ -22,6 +23,10 @@ public class CommonEventRegistry
      */
     public static final Event<WaypointEvent> WAYPOINT_EVENT = EventFactory.create(WaypointEvent.class);
 
+    /**
+     * This event handles all the CRUD operations of a waypoints on client and server.
+     */
+    public static final Event<TeleportEvent> TELEPORT_EVENT = EventFactory.create(TeleportEvent.class);
     /**
      * This event handles all the CRUD operations of a waypoint groups on client and server.
      */

@@ -18,8 +18,9 @@
  *
  */
 
-package journeymap.api.v2.common.event.impl;
+package journeymap.api.v2.client.event;
 
+import journeymap.api.v2.common.event.impl.JourneyMapEvent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 

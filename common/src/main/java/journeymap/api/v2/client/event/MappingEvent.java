@@ -1,6 +1,5 @@
 package journeymap.api.v2.client.event;
 
-import journeymap.api.v2.common.event.impl.ClientEvent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;

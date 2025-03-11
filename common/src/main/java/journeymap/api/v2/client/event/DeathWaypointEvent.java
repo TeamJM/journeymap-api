@@ -1,7 +1,6 @@
 package journeymap.api.v2.client.event;
 
 import com.google.common.base.MoreObjects;
-import journeymap.api.v2.common.event.impl.ClientEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;

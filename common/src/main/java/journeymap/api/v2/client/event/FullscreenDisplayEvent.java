@@ -3,7 +3,6 @@ package journeymap.api.v2.client.event;
 import journeymap.api.v2.client.fullscreen.CustomToolBarBuilder;
 import journeymap.api.v2.client.fullscreen.IFullscreen;
 import journeymap.api.v2.client.fullscreen.ThemeButtonDisplay;
-import journeymap.api.v2.common.event.impl.ClientEvent;
 
 /**
  * This event is used for adding buttons to existing tool-bars or creating your own toolbars on the fullscreen map.

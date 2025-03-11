@@ -4,7 +4,6 @@ import journeymap.api.v2.client.display.IOverlayListener;
 import journeymap.api.v2.client.fullscreen.IFullscreen;
 import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.util.UIState;
-import journeymap.api.v2.common.event.impl.ClientEvent;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import net.minecraft.core.BlockPos;
 
