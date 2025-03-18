@@ -128,7 +128,7 @@ III. Write your Plugin
 =============================
 
 1. Write a class that implements the JourneyMap
-   *[journeymap.client.api.v2.IClientPlugin](../common/src/main/java/journeymap/client/api/IClientPlugin.java)* interface (
+   *[journeymap.client.api.v2.IClientPlugin](../common/src/main/java/journeymap/client/api/v2/IClientPlugin.java)* interface (
    like '[ExampleJourneymapPlugin](common/src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
     - Annotate the class with
       *[@journeymap.api.v2.client.JourneyMapPlugin](../common/src/main/java/journeymap/api/v2/client/JourneyMapPlugin.java)* so
