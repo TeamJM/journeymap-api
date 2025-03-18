@@ -128,10 +128,10 @@ III. Write your Plugin
 =============================
 
 1. Write a class that implements the JourneyMap
-   *[journeymap.client.api.v2.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (
-   like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
+   *[journeymap.client.api.v2.IClientPlugin](common/src/main/java/journeymap/client/api/IClientPlugin.java)* interface (
+   like '[ExampleJourneymapPlugin](common/src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
     - Annotate the class with
-      *[@journeymap.api.v2.client.JourneyMapPlugin](common/src/main/java/journeymap/api/v2/client/ClientPlugin.java)* so
+      *[@journeymap.api.v2.client.JourneyMapPlugin](common/src/main/java/journeymap/api/v2/client/JourneyMapPlugin.java)* so
       that JourneyMap can find and instantiate it
     - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't
       loaded.
