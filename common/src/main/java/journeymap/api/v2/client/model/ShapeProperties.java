@@ -39,6 +39,7 @@ public class ShapeProperties
     private float strokeOpacity = 1f;
     private float fillOpacity = .5f;
     private float strokeWidth = 2;
+    private StrokePosition strokePosition = StrokePosition.CENTER;
     private NativeImage image;
     private ResourceLocation imageLocation;
     private double texturePositionX = 0;
@@ -153,6 +154,28 @@ public class ShapeProperties
     public ShapeProperties setStrokeWidth(float strokeWidth)
     {
         this.strokeWidth = strokeWidth;
+        return this;
+    }
+
+    /**
+     * Gets the stroke position.
+     *
+     * @return position
+     */
+    public StrokePosition getStrokePosition()
+    {
+        return strokePosition;
+    }
+
+    /**
+     * Sets the stroke position.
+     *
+     * @param strokePosition position
+     * @return this
+     */
+    public ShapeProperties setStrokePosition(StrokePosition strokePosition)
+    {
+        this.strokePosition = strokePosition;
         return this;
     }
 
@@ -307,6 +330,7 @@ public class ShapeProperties
                 Objects.equal(strokeOpacity, that.strokeOpacity) &&
                 Objects.equal(fillOpacity, that.fillOpacity) &&
                 Objects.equal(strokeWidth, that.strokeWidth) &&
+                Objects.equal(strokePosition, that.strokePosition) &&
                 Objects.equal(imageLocation, that.imageLocation) &&
                 Objects.equal(texturePositionX, that.texturePositionX) &&
                 Objects.equal(texturePositionY, that.texturePositionY) &&
@@ -317,7 +341,7 @@ public class ShapeProperties
     @Override
     public int hashCode()
     {
-        return Objects.hashCode(strokeColor, fillColor, strokeOpacity, fillOpacity, strokeWidth, imageLocation, texturePositionX, texturePositionY, textureScaleX, textureScaleY);
+        return Objects.hashCode(strokeColor, fillColor, strokeOpacity, fillOpacity, strokeWidth, strokePosition, imageLocation, texturePositionX, texturePositionY, textureScaleX, textureScaleY);
     }
 
     @Override
@@ -329,6 +353,7 @@ public class ShapeProperties
                 .add("strokeColor", strokeColor)
                 .add("strokeOpacity", strokeOpacity)
                 .add("strokeWidth", strokeWidth)
+                .add("strokePosition", strokePosition)
                 .add("imageLocation", imageLocation)
                 .add("texturePositionX", texturePositionX)
                 .add("texturePositionY", texturePositionY)
@@ -337,5 +362,12 @@ public class ShapeProperties
                 .toString();
     }
 
+
+    public enum StrokePosition
+    {
+        INSIDE,
+        CENTER,
+        OUTSIDE
+    }
 
 }
