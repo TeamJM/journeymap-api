@@ -25,6 +25,23 @@ public interface WaypointGroup
     void setDescription(String description);
 
     /**
+     * A tag to easily identify waypoints in world an on the map.
+     * <p>
+     * Example giving the group the tag 'Farm' would make the name -> "[Farm] Carrots"
+     * All waypoints in the group will have this tag.
+     *
+     * @return - the Tag
+     */
+    @Nullable
+    String getTag();
+
+    /**
+     * Sets the tag.
+     * @param tab - the Tag
+     */
+    void setTag(@Nullable String tab);
+
+    /**
      * Is waypoint group enabled.
      *
      * @return - the Enabled boolean
@@ -71,6 +88,7 @@ public interface WaypointGroup
     Integer getColor();
 
     void setColor(Integer color);
+
     /**
      * Does waypoint group override individual waypoint colors.
      *
