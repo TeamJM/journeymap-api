@@ -114,7 +114,20 @@ public interface WaypointGroup
      * All Icon setters are optional.
      */
 
+    /**
+     * Does waypoint group override individual waypoint icons.
+     *
+     * @return if override
+     */
+    boolean iconOverride();
 
+    /**
+     * Setting this to true, waypoints will use the group icons instead of individual iconss.
+     * Setting to false, waypoints will use their individual iconss
+     *
+     * @param override to override
+     */
+    void setIconOverride(boolean override);
     /**
      * Gets the rotation in degrees the image should be oriented.
      * Zero is the default.
