@@ -143,28 +143,11 @@ enum MockClientAPI implements IClientAPI
     }
 
     @Override
-    public void toggleDisplay(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable)
+    public void disableFeature(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, boolean enable)
     {
-        log(String.format("Toggled display in %s:%s:%s:%s", dimension, mapType, mapUI, enable));
+        log(String.format("Toggled display in %s:%s:%s", dimension, mapType, enable));
     }
 
-    @Override
-    public void toggleWaypoints(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable)
-    {
-        log(String.format("Toggled waypoints in %s:%s:%s:%s", dimension, mapType, mapUI, enable));
-    }
-
-    @Override
-    public boolean isDisplayEnabled(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isWaypointsEnabled(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI)
-    {
-        return false;
-    }
 
     @Override
     public File getDataPath(String modId)
