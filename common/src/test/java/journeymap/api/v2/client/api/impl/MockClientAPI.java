@@ -246,6 +246,18 @@ enum MockClientAPI implements IClientAPI
         return null;
     }
 
+    @Override
+    public void toggleMinimap(boolean enable)
+    {
+
+    }
+
+    @Override
+    public boolean minimapEnabled()
+    {
+        return false;
+    }
+
     /**
      * Create a randomly-colored image
      *
