@@ -150,46 +150,9 @@ public interface IClientAPI
      *
      * @param dimension The dimension. Use null for all dimensions.
      * @param mapType   The map type
-     * @param mapUI     The map UI
      * @param enable    True to enable, false to disable.
      */
-    void toggleDisplay(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable);
-
-    /**
-     * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
-     * <p>
-     * This call can be used to enable or disable the use of waypoints in a specific dimension or all dimensions.
-     *
-     * @param dimension The dimension. Use null for all dimensions.
-     * @param mapType   The map type
-     * @param mapUI     The map UI
-     * @param enable    True to enable, false to disable.
-     */
-    void toggleWaypoints(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI, boolean enable);
-
-    /**
-     * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
-     * <p>
-     * This call can be used to check if a map type and UI are enabled in a specific dimension or all dimensions.
-     *
-     * @param dimension The dimension. Use null for all dimensions.
-     * @param mapType   The map type
-     * @param mapUI     The map UI
-     * @return true if enabled
-     */
-    boolean isDisplayEnabled(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI);
-
-    /**
-     * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
-     * <p>
-     * This call can be used to check if waypoints are enabled in a specific dimension or all dimensions.
-     *
-     * @param dimension The dimension. Use null for all dimensions.
-     * @param mapType   The map type
-     * @param mapUI     The map UI
-     * @return true if enabled
-     */
-    boolean isWaypointsEnabled(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, Context.UI mapUI);
+    void disableFeature(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, boolean enable);
 
     /**
      * This call gets the current user's data path for saving custom addon data specific to the game/world the user is playing in.
@@ -327,4 +290,18 @@ public interface IClientAPI
      * @return worldId.
      */
     String getWorldId();
+
+    /**
+     * Toggles the minimmap display
+     *
+     * @param enable - enable or disable
+     */
+    void toggleMinimap(boolean enable);
+
+    /**
+     * Gets the minimap enabled or disabled state
+     *
+     * @return - true or false
+     */
+    boolean minimapEnabled();
 }
