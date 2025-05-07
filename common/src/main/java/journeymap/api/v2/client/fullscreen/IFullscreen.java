@@ -7,6 +7,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
+import java.awt.geom.Point2D;
+
 public interface IFullscreen
 {
     /**
@@ -66,4 +68,27 @@ public interface IFullscreen
      * @return the Screen.
      */
     Screen getScreen();
+
+    /**
+     * Gets the fullscreen mouseDrag position.
+     *
+     * @return Point2D.Double of the mouse drag.
+     */
+    Point2D.Double getMouseDrag();
+
+    /**
+     * Center Block X
+     *
+     * @param withDragOffset - with the calculated drag offset.
+     * @return position of the center X block
+     */
+    double getCenterBlockX(boolean withDragOffset);
+
+    /**
+     * Center Block Z
+     *
+     * @param withDragOffset- with the calculated drag offset.
+     * @return position of the center Z block
+     */
+    double getCenterBlockZ(boolean withDragOffset);
 }

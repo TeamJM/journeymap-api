@@ -3,10 +3,12 @@ package journeymap.api.v2.common.event;
 import journeymap.api.v2.client.display.IOverlayListener;
 import journeymap.api.v2.client.event.FullscreenDisplayEvent;
 import journeymap.api.v2.client.event.FullscreenMapEvent;
+import journeymap.api.v2.client.event.FullscreenRenderEvent;
 import journeymap.api.v2.client.event.PopupMenuEvent;
 import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.event.impl.Event;
+import journeymap.api.v2.common.event.impl.EventFactory;
 import net.minecraft.core.BlockPos;
 
 import java.awt.geom.Point2D;
@@ -68,6 +70,14 @@ public class FullscreenEventRegistry
      * This event is not cancellable.
      */
     public static final Event<FullscreenDisplayEvent.AddonButtonDisplayEvent> ADDON_BUTTON_DISPLAY_EVENT = ClientEventRegistry.ADDON_BUTTON_DISPLAY_EVENT;
+
+    /**
+     * This event is called after the map and all layers are drawn on the screen, between the map and the buttons.
+     * Use it to do any custom rendering on top of the map.
+     * <p>
+     * This event is not cancellable.
+     */
+    public static final Event<FullscreenRenderEvent> FULLSCREEN_RENDER_EVENT = EventFactory.create(FullscreenRenderEvent.class);
 
 
 }
