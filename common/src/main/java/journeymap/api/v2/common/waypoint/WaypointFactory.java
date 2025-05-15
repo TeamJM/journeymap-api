@@ -55,9 +55,18 @@ public class WaypointFactory
     }
 
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, @Nullable String name, String primaryDimension, boolean persistent)
-
     {
         return getInstance().store.createClientWaypoint(modId, pos, name, primaryDimension, persistent);
+    }
+
+    public static Waypoint fromWaypointJsonString(String waypoint)
+    {
+        return getInstance().store.fromWaypointJsonString(waypoint);
+    }
+
+    public static WaypointGroup fromGroupJsonString(String waypoint)
+    {
+        return getInstance().store.fromGroupJsonString(waypoint);
     }
 
     public static WaypointGroup createWaypointGroup(String modId, String name)
@@ -70,6 +79,10 @@ public class WaypointFactory
     public interface WaypointStore
     {
         Waypoint createClientWaypoint(String modId, BlockPos pos, @Nullable String name, String primaryDimension, boolean persistent);
+
+        Waypoint fromWaypointJsonString(String waypoint);
+
+        WaypointGroup fromGroupJsonString(String waypoint);
 
         WaypointGroup createWaypointGroup(String modId, String name);
     }

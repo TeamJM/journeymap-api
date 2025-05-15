@@ -55,6 +55,9 @@ public interface WaypointGroup
      */
     void setEnabled(boolean enabled);
 
+    boolean isPersistent();
+
+    void setPersistent(boolean persistent);
     /**
      * Is deviation being shown
      *
