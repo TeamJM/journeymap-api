@@ -16,14 +16,20 @@ public interface IOverlayListener
      *
      * @param mapState current UIState of the UI where the overlay is active.
      */
-    void onActivate(UIState mapState);
+    default void onActivate(UIState mapState)
+    {
+
+    }
 
     /**
      * Called when Overlay is no longer displayed.
      *
      * @param mapState current UIState of the UI where the overlay is inactive.
      */
-    void onDeactivate(UIState mapState);
+    default void onDeactivate(UIState mapState)
+    {
+
+    }
 
     /**
      * Called when the mouse moves within the bounds of the overlay.
@@ -32,7 +38,10 @@ public interface IOverlayListener
      * @param mousePosition screen coordinates of the mouse
      * @param blockPosition the block position under the mouse
      */
-    void onMouseMove(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
+    default void onMouseMove(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
+    {
+
+    }
 
     /**
      * Called when the mouse first leaves the bounds of the overlay.
@@ -41,7 +50,10 @@ public interface IOverlayListener
      * @param mousePosition screen coordinates of the mouse
      * @param blockPosition the block position under the mouse
      */
-    void onMouseOut(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition);
+    default void onMouseOut(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition)
+    {
+
+    }
 
     /**
      * Called when the mouse is clicked within the bounds of the overlay.
@@ -53,7 +65,10 @@ public interface IOverlayListener
      * @param doubleClick   true if the mouse button was double-clicked
      * @return true if click event can bubble up to other overlays which occupy the same area.
      */
-    boolean onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick);
+    default boolean onMouseClick(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, int button, boolean doubleClick)
+    {
+        return true;
+    }
 
     /**
      * Called when the popup menu is displayed on an overlay.
@@ -63,5 +78,8 @@ public interface IOverlayListener
      * @param blockPosition the block position under the mouse
      * @param modPopupMenu  the modMenuPopup
      */
-    void onOverlayMenuPopup(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, ModPopupMenu modPopupMenu);
+    default void onOverlayMenuPopup(UIState mapState, Point2D.Double mousePosition, BlockPos blockPosition, ModPopupMenu modPopupMenu)
+    {
+
+    }
 }
