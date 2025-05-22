@@ -24,8 +24,10 @@ public abstract class LayeredScreen extends Screen
             this.minecraft.screen = this;
             this.added();
             this.init(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
-            minecraft.getNarrator().sayNow(this.getNarrationMessage());
-        } else {
+            minecraft.getNarrator().saySystemNow(this.getNarrationMessage());
+        }
+        else
+        {
             this.minecraft.setScreen(this);
         }
     }
@@ -48,10 +50,9 @@ public abstract class LayeredScreen extends Screen
         {
             this.backgroundScreen.render(graphics, -1, -1, partialTicks);
         }
-        // translate z +2000
-        graphics.pose().translate(0.0D, 0.0D, 2000F);
-
+        graphics.nextStratum();
         this.renderPopupScreenBackground(graphics, mouseX, mouseY, partialTicks);
+        graphics.nextStratum();
         this.renderPopupScreen(graphics, mouseX, mouseY, partialTicks);
     }
 

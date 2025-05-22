@@ -15,6 +15,7 @@ import journeymap.api.v2.client.fullscreen.IThemeButton;
 import journeymap.api.v2.client.fullscreen.IThemeToolBar;
 import journeymap.api.v2.client.fullscreen.ThemeButtonDisplay;
 import journeymap.api.v2.common.event.ClientEventRegistry;
+import journeymap.api.v2.common.event.FullscreenEventRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.minecraft.client.Minecraft;
@@ -54,14 +55,14 @@ class EventListener
         EntitySleepEvents.START_SLEEPING.register(this::onPlayerSlept);
         ClientChunkEvents.CHUNK_LOAD.register(this::onChunkLoadEvent);
         ClientChunkEvents.CHUNK_UNLOAD.register((this::onChunkUnloadEvent));
-        ClientEventRegistry.ADDON_BUTTON_DISPLAY_EVENT.subscribe(ExampleMod.MODID, this::onFullscreenAddonButton);
-        ClientEventRegistry.MAP_TYPE_BUTTON_DISPLAY_EVENT.subscribe(ExampleMod.MODID, this::onFullscreenMapTypeButton);
-        ClientEventRegistry.CUSTOM_TOOLBAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onCustomToolbarEvent);
+        FullscreenEventRegistry.ADDON_BUTTON_DISPLAY_EVENT.subscribe(ExampleMod.MODID, this::onFullscreenAddonButton);
+        FullscreenEventRegistry.MAP_TYPE_BUTTON_DISPLAY_EVENT.subscribe(ExampleMod.MODID, this::onFullscreenMapTypeButton);
+        FullscreenEventRegistry.CUSTOM_TOOLBAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onCustomToolbarEvent);
         ClientEventRegistry.ENTITY_RADAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onRadarEntityUpdateEvent);
         ClientEventRegistry.MAPPING_EVENT.subscribe(ExampleMod.MODID, this::mappingStageEvent);
         ClientEventRegistry.DEATH_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onDeathpoint);
-        ClientEventRegistry.OPTIONS_REGISTRY_EVENT_EVENT.subscribe(ExampleMod.MODID, this::optionsRegistryEvent);
-        ClientEventRegistry.INFO_SLOT_REGISTRY_EVENT_EVENT.subscribe(ExampleMod.MODID, this::infoSlotRegistryEvent);
+        ClientEventRegistry.OPTIONS_REGISTRY_EVENT.subscribe(ExampleMod.MODID, this::optionsRegistryEvent);
+        ClientEventRegistry.INFO_SLOT_REGISTRY_EVENT.subscribe(ExampleMod.MODID, this::infoSlotRegistryEvent);
     }
 
     private void infoSlotRegistryEvent(RegistryEvent.InfoSlotRegistryEvent event)
@@ -150,7 +151,7 @@ class EventListener
     {
         try
         {
-            if (entity.getCommandSenderWorld().isClientSide)
+            if (entity.level().isClientSide)
             {
 //                if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) //TODO: add a player accepts for waypoints when player accepts is implemented
                 {
