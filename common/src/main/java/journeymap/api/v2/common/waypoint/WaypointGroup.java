@@ -37,6 +37,7 @@ public interface WaypointGroup
 
     /**
      * Sets the tag.
+     *
      * @param tab - the Tag
      */
     void setTag(@Nullable String tab);
@@ -58,6 +59,7 @@ public interface WaypointGroup
     boolean isPersistent();
 
     void setPersistent(boolean persistent);
+
     /**
      * Is deviation being shown
      *
@@ -131,6 +133,7 @@ public interface WaypointGroup
      * @param override to override
      */
     void setIconOverride(boolean override);
+
     /**
      * Gets the rotation in degrees the image should be oriented.
      * Zero is the default.
@@ -244,4 +247,14 @@ public interface WaypointGroup
      */
     @Nullable
     String getCustomData();
+
+    /**
+     * @return is showing waypoints for this group on the locator bar.
+     */
+    boolean isShowOnLocatorBar();
+
+    /**
+     * Show waypoints in this group on the locator bar.
+     */
+    void setShowOnLocatorBar(boolean showOnLocatorBar);
 }
