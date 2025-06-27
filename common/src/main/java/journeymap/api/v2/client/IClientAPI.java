@@ -268,7 +268,7 @@ public interface IClientAPI
 
     /**
      * Removes a waypoint group.
-     * Setting deleteWaypoints to false, will move all waypoints in the Default group.
+     * Setting deleteWaypoints to false will move all waypoints in the Default group.
      *
      * @param group           the group
      * @param deleteWaypoints to delete all waypoints in group
@@ -277,7 +277,7 @@ public interface IClientAPI
 
     /**
      * Removes groups for a modId.
-     * Setting deleteWaypoints to false, will move all waypoints in the Default group.
+     * Setting deleteWaypoints to false will move all waypoints in the Default group.
      *
      * @param modId           - the modId
      * @param deleteWaypoints to delete all waypoints in group
