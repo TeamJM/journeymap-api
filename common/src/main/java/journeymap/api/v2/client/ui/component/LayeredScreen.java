@@ -48,7 +48,7 @@ public abstract class LayeredScreen extends Screen
         if (this.backgroundScreen != null)
         // render background screen.
         {
-            this.backgroundScreen.renderWithTooltip(graphics, -1, -1, partialTicks);
+            this.backgroundScreen.renderWithTooltipAndSubtitles(graphics, -1, -1, partialTicks);
         }
         graphics.nextStratum();
         this.renderPopupScreenBackground(graphics, mouseX, mouseY, partialTicks);

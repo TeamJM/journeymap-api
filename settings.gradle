@@ -5,11 +5,11 @@ pluginManagement {
             forRepository {
                 maven {
                     name = 'Fabric'
-                    url = uri('https://maven.fabricmc.net')
+                    url = uri('https://maven.fabricmc.net/')
                 }
             }
             filter {
-                includeGroup('net.fabricmc')
+                includeGroupAndSubgroups('net.fabricmc')
                 includeGroup('fabric-loom')
             }
         }
@@ -53,5 +53,5 @@ plugins {
 rootProject.name = 'journeymap-api'
 include("common")
 include("fabric")
-include("forge")
 include("neoforge")
+//include("forge")

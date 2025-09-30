@@ -151,7 +151,7 @@ class EventListener
     {
         try
         {
-            if (entity.level().isClientSide)
+            if (entity.level().isClientSide())
             {
 //                if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) //TODO: add a player accepts for waypoints when player accepts is implemented
                 {
