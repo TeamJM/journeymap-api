@@ -26,7 +26,7 @@ import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointFactory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 
 import java.awt.Color;
@@ -48,7 +48,7 @@ class SampleWaypointFactory
         try
         {
             // Icon for waypoint
-//            WaypointIcon bedIcon = new WaypointIcon(new ResourceLocation("examplemod:images/bed.png"), 32, 32);
+//            WaypointIcon bedIcon = new WaypointIcon(new Identifier("examplemod:images/bed.png"), 32, 32);
 //            bedIcon.setColor(0x00ffff);
 //            bedIcon.setUseBeaconColor(false);
 //
@@ -63,7 +63,7 @@ class SampleWaypointFactory
 
             bedWaypoint = WaypointFactory.createClientWaypoint(ExampleMod.MODID, bedLocation, dimension, true);
             bedWaypoint.setColor(Color.BLUE.getRGB());
-            bedWaypoint.setIconResourceLoctaion(ResourceLocation.parse("examplemod:images/bed.png"));
+            bedWaypoint.setIconResourceLoctaion(Identifier.parse("examplemod:images/bed.png"));
             bedWaypoint.setIconTextureSize(32, 32);
             bedWaypoint.setIconColor(0x00ffff);
             ;

@@ -23,8 +23,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -307,9 +307,9 @@ class EventListener
         return false;
     }
 
-    private ResourceLocation getIcon(String string)
+    private Identifier getIcon(String string)
     {
-        return ResourceLocation.fromNamespaceAndPath("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + string + ".png");
+        return Identifier.fromNamespaceAndPath("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + string + ".png");
     }
 
     private static String getTicks()

@@ -23,7 +23,7 @@ public abstract class LayeredScreen extends Screen
             this.backgroundScreen = this.minecraft.screen;
             this.minecraft.screen = this;
             this.added();
-            this.init(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
+            super.init(minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
             minecraft.getNarrator().saySystemNow(this.getNarrationMessage());
         }
         else
@@ -32,12 +32,25 @@ public abstract class LayeredScreen extends Screen
         }
     }
 
+    /**
+     * use the non-deprecated version instead
+     *
+     * @param minecraft
+     * @param width
+     * @param height
+     */
+    @Deprecated(forRemoval = true)
     public void resize(Minecraft minecraft, int width, int height)
     {
-        super.resize(minecraft, width, height);
+        this.resize(width, height);
+    }
+
+    public void resize(int width, int height)
+    {
+        super.resize(width, height);
         if (this.backgroundScreen != null)
         {
-            this.backgroundScreen.resize(this.minecraft, this.width, this.height);
+            this.backgroundScreen.resize(this.width, this.height);
         }
     }
 

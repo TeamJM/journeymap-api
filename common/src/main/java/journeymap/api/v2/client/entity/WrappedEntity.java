@@ -2,8 +2,8 @@ package journeymap.api.v2.client.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -42,7 +42,7 @@ public interface WrappedEntity
      * @return - resource location.
      */
     @Nullable
-    ResourceLocation getEntityIconLocation();
+    Identifier getEntityIconLocation();
 
     /**
      * If the entity is hostile
@@ -212,7 +212,7 @@ public interface WrappedEntity
      *
      * @param entityIconLocation - the resource location of the icon.
      */
-    void setEntityIconLocation(ResourceLocation entityIconLocation);
+    void setEntityIconLocation(Identifier entityIconLocation);
 
     /**
      * Sets the custom name of the entity.

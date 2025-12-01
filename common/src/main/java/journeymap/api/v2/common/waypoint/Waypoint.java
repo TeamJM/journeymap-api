@@ -1,8 +1,8 @@
 package journeymap.api.v2.common.waypoint;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,7 +72,7 @@ public interface Waypoint
 
     default void setPrimaryDimension(ResourceKey<Level> dimension)
     {
-        setPrimaryDimension(dimension.location().toString());
+        setPrimaryDimension(dimension.identifier().toString());
     }
 
     void setPrimaryDimension(String dimension);
@@ -171,16 +171,16 @@ public interface Waypoint
     /**
      * Gets the texture resource location.
      *
-     * @return - ResourceLocation
+     * @return - Identifier
      */
-    ResourceLocation getIconResourceLocation();
+    Identifier getIconIdentifier();
 
     /**
      * Sets the texture resource location.
      *
-     * @param resourceLocation - the resource location
+     * @param Identifier - the resource location
      */
-    void setIconResourceLoctaion(ResourceLocation resourceLocation);
+    void setIconResourceLoctaion(Identifier Identifier);
 
     /**
      * Gets the image textureWidth.

@@ -71,7 +71,7 @@ class SampleImageOverlayFactory
     {
         BlockPos lowerRight = upperLeft.offset(blocksWide, 0, blocksTall);
 
-        // For this example, we'll generate a BufferedImage, but using a pre-existing ResourceLocation works too.
+        // For this example, we'll generate a BufferedImage, but using a pre-existing Identifier works too.
         MapImage image = new MapImage(createImage(blocksWide, blocksTall));
 
         image.centerAnchors();

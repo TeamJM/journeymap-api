@@ -41,12 +41,12 @@ public class WaypointFactory
      */
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, @Nullable String name, ResourceKey<Level> primaryDimension, boolean persistent)
     {
-        return createClientWaypoint(modId, pos, name, primaryDimension.location().toString(), persistent);
+        return createClientWaypoint(modId, pos, name, primaryDimension.identifier().toString(), persistent);
     }
 
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, ResourceKey<Level> primaryDimension, boolean persistent)
     {
-        return createClientWaypoint(modId, pos, primaryDimension.location().toString(), persistent);
+        return createClientWaypoint(modId, pos, primaryDimension.identifier().toString(), persistent);
     }
 
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, String primaryDimension, boolean persistent)
