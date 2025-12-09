@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.13-SNAPSHOT'
+    id 'fabric-loom' version '1.14-SNAPSHOT'
     id "idea"
     id "maven-publish"
 }
@@ -11,15 +11,15 @@ version = "${project.api_version}-${project.minecraft_version}"
 if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
-archivesBaseName = "${project.mod_name}" + "-fabric"
+base.archivesName = "${project.mod_name}" + "-fabric"
 boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
 
 configurations {
     testmodImplementation.extendsFrom implementation
 }
 
-sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_21
+//sourceCompatibility = JavaVersion.VERSION_21
+//targetCompatibility = JavaVersion.VERSION_21
 
 repositories {
     maven {
@@ -32,6 +32,13 @@ java {
     withSourcesJar()
     withJavadocJar()
 }
+/* Use the same compile and runtime classpath in the Example Mod */
+//sourceSets {
+//    testmod {
+//        compileClasspath += main.compileClasspath
+//        runtimeClasspath += main.runtimeClasspath
+//    }
+//}
 
 loom {
     runs {
@@ -79,13 +86,7 @@ processResources
             }
         }
 
-/* Use the same compile and runtime classpath in the Example Mod */
-sourceSets {
-    testmod {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-    }
-}
+
 
 tasks.withType(JavaCompile).configureEach {
     source(project(":common").sourceSets.main.allSource)
@@ -145,7 +146,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId project.group
-            artifactId project.archivesBaseName
+            artifact base.archivesName
             version project.version
 
             from(components["java"])

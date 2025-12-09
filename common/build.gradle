@@ -10,13 +10,13 @@ if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
 group = project.group
-archivesBaseName = "${project.mod_name}" + "-common"
+base.archivesName = "${project.mod_name}" + "-common"
 boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
 
 
-test {
-    useJUnitPlatform()
-}
+//test {
+//    useJUnitPlatform()
+//}
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -91,7 +91,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId project.group
-            artifactId project.archivesBaseName
+            artifact base.archivesName
             version project.version
 
             from(components["java"])

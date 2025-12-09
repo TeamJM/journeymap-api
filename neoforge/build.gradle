@@ -30,7 +30,7 @@ version = "${project.api_version}-${project.minecraft_version}"
 if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
-archivesBaseName = "${project.mod_name}" + "-neoforge"
+base.archivesName = "${project.mod_name}" + "-neoforge"
 
 boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
 
@@ -41,12 +41,12 @@ configurations {
 }
 
 /* Use the same compile and runtime classpath in the Example Mod */
-sourceSets {
-    testmod {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-    }
-}
+//sourceSets {
+//    testmod {
+//        compileClasspath += main.compileClasspath
+//        runtimeClasspath += main.runtimeClasspath
+//    }
+//}
 
 repositories {
     maven {
@@ -169,7 +169,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId project.group
-            artifactId project.archivesBaseName
+            artifact base.archivesName
             version project.version
             artifact jar
 
