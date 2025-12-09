@@ -10,9 +10,10 @@ if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
 group = project.group
-base.archivesName = "${project.mod_name}" + "-common"
-def baseName = "${project.base_name}" + "-fabric"
+
+def baseName = "${project.mod_name}" + "-common"
 base.archivesName = baseName
+
 boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
 
 

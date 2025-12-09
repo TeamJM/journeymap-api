@@ -30,7 +30,7 @@ version = "${project.api_version}-${project.minecraft_version}"
 if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
-def baseName = "${project.base_name}" + "-neoforge"
+def baseName = "${project.mod_name}" + "-neoforge"
 base.archivesName = baseName
 boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
 

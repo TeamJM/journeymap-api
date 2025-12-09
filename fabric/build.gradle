@@ -12,7 +12,7 @@ if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
 
-def baseName = "${project.base_name}" + "-fabric"
+def baseName = "${project.mod_name}" + "-fabric"
 base.archivesName = baseName
 
 boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
