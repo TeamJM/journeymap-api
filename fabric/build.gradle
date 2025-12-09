@@ -11,7 +11,10 @@ version = "${project.api_version}-${project.minecraft_version}"
 if (project.snapshot) {
     version = version + "-SNAPSHOT"
 }
-base.archivesName = "${project.mod_name}" + "-fabric"
+
+def baseName = "${project.base_name}" + "-fabric"
+base.archivesName = baseName
+
 boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
 
 configurations {
@@ -146,7 +149,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId project.group
-            artifact base.archivesName
+            artifactId baseName
             version project.version
 
             from(components["java"])

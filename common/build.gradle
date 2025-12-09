@@ -11,6 +11,8 @@ if (project.snapshot) {
 }
 group = project.group
 base.archivesName = "${project.mod_name}" + "-common"
+def baseName = "${project.base_name}" + "-fabric"
+base.archivesName = baseName
 boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
 
 
@@ -91,7 +93,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId project.group
-            artifact base.archivesName
+            artifactId baseName
             version project.version
 
             from(components["java"])
