@@ -184,16 +184,17 @@ publishing {
             }
         }
     } else {
-        repositories {
-            maven {
-                name = "CommonNetworking"
-                url = uri("https://jm.gserv.me/repository/maven-snapshots/")
+        maven {
+            name = "JourneyMap"
+            url = uri("https://jm.gserv.me/repository/maven-snapshots/")
 
-                credentials {
-                    username = project.findProperty("deploy.user") ?: System.getenv("DEPLOY_USER")
-                    password = project.findProperty("deploy.password") ?: System.getenv("DEPLOY_PASSWORD")
-                }
+            credentials {
+                username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
+                password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
             }
+
+            version = project.version
         }
     }
+
 }
