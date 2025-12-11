@@ -17,7 +17,7 @@ jobs:
           java-version: '21'
 
       - name: Gradle Build
-        run: /bin/sh ./gradlew build
+        run: /bin/sh ./gradlew assemble
 
       - name: Gradle Publish
         run: /bin/sh ./gradlew -Pjourneymap.user=${{ secrets.JOURNEYMAP_USER }} -Pjourneymap.password=${{ secrets.JOURNEYMAP_PASSWORD }} publish
