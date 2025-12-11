@@ -187,7 +187,7 @@ publishing {
         repositories {
             maven {
                 name = "CommonNetworking"
-                url = uri("https://jm.gserv.me/repository/maven-releases/")
+                url = uri("https://jm.gserv.me/repository/maven-snapshots/")
 
                 credentials {
                     username = project.findProperty("deploy.user") ?: System.getenv("DEPLOY_USER")
