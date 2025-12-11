@@ -19,8 +19,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -146,7 +146,7 @@ class ForgeEventListener
     {
         try
         {
-            if (event.getEntity().getCommandSenderWorld().isClientSide)
+            if (event.getEntity().level().isClientSide())
             {
 //                if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Waypoint)) // TODO
 //                {

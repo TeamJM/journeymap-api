@@ -18,69 +18,18 @@
  *
  */
 plugins {
-    id "java-library"
-    id "idea"
     id 'net.neoforged.moddev'
-    id "maven-publish"
+    id 'multiloader-loader'
 }
 
-group 'info.journeymap'
-/* Artifact Version */
-version = "${project.api_version}-${project.minecraft_version}"
-if (project.snapshot) {
-    version = version + "-SNAPSHOT"
-}
 def baseName = "${project.mod_name}" + "-neoforge"
 base.archivesName = baseName
-boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
-
-def modVersion = project.api_version
-
-configurations {
-    testmodImplementation.extendsFrom implementation
-}
-
-/* Use the same compile and runtime classpath in the Example Mod */
-//sourceSets {
-//    testmod {
-//        compileClasspath += main.compileClasspath
-//        runtimeClasspath += main.runtimeClasspath
-//    }
-//}
-
-repositories {
-    maven {
-        url "https://www.cursemaven.com"
-    }
-}
-
-tasks.named("test").configure {
-    enabled = false
-}
 
 dependencies {
-//    implementation "net.neoforged:neoforge:${project.neoforge_version}"
     runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
-
-    compileOnly project(":common")
     testmodImplementation sourceSets.main.output
 }
 
-/* Replace tokens in resources files */
-processResources {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft_version
-
-    // replace stuff in neoforge.mods.toml on copy
-    from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/neoforge.mods.toml'
-        expand 'version': project.version,
-                'mcversion': project.minecraft_version,
-                'modVersion': modVersion
-    }
-}
 
 neoForge {
     version = neoforge_version
@@ -96,7 +45,6 @@ neoForge {
     }
     runs {
         configureEach {
-//            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
             ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
             jvmArgument("-Dmixin.debug.export=true")
         }
@@ -116,70 +64,25 @@ neoForge {
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    source(project(":common").sourceSets.main.allSource)
-}
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-jar {
-    manifest {
-        attributes = ["Manifest-Version"      : "1.0",
-                      "Implementation-Title"  : project.title,
-                      "Implementation-Version": project.version,
-                      "Implementation-URL"    : project.git_website]
-    }
-}
-
-/* Javadoc properties */
-javadoc {
-    title = project.title_javadoc
-}
-
-tasks.withType(Javadoc).configureEach {
-    source(project(":common").sourceSets.main.allJava)
-}
-tasks.named("sourcesJar", Jar) {
-    from(project(":common").sourceSets.main.allSource)
-}
-
-publishing {
-    repositories {
-
-        if (localBuild) {
-            repositories {
-                maven {
-                    url System.getenv("local_maven_url") // or `url "file://" + System.getenv("local_maven")`
-                }
-            }
-        } else {
-            maven {
-                name = "JourneyMap"
-                url = uri("https://jm.gserv.me/repository/maven-snapshots/")
-
-                credentials {
-                    username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
-                    password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
-                }
-
-                version = project.version
-            }
+// Implement mcgradleconventions loader attribute
+def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
+    configurations.named("$variant") {
+        attributes {
+            attribute(loaderAttribute, 'neoforge')
         }
-
     }
-
-    publications {
-        maven(MavenPublication) {
-            groupId project.group
-            artifactId baseName
-            version project.version
-            artifact jar
-
-            artifact project.sourcesJar {
-                archiveClassifier.set("sources")
-            }
-
-            artifact project.javadocJar {
-                archiveClassifier.set("javadoc")
+}
+sourceSets.configureEach {
+    [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName, it.getTaskName(null, 'jarJar')].each { variant->
+        configurations.named("$variant") {
+            attributes {
+                attribute(loaderAttribute, 'neoforge')
             }
         }
     }
 }
+
+

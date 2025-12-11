@@ -6,7 +6,7 @@
 * Refactored Waypoint and WaypointGroups to be more concrete. 
 * Refactored events to be loader agnostic.
 * Switched to multi-loader template.
-* Switched to SemVer versioning `journeymap-api-loader-2.0.0-mcversion-SNAPSHOT`
+* Switched to SemVer versioning `journeymap-api-loader-2.0.0-minecraft_version-SNAPSHOT`
 
 **API v1.19.3-1.9-SNAPSHOT**
 * Added new methods to ShapeProperties to assign a texture to PolygonOverlays, specifying its position and scale.
