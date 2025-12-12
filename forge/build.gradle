@@ -32,8 +32,6 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
     implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
-
-    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
     annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
     testmodImplementation sourceSets.main.output
 }

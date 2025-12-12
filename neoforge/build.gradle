@@ -26,7 +26,6 @@ def baseName = "${project.mod_name}" + "-neoforge"
 base.archivesName = baseName
 
 dependencies {
-    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
     testmodImplementation sourceSets.main.output
 }
 

@@ -3,12 +3,17 @@ plugins {
     id 'multiloader-common'
 }
 
-
 def baseName = "${project.mod_name}" + "-common"
 base.archivesName = baseName
 
+test {
+//    useJUnitPlatform()
+}
+
+
 neoForge {
     neoFormVersion = neo_form_version
+    addModdingDependenciesTo(sourceSets["test"])
     parchment {
         minecraftVersion = mappings_mc_version
         mappingsVersion = mappings_date
