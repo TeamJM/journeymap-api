@@ -8,8 +8,6 @@ repositories {
     maven fg.forgeMaven
     maven fg.minecraftLibsMaven
     maven { url "https://repo.spongepowered.org/maven" }
-    mavenCentral()
-    mavenLocal()
 }
 
 def baseName = "${project.mod_name}" + "-forge"

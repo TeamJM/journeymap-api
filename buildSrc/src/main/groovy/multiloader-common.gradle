@@ -40,6 +40,7 @@ sourceSets {
 
 repositories {
     mavenCentral()
+    mavenLocal()
     // https://docs.gradle.org/current/userguide/declaring_repositories.html#declaring_content_exclusively_found_in_one_repository
     exclusiveContent {
         forRepository {
@@ -65,8 +66,9 @@ repositories {
     }
     maven {
         name = 'BlameJared'
-        url = 'https://maven.blamejared.com'
+        url = "https://jm.gserv.me/repository/maven-public/"
     }
+
     maven {
         url "https://www.cursemaven.com"
     }
@@ -74,6 +76,7 @@ repositories {
 configurations {
     testImplementation.extendsFrom implementation
 }
+
 dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
@@ -120,7 +123,7 @@ jar {
                 "Implementation-Version"  : project.version,
                 "Implementation-URL"      : project.git_website,
                 'Implementation-Vendor'   : mod_author,
-                'Implementation-Timestamp': getDate().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Implementation-Timestamp': getDate(),
                 'Timestamp'               : System.currentTimeMillis(),
                 'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
                 'Built-On-Minecraft'      : minecraft_version
