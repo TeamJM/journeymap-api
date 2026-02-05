@@ -226,13 +226,35 @@ public interface Waypoint
      * Allows add-on devs to set custom data on their waypoints for use, this is not used by journeymap.
      *
      * @param data - String
+     * @deprecated Use {@link #setCustomData(String, String)}
      */
+    @Deprecated(forRemoval = true)
     void setCustomData(@Nullable String data);
 
     /**
      * Gets the custom data stored on a waypoint
-     * @return
+     *
+     * @return - String
+     * @deprecated Use {@link #getCustomData(String)}
      */
+    @Deprecated(forRemoval = true)
     @Nullable
     String getCustomData();
+
+    /**
+     * Allows add-on devs to set custom data on their waypoints for use, this is not used by journeymap.
+     *
+     * @param key  - they key for the data
+     * @param data - String
+     */
+    void setCustomData(String key, @Nullable String data);
+
+    /**
+     * Gets the custom data stored on a waypoint
+     *
+     * @param key - they key for the data
+     * @return - String
+     */
+    @Nullable
+    String getCustomData(String key);
 }

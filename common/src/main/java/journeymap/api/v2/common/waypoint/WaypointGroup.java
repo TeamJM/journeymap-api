@@ -237,16 +237,37 @@ public interface WaypointGroup
      * Allows add-on devs to set custom data on their waypoint groups for use, this is not used by journeymap.
      *
      * @param data - String
+     * @deprecated Use {@link #setCustomData(String, String)}
      */
+    @Deprecated(forRemoval = true)
     void setCustomData(@Nullable String data);
 
     /**
      * Gets the custom data stored on a waypoint group
      *
      * @return
+     * @deprecated Use {@link #getCustomData(String)}
      */
+    @Deprecated(forRemoval = true)
     @Nullable
     String getCustomData();
+
+    /**
+     * Allows add-on devs to set custom data on their waypoint group for use, this is not used by journeymap.
+     *
+     * @param key  - they key for the data
+     * @param data - String
+     */
+    void setCustomData(String key, @Nullable String data);
+
+    /**
+     * Gets the custom data stored on a waypoint group
+     *
+     * @param key - they key for the data
+     * @return - String
+     */
+    @Nullable
+    String getCustomData(String key);
 
     /**
      * @return is showing waypoints for this group on the locator bar.
