@@ -8,7 +8,7 @@ import journeymap.api.v2.common.JourneyMapPlugin;
  * <p>
  * Implementation classes must have a no-arg constructor and also have the {@link JourneyMapPlugin} annotation.
  */
-public interface IServerPlugin extends IJourneyMapPlugin
+public interface IServerPlugin extends IJourneyMapPlugin<IServerAPI>
 {
     /**
      * Called by JourneyMap during the init phase of mod loading.  Your implementation
@@ -19,6 +19,6 @@ public interface IServerPlugin extends IJourneyMapPlugin
      *
      * @param jmServerApi Client API implementation
      */
+    @Override
     void initialize(final IServerAPI jmServerApi);
-
 }

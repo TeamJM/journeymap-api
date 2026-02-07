@@ -1,5 +1,6 @@
 package journeymap.api.v2.server;
 
+import journeymap.api.v2.common.CommonAPI;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
  * Currently unused, just a placeholder. Please do not code any of this as it will likely change.
  */
 @Deprecated
-public interface IServerAPI
+public interface IServerAPI extends CommonAPI
 {
     /**
      * Gets all the waypoints stored for the target Server Player.

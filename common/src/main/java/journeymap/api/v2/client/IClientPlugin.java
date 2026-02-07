@@ -32,7 +32,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * Implementation classes must have a no-arg constructor and also have the {@link JourneyMapPlugin} annotation.
  */
 @ParametersAreNonnullByDefault
-public interface IClientPlugin extends IJourneyMapPlugin
+public interface IClientPlugin extends IJourneyMapPlugin<IClientAPI>
 {
     /**
      * Called by JourneyMap during the init phase of mod loading.  Your implementation
