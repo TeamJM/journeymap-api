@@ -4,7 +4,7 @@ import journeymap.api.v2.common.IJourneyMapPlugin;
 import journeymap.api.v2.common.JourneyMapPlugin;
 
 /**
- * Interface used by JourneyMap to initialize client plugins and provide the Client API.
+ * Interface used by JourneyMap to initialize server plugins and provide the Server API.
  * <p>
  * Implementation classes must have a no-arg constructor and also have the {@link JourneyMapPlugin} annotation.
  */
