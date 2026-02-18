@@ -26,6 +26,7 @@ import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.Displayable;
 import journeymap.api.v2.client.event.MappingEvent;
 import journeymap.api.v2.client.util.UIState;
+import journeymap.api.v2.common.CommonAPI;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointGroup;
 import net.minecraft.resources.ResourceKey;
@@ -42,7 +43,7 @@ import java.util.function.Consumer;
  * Definition for the JourneyMap Client API.
  */
 @ParametersAreNonnullByDefault
-public interface IClientAPI
+public interface IClientAPI extends CommonAPI
 {
     String API_OWNER = "journeymap";
     String API_VERSION = "2.0.0-SNAPSHOT";
@@ -268,7 +269,7 @@ public interface IClientAPI
 
     /**
      * Removes a waypoint group.
-     * Setting deleteWaypoints to false, will move all waypoints in the Default group.
+     * Setting deleteWaypoints to false will move all waypoints in the Default group.
      *
      * @param group           the group
      * @param deleteWaypoints to delete all waypoints in group
@@ -277,7 +278,7 @@ public interface IClientAPI
 
     /**
      * Removes groups for a modId.
-     * Setting deleteWaypoints to false, will move all waypoints in the Default group.
+     * Setting deleteWaypoints to false will move all waypoints in the Default group.
      *
      * @param modId           - the modId
      * @param deleteWaypoints to delete all waypoints in group
