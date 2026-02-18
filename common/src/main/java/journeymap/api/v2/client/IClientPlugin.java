@@ -20,6 +20,8 @@
 
 package journeymap.api.v2.client;
 
+import journeymap.api.v2.common.IJourneyMapPlugin;
+import journeymap.api.v2.common.JourneyMapPlugin;
 import journeymap.api.v2.common.event.ClientEventRegistry;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -30,7 +32,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  * Implementation classes must have a no-arg constructor and also have the {@link JourneyMapPlugin} annotation.
  */
 @ParametersAreNonnullByDefault
-public interface IClientPlugin
+public interface IClientPlugin extends IJourneyMapPlugin<IClientAPI>
 {
     /**
      * Called by JourneyMap during the init phase of mod loading.  Your implementation
@@ -44,8 +46,4 @@ public interface IClientPlugin
      */
     void initialize(final IClientAPI jmClientApi);
 
-    /**
-     * Used by JourneyMap to associate your mod id with your plugin instance.
-     */
-    String getModId();
 }

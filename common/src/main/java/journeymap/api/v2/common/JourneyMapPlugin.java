@@ -18,7 +18,10 @@
  *
  */
 
-package journeymap.api.v2.client;
+package journeymap.api.v2.common;
+
+import journeymap.api.v2.client.IClientPlugin;
+import journeymap.api.v2.server.IServerPlugin;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.ElementType;
@@ -30,14 +33,11 @@ import java.lang.annotation.Target;
  * Used by JourneyMap to discover and classload plugin classes.
  * <p>
  * Classes with this annotation must have a no-arg constructor
- * and must also implement the {@link IClientPlugin} interface.
- *
- * @deprecated this will be removed, please use {@link journeymap.api.v2.common.JourneyMapPlugin}
- * This will be removed when the API is out of snapshot phase.
+ * and must also implement the {@link IClientPlugin} interface for client plugins
+ * or {@link IServerPlugin} interface for server plugins.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Deprecated(forRemoval = true, since = "2.0.0")
 public @interface JourneyMapPlugin
 {
     /**
