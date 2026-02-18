@@ -17,7 +17,7 @@ public interface IServerPlugin extends IJourneyMapPlugin<IServerAPI>
      * <p>
      * This is also a good time to subscribe to any desired Events.
      *
-     * @param jmServerApi Client API implementation
+     * @param jmServerApi Server API implementation
      */
     @Override
     void initialize(final IServerAPI jmServerApi);
