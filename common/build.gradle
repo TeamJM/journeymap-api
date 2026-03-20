@@ -14,10 +14,10 @@ test {
 neoForge {
     neoFormVersion = neo_form_version
     addModdingDependenciesTo(sourceSets["test"])
-    parchment {
-        minecraftVersion = mappings_mc_version
-        mappingsVersion = mappings_date
-    }
+//    parchment {
+//        minecraftVersion = mappings_mc_version
+//        mappingsVersion = mappings_date
+//    }
 }
 
 dependencies {

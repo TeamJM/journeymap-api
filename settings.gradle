@@ -12,7 +12,7 @@ pluginManagement {
             filter {
                 includeGroup('net.fabricmc')
                 includeGroup('net.fabricmc.unpick')
-                includeGroup('fabric-loom')
+                includeGroup('net.fabricmc.fabric-loom')
             }
         }
         exclusiveContent {
@@ -48,5 +48,5 @@ plugins {
 rootProject.name = 'journeymap-api'
 include("common")
 include("fabric")
-include("neoforge")
-include("forge")
+//include("neoforge")
+//include("forge")

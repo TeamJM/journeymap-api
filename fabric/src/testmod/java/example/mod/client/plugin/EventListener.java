@@ -302,7 +302,7 @@ class EventListener
     {
         if (!chunk.getLevel().isClientSide())
         {
-            return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, chunk.getLevel().getServer().getWorldData().worldGenOptions().seed(), 987234911L).nextInt(10) == 0;
+            return WorldgenRandom.seedSlimeChunk(chunk.getPos().x(), chunk.getPos().z(), chunk.getLevel().getServer().getWorldGenSettings().options().seed(), 987234911L).nextInt(10) == 0;
         }
         return false;
     }

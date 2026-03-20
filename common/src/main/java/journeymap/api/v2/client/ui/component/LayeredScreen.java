@@ -1,7 +1,7 @@
 package journeymap.api.v2.client.ui.component;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -55,32 +55,32 @@ public abstract class LayeredScreen extends Screen
     }
 
     @Override
-    @Deprecated // do not call super.render, call super.renderPopupScreen instead
-    public final void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
+    @Deprecated // do not call super.extractRenderState, call super.extractPopupScreen instead
+    public final void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
     {
         if (this.backgroundScreen != null)
         // render background screen.
         {
-            this.backgroundScreen.renderWithTooltipAndSubtitles(graphics, -1, -1, partialTicks);
+            this.backgroundScreen.extractRenderStateWithTooltipAndSubtitles(graphics, -1, -1, partialTicks);
         }
         graphics.nextStratum();
-        this.renderPopupScreenBackground(graphics, mouseX, mouseY, partialTicks);
+        this.extractPopupScreenBackground(graphics, mouseX, mouseY, partialTicks);
         graphics.nextStratum();
-        this.renderPopupScreen(graphics, mouseX, mouseY, partialTicks);
+        this.extractPopupScreen(graphics, mouseX, mouseY, partialTicks);
     }
 
-    protected void renderPopupScreen(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
+    protected void extractPopupScreen(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
     {
-        super.render(graphics, mouseX, mouseY, partialTicks);
+        super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
     }
 
-    protected void renderPopupScreenBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
+    protected void extractPopupScreenBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
     {
 
     }
 
     @Override
-    public final void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
+    public final void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
     {
         // no use
     }
