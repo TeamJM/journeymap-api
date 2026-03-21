@@ -64,17 +64,17 @@ public abstract class LayeredScreen extends Screen
             this.backgroundScreen.extractRenderStateWithTooltipAndSubtitles(graphics, -1, -1, partialTicks);
         }
         graphics.nextStratum();
-        this.extractPopupScreenBackground(graphics, mouseX, mouseY, partialTicks);
+        this.renderPopupScreenBackground(graphics, mouseX, mouseY, partialTicks);
         graphics.nextStratum();
-        this.extractPopupScreen(graphics, mouseX, mouseY, partialTicks);
+        this.renderPopupScreen(graphics, mouseX, mouseY, partialTicks);
     }
 
-    protected void extractPopupScreen(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPopupScreen(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
     {
         super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
     }
 
-    protected void extractPopupScreenBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPopupScreenBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
     {
 
     }
