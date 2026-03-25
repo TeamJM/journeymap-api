@@ -125,21 +125,18 @@ public interface IClientAPI extends CommonAPI
     boolean playerAccepts(String modId, DisplayType displayType);
 
     /**
-     * Note:  This method IS NOT SUPPORTED for most mods. Misuse will lead to severe performance issues.
-     * Talk to Techbrew if you need to use this function.
-     * <p>
-     * Asynchonrously request a BufferedImage map tile from JourneyMap. Requests may be throttled, so use sparingly.
+     * Asynchronously request a map tile image from JourneyMap. Requests may be throttled, so use sparingly.
      * The largest image size that will be returned is 512x512 px.
      *
-     * @param modId      Mod id
+     * @param modId      The calling mod's id
      * @param dimension  The dimension
      * @param mapType    The map type
-     * @param startChunk The NW chunk of the tile.
-     * @param endChunk   The SW chunk of the tile.
-     * @param chunkY     The vertical chunk (slice) if the maptype isn't day/night/topo
+     * @param startChunk The NW chunk of the tile
+     * @param endChunk   The SE chunk of the tile
+     * @param chunkY     The vertical chunk (slice) if the map type isn't day/night/topo
      * @param zoom       The zoom level (0-8)
-     * @param showGrid   Whether to include to include the chunk grid overlay
-     * @param callback   A callback function which will provide a BufferedImage when/if available.  If it returns null, then no image available.
+     * @param showGrid   Whether to include the chunk grid overlay
+     * @param callback   A callback which will receive the NativeImage when available, or null if unavailable
      */
     void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
                         @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<NativeImage> callback);
