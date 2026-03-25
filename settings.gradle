@@ -48,5 +48,5 @@ plugins {
 rootProject.name = 'journeymap-api'
 include("common")
 include("fabric")
-//include("neoforge")
-//include("forge")
+include("neoforge")
+include("forge")
