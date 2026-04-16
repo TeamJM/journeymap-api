@@ -27,6 +27,39 @@ public class WaypointFactory
     }
 
     /**
+     * Creates a Waypoint. On the client side this will be a ClientWaypoint; on the server side this
+     * will be a plain WaypointImpl.
+     *
+     * @param modId            - The modid of the mod creating the waypoint
+     * @param pos              - The BlockPos of the waypoint
+     * @param name             - The Optional Name of the waypoint. If null, it will use the coordinates as the name.
+     * @param primaryDimension - The primary dimension identifier string.
+     * @param persistent       - should the waypoint persist between sessions?
+     *                         True, JourneyMap will save this waypoint to disk and load every session it only needs to be sent once.
+     *                         False, The waypoint will be flushed when the user changes dimensions and exits the game.
+     * @return - The Waypoint with default values set.
+     */
+    public static Waypoint createWaypoint(String modId, BlockPos pos, @Nullable String name, ResourceKey<Level> primaryDimension, boolean persistent)
+    {
+        return createWaypoint(modId, pos, name, primaryDimension.identifier().toString(), persistent);
+    }
+
+    public static Waypoint createWaypoint(String modId, BlockPos pos, ResourceKey<Level> primaryDimension, boolean persistent)
+    {
+        return createWaypoint(modId, pos, primaryDimension.identifier().toString(), persistent);
+    }
+
+    public static Waypoint createWaypoint(String modId, BlockPos pos, String primaryDimension, boolean persistent)
+    {
+        return createWaypoint(modId, pos, null, primaryDimension, persistent);
+    }
+
+    public static Waypoint createWaypoint(String modId, BlockPos pos, @Nullable String name, String primaryDimension, boolean persistent)
+    {
+        return getInstance().store.createWaypoint(modId, pos, name, primaryDimension, persistent);
+    }
+
+    /**
      * Creates a ClientWaypoint.
      *
      * @param modId            - The modid of the mod creating the waypoint
@@ -38,22 +71,27 @@ public class WaypointFactory
      *                         True, JourneyMap will save this waypoint to disk and load every session it only needs to be sent once.
      *                         False, The waypoint will be flushed when the user changes dimensions and exits the game.
      * @return - The Waypoint with default values set.
+     * @deprecated Use {@link #createWaypoint(String, BlockPos, String, String, boolean)} instead.
      */
+    @Deprecated
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, @Nullable String name, ResourceKey<Level> primaryDimension, boolean persistent)
     {
         return createClientWaypoint(modId, pos, name, primaryDimension.identifier().toString(), persistent);
     }
 
+    @Deprecated
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, ResourceKey<Level> primaryDimension, boolean persistent)
     {
         return createClientWaypoint(modId, pos, primaryDimension.identifier().toString(), persistent);
     }
 
+    @Deprecated
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, String primaryDimension, boolean persistent)
     {
         return createClientWaypoint(modId, pos, null, primaryDimension, persistent);
     }
 
+    @Deprecated
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, @Nullable String name, String primaryDimension, boolean persistent)
     {
         return getInstance().store.createClientWaypoint(modId, pos, name, primaryDimension, persistent);
@@ -78,6 +116,9 @@ public class WaypointFactory
     @ApiStatus.Internal
     public interface WaypointStore
     {
+        Waypoint createWaypoint(String modId, BlockPos pos, @Nullable String name, String primaryDimension, boolean persistent);
+
+        @Deprecated
         Waypoint createClientWaypoint(String modId, BlockPos pos, @Nullable String name, String primaryDimension, boolean persistent);
 
         Waypoint fromWaypointJsonString(String waypoint);
