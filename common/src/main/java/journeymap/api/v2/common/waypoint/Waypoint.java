@@ -32,6 +32,24 @@ public interface Waypoint
 
     void setName(String name);
 
+    /**
+     * Optional free-form description shown in the waypoint manager tooltip.
+     * Implementations may treat values starting with {@code "jm."} as i18n keys.
+     * Default returns {@code null} for backwards compatibility with addons that
+     * implement {@link Waypoint} directly.
+     */
+    default @Nullable String getDescription()
+    {
+        return null;
+    }
+
+    /**
+     * @see #getDescription()
+     */
+    default void setDescription(@Nullable String description)
+    {
+    }
+
     void setPos(int x, int y, int z);
 
     void setBlockPos(BlockPos pos);
