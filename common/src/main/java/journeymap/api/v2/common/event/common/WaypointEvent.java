@@ -25,6 +25,17 @@ public class WaypointEvent extends CommonEvent
     }
 
     /**
+     * Server-side constructor. Use when firing from a server context.
+     */
+    public WaypointEvent(Waypoint waypoint, Context context, ResourceKey<Level> dimension, Side side)
+    {
+        super(context.cancelable, side);
+        this.dimension = dimension;
+        this.waypoint = waypoint;
+        this.context = context;
+    }
+
+    /**
      * World dimension where event occurred.
      */
     public ResourceKey<Level> getDimension()
