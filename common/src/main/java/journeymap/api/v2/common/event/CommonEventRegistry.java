@@ -2,6 +2,7 @@ package journeymap.api.v2.common.event;
 
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.IClientPlugin;
+import journeymap.api.v2.common.event.common.DeathWaypointEvent;
 import journeymap.api.v2.common.event.common.TeleportEvent;
 import journeymap.api.v2.common.event.common.WaypointEvent;
 import journeymap.api.v2.common.event.common.WaypointGroupEvent;
@@ -36,4 +37,12 @@ public class CommonEventRegistry
      * This event fires when a waypoint is transferred from one group to another, from may be null.
      */
     public static final Event<WaypointGroupTransferEvent> WAYPOINT_GROUP_TRANSFER_EVENT = EventFactory.create(WaypointGroupTransferEvent.class);
+
+    /**
+     * Fired before a death waypoint is created. Cancellable. Fires both client-side
+     * (singleplayer or non-JM-managed servers) and server-side (JourneyMap-managed
+     * servers). The plain {@link WaypointEvent} CREATE is suppressed for death
+     * waypoints so subscribers receive exactly one notification per death.
+     */
+    public static final Event<DeathWaypointEvent> DEATH_WAYPOINT_EVENT = EventFactory.create(DeathWaypointEvent.class);
 }
