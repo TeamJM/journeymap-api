@@ -1,40 +1,18 @@
 plugins {
-    id 'idea'
-    id 'java'
     id 'net.neoforged.moddev'
-    id 'maven-publish'
+    id 'multiloader-common'
 }
 
-version = "${project.api_version}-${project.minecraft_version}"
-if (project.snapshot) {
-    version = version + "-SNAPSHOT"
-}
-group = project.group
-archivesBaseName = "${project.mod_name}" + "-common"
-boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
-
+def baseName = "${project.mod_name}" + "-common"
+base.archivesName = baseName
 
 test {
-    useJUnitPlatform()
+//    useJUnitPlatform()
 }
 
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
-    withSourcesJar()
-    withJavadocJar()
-}
 
 neoForge {
     neoFormVersion = neo_form_version
-    // Automatically enable AccessTransformers if the file exists
-    // While this location can be changed, it is recommended for
-    // common and neoforge to share an accesstransformer file
-    // and this location is hardcoded in FML
-    // https://github.com/neoforged/FancyModLoader/blob/a952595eaaddd571fbc53f43847680b00894e0c1/loader/src/main/java/net/neoforged/fml/loading/moddiscovery/ModFile.java#L118
-    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) {
-        accessTransformers.add(at.absolutePath)
-    }
     addModdingDependenciesTo(sourceSets["test"])
     parchment {
         minecraftVersion = mappings_mc_version
@@ -44,57 +22,42 @@ neoForge {
 
 dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
+    compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+    annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
 }
 
-processResources {
-
-    def buildProps = project.properties.clone()
-
-    filesMatching(['pack.mcmeta']) {
-
-        expand buildProps
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
     }
 }
 
-/* Javadoc properties */
-javadoc {
-    title = project.title_javadoc
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }
 
-
-publishing {
-    repositories {
-
-        if (localBuild) {
-            repositories {
-                maven {
-                    url System.getenv("local_maven_url") // or `url "file://" + System.getenv("local_maven")`
-                }
-            }
-        } else {
-            maven {
-                name = "JourneyMap"
-                url = uri("https://jm.gserv.me/repository/maven-snapshots/")
-
-                credentials {
-                    username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
-                    password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
-                }
-
-                version = project.version
-            }
+// Implement mcgradleconventions loader attribute
+def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
+    configurations.named("$variant") {
+        attributes {
+            attribute(loaderAttribute, 'common')
         }
-
     }
-
-    publications {
-        maven(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-
-            from(components["java"])
+}
+sourceSets.configureEach {
+    [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName].each { variant ->
+        configurations.named("$variant") {
+            attributes {
+                attribute(loaderAttribute, 'common')
+            }
         }
     }
 }

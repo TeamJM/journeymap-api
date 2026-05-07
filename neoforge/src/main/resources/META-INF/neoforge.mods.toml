@@ -6,7 +6,7 @@ license = "All rights reserved"
 [[mods]]
 modId = "journeymap_api" #mandatory
 
-version = "${modVersion}"
+version = "${version}"
 
 displayName = "JourneyMap API" #mandatory
 displayURL = "http://journeymap.info" #optional

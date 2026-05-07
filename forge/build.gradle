@@ -1,176 +1,60 @@
 plugins {
-    id "idea"
-    id "maven-publish"
-    id "net.minecraftforge.gradle" version "[6.0,6.2)"
-}
-group 'info.journeymap'
-
-/* Artifact Version */
-version = "${project.api_version}-${project.minecraft_version}"
-if (project.snapshot) {
-    version = version + "-SNAPSHOT"
-}
-archivesBaseName = "${project.mod_name}" + "-forge"
-
-def modVersion = project.api_version
-boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
-
-configurations {
-    testmodImplementation.extendsFrom implementation
+    id 'multiloader-loader'
+    id 'net.minecraftforge.gradle' version '[7.0.11,8.0)'
 }
 
 repositories {
-    maven {
-        url "https://www.cursemaven.com"
-    }
+    maven minecraft.mavenizer
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+    maven { url "https://repo.spongepowered.org/maven" }
 }
-minecraft.reobf = false
+
+def baseName = "${project.mod_name}" + "-forge"
+base.archivesName = baseName
+
 /* ForgeGradle spec for Minecraft */
 minecraft {
-    mappings channel: project.channel, version: project.mappings
-
-    copyIdeResources = true //Calls processResources when in dev
+    mappings channel: 'official', version: minecraft_version
 
     runs {
-        client = {
-            property "mixin.debug.export", "true"
-            property "mixin.env.remapRefMap", "true"
-            property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
-            properties "forge.logging.console.level": "info"
-            properties "journeymap.map_testing": "true"
-
-
-            workingDirectory project.file("run/client")
-            mods {
-                modClientRun {
-                    source sourceSets.main
-                    source project(":common").sourceSets.main
-                }
-            }
+        register('client') {
+            workingDir.convention layout.projectDirectory.dir('run')
         }
-        server = {
-            arg "nogui"
-            property "mixin.debug.export", "true"
-            property "mixin.env.remapRefMap", "true"
-            property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
-            properties "forge.logging.console.level": "info"
-            properties "mixin.env.disableRefMap": "true"
-            properties "forge.logging.markers": "SCAN,REGISTRIES,REGISTRYDUMP"
-            workingDirectory project.file("run/server")
-            mods {
-                modServerRun {
-                    source sourceSets.main
-                    source project(":common").sourceSets.main
-                }
-            }
+
+        register('server') {
+            workingDir.convention layout.projectDirectory.dir('run')
+            args '--nogui'
         }
     }
 }
-
-minecraft.runs.all {
-    lazyToken("minecraft_classpath") {
-        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-    }
-}
+sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
-    runtimeOnly "curse.maven:journeymap-${project.jm_project_id}:${project.forge_jm_file_id}"
-
-    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
-
-    compileOnly project(":common")
+    implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
     testmodImplementation sourceSets.main.output
 }
-
-/* Replace tokens in resources files */
-processResources {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft_version
-
-    // replace stuff in neoforge.mods.toml on copy
-    from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
-        expand 'version': project.version,
-                'mcversion': project.minecraft_version,
-                'modVersion': modVersion
-    }
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
 }
 
-/* Use the same compile and runtime classpath in the Example Mod */
-sourceSets {
-    testmod {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-    }
-}
-
-
-jar {
-    manifest {
-        attributes = ["Manifest-Version"      : "1.0",
-//                "FMLModType"            : "GAMELIBRARY",
-                      "Implementation-Title"  : project.title,
-                      "Implementation-Version": project.version,
-                      "Implementation-URL"    : project.git_website]
-    }
-}
-
-/* Javadoc properties */
-javadoc {
-    title = project.title_javadoc
-}
-
-tasks.withType(JavaCompile).configureEach {
-    source(project(":common").sourceSets.main.allSource)
-}
-tasks.withType(Javadoc).configureEach {
-    source(project(":common").sourceSets.main.allJava)
-}
-tasks.named("sourcesJar", Jar) {
-    from(project(":common").sourceSets.main.allSource)
-}
-
-publishing {
-    repositories {
-
-        if (localBuild) {
-            repositories {
-                maven {
-                    url System.getenv("local_maven_url") // or `url "file://" + System.getenv("local_maven")`
-                }
-            }
-        } else {
-            maven {
-                name = "JourneyMap"
-                url = uri("https://jm.gserv.me/repository/maven-snapshots/")
-
-                credentials {
-                    username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
-                    password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
-                }
-
-                version = project.version
-            }
+// Implement mcgradleconventions loader attribute
+def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
+    configurations.named("$variant") {
+        attributes {
+            attribute(loaderAttribute, 'forge')
         }
-
     }
+}
 
-    publications {
-        maven(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            artifact jar
-
-            artifact project.sourcesJar {
-                archiveClassifier.set("sources")
-            }
-
-            artifact project.javadocJar {
-                archiveClassifier.set("javadoc")
+sourceSets.configureEach {
+    [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName].each { variant ->
+        configurations.named("$variant") {
+            attributes {
+                attribute(loaderAttribute, 'forge')
             }
         }
     }

@@ -1,0 +1,206 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'java'
+}
+
+boolean localBuild = (hasProperty("buildProfile") && "local".equals(property("buildProfile")))
+
+base {
+    archivesName = "${mod_name}-${project.name}"
+}
+
+/* Artifact Version */
+version = "${project.api_version}-${project.minecraft_version}"
+if (project.snapshot) {
+    version = version + "-SNAPSHOT"
+}
+group = project.group_id
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(java_version)
+    withSourcesJar()
+    withJavadocJar()
+}
+
+testing {
+    suites {
+        test {
+            // Explicitly declare the test framework
+            useJUnitJupiter() // Use useJUnit() or useTestNG() if applicable
+        }
+    }
+}
+sourceSets {
+    testmod {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    // https://docs.gradle.org/current/userguide/declaring_repositories.html#declaring_content_exclusively_found_in_one_repository
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Sponge'
+                url = 'https://repo.spongepowered.org/repository/maven-public'
+            }
+        }
+        filter { includeGroupAndSubgroups('org.spongepowered') }
+    }
+    exclusiveContent {
+        forRepositories(
+                maven {
+                    name = 'ParchmentMC'
+                    url = 'https://maven.parchmentmc.org/'
+                },
+                maven {
+                    name = "NeoForge"
+                    url = 'https://maven.neoforged.net/releases'
+                }
+        )
+        filter { includeGroup('org.parchmentmc.data') }
+    }
+    maven {
+        name = 'BlameJared'
+        url = 'https://maven.blamejared.com'
+    }
+
+    maven {
+        url "https://www.cursemaven.com"
+    }
+}
+configurations {
+    testImplementation.extendsFrom implementation
+}
+
+dependencies {
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
+    testImplementation 'org.mockito:mockito-core:5.9.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.9.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+}
+
+// Declare capabilities on the outgoing configurations.
+// Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
+['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
+    configurations."$variant".outgoing {
+        capability("$group:${project.name}:$version")
+        capability("$group:${base.archivesName.get()}:$version")
+        capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
+        capability("$group:$mod_id:$version")
+    }
+    publishing.publications.configureEach {
+        suppressPomMetadataWarningsFor(variant)
+    }
+
+}
+
+tasks.withType(Test) {
+    failOnNoDiscoveredTests = false
+}
+
+sourcesJar {
+    from(rootProject.file('LICENSE')) {
+        rename { "${it}_${mod_name}" }
+    }
+}
+
+jar {
+    from(rootProject.file('LICENSE')) {
+        rename { "${it}_${mod_name}" }
+    }
+
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_name,
+                'Specification-Vendor'    : mod_author,
+                'Specification-Version'   : project.jar.archiveVersion,
+                "Implementation-Title"    : project.title,
+                "Implementation-Version"  : project.version,
+                "Implementation-URL"      : project.git_website,
+                'Implementation-Vendor'   : mod_author,
+                'Implementation-Timestamp': getDate(),
+                'Timestamp'               : System.currentTimeMillis(),
+                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Built-On-Minecraft'      : minecraft_version
+        ])
+    }
+}
+
+processResources {
+    var expandProps = [
+            'version'              : version,
+            'group'                : group_id, //Else we target the task's group.
+            'minecraft_version'    : minecraft_version,
+            'fabric_api_version'   : fabric_api_version,
+            'fabric_loader_version': fabric_loader_version,
+            'mod_name'             : mod_name,
+            'mod_author'           : mod_author,
+            'mod_id'               : mod_id,
+            'neoforge_version'     : neoforge_version,
+            "forge_version"        : forge_version,
+            'java_version'         : java_version
+    ]
+
+    var jsonExpandProps = expandProps.collectEntries {
+        key, value -> [(key): value instanceof String ? value.replace("\n", "\\\\n") : value]
+    }
+
+
+    filesMatching(['META-INF/mods.toml', 'META-INF/neoforge.mods.toml', 'doc/changelog.html']) {
+        expand expandProps
+    }
+
+    filesMatching(['pack.mcmeta', 'fabric.mod.json', '*.mixins.json']) {
+        expand jsonExpandProps
+    }
+
+    inputs.properties(expandProps)
+}
+
+/* Javadoc properties */
+javadoc {
+    title = project.title_javadoc
+}
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format(project.dateFormat)
+    return formattedDate
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifactId base.archivesName.get()
+            from components.java
+        }
+    }
+    if (localBuild) {
+        repositories {
+            maven {
+                url System.getenv("local_maven_url") // or `url "file://" + System.getenv("local_maven")`
+            }
+        }
+    } else {
+        repositories {
+            maven {
+                name = "JourneyMap"
+                url = uri("https://jm.gserv.me/repository/maven-snapshots/")
+
+                credentials {
+                    username = project.findProperty("journeymap.user") ?: System.getenv("JOURNEYMAP_USER")
+                    password = project.findProperty("journeymap.password") ?: System.getenv("JOURNEYMAP_PASSWORD")
+                }
+
+                version = project.version
+            }
+        }
+    }
+}
