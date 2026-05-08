@@ -38,6 +38,7 @@ neoForge {
         accessTransformers.add(at.absolutePath)
     }
     addModdingDependenciesTo(sourceSets["test"])
+    addModdingDependenciesTo(sourceSets["testmod"])
     parchment {
         minecraftVersion = mappings_mc_version
         mappingsVersion = mappings_date
@@ -59,6 +60,9 @@ neoForge {
     mods {
         "${mod_id}" {
             sourceSet sourceSets.main
+        }
+        examplemod {
+            sourceSet sourceSets.testmod
         }
     }
 }

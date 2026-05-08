@@ -48,3 +48,27 @@ tasks.named('sourcesJar', Jar) {
     dependsOn(configurations.commonResources)
     from(configurations.commonResources)
 }
+
+// Make common/src/testmod a source dir on this loader's testmod source set so
+// the IDE sees the shared example-mod classes as part of the loader project
+// (no cross-module phantom imports) and gradle compiles everything in one pass.
+sourceSets {
+    testmod {
+        java.srcDirs += project(':common').file('src/testmod/java')
+        resources.srcDirs += project(':common').file('src/testmod/resources')
+    }
+}
+
+// Package the testmod source set into a jar. Fabric overrides the classifier
+// (-> 'testmod-dev') and adds a separate remapTestmodJar that produces the
+// runtime-loadable variant. Forge/NeoForge ship the testmod jar directly.
+tasks.register('testmodJar', Jar) {
+    archiveClassifier = 'testmod'
+    from sourceSets.testmod.output
+}
+
+// Build the testmod jar(s) as part of the standard `assemble` lifecycle so
+// `./gradlew build` produces them without being asked explicitly.
+tasks.named('assemble') {
+    dependsOn tasks.named('testmodJar')
+}

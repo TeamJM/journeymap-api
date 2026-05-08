@@ -118,40 +118,64 @@ stepping through a debugger in your development environment.*
 II. Look at the Example Code
 =============================
 
-* Look in the [example package](src/main/java/example) for a complete
-  example of a mod that has implemented a plugin for the JourneyMap API.
+The example mod is consolidated into one shared package under `common/src/testmod/`.
+Each loader (fabric, forge, neoforge) keeps a tiny entry shim plus its mod manifest;
+all plugin logic, sample factories, and event subscriptions live in common.
 
-* In intellij, you can set your run config module to `journeymap-api.{modloadder}.testmod`
-* to run the test mod. Be sure to add the JourneyMap jar to the {modloader}/run/client/mods folder.
+* Loader-agnostic plugin code:
+  [common/src/testmod/java/example/mod/](../common/src/testmod/java/example/mod/)
+  - [ExampleMod](../common/src/testmod/java/example/mod/ExampleMod.java) - shared MODID, LOGGER, init() called by every loader entry.
+  - [client/plugin/ExampleJourneymapPlugin](../common/src/testmod/java/example/mod/client/plugin/ExampleJourneymapPlugin.java) - IClientPlugin discovered by JourneyMap.
+  - [client/plugin/ClientEventListener](../common/src/testmod/java/example/mod/client/plugin/ClientEventListener.java) - subscribes every ClientEventRegistry, FullscreenEventRegistry, and MinimapEventRegistry hook.
+  - [client/plugin/handler/](../common/src/testmod/java/example/mod/client/plugin/handler/) - loader-agnostic handlers for chunk-load and player-sleep events; each loader forwards its native event into these.
+  - [common/plugin/CommonEventListener](../common/src/testmod/java/example/mod/common/plugin/CommonEventListener.java) - subscribes every CommonEventRegistry hook.
+  - [server/plugin/ExampleServerPlugin](../common/src/testmod/java/example/mod/server/plugin/ExampleServerPlugin.java) - IServerPlugin demonstrating the server API.
+  - [server/plugin/ServerEventListener](../common/src/testmod/java/example/mod/server/plugin/ServerEventListener.java) - subscribes every ServerEventRegistry hook.
+
+* Loader entry shims (each one calls ExampleMod.init() and forwards loader-native events):
+  - Fabric: [fabric/src/testmod/java/example/mod/fabric/FabricExampleMod.java](../fabric/src/testmod/java/example/mod/fabric/FabricExampleMod.java)
+  - Forge: [forge/src/testmod/java/example/mod/forge/ForgeExampleMod.java](../forge/src/testmod/java/example/mod/forge/ForgeExampleMod.java)
+  - NeoForge: [neoforge/src/testmod/java/example/mod/neoforge/NeoForgeExampleMod.java](../neoforge/src/testmod/java/example/mod/neoforge/NeoForgeExampleMod.java)
+
+* Running the test mod in dev:
+  - The testmod source set is registered as a runnable mod in each loader's run config.
+  - Use the standard run tasks: `./gradlew :fabric:runClient`, `./gradlew :forge:runClient`, `./gradlew :neoforge:runClient`.
+  - In IntelliJ, the per-loader run configs include the testmod source set automatically.
+  - Drop the JourneyMap jar into `{loader}/run/client/mods/` before launching.
 
 III. Write your Plugin
 =============================
 
 1. Write a class that implements the JourneyMap
-   *[journeymap.client.api.v2.IClientPlugin](src/main/java/journeymap/client/api/IClientPlugin.java)* interface (
-   like '[ExampleJourneymapPlugin](src/main/java/example/mod/client/plugin/ExampleJourneymapPlugin.java)')
+   *[journeymap.api.v2.client.IClientPlugin](../common/src/main/java/journeymap/api/v2/client/IClientPlugin.java)* interface
+   (see [ExampleJourneymapPlugin](../common/src/testmod/java/example/mod/client/plugin/ExampleJourneymapPlugin.java) for a complete example)
     - Annotate the class with
-      *[@journeymap.api.v2.client.JourneyMapPlugin](common/src/main/java/journeymap/api/v2/client/ClientPlugin.java)* so
-      that JourneyMap can find and instantiate it
+      *[@journeymap.api.v2.common.JourneyMapPlugin](../common/src/main/java/journeymap/api/v2/common/JourneyMapPlugin.java)* so
+      that JourneyMap can find and instantiate it.
     - Don't make references to this class elsewhere in your mod. You don't want it classloaded if JourneyMap isn't
       loaded.
 2. Write other classes as needed that use JourneyMap API classes, but only refer to them from your Plugin class.
     - Don't make references to these classes elsewhere in your mod. You don't want them classloaded if JourneyMap isn't
       loaded.
-3. For Forge/NeoForge: automatically detects the plugin.
-4. For Fabric: In your `fabric.mod.json file` add the path to your class that implements `IClientPlugin` to your
-   entrypoint Example:
+3. For Forge/NeoForge: automatically detects the plugin via the annotation.
+4. For Fabric: In your `fabric.mod.json` file add the path to your class that implements `IClientPlugin` to the
+   `journeymap` entrypoint. Example:
 
 ```
     "journeymap": [
       "mymod.modhooks.MyJourneymapPlugin"
     ]
-```    
+```
+
+5. For server-side plugins, implement
+   *[journeymap.api.v2.server.IServerPlugin](../common/src/main/java/journeymap/api/v2/server/IServerPlugin.java)*
+   instead of `IClientPlugin`, annotate the same way, and (on Fabric) add the class to the `journeymap` entrypoint
+   alongside any client plugin. See [ExampleServerPlugin](../common/src/testmod/java/example/mod/server/plugin/ExampleServerPlugin.java) for a working example.
 
 IV. Test your Plugin
 =============================
 
-1. Using the following gradle configuration above, your mod will load journeymap and the api in your development
+1. Using the gradle configuration above, your mod will load JourneyMap and the API in your development
    environment.
-2. Run Minecraft in your development environment. Forge will load JourneyMap and your mod, and the JourneyMap API will
+2. Run Minecraft in your development environment. The loader will load JourneyMap and your mod, and the JourneyMap API will
    activate your plugin.

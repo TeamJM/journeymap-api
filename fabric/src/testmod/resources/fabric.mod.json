@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "examplemodjm",
+  "id": "examplemod",
   "version": "${version}",
 
-  "name": "examplemodjm",
+  "name": "examplemod",
   "description": "Example for JourneyMap API",
   "authors": [
     "Mysticdrew",
@@ -19,14 +19,12 @@
 
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "example.mod.client.ExampleModClient"
-    ],
     "main": [
-      "example.mod.ExampleMod"
+      "example.mod.fabric.FabricExampleMod"
     ],
     "journeymap": [
-      "example.mod.client.plugin.ExampleJourneymapPlugin"
+      "example.mod.client.plugin.ExampleJourneymapPlugin",
+      "example.mod.server.plugin.ExampleServerPlugin"
     ]
   },
   "depends": {

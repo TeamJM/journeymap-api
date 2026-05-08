@@ -27,6 +27,11 @@ base.archivesName = baseName
 
 
 loom {
+    mods {
+        register('examplemod') {
+            sourceSet sourceSets.testmod
+        }
+    }
     runs {
         client {
             client()
@@ -34,12 +39,14 @@ loom {
             ideConfigGenerated(true)
             runDir("run/client")
             programArg("--username=Dev")
+            source sourceSets.testmod
         }
         server {
             server()
             setConfigName("Fabric Server")
             ideConfigGenerated(true)
             runDir("run/server")
+            source sourceSets.testmod
         }
     }
 }
@@ -52,6 +59,24 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
     testmodImplementation sourceSets.main.output
+}
+
+// On Fabric the unremapped jar is only useful in dev (it references mojmap
+// classes loom rewires at runtime). Rename it -testmod-dev and add a
+// remapTestmodJar that produces the runtime-loadable -testmod jar.
+tasks.named('testmodJar', Jar) {
+    archiveClassifier = 'testmod-dev'
+}
+
+tasks.register('remapTestmodJar', net.fabricmc.loom.task.RemapJarTask) {
+    archiveClassifier = 'testmod'
+    inputFile = tasks.testmodJar.archiveFile
+    addNestedDependencies = false
+    dependsOn tasks.testmodJar
+}
+
+tasks.named('assemble') {
+    dependsOn tasks.named('remapTestmodJar')
 }
 
 // Implement mcgradleconventions loader attribute
