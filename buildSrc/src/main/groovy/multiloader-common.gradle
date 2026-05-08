@@ -33,8 +33,8 @@ testing {
 }
 sourceSets {
     testmod {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
+        compileClasspath += main.output + main.compileClasspath
+        runtimeClasspath += main.output + main.runtimeClasspath
     }
 }
 
@@ -133,35 +133,47 @@ jar {
     }
 }
 
+var manifestExpandProps = [
+        'version'              : version,
+        'group'                : group_id, //Else we target the task's group.
+        'minecraft_version'    : minecraft_version,
+        'fabric_api_version'   : fabric_api_version,
+        'fabric_loader_version': fabric_loader_version,
+        'mod_name'             : mod_name,
+        'mod_author'           : mod_author,
+        'mod_id'               : mod_id,
+        'neoforge_version'     : neoforge_version,
+        "forge_version"        : forge_version,
+        'java_version'         : java_version
+]
+
+var manifestJsonExpandProps = manifestExpandProps.collectEntries {
+    key, value -> [(key): value instanceof String ? value.replace("\n", "\\\\n") : value]
+}
+
 processResources {
-    var expandProps = [
-            'version'              : version,
-            'group'                : group_id, //Else we target the task's group.
-            'minecraft_version'    : minecraft_version,
-            'fabric_api_version'   : fabric_api_version,
-            'fabric_loader_version': fabric_loader_version,
-            'mod_name'             : mod_name,
-            'mod_author'           : mod_author,
-            'mod_id'               : mod_id,
-            'neoforge_version'     : neoforge_version,
-            "forge_version"        : forge_version,
-            'java_version'         : java_version
-    ]
-
-    var jsonExpandProps = expandProps.collectEntries {
-        key, value -> [(key): value instanceof String ? value.replace("\n", "\\\\n") : value]
-    }
-
-
     filesMatching(['META-INF/mods.toml', 'META-INF/neoforge.mods.toml', 'doc/changelog.html']) {
-        expand expandProps
+        expand manifestExpandProps
     }
 
     filesMatching(['pack.mcmeta', 'fabric.mod.json', '*.mixins.json']) {
-        expand jsonExpandProps
+        expand manifestJsonExpandProps
     }
 
-    inputs.properties(expandProps)
+    inputs.properties(manifestExpandProps)
+}
+
+// Apply the same variable expansion to the testmod source set so the shared
+// example mod's manifests (mods.toml, neoforge.mods.toml, fabric.mod.json) get
+// ${version} and friends substituted at build time.
+tasks.named('processTestmodResources', ProcessResources) {
+    filesMatching(['META-INF/mods.toml', 'META-INF/neoforge.mods.toml']) {
+        expand manifestExpandProps
+    }
+    filesMatching(['pack.mcmeta', 'fabric.mod.json']) {
+        expand manifestJsonExpandProps
+    }
+    inputs.properties(manifestExpandProps)
 }
 
 /* Javadoc properties */

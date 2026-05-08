@@ -20,11 +20,21 @@ minecraft {
     runs {
         register('client') {
             workingDir.convention layout.projectDirectory.dir('run')
+            mods {
+                register('examplemod') {
+                    source sourceSets.testmod
+                }
+            }
         }
 
         register('server') {
             workingDir.convention layout.projectDirectory.dir('run')
             args '--nogui'
+            mods {
+                register('examplemod') {
+                    source sourceSets.testmod
+                }
+            }
         }
     }
 }

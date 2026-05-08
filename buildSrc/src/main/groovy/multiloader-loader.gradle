@@ -48,3 +48,20 @@ tasks.named('sourcesJar', Jar) {
     dependsOn(configurations.commonResources)
     from(configurations.commonResources)
 }
+
+// Make common/src/testmod a source dir on this loader's testmod source set so
+// the IDE sees the shared example-mod classes as part of the loader project
+// (no cross-module phantom imports) and gradle compiles everything in one pass.
+sourceSets {
+    testmod {
+        java.srcDirs += project(':common').file('src/testmod/java')
+        resources.srcDirs += project(':common').file('src/testmod/resources')
+    }
+}
+
+// Package the testmod source set into a jar. Fabric needs this remapped via
+// loom; Forge/NeoForge add their own reobf wiring in their build.gradle.
+tasks.register('testmodJar', Jar) {
+    archiveClassifier = 'testmod-dev'
+    from sourceSets.testmod.output
+}

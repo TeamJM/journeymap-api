@@ -27,6 +27,11 @@ base.archivesName = baseName
 
 
 loom {
+    mods {
+        register('examplemod') {
+            sourceSet sourceSets.testmod
+        }
+    }
     runs {
         client {
             client()
@@ -34,12 +39,14 @@ loom {
             ideConfigGenerated(true)
             runDir("run/client")
             programArg("--username=Dev")
+            source sourceSets.testmod
         }
         server {
             server()
             setConfigName("Fabric Server")
             ideConfigGenerated(true)
             runDir("run/server")
+            source sourceSets.testmod
         }
     }
 }
@@ -52,6 +59,15 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
     testmodImplementation sourceSets.main.output
+}
+
+// Remap the testmod jar from intermediary -> mojmap so it can be dropped into
+// a normal Fabric runtime. Run :fabric:remapTestmodJar to produce it.
+tasks.register('remapTestmodJar', net.fabricmc.loom.task.RemapJarTask) {
+    archiveClassifier = 'testmod'
+    inputFile = tasks.testmodJar.archiveFile
+    addNestedDependencies = false
+    dependsOn tasks.testmodJar
 }
 
 // Implement mcgradleconventions loader attribute
