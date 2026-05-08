@@ -27,6 +27,11 @@ base.archivesName = baseName
 
 
 loom {
+    mods {
+        register('examplemod') {
+            sourceSet sourceSets.testmod
+        }
+    }
     runs {
         client {
             client()
@@ -34,12 +39,14 @@ loom {
             ideConfigGenerated(true)
             runDir("run/client")
             programArg("--username=Dev")
+            source sourceSets.testmod
         }
         server {
             server()
             setConfigName("Fabric Server")
             ideConfigGenerated(true)
             runDir("run/server")
+            source sourceSets.testmod
         }
     }
 }
@@ -50,6 +57,9 @@ dependencies {
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
     testmodImplementation sourceSets.main.output
 }
+
+// 26.1 fabric-loom no longer needs intermediary remapping for the testmod jar -
+// the base testmodJar task in multiloader-loader.gradle is sufficient.
 
 // Implement mcgradleconventions loader attribute
 def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)

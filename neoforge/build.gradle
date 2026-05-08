@@ -38,6 +38,7 @@ neoForge {
         accessTransformers.add(at.absolutePath)
     }
     addModdingDependenciesTo(sourceSets["test"])
+    addModdingDependenciesTo(sourceSets["testmod"])
     // parchment not available for 26.1 (unobfuscated); omit the block
     runs {
         configureEach {
@@ -56,6 +57,9 @@ neoForge {
     mods {
         "${mod_id}" {
             sourceSet sourceSets.main
+        }
+        examplemod {
+            sourceSet sourceSets.testmod
         }
     }
 }
