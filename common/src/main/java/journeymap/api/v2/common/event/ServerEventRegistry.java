@@ -5,6 +5,7 @@ import journeymap.api.v2.common.event.impl.EventFactory;
 import journeymap.api.v2.server.event.GlobalWaypointEvent;
 import journeymap.api.v2.server.event.GlobalWaypointGroupEvent;
 import journeymap.api.v2.server.event.PlayerRadarUpdateEvent;
+import journeymap.api.v2.server.event.TeleportEvent;
 import journeymap.api.v2.server.event.WaypointPendingActionEvent;
 import journeymap.api.v2.server.event.WaypointPendingReceivedEvent;
 import journeymap.api.v2.server.event.WaypointShareSubmitEvent;
@@ -51,4 +52,9 @@ public class ServerEventRegistry
      */
     public static final Event<PlayerRadarUpdateEvent> PLAYER_RADAR_UPDATE_EVENT =
             EventFactory.create(PlayerRadarUpdateEvent.class);
+
+    /**
+     * The event is only fired on the server when a user teleports via waypoint teleport or context menu teleport.
+     */
+    public static final Event<TeleportEvent> TELEPORT_EVENT = EventFactory.create(TeleportEvent.class);
 }

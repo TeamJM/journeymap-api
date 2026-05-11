@@ -9,10 +9,11 @@
 package example.mod.server.plugin;
 
 import example.mod.ExampleMod;
-import journeymap.api.v2.server.IServerAPI;
 import journeymap.api.v2.common.event.ServerEventRegistry;
+import journeymap.api.v2.server.IServerAPI;
 import journeymap.api.v2.server.event.GlobalWaypointEvent;
 import journeymap.api.v2.server.event.GlobalWaypointGroupEvent;
+import journeymap.api.v2.server.event.TeleportEvent;
 import journeymap.api.v2.server.event.WaypointPendingActionEvent;
 import journeymap.api.v2.server.event.WaypointPendingReceivedEvent;
 import journeymap.api.v2.server.event.WaypointShareSubmitEvent;
@@ -33,6 +34,8 @@ public final class ServerEventListener
         ServerEventRegistry.WAYPOINT_PENDING_ACTION_EVENT.subscribe(ExampleMod.MODID, this::onWaypointPendingAction);
         ServerEventRegistry.GLOBAL_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onGlobalWaypoint);
         ServerEventRegistry.GLOBAL_WAYPOINT_GROUP_EVENT.subscribe(ExampleMod.MODID, this::onGlobalWaypointGroup);
+        ServerEventRegistry.TELEPORT_EVENT.subscribe(ExampleMod.MODID, ServerEventListener::onTeleport);
+
     }
 
     private void onWaypointShareSubmit(WaypointShareSubmitEvent event)
@@ -63,5 +66,11 @@ public final class ServerEventListener
     {
         ExampleMod.LOGGER.debug("Server: GlobalWaypointGroup %s '%s'",
                 event.context, event.group.getName());
+    }
+
+    private static void onTeleport(TeleportEvent event)
+    {
+        ExampleMod.LOGGER.debug("Common TeleportEvent fromLevel=%s destLevel=%s pos=%s",
+                event.getFromLevel().identifier(), event.getDestinationLevel().identifier(), event.getPos());
     }
 }
