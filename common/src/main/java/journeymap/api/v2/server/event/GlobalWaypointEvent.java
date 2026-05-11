@@ -1,21 +1,21 @@
-package journeymap.api.v2.server.event.server;
+package journeymap.api.v2.server.event;
 
 import journeymap.api.v2.common.event.impl.CommonEvent;
-import journeymap.api.v2.common.waypoint.WaypointGroup;
+import journeymap.api.v2.common.waypoint.Waypoint;
 
 /**
- * Fired on the server for global waypoint group CRUD operations.
+ * Fired on the server for global waypoint CRUD operations.
  * CREATE and UPDATE are cancellable; DELETED is not.
  */
-public class GlobalWaypointGroupEvent extends CommonEvent
+public class GlobalWaypointEvent extends CommonEvent
 {
-    public final WaypointGroup group;
+    public final Waypoint waypoint;
     public final Context context;
 
-    public GlobalWaypointGroupEvent(WaypointGroup group, Context context)
+    public GlobalWaypointEvent(Waypoint waypoint, Context context)
     {
         super(context.cancelable, Side.Server);
-        this.group = group;
+        this.waypoint = waypoint;
         this.context = context;
     }
 
