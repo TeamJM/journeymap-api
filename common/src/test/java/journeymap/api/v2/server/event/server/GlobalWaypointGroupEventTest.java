@@ -1,5 +1,6 @@
 package journeymap.api.v2.server.event.server;
 
+import journeymap.api.v2.server.event.GlobalWaypointGroupEvent;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

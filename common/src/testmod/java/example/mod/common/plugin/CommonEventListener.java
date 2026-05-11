@@ -11,7 +11,7 @@ package example.mod.common.plugin;
 import example.mod.ExampleMod;
 import journeymap.api.v2.common.event.CommonEventRegistry;
 import journeymap.api.v2.common.event.common.DeathWaypointEvent;
-import journeymap.api.v2.common.event.common.TeleportEvent;
+import journeymap.api.v2.server.event.TeleportEvent;
 import journeymap.api.v2.common.event.common.WaypointEvent;
 import journeymap.api.v2.common.event.common.WaypointGroupEvent;
 import journeymap.api.v2.common.event.common.WaypointGroupTransferEvent;
@@ -21,6 +21,7 @@ import journeymap.api.v2.common.event.common.WaypointGroupTransferEvent;
  * both client and server, so this listener is registered from both the client
  * plugin and the server plugin.
  */
+@SuppressWarnings("removal")
 public final class CommonEventListener
 {
     private CommonEventListener()
@@ -32,8 +33,8 @@ public final class CommonEventListener
         CommonEventRegistry.WAYPOINT_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onWaypoint);
         CommonEventRegistry.WAYPOINT_GROUP_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onWaypointGroup);
         CommonEventRegistry.WAYPOINT_GROUP_TRANSFER_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onWaypointGroupTransfer);
-        CommonEventRegistry.TELEPORT_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onTeleport);
         CommonEventRegistry.DEATH_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onDeathWaypoint);
+        CommonEventRegistry.TELEPORT_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onTeleport);
     }
 
     private static void onWaypoint(WaypointEvent event)
@@ -54,15 +55,15 @@ public final class CommonEventListener
                 event.getWaypoint().getName());
     }
 
-    private static void onTeleport(TeleportEvent event)
-    {
-        ExampleMod.LOGGER.debug("TeleportEvent fromLevel=%s destLevel=%s pos=%s",
-                event.getFromLevel().identifier(), event.getDestinationLevel().identifier(), event.getPos());
-    }
-
     private static void onDeathWaypoint(DeathWaypointEvent event)
     {
         ExampleMod.LOGGER.debug("Common DeathWaypointEvent at %s in %s",
                 event.getLocation(), event.getDimension().identifier());
+    }
+
+    private static void onTeleport(TeleportEvent event)
+    {
+        ExampleMod.LOGGER.debug("Common TeleportEvent fromLevel=%s destLevel=%s pos=%s",
+                event.getFromLevel().identifier(), event.getDestinationLevel().identifier(), event.getPos());
     }
 }

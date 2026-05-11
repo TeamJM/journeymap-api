@@ -1,8 +1,11 @@
 package journeymap.api.v2.server;
 
 import journeymap.api.v2.common.CommonAPI;
+import journeymap.api.v2.common.event.ServerEventRegistry;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointGroup;
+import journeymap.api.v2.server.event.GlobalWaypointEvent;
+import journeymap.api.v2.server.event.GlobalWaypointGroupEvent;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;
@@ -138,7 +141,7 @@ public interface IServerAPI extends CommonAPI
 
     /**
      * Adds or updates a global waypoint.
-     * Fires {@link journeymap.api.v2.server.event.server.GlobalWaypointEvent} (CREATE or UPDATE, cancellable).
+     * Fires {@link GlobalWaypointEvent} (CREATE or UPDATE, cancellable).
      *
      * @param waypoint the waypoint to add or update
      */
@@ -146,7 +149,7 @@ public interface IServerAPI extends CommonAPI
 
     /**
      * Deletes the global waypoint with the given GUID.
-     * Fires {@link journeymap.api.v2.server.event.server.GlobalWaypointEvent} (DELETED).
+     * Fires {@link GlobalWaypointEvent} (DELETED).
      *
      * @param guid the waypoint GUID to delete
      */
@@ -154,7 +157,7 @@ public interface IServerAPI extends CommonAPI
 
     /**
      * Adds or updates a global waypoint group.
-     * Fires {@link journeymap.api.v2.server.event.server.GlobalWaypointGroupEvent} (CREATE or UPDATE, cancellable).
+     * Fires {@link GlobalWaypointGroupEvent} (CREATE or UPDATE, cancellable).
      *
      * @param group the group to add or update
      */
@@ -162,7 +165,7 @@ public interface IServerAPI extends CommonAPI
 
     /**
      * Deletes the global waypoint group with the given GUID.
-     * Fires {@link journeymap.api.v2.server.event.server.GlobalWaypointGroupEvent} (DELETED).
+     * Fires {@link GlobalWaypointGroupEvent} (DELETED).
      *
      * @param guid            the group GUID to delete
      * @param deleteWaypoints if true, also deletes all waypoints belonging to the group
@@ -173,7 +176,7 @@ public interface IServerAPI extends CommonAPI
 
     /**
      * Programmatically share a waypoint with one or more players.
-     * Fires {@link journeymap.api.v2.server.event.ServerEventRegistry#WAYPOINT_SHARE_SUBMIT_EVENT} (cancellable)
+     * Fires {@link ServerEventRegistry#WAYPOINT_SHARE_SUBMIT_EVENT} (cancellable)
      * before storing pending entries.
      *
      * @param waypoint      the waypoint to share

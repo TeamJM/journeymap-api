@@ -1,4 +1,4 @@
-package journeymap.api.v2.server.event.server;
+package journeymap.api.v2.server.event;
 
 import journeymap.api.v2.common.event.impl.CommonEvent;
 import journeymap.api.v2.common.waypoint.Waypoint;
