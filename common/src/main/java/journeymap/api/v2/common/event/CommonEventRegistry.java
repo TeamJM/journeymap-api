@@ -3,7 +3,7 @@ package journeymap.api.v2.common.event;
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.IClientPlugin;
 import journeymap.api.v2.common.event.common.DeathWaypointEvent;
-import journeymap.api.v2.common.event.common.TeleportEvent;
+import journeymap.api.v2.server.event.TeleportEvent;
 import journeymap.api.v2.common.event.common.WaypointEvent;
 import journeymap.api.v2.common.event.common.WaypointGroupEvent;
 import journeymap.api.v2.common.event.common.WaypointGroupTransferEvent;
@@ -25,10 +25,6 @@ public class CommonEventRegistry
     public static final Event<WaypointEvent> WAYPOINT_EVENT = EventFactory.create(WaypointEvent.class);
 
     /**
-     * This event fires when waypoint or map context menu teleporting
-     */
-    public static final Event<TeleportEvent> TELEPORT_EVENT = EventFactory.create(TeleportEvent.class);
-    /**
      * This event handles all the CRUD operations of a waypoint groups on client and server.
      */
     public static final Event<WaypointGroupEvent> WAYPOINT_GROUP_EVENT = EventFactory.create(WaypointGroupEvent.class);
@@ -45,4 +41,13 @@ public class CommonEventRegistry
      * waypoints so subscribers receive exactly one notification per death.
      */
     public static final Event<DeathWaypointEvent> DEATH_WAYPOINT_EVENT = EventFactory.create(DeathWaypointEvent.class);
+
+    /**
+     * @deprecated Will move to {@code ServerEventRegistry.TELEPORT_EVENT} in JourneyMap 26.2.
+     * The event is only fired on the server; the registry location is misnamed today.
+     * Subscriptions registered here will continue to work for the current major version.
+     */
+    @Deprecated(forRemoval = true)
+    @SuppressWarnings("removal")
+    public static final Event<TeleportEvent> TELEPORT_EVENT = EventFactory.create(TeleportEvent.class);
 }

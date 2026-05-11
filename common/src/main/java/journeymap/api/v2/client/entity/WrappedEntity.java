@@ -90,6 +90,16 @@ public interface WrappedEntity
     Component getCustomName();
 
     /**
+     * The color applied to the team-name label for players. Defaults to the
+     * vanilla team color when the player belongs to a team, otherwise white.
+     * Override via {@link #setTeamColor(int)} from an addon (e.g. a teams
+     * integration) to recolor the team line independent of {@link #getLabelColor()}.
+     *
+     * @return - the team-line color as an ARGB int.
+     */
+    int getTeamColor();
+
+    /**
      * The owner Entity if the Entity is tamed.
      *
      * @return - the owner.
@@ -227,6 +237,14 @@ public interface WrappedEntity
      * @param customName - the custom name value.
      */
     void setCustomName(String customName);
+
+    /**
+     * Sets the color applied to the team-name label for players. Only used when
+     * the player has a team and the team-name label is enabled.
+     *
+     * @param teamColor - the team-line color as an ARGB int.
+     */
+    void setTeamColor(int teamColor);
 
     /**
      * Sets the label color for the entity.

@@ -10,12 +10,12 @@ package example.mod.server.plugin;
 
 import example.mod.ExampleMod;
 import journeymap.api.v2.server.IServerAPI;
-import journeymap.api.v2.server.event.ServerEventRegistry;
-import journeymap.api.v2.server.event.server.GlobalWaypointEvent;
-import journeymap.api.v2.server.event.server.GlobalWaypointGroupEvent;
-import journeymap.api.v2.server.event.server.WaypointPendingActionEvent;
-import journeymap.api.v2.server.event.server.WaypointPendingReceivedEvent;
-import journeymap.api.v2.server.event.server.WaypointShareSubmitEvent;
+import journeymap.api.v2.common.event.ServerEventRegistry;
+import journeymap.api.v2.server.event.GlobalWaypointEvent;
+import journeymap.api.v2.server.event.GlobalWaypointGroupEvent;
+import journeymap.api.v2.server.event.WaypointPendingActionEvent;
+import journeymap.api.v2.server.event.WaypointPendingReceivedEvent;
+import journeymap.api.v2.server.event.WaypointShareSubmitEvent;
 
 /**
  * Subscribes to every {@link ServerEventRegistry} event, demonstrating each
