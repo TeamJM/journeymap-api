@@ -10,6 +10,7 @@ package example.mod.common.plugin;
 
 import example.mod.ExampleMod;
 import journeymap.api.v2.common.event.CommonEventRegistry;
+import journeymap.api.v2.common.event.ServerEventRegistry;
 import journeymap.api.v2.common.event.common.DeathWaypointEvent;
 import journeymap.api.v2.server.event.TeleportEvent;
 import journeymap.api.v2.common.event.common.WaypointEvent;
@@ -34,7 +35,6 @@ public final class CommonEventListener
         CommonEventRegistry.WAYPOINT_GROUP_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onWaypointGroup);
         CommonEventRegistry.WAYPOINT_GROUP_TRANSFER_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onWaypointGroupTransfer);
         CommonEventRegistry.DEATH_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onDeathWaypoint);
-        CommonEventRegistry.TELEPORT_EVENT.subscribe(ExampleMod.MODID, CommonEventListener::onTeleport);
     }
 
     private static void onWaypoint(WaypointEvent event)
@@ -59,11 +59,5 @@ public final class CommonEventListener
     {
         ExampleMod.LOGGER.debug("Common DeathWaypointEvent at %s in %s",
                 event.getLocation(), event.getDimension().identifier());
-    }
-
-    private static void onTeleport(TeleportEvent event)
-    {
-        ExampleMod.LOGGER.debug("Common TeleportEvent fromLevel=%s destLevel=%s pos=%s",
-                event.getFromLevel().identifier(), event.getDestinationLevel().identifier(), event.getPos());
     }
 }

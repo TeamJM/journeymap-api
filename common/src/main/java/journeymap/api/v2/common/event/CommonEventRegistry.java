@@ -42,12 +42,4 @@ public class CommonEventRegistry
      */
     public static final Event<DeathWaypointEvent> DEATH_WAYPOINT_EVENT = EventFactory.create(DeathWaypointEvent.class);
 
-    /**
-     * @deprecated Will move to {@code ServerEventRegistry.TELEPORT_EVENT} in JourneyMap 26.2.
-     * The event is only fired on the server; the registry location is misnamed today.
-     * Subscriptions registered here will continue to work for the current major version.
-     */
-    @Deprecated(forRemoval = true)
-    @SuppressWarnings("removal")
-    public static final Event<TeleportEvent> TELEPORT_EVENT = EventFactory.create(TeleportEvent.class);
 }
