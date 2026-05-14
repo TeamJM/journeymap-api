@@ -1,12 +1,7 @@
-package journeymap.api.v2.client.option;
+package journeymap.api.v2.common.option;
 
 import com.google.common.base.MoreObjects;
 
-/**
- * @deprecated Use {@link journeymap.api.v2.common.option.OptionCategory} instead.
- * Scheduled for removal in JourneyMap for Minecraft 26.2.
- */
-@Deprecated(forRemoval = true)
 public class OptionCategory
 {
     private final String modId;
