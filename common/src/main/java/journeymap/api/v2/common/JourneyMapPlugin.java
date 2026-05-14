@@ -48,4 +48,26 @@ public @interface JourneyMapPlugin
      */
     @Nullable
     String apiVersion();
+
+    /**
+     * Optional list of mod ids this plugin depends on. When non-empty, JourneyMap
+     * evaluates these against the loaded mods according to {@link #require()}:
+     * with {@code require() == true} (the default) every listed mod must be loaded;
+     * with {@code require() == false} at least one must be loaded. An empty array
+     * (the default) imposes no dependency requirement - the plugin always loads,
+     * which is backwards compatible with plugins built against older API versions.
+     *
+     * @return - the required mod ids.
+     */
+    String[] dependencies() default {};
+
+    /**
+     * Controls how {@link #dependencies()} is evaluated. When {@code true} (the
+     * default), every listed mod id must be loaded for the plugin to initialize.
+     * When {@code false}, the plugin initializes if at least one listed mod id
+     * is loaded. Has no effect when {@code dependencies()} is empty.
+     *
+     * @return - true to require all dependencies, false to require any one.
+     */
+    boolean require() default true;
 }
