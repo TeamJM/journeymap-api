@@ -163,13 +163,19 @@ III. Write your Plugin
 
 ```
     "journeymap": [
-      "mymod.modhooks.MyJourneymapPlugin"
+      "mymod.modhooks.MyJourneymapClientPlugin"
+    ]
+```
+
+```
+    "journeymap_server": [
+      "mymod.modhooks.MyJourneymapServerPlugin"
     ]
 ```
 
 5. For server-side plugins, implement
    *[journeymap.api.v2.server.IServerPlugin](../common/src/main/java/journeymap/api/v2/server/IServerPlugin.java)*
-   instead of `IClientPlugin`, annotate the same way, and (on Fabric) add the class to the `journeymap` entrypoint
+   instead of `IClientPlugin`, annotate the same way, and (on Fabric) add the class to the `journeymap_server` entrypoint
    alongside any client plugin. See [ExampleServerPlugin](../common/src/testmod/java/example/mod/server/plugin/ExampleServerPlugin.java) for a working example.
 
 IV. Test your Plugin
