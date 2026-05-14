@@ -14,6 +14,7 @@ import journeymap.api.v2.common.event.ServerEventRegistry;
 import journeymap.api.v2.server.IServerAPI;
 import journeymap.api.v2.server.event.GlobalWaypointEvent;
 import journeymap.api.v2.server.event.GlobalWaypointGroupEvent;
+import journeymap.api.v2.server.event.ServerOptionsRegistryEvent;
 import journeymap.api.v2.server.event.TeleportEvent;
 import journeymap.api.v2.server.event.WaypointPendingActionEvent;
 import journeymap.api.v2.server.event.WaypointPendingReceivedEvent;
@@ -26,6 +27,7 @@ import journeymap.api.v2.server.event.WaypointShareSubmitEvent;
 public final class ServerEventListener
 {
     private final IServerAPI jmServerApi;
+    private ServerProperties serverProperties;
 
     public ServerEventListener(IServerAPI jmServerApi)
     {
@@ -36,7 +38,18 @@ public final class ServerEventListener
         ServerEventRegistry.GLOBAL_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onGlobalWaypoint);
         ServerEventRegistry.GLOBAL_WAYPOINT_GROUP_EVENT.subscribe(ExampleMod.MODID, this::onGlobalWaypointGroup);
         ServerEventRegistry.TELEPORT_EVENT.subscribe(ExampleMod.MODID, ServerEventListener::onTeleport);
+        ServerEventRegistry.OPTIONS_REGISTRY_EVENT.subscribe(ExampleMod.MODID, this::onOptionsRegistry);
 
+    }
+
+    public ServerProperties getServerProperties()
+    {
+        return serverProperties;
+    }
+
+    private void onOptionsRegistry(ServerOptionsRegistryEvent event)
+    {
+        this.serverProperties = new ServerProperties();
     }
 
     private void onWaypointShareSubmit(WaypointShareSubmitEvent event)

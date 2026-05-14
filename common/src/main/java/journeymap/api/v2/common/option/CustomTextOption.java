@@ -1,11 +1,6 @@
-package journeymap.api.v2.client.option;
+package journeymap.api.v2.common.option;
 
 
-/**
- * @deprecated Use {@link journeymap.api.v2.common.option.CustomTextOption} instead.
- * Scheduled for removal in JourneyMap for Minecraft 26.2.
- */
-@Deprecated(forRemoval = true)
 public class CustomTextOption extends CustomOption<String>
 {
     /**

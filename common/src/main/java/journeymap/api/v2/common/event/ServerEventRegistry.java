@@ -5,6 +5,7 @@ import journeymap.api.v2.common.event.impl.EventFactory;
 import journeymap.api.v2.server.event.GlobalWaypointEvent;
 import journeymap.api.v2.server.event.GlobalWaypointGroupEvent;
 import journeymap.api.v2.server.event.PlayerRadarUpdateEvent;
+import journeymap.api.v2.server.event.ServerOptionsRegistryEvent;
 import journeymap.api.v2.server.event.TeleportEvent;
 import journeymap.api.v2.server.event.WaypointPendingActionEvent;
 import journeymap.api.v2.server.event.WaypointPendingReceivedEvent;
@@ -57,4 +58,13 @@ public class ServerEventRegistry
      * The event is only fired on the server when a user teleports via waypoint teleport or context menu teleport.
      */
     public static final Event<TeleportEvent> TELEPORT_EVENT = EventFactory.create(TeleportEvent.class);
+
+    /**
+     * Fired on the server when it is time for server plugins to register their
+     * configuration options. Create your {@link journeymap.api.v2.common.option.Option}
+     * instances in the handler; they self-register and then appear in the
+     * Server Admin options screen for admins/ops to edit. Not cancellable.
+     */
+    public static final Event<ServerOptionsRegistryEvent> OPTIONS_REGISTRY_EVENT =
+            EventFactory.create(ServerOptionsRegistryEvent.class);
 }
