@@ -1,10 +1,5 @@
-package journeymap.api.v2.client.option;
+package journeymap.api.v2.common.option;
 
-/**
- * @deprecated Use {@link journeymap.api.v2.common.option.FloatOption} instead.
- * Scheduled for removal in JourneyMap for Minecraft 26.2.
- */
-@Deprecated(forRemoval = true)
 public class FloatOption extends Option<Float>
 {
     private final float minValue;

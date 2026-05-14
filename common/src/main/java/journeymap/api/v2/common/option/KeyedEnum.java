@@ -1,12 +1,8 @@
-package journeymap.api.v2.client.option;
+package journeymap.api.v2.common.option;
 
 /**
  * Interface indicating an enum has a key.
- *
- * @deprecated Use {@link journeymap.api.v2.common.option.KeyedEnum} instead.
- * Scheduled for removal in JourneyMap for Minecraft 26.2.
  */
-@Deprecated(forRemoval = true)
 public interface KeyedEnum
 {
     /**

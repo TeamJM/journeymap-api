@@ -1,12 +1,7 @@
-package journeymap.api.v2.client.option;
+package journeymap.api.v2.common.option;
 
 import java.util.Locale;
 
-/**
- * @deprecated Use {@link journeymap.api.v2.common.option.Option} instead.
- * Scheduled for removal in JourneyMap for Minecraft 26.2.
- */
-@Deprecated(forRemoval = true)
 public abstract class Option<T>
 {
 

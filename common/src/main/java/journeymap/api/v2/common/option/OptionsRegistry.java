@@ -1,4 +1,4 @@
-package journeymap.api.v2.client.option;
+package journeymap.api.v2.common.option;
 
 import org.jetbrains.annotations.ApiStatus;
 
@@ -7,11 +7,7 @@ import java.util.Map;
 
 /**
  * This class is not intended for use by modders, Options register themselves.
- *
- * @deprecated Use {@link journeymap.api.v2.common.option.OptionsRegistry} instead.
- * Scheduled for removal in JourneyMap for Minecraft 26.2.
  */
-@Deprecated(forRemoval = true)
 public class OptionsRegistry
 {
     public static final Map<String, Map<String, Option<?>>> OPTION_REGISTRY = new HashMap<>();

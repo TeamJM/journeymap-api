@@ -1,12 +1,8 @@
-package journeymap.api.v2.client.option;
+package journeymap.api.v2.common.option;
 
 /**
  * Custom Option generates a text box in the options menu.
- *
- * @deprecated Use {@link journeymap.api.v2.common.option.CustomOption} instead.
- * Scheduled for removal in JourneyMap for Minecraft 26.2.
  */
-@Deprecated(forRemoval = true)
 public abstract class CustomOption<T> extends Option<T>
 {
     public CustomOption(OptionCategory category, String fieldName, String label, T defaultValue)
