@@ -172,7 +172,7 @@ tasks.named('processTestmodResources', ProcessResources) {
     filesMatching(['META-INF/mods.toml', 'META-INF/neoforge.mods.toml']) {
         expand manifestExpandProps
     }
-    filesMatching(['pack.mcmeta', 'fabric.mod.json']) {
+    filesMatching(['pack.mcmeta', 'fabric.mod.json', 'paper-plugin.yml']) {
         expand manifestJsonExpandProps
     }
     inputs.properties(manifestExpandProps)

@@ -76,25 +76,25 @@ public class WaypointFactory
     @Deprecated
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, @Nullable String name, ResourceKey<Level> primaryDimension, boolean persistent)
     {
-        return createClientWaypoint(modId, pos, name, primaryDimension.identifier().toString(), persistent);
+        return createWaypoint(modId, pos, name, primaryDimension.identifier().toString(), persistent);
     }
 
     @Deprecated
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, ResourceKey<Level> primaryDimension, boolean persistent)
     {
-        return createClientWaypoint(modId, pos, primaryDimension.identifier().toString(), persistent);
+        return createWaypoint(modId, pos, primaryDimension.identifier().toString(), persistent);
     }
 
     @Deprecated
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, String primaryDimension, boolean persistent)
     {
-        return createClientWaypoint(modId, pos, null, primaryDimension, persistent);
+        return createWaypoint(modId, pos, null, primaryDimension, persistent);
     }
 
     @Deprecated
     public static Waypoint createClientWaypoint(String modId, BlockPos pos, @Nullable String name, String primaryDimension, boolean persistent)
     {
-        return getInstance().store.createClientWaypoint(modId, pos, name, primaryDimension, persistent);
+        return getInstance().store.createWaypoint(modId, pos, name, primaryDimension, persistent);
     }
 
     public static Waypoint fromWaypointJsonString(String waypoint)
