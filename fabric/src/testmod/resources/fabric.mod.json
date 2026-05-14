@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "examplemod",
   "version": "${version}",
-
   "name": "examplemod",
   "description": "Example for JourneyMap API",
   "authors": [
@@ -14,16 +13,16 @@
     "issues": "https://github.com/TeamJM/journeymap-api/issues",
     "discord": "https://discord.gg/eP8gE69"
   },
-
   "license": "All Rights Reserved",
-
   "environment": "*",
   "entrypoints": {
     "main": [
       "example.mod.fabric.FabricExampleMod"
     ],
     "journeymap": [
-      "example.mod.client.plugin.ExampleJourneymapPlugin",
+      "example.mod.client.plugin.ExampleJourneymapPlugin"
+    ],
+    "journeymap_server": [
       "example.mod.server.plugin.ExampleServerPlugin"
     ]
   },
