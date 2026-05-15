@@ -7,45 +7,32 @@
  */
 package example.paper;
 
-import journeymap.api.v2.common.JourneyMapPlugin;
-import journeymap.api.v2.server.IServerAPI;
-import journeymap.api.v2.server.IServerPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Minimal example JourneyMap addon for Paper. This is both:
- *  - a Paper plugin (extends JavaPlugin) so Bukkit loads it on server start; and
- *  - a JourneyMap addon (implements IServerPlugin, annotated @JourneyMapPlugin)
- *    so the JM Paper module's plugin scanner discovers it.
+ * Minimal example Paper entry point for a JourneyMap addon. This class is a
+ * pure Bukkit shim: it is NOT a JourneyMap plugin and does NOT carry
+ * {@code @JourneyMapPlugin}.
  *
- * When run via :paper:runTestmodServer (no JM Paper plugin present), only
- * onEnable fires — verifying the API classes load on a real Paper classpath.
+ * The canonical annotated {@code IServerPlugin} example is
+ * {@code example.mod.server.plugin.ExampleServerPlugin} in {@code common/src/testmod}.
+ * JM's Paper plugin scanner discovers annotated classes by classpath annotation
+ * scan, not by {@code instanceof JavaPlugin}, so the addon's Bukkit entry point
+ * and its {@code IServerPlugin} should be separate classes. Combining them in
+ * one class breaks at JM-side instantiation because Bukkit's {@code JavaPlugin}
+ * no-arg constructor throws when invoked outside a {@code PluginClassLoader}.
+ *
+ * When run via {@code :paper:runTestmodServer} (no JM Paper plugin present),
+ * only onEnable fires, verifying the API classes load on a real Paper classpath.
  * Full addon discovery requires running this plugin against a Paper server that
- * has JM Paper installed.
+ * has JM Paper installed alongside a real annotated {@code IServerPlugin} on
+ * the same classpath.
  */
-@JourneyMapPlugin(apiVersion = "2.0.0")
-public final class ExampleJourneyMapPaperAddon extends JavaPlugin implements IServerPlugin
+public final class ExampleJourneyMapPaperAddon extends JavaPlugin
 {
-    private static final String MOD_ID = "examplejmaddon";
-
-    private IServerAPI jmServerApi;
-
     @Override
     public void onEnable()
     {
-        getLogger().info("Example JM Paper addon loaded.");
-    }
-
-    @Override
-    public void initialize(final IServerAPI jmServerApi)
-    {
-        this.jmServerApi = jmServerApi;
-        getLogger().info("Example JM Paper addon initialized with IServerAPI.");
-    }
-
-    @Override
-    public String getModId()
-    {
-        return MOD_ID;
+        getLogger().info("Example JM Paper shim loaded.");
     }
 }
