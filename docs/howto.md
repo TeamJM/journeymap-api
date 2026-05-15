@@ -33,14 +33,15 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-`journeymap-api-forge:2.0.0-1.21.1-SNAPSHOT`
-`journeymap-api-neoforge:2.0.0-1.21.1-SNAPSHOT`
-`journeymap-api-fabric:2.0.0-1.21.1-SNAPSHOT`
+`journeymap-api-forge:2.0.0-26.1-SNAPSHOT`
+`journeymap-api-neoforge:2.0.0-26.11-SNAPSHOT`
+`journeymap-api-fabric:2.0.0-26.1-SNAPSHOT`
+`journeymap-api-paper:2.0.0-26.1-SNAPSHOT`
 
 // for multiloader setups, common jar
-`journeymap-api-common:2.0.0-1.21.1-SNAPSHOT`
+`journeymap-api-common:2.0.0-26.1-SNAPSHOT`
 
-journeymap_api_version = 2.0.0-1.21.1-SNAPSHOT
+journeymap_api_version = 2.0.0-26.1-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
@@ -87,7 +88,19 @@ dependencies {
     modCompileOnlyApi group: 'info.journeymap', name: 'journeymap-api-fabric', version: project.journeymap_api_version, changing: true
 }
 
+// PAPER (server-side addons only)
+dependencies {
+    compileOnly group: 'info.journeymap', name: 'journeymap-api-paper', version: project.journeymap_api_version, changing: true
+}
+
 ```
+
+The Paper API artifact is the server-side counterpart for Paper/Spigot plugins. It is published
+with the Minecraft version baked into the version string (e.g. `journeymap-api-paper:2.0.0-26.1-SNAPSHOT`)
+rather than the loader-agnostic suffix used by the mod-loader artifacts. The jar bundles the full
+API surface (common + server + client) so shared code resolves at compile time; only the
+`journeymap.api.v2.common.*` and `journeymap.api.v2.server.*` packages are usable on a Paper server
+at runtime.
 
 Example forge: mods.toml entry for a soft dependency. Set `mandatory=true` for a hard dependency if needed.
 
@@ -110,6 +123,19 @@ type = "required"
 versionRange = "[1.21-6.0.0-beta.1,)"
 ordering = "NONE"
 side = "CLIENT"
+```
+
+Example paper: a Paper addon is itself a Paper plugin, so it declares the dependency in
+`paper-plugin.yml`. `join-classpath: true` makes the JourneyMap API classes (bundled inside the
+JourneyMap Paper plugin jar) visible to your plugin's classloader at runtime.
+
+```
+dependencies:
+  server:
+    journeymap:
+      load: BEFORE
+      required: true
+      join-classpath: true
 ```
 
 *Note that the journeymap-api.jar is built with deobfuscated code so that it can be used at compile time and when
@@ -137,11 +163,19 @@ all plugin logic, sample factories, and event subscriptions live in common.
   - Forge: [forge/src/testmod/java/example/mod/forge/ForgeExampleMod.java](../forge/src/testmod/java/example/mod/forge/ForgeExampleMod.java)
   - NeoForge: [neoforge/src/testmod/java/example/mod/neoforge/NeoForgeExampleMod.java](../neoforge/src/testmod/java/example/mod/neoforge/NeoForgeExampleMod.java)
 
+* Paper addon example (server-side only, since Paper has no client, so it does not use the shared
+  `common/src/testmod/` example mod):
+  - [paper/src/testmod/java/example/paper/ExampleJourneyMapPaperAddon.java](../paper/src/testmod/java/example/paper/ExampleJourneyMapPaperAddon.java) - a single class that is both a Paper plugin (`extends JavaPlugin`) and a JourneyMap addon (`implements IServerPlugin`, annotated `@JourneyMapPlugin`).
+  - [paper/src/testmod/resources/paper-plugin.yml](../paper/src/testmod/resources/paper-plugin.yml) - the plugin manifest, including the `journeymap` server dependency.
+
 * Running the test mod in dev:
   - The testmod source set is registered as a runnable mod in each loader's run config.
   - Use the standard run tasks: `./gradlew :fabric:runClient`, `./gradlew :forge:runClient`, `./gradlew :neoforge:runClient`.
   - In IntelliJ, the per-loader run configs include the testmod source set automatically.
   - Drop the JourneyMap jar into `{loader}/run/client/mods/` before launching.
+  - Paper: `./gradlew :paper:runDevBundleServer` boots a Paper server with the example addon. Without
+    the JourneyMap Paper plugin present, only `onEnable` fires (this verifies the API classes load on
+    a real Paper classpath); full addon discovery requires a Paper server that has JourneyMap installed.
 
 III. Write your Plugin
 =============================
@@ -177,6 +211,13 @@ III. Write your Plugin
    *[journeymap.api.v2.server.IServerPlugin](../common/src/main/java/journeymap/api/v2/server/IServerPlugin.java)*
    instead of `IClientPlugin`, annotate the same way, and (on Fabric) add the class to the `journeymap_server` entrypoint
    alongside any client plugin. See [ExampleServerPlugin](../common/src/testmod/java/example/mod/server/plugin/ExampleServerPlugin.java) for a working example.
+6. For Paper: a Paper addon is a server-side plugin only. Implement `IServerPlugin` (Paper has no
+   client, so `IClientPlugin` is not usable at runtime). Annotate the class with `@JourneyMapPlugin`.
+   The JourneyMap Paper plugin discovers addons by scanning every loaded plugin jar for the
+   annotation, so there is no entrypoint list to maintain. Your addon must be a normal Paper plugin
+   (`extends JavaPlugin` with a `paper-plugin.yml`) that declares the `journeymap` server dependency
+   shown in Section I. See [ExampleJourneyMapPaperAddon](../paper/src/testmod/java/example/paper/ExampleJourneyMapPaperAddon.java)
+   for a working example.
 
 IV. Test your Plugin
 =============================

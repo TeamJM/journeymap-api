@@ -17,6 +17,7 @@ Versions API v2.0.0
 - Removed ClientPlugin annotation in favor of JourneyMapPlugin annotation which takes the API version the addon was built against.
 - API project now uses MultiLoader Template.
 - Forge version is now a mod that JouneyMap now JarJars in the main mod.
+- Added Paper support: `journeymap-api-paper` for server-side addons running as Paper plugins.
 
 
 [How to use the JourneyMap API](docs/howto.md)
