@@ -88,7 +88,7 @@ public final class ServerEventListener
     private void onTeleport(TeleportEvent event)
     {
         ExampleMod.LOGGER.debug("Common TeleportEvent fromLevel=%s destLevel=%s pos=%s",
-                event.getFromLevel().location(), event.getDestinationLevel().identifier(), event.getPos());
+                event.getFromLevel().location(), event.getDestinationLevel().location(), event.getPos());
 
         // Demonstrate the server overlay API: push a sample claim around the
         // teleport destination so the player sees an overlay the moment they
