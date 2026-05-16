@@ -4,6 +4,7 @@ import journeymap.api.v2.common.event.impl.CommonEvent;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
@@ -11,28 +12,34 @@ import javax.annotation.Nullable;
 /**
  * Fired on the server when a teleport is about to be applied by JourneyMap.
  * Cancellable.
- *
  */
 public class TeleportEvent extends CommonEvent
 {
+    private final ServerPlayer player;
     @Nullable
     private final Waypoint waypoint;
     private BlockPos pos;
     private final ResourceKey<Level> fromLevel;
     private ResourceKey<Level> destinationLevel;
 
-    public TeleportEvent(@Nullable Waypoint waypoint, BlockPos pos, ResourceKey<Level> fromLevel, ResourceKey<Level> destinationLevel)
+    public TeleportEvent(ServerPlayer player, @Nullable Waypoint waypoint, BlockPos pos,
+                         ResourceKey<Level> fromLevel, ResourceKey<Level> destinationLevel)
     {
         super(true, Side.Server);
+        this.player = player;
         this.waypoint = waypoint;
         this.pos = pos;
         this.fromLevel = fromLevel;
         this.destinationLevel = destinationLevel;
     }
 
-    public TeleportEvent(BlockPos pos, ResourceKey<Level> level)
+    /**
+     * The player being teleported. Non-null; this event only fires server-side
+     * for a concrete teleport request.
+     */
+    public ServerPlayer getPlayer()
     {
-        this(null, pos, level, level);
+        return player;
     }
 
     /**
