@@ -18,6 +18,10 @@ import journeymap.api.v2.server.event.TeleportEvent;
 import journeymap.api.v2.server.event.WaypointPendingActionEvent;
 import journeymap.api.v2.server.event.WaypointPendingReceivedEvent;
 import journeymap.api.v2.server.event.WaypointShareSubmitEvent;
+import journeymap.api.v2.server.overlay.IServerOverlayAPI;
+import journeymap.api.v2.server.overlay.ServerPolygon;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 
 /**
  * Subscribes to every {@link ServerEventRegistry} event, demonstrating each
@@ -36,7 +40,7 @@ public final class ServerEventListener
         ServerEventRegistry.WAYPOINT_PENDING_ACTION_EVENT.subscribe(ExampleMod.MODID, this::onWaypointPendingAction);
         ServerEventRegistry.GLOBAL_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onGlobalWaypoint);
         ServerEventRegistry.GLOBAL_WAYPOINT_GROUP_EVENT.subscribe(ExampleMod.MODID, this::onGlobalWaypointGroup);
-        ServerEventRegistry.TELEPORT_EVENT.subscribe(ExampleMod.MODID, ServerEventListener::onTeleport);
+        ServerEventRegistry.TELEPORT_EVENT.subscribe(ExampleMod.MODID, this::onTeleport);
         ServerEventRegistry.OPTIONS_REGISTRY_EVENT.subscribe(ExampleMod.MODID, this::onOptionsRegistry);
 
     }
@@ -81,9 +85,57 @@ public final class ServerEventListener
                 event.context, event.group.getName());
     }
 
-    private static void onTeleport(TeleportEvent event)
+    private void onTeleport(TeleportEvent event)
     {
         ExampleMod.LOGGER.debug("Common TeleportEvent fromLevel=%s destLevel=%s pos=%s",
-                event.getFromLevel().location(), event.getDestinationLevel().location(), event.getPos());
+                event.getFromLevel().location(), event.getDestinationLevel().identifier(), event.getPos());
+
+        // Demonstrate the server overlay API: push a sample claim around the
+        // teleport destination so the player sees an overlay the moment they
+        // land. Re-teleporting to the same overlayId atomically replaces the
+        // prior version on the client.
+        pushSampleClaim(event.getPlayer(), event.getPos());
+    }
+
+    // ---- Server overlay API demo ----
+    //
+    // The server overlay API is reached via IServerAPI#getOverlayApi(). The
+    // calls below show the full surface: push, replace, remove, clear. The
+    // example mod does not auto-wire these to a player-join event because the
+    // available loader-agnostic events do not carry the joining ServerPlayer;
+    // wire them from your loader entry point or a relevant event of your own.
+
+    /**
+     * Demo: push a sample square overlay around the given block to a single player.
+     * Calling again with the same {@code overlayId} (used as both the visible label
+     * and the wire-level handle) replaces the prior version on the client.
+     *
+     * @param player  the recipient
+     * @param centre  the block to centre the square on
+     */
+    public void pushSampleClaim(ServerPlayer player, BlockPos centre)
+    {
+        IServerOverlayAPI overlayApi = jmServerApi.getOverlayApi();
+        ServerPolygon polygon = SampleServerPolygonOverlayFactory.createSampleSquare(
+                "sample-claim", player.level().dimension(), centre, 32);
+        overlayApi.show(player, ExampleMod.MODID, polygon);
+        ExampleMod.LOGGER.info("Pushed sample claim to %s at %s", player.getName().getString(), centre);
+    }
+
+    /**
+     * Demo: remove the sample square overlay (by its addon-stable id).
+     */
+    public void clearSampleClaim(ServerPlayer player)
+    {
+        jmServerApi.getOverlayApi().remove(player, ExampleMod.MODID, "sample-claim");
+    }
+
+    /**
+     * Demo: clear every overlay this addon has shown to the player.
+     * Useful on logout or a "reset everything" path.
+     */
+    public void clearAllOverlaysForPlayer(ServerPlayer player)
+    {
+        jmServerApi.getOverlayApi().clearAll(player, ExampleMod.MODID);
     }
 }

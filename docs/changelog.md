@@ -2,6 +2,9 @@
 ======================================================
 **API 2.0.0-SNAPSHOT**
 **Requires Journeymap v6.0.0**
+* Added `IServerOverlayAPI` for pushing polygon overlays from server-only addons to connected players' JourneyMap clients. Reach it via `IServerAPI.getOverlayApi()`.
+* Added new records under `journeymap.api.v2.server.overlay`: `OverlayPoints`, `OverlayPolygon`, `OverlayShapeProps`, `ServerPolygon`.
+* Added server plugin support and server api and events.
 * Added Server Properties, so mods can add properties to JourneyMap's Server Admin options tab.
 * Added LayeredScreen abstraction for layirng screens.
 * Refactored Waypoint and WaypointGroups to be more concrete. 

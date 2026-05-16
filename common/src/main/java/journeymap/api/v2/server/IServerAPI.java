@@ -6,6 +6,7 @@ import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointGroup;
 import journeymap.api.v2.server.event.GlobalWaypointEvent;
 import journeymap.api.v2.server.event.GlobalWaypointGroupEvent;
+import journeymap.api.v2.server.overlay.IServerOverlayAPI;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;
@@ -187,4 +188,14 @@ public interface IServerAPI extends CommonAPI
      */
     void shareWaypoint(Waypoint waypoint, UUID fromUUID, String fromName,
                        List<UUID> targetIds, boolean allKnownUsers);
+
+    // ---- Overlay API ----
+
+    /**
+     * Returns the server-side overlay API, used to push polygon overlays to
+     * connected players' JourneyMap clients.
+     *
+     * @return the overlay API
+     */
+    IServerOverlayAPI getOverlayApi();
 }

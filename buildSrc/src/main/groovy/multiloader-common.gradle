@@ -81,8 +81,8 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
-    testImplementation 'org.mockito:mockito-core:5.9.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.9.0'
+    testImplementation 'org.mockito:mockito-core:5.20.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.20.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
 }
 
