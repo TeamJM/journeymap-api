@@ -83,8 +83,8 @@ dependencies {
     testImplementation group: 'com.google.guava', name: 'guava', version: '33.5.0-jre'
     testImplementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.25.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
-    testImplementation 'org.mockito:mockito-core:5.9.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.9.0'
+    testImplementation 'org.mockito:mockito-core:5.20.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.20.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
 }
 
