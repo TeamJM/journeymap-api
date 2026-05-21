@@ -275,4 +275,88 @@ public interface Waypoint
      */
     @Nullable
     String getCustomData(String key);
+
+    /**
+     * @return whether the waypoint's beacon beam renders
+     */
+    default boolean showBeacon()
+    {
+        return true;
+    }
+
+    default void setShowBeacon(boolean showBeacon)
+    {
+    }
+
+    /**
+     * @return whether the waypoint renders on the 2D map
+     */
+    default boolean showOnMap()
+    {
+        return true;
+    }
+
+    default void setShowOnMap(boolean showOnMap)
+    {
+    }
+
+    /**
+     * @return whether the waypoint renders in the world
+     */
+    default boolean showInWorld()
+    {
+        return true;
+    }
+
+    default void setShowInWorld(boolean showInWorld)
+    {
+    }
+
+    /**
+     * @return whether the waypoint's name label renders
+     */
+    default boolean showLabel()
+    {
+        return true;
+    }
+
+    default void setShowLabel(boolean showLabel)
+    {
+    }
+
+    /**
+     * @return whether the waypoint's icon renders
+     */
+    default boolean showIcon()
+    {
+        return true;
+    }
+
+    default void setShowIcon(boolean showIcon)
+    {
+    }
+
+    /**
+     * @return the beacon color, or {@code null} to follow the icon color
+     */
+    default Integer getBeaconColor()
+    {
+        return null;
+    }
+
+    default void setBeaconColor(Integer beaconColor)
+    {
+    }
+
+    /**
+     * @return the label color, or {@code null} to follow the icon color
+     */
+    default Integer getLabelColor()
+    {
+        return null;
+    }
+
+    default void setLabelColor(Integer labelColor)
+    {
+    }
 }
