@@ -278,4 +278,91 @@ public interface WaypointGroup
      * Show waypoints in this group on the locator bar.
      */
     void setShowOnLocatorBar(boolean showOnLocatorBar);
+
+    default boolean showBeacon()
+    {
+        return true;
+    }
+
+    default void setShowBeacon(boolean showBeacon)
+    {
+    }
+
+    default boolean showOnMap()
+    {
+        return true;
+    }
+
+    default void setShowOnMap(boolean showOnMap)
+    {
+    }
+
+    default boolean showInWorld()
+    {
+        return true;
+    }
+
+    default void setShowInWorld(boolean showInWorld)
+    {
+    }
+
+    default boolean showLabel()
+    {
+        return true;
+    }
+
+    default void setShowLabel(boolean showLabel)
+    {
+    }
+
+    default boolean showIcon()
+    {
+        return true;
+    }
+
+    default void setShowIcon(boolean showIcon)
+    {
+    }
+
+    default Integer getBeaconColor()
+    {
+        return null;
+    }
+
+    default void setBeaconColor(Integer beaconColor)
+    {
+    }
+
+    default Integer getLabelColor()
+    {
+        return null;
+    }
+
+    default void setLabelColor(Integer labelColor)
+    {
+    }
+
+    /**
+     * @return whether this group overrides its members' colors
+     */
+    default boolean overrideColors()
+    {
+        return false;
+    }
+
+    default void setOverrideColors(boolean overrideColors)
+    {
+    }
+
+    /**
+     * @return whether this group overrides its members' visibility settings
+     */
+    default boolean overrideSettings()
+    {
+        return false;
+    }
+
+    default void setOverrideSettings(boolean overrideSettings)
+    {
+    }
 }
