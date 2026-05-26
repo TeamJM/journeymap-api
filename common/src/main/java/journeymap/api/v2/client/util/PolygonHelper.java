@@ -22,8 +22,8 @@ package journeymap.api.v2.client.util;
 
 import journeymap.api.v2.client.model.MapPolygon;
 import journeymap.api.v2.client.model.MapPolygonWithHoles;
+import journeymap.api.v2.common.tuple.Tuple2;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.level.ChunkPos;
 
 import javax.annotation.Nonnull;
@@ -229,8 +229,8 @@ public class PolygonHelper
             }
         }
 
-        final List<Tuple<MapPolygon, Area>> holeAreas = holes.stream()
-                .map(hole -> new Tuple<>(hole, toArea(hole)))
+        final List<Tuple2<MapPolygon, Area>> holeAreas = holes.stream()
+                .map(hole -> new Tuple2<>(hole, toArea(hole)))
                 .collect(Collectors.toList());
 
         final List<MapPolygonWithHoles> result = new ArrayList<>();
@@ -239,14 +239,14 @@ public class PolygonHelper
             final Area hullArea = toArea(hull);
             final List<MapPolygon> hullHoles = new ArrayList<>();
 
-            for (final Iterator<Tuple<MapPolygon, Area>> iterator = holeAreas.iterator(); iterator.hasNext(); )
+            for (final Iterator<Tuple2<MapPolygon, Area>> iterator = holeAreas.iterator(); iterator.hasNext(); )
             {
-                final Tuple<MapPolygon, Area> holeArea = iterator.next();
+                final Tuple2<MapPolygon, Area> holeArea = iterator.next();
                 final Area intersection = new Area(hullArea);
-                intersection.intersect(holeArea.getB());
+                intersection.intersect(holeArea.b());
                 if (!intersection.isEmpty())
                 {
-                    hullHoles.add(holeArea.getA());
+                    hullHoles.add(holeArea.a());
                     iterator.remove();
                 }
             }

@@ -1,9 +1,13 @@
 package journeymap.api.v2.client.ui.component;
 
+import com.google.gson.internal.reflect.ReflectionHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+
+import java.lang.reflect.Field;
 
 public abstract class LayeredScreen extends Screen
 {
@@ -18,17 +22,17 @@ public abstract class LayeredScreen extends Screen
 
     public void display()
     {
-        if (this.minecraft.screen != null)
+        if (this.minecraft.gui.screen() != null)
         {
-            this.backgroundScreen = this.minecraft.screen;
-            this.minecraft.screen = this;
+            this.backgroundScreen = this.minecraft.gui.screen();
+            setScreenNoInit(this);
             this.added();
             super.init(minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
             minecraft.getNarrator().saySystemNow(this.getNarrationMessage());
         }
         else
         {
-            this.minecraft.setScreen(this);
+            this.minecraft.gui.setScreen(this);
         }
     }
 
@@ -93,22 +97,34 @@ public abstract class LayeredScreen extends Screen
 
     public void popLayer()
     {
-        if (this.minecraft.screen != null)
+        if (this.minecraft.gui.screen() != null)
         {
-            this.minecraft.screen.removed();
+            this.minecraft.gui.screen().removed();
         }
         if (this.backgroundScreen != null)
         {
-            this.minecraft.screen = this.backgroundScreen;
+            setScreenNoInit(this.backgroundScreen);
         }
         else
         {
-            this.minecraft.setScreen(null);
+            this.minecraft.gui.setScreen(null);
         }
     }
 
     public Screen getBackgroundScreen()
     {
         return this.backgroundScreen;
+    }
+
+
+    //TODO: Clean-up with mixins or at/aw
+    public static void setScreenNoInit(Screen screen) {
+        try {
+            Field field = Gui.class.getDeclaredField("screen");
+            field.setAccessible(true);
+            field.set(Minecraft.getInstance().gui, screen);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
