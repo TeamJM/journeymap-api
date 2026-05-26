@@ -38,6 +38,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -80,7 +81,7 @@ enum MockClientAPI implements IClientAPI
         return new UIState(ui, true, Level.OVERWORLD, 1,
                 Context.MapType.Day,
                 new BlockPos(128, 0, 128), null,
-                new AABB(new net.minecraft.core.BlockPos(0, 0, 0).getCenter(), new net.minecraft.core.BlockPos(256, 256, 256).getCenter()),
+                new AABB(Vec3.atCenterOf(new BlockPos(0, 0, 0)), Vec3.atCenterOf(new BlockPos(256, 256, 256))),
                 new Rectangle2D.Double(0, 0, 1240, 960));
     }
 
