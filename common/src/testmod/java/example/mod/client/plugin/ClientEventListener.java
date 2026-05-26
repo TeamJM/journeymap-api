@@ -191,7 +191,7 @@ public class ClientEventListener
     private void onCustomToolbar(FullscreenDisplayEvent.CustomToolbarEvent event)
     {
         CustomToolBarBuilder barBuilder = event.getCustomToolBarBuilder();
-        Screen screen = event.getFullscreen().getMinecraft().screen;
+        Screen screen = event.getFullscreen().getMinecraft().gui.screen();
         int startX = screen.width / 2;
 
         IThemeButton b1 = barBuilder.getThemeButton("Test1", icon("alert"), b -> System.out.println("ALERT"));
@@ -257,6 +257,6 @@ public class ClientEventListener
 
     private static String getTicks()
     {
-        return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
+        return "Ticks: " + Minecraft.getInstance().gui.hud.getGuiTicks();
     }
 }
