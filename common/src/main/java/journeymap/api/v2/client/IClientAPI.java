@@ -46,7 +46,7 @@ import java.util.function.Consumer;
 public interface IClientAPI extends CommonAPI
 {
     String API_OWNER = "journeymap";
-    String API_VERSION = "@API_VERSION@";
+    String API_VERSION = JmApiVersion.VERSION;
 
     /**
      * Returns the current UIState of the UI specified.
