@@ -8,14 +8,14 @@
 
 package example.mod.client.plugin;
 
-import journeymap.api.v2.client.option.BooleanOption;
-import journeymap.api.v2.client.option.CustomIntegerOption;
-import journeymap.api.v2.client.option.CustomTextOption;
-import journeymap.api.v2.client.option.EnumOption;
-import journeymap.api.v2.client.option.FloatOption;
-import journeymap.api.v2.client.option.IntegerOption;
-import journeymap.api.v2.client.option.KeyedEnum;
-import journeymap.api.v2.client.option.OptionCategory;
+import journeymap.api.v2.common.option.BooleanOption;
+import journeymap.api.v2.common.option.CustomIntegerOption;
+import journeymap.api.v2.common.option.CustomTextOption;
+import journeymap.api.v2.common.option.EnumOption;
+import journeymap.api.v2.common.option.FloatOption;
+import journeymap.api.v2.common.option.IntegerOption;
+import journeymap.api.v2.common.option.KeyedEnum;
+import journeymap.api.v2.common.option.OptionCategory;
 
 /**
  * Sample option set, registered from {@code RegistryEvent.OptionsRegistryEvent}.

@@ -8,7 +8,7 @@
 
 package example.mod.server.plugin;
 
-import journeymap.api.v2.client.display.Context;
+import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.server.overlay.OverlayPoints;
 import journeymap.api.v2.server.overlay.OverlayPolygon;

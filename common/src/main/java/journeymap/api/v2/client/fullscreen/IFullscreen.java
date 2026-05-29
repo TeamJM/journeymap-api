@@ -1,6 +1,6 @@
 package journeymap.api.v2.client.fullscreen;
 
-import journeymap.api.v2.client.display.Context;
+import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.util.UIState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;

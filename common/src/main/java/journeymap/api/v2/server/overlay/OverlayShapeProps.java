@@ -1,6 +1,6 @@
 package journeymap.api.v2.server.overlay;
 
-import journeymap.api.v2.client.display.Context;
+import journeymap.api.v2.common.Context;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;

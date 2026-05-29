@@ -26,7 +26,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.LinkedHashMultimap;
 import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.api.v2.client.IClientAPI;
-import journeymap.api.v2.client.display.Context;
+import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.Displayable;
 import journeymap.api.v2.client.util.UIState;

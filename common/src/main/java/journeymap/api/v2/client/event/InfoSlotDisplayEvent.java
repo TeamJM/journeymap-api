@@ -1,6 +1,6 @@
 package journeymap.api.v2.client.event;
 
-import journeymap.api.v2.client.option.KeyedEnum;
+import journeymap.api.v2.common.option.KeyedEnum;
 import net.minecraft.network.chat.Component;
 
 import java.util.LinkedHashMap;

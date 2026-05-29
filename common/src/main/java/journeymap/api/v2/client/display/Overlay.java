@@ -23,6 +23,7 @@ package journeymap.api.v2.client.display;
 import com.google.common.base.MoreObjects;
 import journeymap.api.v2.client.model.TextProperties;
 import journeymap.api.v2.client.util.UIState;
+import journeymap.api.v2.common.Context;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 

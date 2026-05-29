@@ -36,19 +36,6 @@ public abstract class LayeredScreen extends Screen
         }
     }
 
-    /**
-     * use the non-deprecated version instead
-     *
-     * @param minecraft
-     * @param width
-     * @param height
-     */
-    @Deprecated(forRemoval = true)
-    public void resize(Minecraft minecraft, int width, int height)
-    {
-        this.resize(width, height);
-    }
-
     public void resize(int width, int height)
     {
         super.resize(width, height);

@@ -2,7 +2,7 @@ package journeymap.api.v2.client.util;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import journeymap.api.v2.client.display.Context;
+import journeymap.api.v2.common.Context;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;

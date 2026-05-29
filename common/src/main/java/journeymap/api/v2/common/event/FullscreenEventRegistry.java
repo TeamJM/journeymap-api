@@ -20,38 +20,38 @@ public class FullscreenEventRegistry
      * This is a staged event. Pre can be canceled, post cannot be canceled.
      * {@link FullscreenMapEvent.ClickEvent}, which can be cancelled.
      */
-    public static final Event<FullscreenMapEvent.ClickEvent> FULLSCREEN_MAP_CLICK_EVENT = ClientEventRegistry.FULLSCREEN_MAP_CLICK_EVENT;
+    public static final Event<FullscreenMapEvent.ClickEvent> FULLSCREEN_MAP_CLICK_EVENT = EventFactory.create(FullscreenMapEvent.ClickEvent.class);
 
     /**
      * Indicates the start of the mouse dragging.
      * This is a staged event. Pre can be canceled, post cannot be canceled.
      * {@link FullscreenMapEvent.MouseDraggedEvent}, which can be cancelled.
      */
-    public static final Event<FullscreenMapEvent.MouseDraggedEvent> FULLSCREEN_MAP_DRAG_EVENT = ClientEventRegistry.FULLSCREEN_MAP_DRAG_EVENT;
+    public static final Event<FullscreenMapEvent.MouseDraggedEvent> FULLSCREEN_MAP_DRAG_EVENT = EventFactory.create(FullscreenMapEvent.MouseDraggedEvent.class);
 
     /**
      * Indicates moving of the mouse, gets block info where the cursor is pointing.
      * {@link FullscreenMapEvent.MouseMoveEvent}, which can not be cancelled.
      */
-    public static final Event<FullscreenMapEvent.MouseMoveEvent> FULLSCREEN_MAP_MOVE_EVENT = ClientEventRegistry.FULLSCREEN_MAP_MOVE_EVENT;
+    public static final Event<FullscreenMapEvent.MouseMoveEvent> FULLSCREEN_MAP_MOVE_EVENT = EventFactory.create(FullscreenMapEvent.MouseMoveEvent.class);
 
     /**
      * This event is fired when a user right clicks anywhere on the fullscreen map that is not an overlay or waypoint.
      * To target overlays, see {@link IOverlayListener#onOverlayMenuPopup(UIState, Point2D.Double, BlockPos, ModPopupMenu)}
      * This event is cancellable
      */
-    public static final Event<PopupMenuEvent.FullscreenPopupMenuEvent> FULLSCREEN_POPUP_MENU_EVENT = ClientEventRegistry.FULLSCREEN_POPUP_MENU_EVENT;
+    public static final Event<PopupMenuEvent.FullscreenPopupMenuEvent> FULLSCREEN_POPUP_MENU_EVENT = EventFactory.create(PopupMenuEvent.FullscreenPopupMenuEvent.class);
 
     /**
      * This event is fired when a user right-clicks on a waypoint icon.
      * This event is cancellable.
      */
-    public static final Event<PopupMenuEvent.WaypointPopupMenuEvent> WAYPOINT_POPUP_MENU_EVENT = ClientEventRegistry.WAYPOINT_POPUP_MENU_EVENT;
+    public static final Event<PopupMenuEvent.WaypointPopupMenuEvent> WAYPOINT_POPUP_MENU_EVENT = EventFactory.create(PopupMenuEvent.WaypointPopupMenuEvent.class);
 
     /**
      * Used to create custom toolbars on the fullscreen map.
      */
-    public static final Event<FullscreenDisplayEvent.CustomToolbarEvent> CUSTOM_TOOLBAR_UPDATE_EVENT = ClientEventRegistry.CUSTOM_TOOLBAR_UPDATE_EVENT;
+    public static final Event<FullscreenDisplayEvent.CustomToolbarEvent> CUSTOM_TOOLBAR_UPDATE_EVENT = EventFactory.create(FullscreenDisplayEvent.CustomToolbarEvent.class);
 
     /**
      * Used for adding buttons to the maptype theme button list.
@@ -63,13 +63,13 @@ public class FullscreenEventRegistry
      * it is suggested to not use it without first discussing with TeamJM developers.
      */
     @Deprecated()
-    public static final Event<FullscreenDisplayEvent.MapTypeButtonDisplayEvent> MAP_TYPE_BUTTON_DISPLAY_EVENT = ClientEventRegistry.MAP_TYPE_BUTTON_DISPLAY_EVENT;
+    public static final Event<FullscreenDisplayEvent.MapTypeButtonDisplayEvent> MAP_TYPE_BUTTON_DISPLAY_EVENT = EventFactory.create(FullscreenDisplayEvent.MapTypeButtonDisplayEvent.class);
 
     /**
      * This event is used for adding buttons to the right panel on the fullscreen map.
      * This event is not cancellable.
      */
-    public static final Event<FullscreenDisplayEvent.AddonButtonDisplayEvent> ADDON_BUTTON_DISPLAY_EVENT = ClientEventRegistry.ADDON_BUTTON_DISPLAY_EVENT;
+    public static final Event<FullscreenDisplayEvent.AddonButtonDisplayEvent> ADDON_BUTTON_DISPLAY_EVENT = EventFactory.create(FullscreenDisplayEvent.AddonButtonDisplayEvent.class);
 
     /**
      * This event is called after the map and all layers are drawn on the screen, between the map and the buttons.

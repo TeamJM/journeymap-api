@@ -10,7 +10,7 @@ package example.mod.client.plugin;
 
 import example.mod.ExampleMod;
 import journeymap.api.v2.client.IClientAPI;
-import journeymap.api.v2.client.display.Context;
+import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.event.DeathWaypointEvent;
 import journeymap.api.v2.client.event.DisplayUpdateEvent;
