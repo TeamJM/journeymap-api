@@ -12,7 +12,7 @@ base {
 
 /* Artifact Version */
 version = "${project.api_version}-${project.minecraft_version}"
-if (project.snapshot) {
+if (project.snapshot.toBoolean()) {
     version = version + "-SNAPSHOT"
 }
 group = project.group_id
