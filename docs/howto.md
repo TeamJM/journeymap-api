@@ -33,14 +33,14 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-`journeymap-api-forge:2.0.0-1.21.1-SNAPSHOT`
-`journeymap-api-neoforge:2.0.0-1.21.1-SNAPSHOT`
-`journeymap-api-fabric:2.0.0-1.21.1-SNAPSHOT`
+`journeymap-api-forge:2.0.0-1.21.1`
+`journeymap-api-neoforge:2.0.0-1.21.1`
+`journeymap-api-fabric:2.0.0-1.21.1`
 
 // for multiloader setups, common jar
-`journeymap-api-common:2.0.0-1.21.1-SNAPSHOT`
+`journeymap-api-common:2.0.0-1.21.1`
 
-journeymap_api_version = 2.0.0-1.21.1-SNAPSHOT
+journeymap_api_version = 2.0.0-1.21.1
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
