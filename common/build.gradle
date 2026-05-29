@@ -10,6 +10,24 @@ test {
 //    useJUnitPlatform()
 }
 
+def generatedApiSrc = layout.buildDirectory.dir('generated/sources/apiVersion/java/main')
+def apiVersion = (project.snapshot.toBoolean() ? "${project.api_version}-SNAPSHOT" : "${project.api_version}").toString()
+
+def generateApiSources = tasks.register('generateApiSources', Copy) {
+    inputs.property('apiVersion', apiVersion)
+    from('src/main/java')
+    into(generatedApiSrc)
+    filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [API_VERSION: apiVersion])
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = [generateApiSources]
+        }
+    }
+}
+
 
 neoForge {
     neoFormVersion = neo_form_version
@@ -40,7 +58,9 @@ configurations {
 }
 
 artifacts {
-    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonJava(generatedApiSrc) {
+        builtBy generateApiSources
+    }
     commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }
 
