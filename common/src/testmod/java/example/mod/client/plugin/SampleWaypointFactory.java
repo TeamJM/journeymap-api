@@ -35,7 +35,7 @@ public final class SampleWaypointFactory
         {
             bedWaypoint = WaypointFactory.createWaypoint(ExampleMod.MODID, bedLocation, dimension, true);
             bedWaypoint.setColor(Color.BLUE.getRGB());
-            bedWaypoint.setIconResourceLoctaion(Identifier.parse("examplemod:images/bed.png"));
+            bedWaypoint.setIconIdentifier(Identifier.parse("examplemod:images/bed.png"));
             bedWaypoint.setIconTextureSize(32, 32);
             bedWaypoint.setIconColor(0x00ffff);
             jmAPI.addWaypoint(ExampleMod.MODID, bedWaypoint);

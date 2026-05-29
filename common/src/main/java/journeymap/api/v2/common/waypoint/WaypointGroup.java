@@ -191,7 +191,7 @@ public interface WaypointGroup
      *
      * @param Identifier - the resource location
      */
-    void setIconResourceLoctaion(Identifier Identifier);
+    void setIconIdentifier(Identifier Identifier);
 
     /**
      * Gets the image textureWidth.
