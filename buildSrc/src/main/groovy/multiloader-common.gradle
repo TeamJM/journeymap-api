@@ -11,7 +11,7 @@ base {
 }
 
 /* Artifact Version */
-version = "${project.api_version}-${project.minecraft_version}"
+version = "${project.minecraft_version}-${project.api_version}"
 if (project.snapshot.toBoolean()) {
     version = version + "-SNAPSHOT"
 }

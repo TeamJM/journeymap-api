@@ -33,15 +33,15 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-`journeymap-api-forge:2.0.0-26.1-SNAPSHOT`
-`journeymap-api-neoforge:2.0.0-26.11-SNAPSHOT`
-`journeymap-api-fabric:2.0.0-26.1-SNAPSHOT`
-`journeymap-api-paper:2.0.0-26.1-SNAPSHOT`
+`journeymap-api-forge:26.2-2.0.0-SNAPSHOT`
+`journeymap-api-neoforge:26.2-2.0.0-SNAPSHOT`
+`journeymap-api-fabric:26.2-2.0.0-SNAPSHOT`
+`journeymap-api-paper:26.2-2.0.0-SNAPSHOT`
 
 // for multiloader setups, common jar
-`journeymap-api-common:2.0.0-26.1-SNAPSHOT`
+`journeymap-api-common:26.2-2.0.0-SNAPSHOT`
 
-journeymap_api_version = 2.0.0-26.1-SNAPSHOT
+journeymap_api_version = 26.2-2.0.0-SNAPSHOT
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
@@ -96,7 +96,7 @@ dependencies {
 ```
 
 The Paper API artifact is the server-side counterpart for Paper/Spigot plugins. It is published
-with the Minecraft version baked into the version string (e.g. `journeymap-api-paper:2.0.0-26.1-SNAPSHOT`)
+with the Minecraft version baked into the version string (e.g. `journeymap-api-paper:26.1-2.0.0-SNAPSHOT`)
 rather than the loader-agnostic suffix used by the mod-loader artifacts. The jar bundles the full
 API surface (common + server + client) so shared code resolves at compile time; only the
 `journeymap.api.v2.common.*` and `journeymap.api.v2.server.*` packages are usable on a Paper server
