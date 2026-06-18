@@ -49,5 +49,5 @@ rootProject.name = 'journeymap-api'
 include("common")
 include("fabric")
 include("neoforge")
-//include("forge")
-//include("paper")
+include("forge")
+include("paper")
