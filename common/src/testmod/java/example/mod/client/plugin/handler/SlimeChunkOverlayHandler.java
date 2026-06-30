@@ -97,6 +97,6 @@ public final class SlimeChunkOverlayHandler
             return false;
         }
         long seed = serverLevel.getSeed();
-        return WorldgenRandom.seedSlimeChunk(chunk.getPos().x(), chunk.getPos().z(), seed, 987234911L).nextInt(10) == 0;
+        return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, seed, 987234911L).nextInt(10) == 0;
     }
 }

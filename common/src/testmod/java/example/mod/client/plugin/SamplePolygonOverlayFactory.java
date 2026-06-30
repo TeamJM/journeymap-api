@@ -38,7 +38,7 @@ public final class SamplePolygonOverlayFactory
     public static PolygonOverlay create(ChunkPos chunkCoords, ResourceKey<Level> dimension)
     {
         String groupName = "Slime Chunks";
-        String label = String.format("Slime Chunk [%s,%s]", chunkCoords.x(), chunkCoords.z());
+        String label = String.format("Slime Chunk [%s,%s]", chunkCoords.x, chunkCoords.z);
 
         ShapeProperties shapeProps = new ShapeProperties()
                 .setStrokeWidth(2)
@@ -53,7 +53,7 @@ public final class SamplePolygonOverlayFactory
                 .setMinZoom(2)
                 .setFontShadow(true);
 
-        MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.x(), 70, chunkCoords.z());
+        MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.x, 70, chunkCoords.z);
 
         PolygonOverlay slimeChunkOverlay = new PolygonOverlay(ExampleMod.MODID, dimension, shapeProps, polygon);
         slimeChunkOverlay.setOverlayGroupName(groupName)

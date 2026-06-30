@@ -1,6 +1,6 @@
 package journeymap.api.v2.client.fullscreen;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public interface CustomToolBarBuilder
@@ -10,42 +10,42 @@ public interface CustomToolBarBuilder
      *
      * @param labelOn  - The on label, can be the display string or i18n key.
      * @param labelOff - The off label, can be the display string or i18n key.
-     * @param icon - The icon name. Icon Identifier
+     * @param icon - The icon name. Icon ResourceLocation
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton getThemeToggleButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull Identifier icon, @NotNull IThemeButton.Action onPress);
+    IThemeButton getThemeToggleButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull ResourceLocation icon, @NotNull IThemeButton.Action onPress);
 
     /**
      * Creates and gets a theme button with a separate on/off label.
      *
      * @param labelOn  - The on label, can be the display string or i18n key.
      * @param labelOff - The off label, can be the display string or i18n key.
-     * @param icon - The icon name. Icon Identifier
+     * @param icon - The icon name. Icon ResourceLocation
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton getThemeButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull Identifier icon, @NotNull IThemeButton.Action onPress);
+    IThemeButton getThemeButton(@NotNull String labelOn, @NotNull String labelOff, @NotNull ResourceLocation icon, @NotNull IThemeButton.Action onPress);
 
     /**
      * Creates and gets a theme toggle button with a separate on/off label.
      *
      * @param label    - The label, can be the display string or i18n key.
-     * @param icon - The icon name. Icon Identifier
+     * @param icon - The icon name. Icon ResourceLocation
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton getThemeToggleButton(@NotNull String label, @NotNull Identifier icon, @NotNull IThemeButton.Action onPress);
+    IThemeButton getThemeToggleButton(@NotNull String label, @NotNull ResourceLocation icon, @NotNull IThemeButton.Action onPress);
 
     /**
      * Creates and gets a theme button with a separate on/off label.
      *
      * @param label    - The label, can be the display string or i18n key.
-     * @param icon - The icon name. Icon Identifier
+     * @param icon - The icon name. Icon ResourceLocation
      * @param onPress  - The onpress action.
      * @return IThemeButton
      */
-    IThemeButton getThemeButton(@NotNull String label, @NotNull Identifier icon, @NotNull IThemeButton.Action onPress);
+    IThemeButton getThemeButton(@NotNull String label, @NotNull ResourceLocation icon, @NotNull IThemeButton.Action onPress);
 
 
     /**

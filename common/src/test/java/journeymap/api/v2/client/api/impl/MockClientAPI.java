@@ -137,8 +137,8 @@ enum MockClientAPI implements IClientAPI
         final int scale = (int) Math.pow(2, zoom);
         final int chunkSize = 32 / scale;
         final int pixels = chunkSize * 16;
-        final int width = Math.min(512, (endChunk.x() - startChunk.x()) * pixels);
-        final int height = Math.min(512, (endChunk.z() - startChunk.z()) * pixels);
+        final int width = Math.min(512, (endChunk.x - startChunk.x) * pixels);
+        final int height = Math.min(512, (endChunk.z - startChunk.z) * pixels);
 
         Minecraft.getInstance().submit(() -> callback.accept(createFakeImage(width, height)));
     }

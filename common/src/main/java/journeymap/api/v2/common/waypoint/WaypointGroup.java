@@ -1,6 +1,6 @@
 package journeymap.api.v2.common.waypoint;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -182,16 +182,16 @@ public interface WaypointGroup
     /**
      * Gets the texture resource location.
      *
-     * @return - Identifier
+     * @return - ResourceLocation
      */
-    Identifier getIconIdentifier();
+    ResourceLocation getIconIdentifier();
 
     /**
      * Sets the texture resource location.
      *
-     * @param Identifier - the resource location
+     * @param ResourceLocation - the resource location
      */
-    void setIconIdentifier(Identifier Identifier);
+    void setIconIdentifier(ResourceLocation ResourceLocation);
 
     /**
      * Gets the image textureWidth.

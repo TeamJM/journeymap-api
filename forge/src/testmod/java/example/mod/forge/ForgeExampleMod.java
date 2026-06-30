@@ -13,13 +13,11 @@ import example.mod.client.plugin.handler.BedWaypointHandler;
 import example.mod.client.plugin.handler.SlimeChunkOverlayHandler;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.level.ChunkEvent;
-import net.minecraftforge.eventbus.api.bus.BusGroup;
-import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.lang.invoke.MethodHandles;
 
 /**
  * Forge entry point. Forge discovers this class via the {@link Mod} annotation
@@ -27,16 +25,16 @@ import java.lang.invoke.MethodHandles;
  * {@code example.mod.client.plugin.handler}. The JourneyMap plugin classes are
  * discovered separately via the {@code @JourneyMapPlugin} annotation.
  *
- * <p>Forge 1.21.6+ migrated to EventBus 7. Static {@code @SubscribeEvent}
- * methods are registered in bulk via
- * {@code BusGroup.DEFAULT.register(MethodHandles.lookup(), Class)}.</p>
+ * <p>Forge 1.20.1 uses EventBus 5. The static {@code @SubscribeEvent} game
+ * events below are registered on the Forge event bus via
+ * {@code MinecraftForge.EVENT_BUS.register(Class)}.</p>
  */
 @Mod(ExampleMod.MODID)
 public class ForgeExampleMod
 {
     public ForgeExampleMod()
     {
-        BusGroup.DEFAULT.register(MethodHandles.lookup(), ForgeExampleMod.class);
+        MinecraftForge.EVENT_BUS.register(ForgeExampleMod.class);
     }
 
     @SubscribeEvent

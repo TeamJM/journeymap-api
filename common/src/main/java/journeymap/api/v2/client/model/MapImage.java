@@ -25,7 +25,7 @@ import com.google.common.base.Objects;
 import com.google.gson.annotations.Since;
 import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.api.v2.client.display.Displayable;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
 
@@ -44,7 +44,7 @@ public final class MapImage
     private transient NativeImage image;
 
     @Since(1.1)
-    private Identifier imageLocation;
+    private ResourceLocation imageLocation;
 
     @Since(1.1)
     private Integer color = 0xffffff;
@@ -129,7 +129,7 @@ public final class MapImage
      * @param textureWidth      width of texture
      * @param textureHeight     height of texture
      */
-    public MapImage(Identifier imageLocation, int textureWidth, int textureHeight)
+    public MapImage(ResourceLocation imageLocation, int textureWidth, int textureHeight)
     {
         this(imageLocation, 0, 0, textureWidth, textureHeight, 0xffffff, 1f);
     }
@@ -147,7 +147,7 @@ public final class MapImage
      * @param color         Sets a color tint (rgb) on the image.  Use white (0xffffff) for no tint.
      * @param opacity       opacity between 0 and 1
      */
-    public MapImage(Identifier imageLocation, int textureX, int textureY, int textureWidth, int textureHeight, int color, float opacity)
+    public MapImage(ResourceLocation imageLocation, int textureX, int textureY, int textureWidth, int textureHeight, int color, float opacity)
     {
         this.imageLocation = imageLocation;
         this.textureX = textureX;
@@ -323,7 +323,7 @@ public final class MapImage
      * @return the location
      */
     @Nullable
-    public Identifier getImageLocation()
+    public ResourceLocation getImageLocation()
     {
         return imageLocation;
     }

@@ -33,7 +33,7 @@ import journeymap.api.v2.common.event.MinimapEventRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Subscribes to every client-side JourneyMap event registry. Each handler is a
@@ -191,7 +191,7 @@ public class ClientEventListener
     private void onCustomToolbar(FullscreenDisplayEvent.CustomToolbarEvent event)
     {
         CustomToolBarBuilder barBuilder = event.getCustomToolBarBuilder();
-        Screen screen = event.getFullscreen().getMinecraft().gui.screen();
+        Screen screen = event.getFullscreen().getMinecraft().screen;
         int startX = screen.width / 2;
 
         IThemeButton b1 = barBuilder.getThemeButton("Test1", icon("alert"), b -> System.out.println("ALERT"));
@@ -250,13 +250,13 @@ public class ClientEventListener
 
     // -- helpers --------------------------------------------------------------
 
-    private static Identifier icon(String name)
+    private static ResourceLocation icon(String name)
     {
-        return Identifier.fromNamespaceAndPath("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + name + ".png");
+        return new ResourceLocation("journeymap", "/resources/assets/journeymap/theme/flat/icon/" + name + ".png");
     }
 
     private static String getTicks()
     {
-        return "Ticks: " + Minecraft.getInstance().gui.hud.getGuiTicks();
+        return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
     }
 }

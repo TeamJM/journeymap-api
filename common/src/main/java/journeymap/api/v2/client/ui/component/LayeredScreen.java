@@ -1,13 +1,9 @@
 package journeymap.api.v2.client.ui.component;
 
-import com.google.gson.internal.reflect.ReflectionHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-
-import java.lang.reflect.Field;
 
 public abstract class LayeredScreen extends Screen
 {
@@ -22,56 +18,57 @@ public abstract class LayeredScreen extends Screen
 
     public void display()
     {
-        if (this.minecraft.gui.screen() != null)
+        if (this.minecraft.screen != null)
         {
-            this.backgroundScreen = this.minecraft.gui.screen();
-            setScreenNoInit(this);
+            this.backgroundScreen = this.minecraft.screen;
+            this.minecraft.screen = this;
             this.added();
-            super.init(minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
-            minecraft.getNarrator().saySystemNow(this.getNarrationMessage());
+            this.init(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
+            minecraft.getNarrator().sayNow(this.getNarrationMessage());
         }
         else
         {
-            this.minecraft.gui.setScreen(this);
+            this.minecraft.setScreen(this);
         }
     }
 
-    public void resize(int width, int height)
+    public void resize(Minecraft minecraft, int width, int height)
     {
-        super.resize(width, height);
+        super.resize(minecraft, width, height);
         if (this.backgroundScreen != null)
         {
-            this.backgroundScreen.resize(this.width, this.height);
+            this.backgroundScreen.resize(this.minecraft, this.width, this.height);
         }
     }
 
     @Override
-    @Deprecated // do not call super.extractRenderState, call super.extractPopupScreen instead
-    public final void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
+    @Deprecated // do not call super.render, call super.renderPopupScreen instead
+    public final void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
     {
         if (this.backgroundScreen != null)
         // render background screen.
         {
-            this.backgroundScreen.extractRenderStateWithTooltipAndSubtitles(graphics, -1, -1, partialTicks);
+            this.backgroundScreen.render(graphics, -1, -1, partialTicks);
         }
-        graphics.nextStratum();
+        // translate z +2000
+        graphics.pose().translate(0.0D, 0.0D, 2000F);
+
         this.renderPopupScreenBackground(graphics, mouseX, mouseY, partialTicks);
-        graphics.nextStratum();
         this.renderPopupScreen(graphics, mouseX, mouseY, partialTicks);
     }
 
-    protected void renderPopupScreen(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPopupScreen(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
     {
-        super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
+        super.render(graphics, mouseX, mouseY, partialTicks);
     }
 
-    protected void renderPopupScreenBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPopupScreenBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
     {
 
     }
 
     @Override
-    public final void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
+    public final void renderBackground(GuiGraphics graphics)
     {
         // no use
     }
@@ -84,34 +81,22 @@ public abstract class LayeredScreen extends Screen
 
     public void popLayer()
     {
-        if (this.minecraft.gui.screen() != null)
+        if (this.minecraft.screen != null)
         {
-            this.minecraft.gui.screen().removed();
+            this.minecraft.screen.removed();
         }
         if (this.backgroundScreen != null)
         {
-            setScreenNoInit(this.backgroundScreen);
+            this.minecraft.screen = this.backgroundScreen;
         }
         else
         {
-            this.minecraft.gui.setScreen(null);
+            this.minecraft.setScreen(null);
         }
     }
 
     public Screen getBackgroundScreen()
     {
         return this.backgroundScreen;
-    }
-
-
-    //TODO: Clean-up with mixins or at/aw
-    public static void setScreenNoInit(Screen screen) {
-        try {
-            Field field = Gui.class.getDeclaredField("screen");
-            field.setAccessible(true);
-            field.set(Minecraft.getInstance().gui, screen);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
     }
 }

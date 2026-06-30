@@ -16,7 +16,7 @@ import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.model.MapImage;
 import journeymap.api.v2.client.util.UIState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.MapColor;
 
@@ -36,7 +36,7 @@ public final class SampleMarkerOverlayFactory
 
     public static List<MarkerOverlay> create(IClientAPI jmAPI, BlockPos center, int quantity, int maxDistance)
     {
-        Identifier sprites = Identifier.parse("examplemod:images/sprites.png");
+        ResourceLocation sprites = new ResourceLocation("examplemod:images/sprites.png");
         int spriteX = 0, spriteY = 0;
         int iconSize = 64;
         int iconColumns = 8;

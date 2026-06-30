@@ -18,7 +18,7 @@
  *
  */
 plugins {
-    id 'net.fabricmc.fabric-loom'
+    id 'fabric-loom'
     id 'multiloader-loader'
 }
 
@@ -53,8 +53,12 @@ loom {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    implementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
-    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${project.parchment_minecraft}:${project.parchment_version}@zip")
+    }
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
     testmodImplementation sourceSets.main.output
 }
 
@@ -64,18 +68,16 @@ dependencies {
 // Implement mcgradleconventions loader attribute
 def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
 ['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements', 'includeInternal', 'modCompileClasspath'].each { variant ->
-    configurations.named("$variant") {
-        attributes {
-            attribute(loaderAttribute, 'fabric')
-        }
+    // loom renames/removes some configs across versions (e.g. includeInternal absent in loom 1.17);
+    // tolerate missing ones instead of failing the whole evaluation.
+    configurations.findByName(variant)?.attributes {
+        attribute(loaderAttribute, 'fabric')
     }
 }
 sourceSets.configureEach {
     [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName].each { variant ->
-        configurations.named("$variant") {
-            attributes {
-                attribute(loaderAttribute, 'fabric')
-            }
+        configurations.findByName(variant)?.attributes {
+            attribute(loaderAttribute, 'fabric')
         }
     }
 }

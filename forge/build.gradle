@@ -1,6 +1,8 @@
 plugins {
     id 'multiloader-loader'
     id 'net.minecraftforge.gradle' version '[7.0.11,8.0)'
+    // Reobfuscates the jar to SRG names - required for 1.20.1 Forge (SRG runtime).
+    id 'net.minecraftforge.renamer' version '1.1.0'
 }
 
 repositories {
@@ -32,8 +34,36 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
     implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
-    annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
+    // eventbus-validator 7.0-beta.10 is compiled for Java 21 (class 65.0); this module's toolchain is
+    // Java 17 (class 61.0), so it fails compileJava with "compiled by a more recent version". It is an
+    // optional compile-time @SubscribeEvent linter, not needed to produce the API jar. Restore once the
+    // toolchain moves to Java 21+ (or pin a Java 17-compiled validator version).
+    // annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
     testmodImplementation sourceSets.main.output
+}
+
+// Reobfuscate the named jar to SRG names for 1.20.1 Forge's SRG runtime.
+// Produces task 'renameJar' -> <archivesName>-<version>-srg.jar
+// NOTE: must come AFTER the dependencies block above - minecraft.dependency.toSrgFile
+// requires minecraft.dependency(...) to be declared first, else FG7 fails config with
+// "Mavenizer instance not found: default".
+// Reobfuscate the jar to SRG names for 1.20.1 Forge's SRG runtime, IN PLACE: the renamer overwrites
+// the jar task's own output, so the single clean-named jar becomes SRG (JM ships clean reobf'd jars,
+// never an -srg classifier). `jar` is finalized by the reobf step.
+renamer.mappings.from minecraft.dependency.toSrgFile
+
+def reobfJar = renamer.classes(tasks.named('jar', Jar)) {
+    map.from minecraft.dependency.toSrgFile
+    output = tasks.named('jar', Jar).flatMap { it.archiveFile }
+}
+
+tasks.named('jar', Jar) {
+    finalizedBy reobfJar
+}
+
+// The reobf overwrites the jar in place, so tasks that read the jar artifact must run after it.
+tasks.matching { it.name.startsWith('publish') || it.name.startsWith('generate') }.configureEach {
+    mustRunAfter reobfJar
 }
 sourceSets.each {
     def dir = layout.buildDirectory.dir("sourcesSets/$it.name")

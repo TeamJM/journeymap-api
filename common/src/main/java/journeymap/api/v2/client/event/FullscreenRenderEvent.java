@@ -1,7 +1,7 @@
 package journeymap.api.v2.client.event;
 
 import journeymap.api.v2.client.fullscreen.IFullscreen;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 /**
  * This event fired after map tiles and all entities, polygons, waypoints and before the buttons.
@@ -15,9 +15,9 @@ public class FullscreenRenderEvent extends ClientEvent
     private final int mouseX;
     private final int mouseY;
     private final float partialTicks;
-    private final GuiGraphicsExtractor graphics;
+    private final GuiGraphics graphics;
 
-    public FullscreenRenderEvent(IFullscreen fullscreen, GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks)
+    public FullscreenRenderEvent(IFullscreen fullscreen, GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
     {
         super(false, fullscreen.getUiState().dimension);
         this.fullscreen = fullscreen;
@@ -47,7 +47,7 @@ public class FullscreenRenderEvent extends ClientEvent
         return partialTicks;
     }
 
-    public GuiGraphicsExtractor getGraphics()
+    public GuiGraphics getGraphics()
     {
         return graphics;
     }

@@ -23,7 +23,12 @@ public class InfoSlotDisplayEvent extends ClientEvent
      */
     public void addBefore(String key, Position position)
     {
-        infoSlotMap.putFirst(key, position);
+        infoSlotMap.remove(key);
+        LinkedHashMap<String, Position> newMap = new LinkedHashMap<>();
+        newMap.put(key, position);
+        newMap.putAll(infoSlotMap);
+        infoSlotMap.clear();
+        infoSlotMap.putAll(newMap);
     }
 
     /**
@@ -34,7 +39,8 @@ public class InfoSlotDisplayEvent extends ClientEvent
      */
     public void addLast(String key, Position position)
     {
-        infoSlotMap.putLast(key, position);
+        infoSlotMap.remove(key);
+        infoSlotMap.put(key, position);
     }
 
     /**

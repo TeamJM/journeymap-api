@@ -33,15 +33,15 @@ For example:
 #!gradle
 
 // Version of JourneyMap API to use
-`journeymap-api-forge:26.2-2.0.0-SNAPSHOT`
-`journeymap-api-neoforge:26.2-2.0.0-SNAPSHOT`
-`journeymap-api-fabric:26.2-2.0.0-SNAPSHOT`
-`journeymap-api-paper:26.2-2.0.0-SNAPSHOT`
+`journeymap-api-forge:1.20.1-2.0.0`
+`journeymap-api-neoforge:1.20.1-2.0.0`
+`journeymap-api-fabric:1.20.1-2.0.0`
+`journeymap-api-paper:1.20.1-2.0.0`
 
 // for multiloader setups, common jar
-`journeymap-api-common:26.2-2.0.0-SNAPSHOT`
+`journeymap-api-common:1.20.1-2.0.0`
 
-journeymap_api_version = 26.2-2.0.0-SNAPSHOT
+journeymap_api_version = 1.20.1-2.0.0
 
 // Note: None of the blocks below belong in your buildscript block. Put them below it instead.
 repositories {
@@ -96,7 +96,7 @@ dependencies {
 ```
 
 The Paper API artifact is the server-side counterpart for Paper/Spigot plugins. It is published
-with the Minecraft version baked into the version string (e.g. `journeymap-api-paper:26.1-2.0.0-SNAPSHOT`)
+with the Minecraft version baked into the version string (e.g. `journeymap-api-paper:1.20.1-2.0.0`)
 rather than the loader-agnostic suffix used by the mod-loader artifacts. The jar bundles the full
 API surface (common + server + client) so shared code resolves at compile time; only the
 `journeymap.api.v2.common.*` and `journeymap.api.v2.server.*` packages are usable on a Paper server
@@ -108,7 +108,7 @@ Example forge: mods.toml entry for a soft dependency. Set `mandatory=true` for a
 [[dependencies.mymodId]]
 modId = "journeymap"
 mandatory = false
-versionRange = "[1.21-6.0.0-beta.1,)"
+versionRange = "[1.20.1-6.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
 ```
@@ -120,7 +120,7 @@ needed.
 [[dependencies.mymodId]]
 modId = "journeymap"
 type = "required"
-versionRange = "[1.21-6.0.0-beta.1,)"
+versionRange = "[1.20.1-6.0.0,)"
 ordering = "NONE"
 side = "CLIENT"
 ```

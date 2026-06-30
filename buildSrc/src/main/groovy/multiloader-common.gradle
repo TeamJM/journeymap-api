@@ -81,7 +81,10 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
     testImplementation group: 'com.google.guava', name: 'guava', version: '33.5.0-jre'
-    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.25.2'
+    // Must match the log4j version Minecraft 1.20.1 ships (log4j-core 2.19.0). A newer log4j-api here
+    // wins conflict resolution against MC's pinned core, and the mismatched pair breaks Minecraft's
+    // Bootstrap logging init (ServiceLoaderUtil.loadServices NoSuchMethodError) in tests that boot MC.
+    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.19.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
     testImplementation 'org.mockito:mockito-core:5.20.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.20.0'
@@ -144,7 +147,6 @@ var manifestExpandProps = [
         'mod_name'             : mod_name,
         'mod_author'           : mod_author,
         'mod_id'               : mod_id,
-        'neoforge_version'     : neoforge_version,
         "forge_version"        : forge_version,
         'java_version'         : java_version
 ]

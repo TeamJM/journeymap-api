@@ -51,12 +51,12 @@ public final class SampleComplexPolygonOverlayFactory
 
         // an E shape
         {
-            final ChunkPos center = ChunkPos.containing(new BlockPos(
+            final ChunkPos center = new ChunkPos(new BlockPos(
                     pos.getX() + random.nextInt(maxDistance) - maxDistance / 2,
                     pos.getY(),
                     pos.getZ() + random.nextInt(maxDistance) - maxDistance / 2));
-            final int cx = center.x();
-            final int cz = center.z();
+            final int cx = center.x;
+            final int cz = center.z;
             final Set<ChunkPos> shape = new HashSet<>();
             shape.add(center);
             shape.add(new ChunkPos(cx, cz - 1));

@@ -24,7 +24,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.api.v2.client.display.Displayable;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -41,7 +41,7 @@ public class ShapeProperties
     private float strokeWidth = 2;
     private StrokePosition strokePosition = StrokePosition.CENTER;
     private NativeImage image;
-    private Identifier imageLocation;
+    private ResourceLocation imageLocation;
     private double texturePositionX = 0;
     private double texturePositionY = 0;
     private double textureScaleX = 1;
@@ -208,7 +208,7 @@ public class ShapeProperties
      * @return the location
      */
     @Nullable
-    public Identifier getImageLocation()
+    public ResourceLocation getImageLocation()
     {
         return imageLocation;
     }
@@ -219,7 +219,7 @@ public class ShapeProperties
      * @param imageLocation the image location
      * @return this
      */
-    public ShapeProperties setImageLocation(Identifier imageLocation)
+    public ShapeProperties setImageLocation(ResourceLocation imageLocation)
     {
         this.imageLocation = imageLocation;
         return this;

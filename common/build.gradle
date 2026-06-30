@@ -1,5 +1,5 @@
 plugins {
-    id 'net.neoforged.moddev'
+    id 'net.neoforged.moddev.legacyforge'
     id 'multiloader-common'
 }
 
@@ -51,14 +51,18 @@ sourceSets {
 }
 
 
-neoForge {
-    neoFormVersion = neo_form_version
-    addModdingDependenciesTo(sourceSets["test"])
-    addModdingDependenciesTo(sourceSets["testmod"])
-//    parchment {
-//        minecraftVersion = mappings_mc_version
-//        mappingsVersion = mappings_date
-//    }
+legacyForge {
+    mcpVersion = minecraft_version
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+    // The moddev plugin adds the Minecraft dependency to main only. The unit tests (MockClientAPI,
+    // TeleportEventTest) reference net.minecraft.* and bootstrap Minecraft, so add the fully-resolved
+    // modding dependencies to the test source set too. Using the moddev API (not a raw classpath +=)
+    // keeps a single coherent dependency graph - a hand-merged classpath duplicated log4j-api/-core and
+    // broke Bootstrap's logging init with a ServiceLoaderUtil NoSuchMethodError.
+    addModdingDependenciesTo(sourceSets.test)
 }
 
 dependencies {
