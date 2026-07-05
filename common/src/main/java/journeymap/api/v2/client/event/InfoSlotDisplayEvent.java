@@ -2,6 +2,7 @@ package journeymap.api.v2.client.event;
 
 import journeymap.api.v2.common.option.KeyedEnum;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.LinkedHashMap;
 
@@ -74,7 +75,7 @@ public class InfoSlotDisplayEvent extends ClientEvent
         @Override
         public String toString()
         {
-            return Component.translatable(this.key).getString();
+            return new TranslatableComponent(this.key).getString();
         }
     }
 }

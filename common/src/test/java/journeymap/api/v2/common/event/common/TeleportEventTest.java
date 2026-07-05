@@ -22,7 +22,7 @@ class TeleportEventTest
     @BeforeAll
     static void bootstrapMinecraft()
     {
-        SharedConstants.tryDetectVersion();
+        SharedConstants.getCurrentVersion();
         Bootstrap.bootStrap();
     }
 
@@ -31,7 +31,7 @@ class TeleportEventTest
     {
         ServerPlayer player = mock(ServerPlayer.class);
         BlockPos pos = new BlockPos(1, 2, 3);
-        var event = new TeleportEvent(player, null, pos, Level.OVERWORLD, Level.OVERWORLD);
+        TeleportEvent event = new TeleportEvent(player, null, pos, Level.OVERWORLD, Level.OVERWORLD);
         assertTrue(event.isCancellable());
         assertEquals(CommonEvent.Side.Server, event.getSide());
         assertNull(event.getWaypoint());

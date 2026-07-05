@@ -16,7 +16,7 @@ class PlayerRadarUpdateEventTest
     void updateIsCancellableAndVisibleIsMutable()
     {
         UUID remoteId = UUID.randomUUID();
-        var event = new PlayerRadarUpdateEvent(null, remoteId, null,
+        PlayerRadarUpdateEvent event = new PlayerRadarUpdateEvent(null, remoteId, null,
                 PlayerRadarUpdateEvent.Action.UPDATE, true, false);
 
         assertTrue(event.isCancellable());
@@ -31,7 +31,7 @@ class PlayerRadarUpdateEventTest
     void removeIsCancellable()
     {
         UUID remoteId = UUID.randomUUID();
-        var event = new PlayerRadarUpdateEvent(null, remoteId, null,
+        PlayerRadarUpdateEvent event = new PlayerRadarUpdateEvent(null, remoteId, null,
                 PlayerRadarUpdateEvent.Action.REMOVE, false, false);
 
         assertTrue(event.isCancellable());

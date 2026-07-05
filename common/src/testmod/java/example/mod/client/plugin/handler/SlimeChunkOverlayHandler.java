@@ -92,10 +92,11 @@ public final class SlimeChunkOverlayHandler
     {
         if (chunk.getLevel().isClientSide()
                 || chunk.getLevel().getServer() == null
-                || !(chunk.getLevel() instanceof ServerLevel serverLevel))
+                || !(chunk.getLevel() instanceof ServerLevel))
         {
             return false;
         }
+        ServerLevel serverLevel = (ServerLevel) chunk.getLevel();
         long seed = serverLevel.getSeed();
         return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, seed, 987234911L).nextInt(10) == 0;
     }

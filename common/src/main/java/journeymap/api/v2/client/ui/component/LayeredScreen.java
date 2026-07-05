@@ -1,7 +1,8 @@
 package journeymap.api.v2.client.ui.component;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -22,9 +23,8 @@ public abstract class LayeredScreen extends Screen
         {
             this.backgroundScreen = this.minecraft.screen;
             this.minecraft.screen = this;
-            this.added();
             this.init(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
-            minecraft.getNarrator().sayNow(this.getNarrationMessage());
+            NarratorChatListener.INSTANCE.sayNow(this.getNarrationMessage());
         }
         else
         {
@@ -43,7 +43,7 @@ public abstract class LayeredScreen extends Screen
 
     @Override
     @Deprecated // do not call super.render, call super.renderPopupScreen instead
-    public final void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
+    public final void render(PoseStack graphics, int mouseX, int mouseY, float partialTicks)
     {
         if (this.backgroundScreen != null)
         // render background screen.
@@ -51,24 +51,24 @@ public abstract class LayeredScreen extends Screen
             this.backgroundScreen.render(graphics, -1, -1, partialTicks);
         }
         // translate z +2000
-        graphics.pose().translate(0.0D, 0.0D, 2000F);
+        graphics.translate(0.0D, 0.0D, 2000F);
 
         this.renderPopupScreenBackground(graphics, mouseX, mouseY, partialTicks);
         this.renderPopupScreen(graphics, mouseX, mouseY, partialTicks);
     }
 
-    protected void renderPopupScreen(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPopupScreen(PoseStack graphics, int mouseX, int mouseY, float partialTicks)
     {
         super.render(graphics, mouseX, mouseY, partialTicks);
     }
 
-    protected void renderPopupScreenBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPopupScreenBackground(PoseStack graphics, int mouseX, int mouseY, float partialTicks)
     {
 
     }
 
     @Override
-    public final void renderBackground(GuiGraphics graphics)
+    public final void renderBackground(PoseStack graphics)
     {
         // no use
     }

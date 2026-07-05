@@ -9,14 +9,14 @@ class GlobalWaypointGroupEventTest
     @Test
     void createIsCancelable()
     {
-        var event = new GlobalWaypointGroupEvent(null, GlobalWaypointGroupEvent.Context.CREATE);
+        GlobalWaypointGroupEvent event = new GlobalWaypointGroupEvent(null, GlobalWaypointGroupEvent.Context.CREATE);
         assertTrue(event.isCancellable());
     }
 
     @Test
     void deletedIsNotCancelable()
     {
-        var event = new GlobalWaypointGroupEvent(null, GlobalWaypointGroupEvent.Context.DELETED);
+        GlobalWaypointGroupEvent event = new GlobalWaypointGroupEvent(null, GlobalWaypointGroupEvent.Context.DELETED);
         assertFalse(event.isCancellable());
     }
 }

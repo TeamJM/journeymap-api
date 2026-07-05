@@ -1,5 +1,5 @@
 plugins {
-    id 'net.neoforged.moddev.legacyforge'
+    id 'agency.highlysuspect.minivan' version '0.5'
     id 'multiloader-common'
 }
 
@@ -51,18 +51,20 @@ sourceSets {
 }
 
 
-legacyForge {
-    mcpVersion = minecraft_version
-    parchment {
-        minecraftVersion = parchment_minecraft
-        mappingsVersion = parchment_version
-    }
-    // The moddev plugin adds the Minecraft dependency to main only. The unit tests (MockClientAPI,
-    // TeleportEventTest) reference net.minecraft.* and bootstrap Minecraft, so add the fully-resolved
-    // modding dependencies to the test source set too. Using the moddev API (not a raw classpath +=)
-    // keeps a single coherent dependency graph - a hand-merged classpath duplicated log4j-api/-core and
-    // broke Bootstrap's logging init with a ServiceLoaderUtil NoSuchMethodError.
-    addModdingDependenciesTo(sourceSets.test)
+// minivan puts vanilla Minecraft (official Mojang names / mojmap) on compileOnly.
+// Replaces net.neoforged.moddev.legacyforge, whose NeoForm Runtime cannot build pre-1.17 MCP.
+minivan {
+    version project.minecraft_version
+}
+
+// The unit tests (MockClientAPI, TeleportEventTest) reference net.minecraft.* - give the test source
+// set the same Minecraft classpath minivan added to main's compileOnly, for BOTH compile and runtime.
+// Runtime too: the tests boot Minecraft (Bootstrap.bootStrap()) and JUnit reflects over MC-referencing
+// classes (MockClientAPI -> Vec3i) during discovery, so MC must be on the test runtime classpath or
+// discovery fails with NoClassDefFoundError.
+configurations {
+    testCompileOnly.extendsFrom compileOnly
+    testRuntimeOnly.extendsFrom compileOnly
 }
 
 dependencies {
@@ -70,6 +72,15 @@ dependencies {
     // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
+    // JetBrains annotations (@Nullable/@NotNull/@ApiStatus) - MDG legacyforge provided these
+    // transitively; minivan provides only Minecraft, so declare them explicitly.
+    compileOnly group: 'org.jetbrains', name: 'annotations', version: '24.1.0'
+}
+
+tasks.withType(Javadoc).configureEach {
+    // Java 8's javadoc doclint rejects some HTML in the API javadoc (e.g. bare '>') that the
+    // Java 17 toolchain tolerated. Disable doclint so withJavadocJar() can build.
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 configurations {

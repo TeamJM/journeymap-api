@@ -9,21 +9,21 @@ class GlobalWaypointEventTest
     @Test
     void createIsCancelable()
     {
-        var event = new GlobalWaypointEvent(null, GlobalWaypointEvent.Context.CREATE);
+        GlobalWaypointEvent event = new GlobalWaypointEvent(null, GlobalWaypointEvent.Context.CREATE);
         assertTrue(event.isCancellable());
     }
 
     @Test
     void updateIsCancelable()
     {
-        var event = new GlobalWaypointEvent(null, GlobalWaypointEvent.Context.UPDATE);
+        GlobalWaypointEvent event = new GlobalWaypointEvent(null, GlobalWaypointEvent.Context.UPDATE);
         assertTrue(event.isCancellable());
     }
 
     @Test
     void deletedIsNotCancelable()
     {
-        var event = new GlobalWaypointEvent(null, GlobalWaypointEvent.Context.DELETED);
+        GlobalWaypointEvent event = new GlobalWaypointEvent(null, GlobalWaypointEvent.Context.DELETED);
         assertFalse(event.isCancellable());
     }
 }

@@ -86,8 +86,10 @@ dependencies {
     // Bootstrap logging init (ServiceLoaderUtil.loadServices NoSuchMethodError) in tests that boot MC.
     testImplementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.19.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
-    testImplementation 'org.mockito:mockito-core:5.20.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.20.0'
+    // Mockito 5.x is compiled for Java 11 (class version 55) - the 1.16.5 API targets Java 8, so pin
+    // to the last Java-8-compatible line (4.11.0). JUnit 5.10.x keeps its Java 8 baseline.
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.11.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
 }
 
@@ -183,6 +185,9 @@ tasks.named('processTestmodResources', ProcessResources) {
 /* Javadoc properties */
 javadoc {
     title = project.title_javadoc
+    // Java 8 javadoc enforces strict doclint; the loader modules compile the common API source in and
+    // trip it, failing withJavadocJar(). Disable doclint here so common/fabric/forge javadoc jars build.
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 def getDate() {

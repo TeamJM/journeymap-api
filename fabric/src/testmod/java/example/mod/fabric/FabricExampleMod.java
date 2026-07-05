@@ -28,8 +28,8 @@ public class FabricExampleMod implements ModInitializer
         EntitySleepEvents.START_SLEEPING.register((entity, pos) ->
                 BedWaypointHandler.onPlayerSlept(
                         pos,
-                        entity.level().dimension(),
-                        entity.level().isClientSide()));
+                        entity.level.dimension(),
+                        entity.level.isClientSide()));
 
         ClientChunkEvents.CHUNK_LOAD.register((world, chunk) ->
                 SlimeChunkOverlayHandler.onChunkLoad(chunk, world.dimension(), world.isClientSide()));

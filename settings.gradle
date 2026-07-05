@@ -2,6 +2,10 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
+        maven {
+            name = 'SleepingTown'
+            url = uri('https://repo.sleeping.town/')
+        }
         exclusiveContent {
             forRepository {
                 maven {

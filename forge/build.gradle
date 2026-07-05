@@ -32,6 +32,12 @@ minecraft {
 }
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
+// Configurations for the SRG-period -> modern-mojmap compile remap (see the remap block below).
+configurations {
+    fart          // ForgeAutoRenamingTool (fat jar) - remaps the forge userdev jar
+    mcpConfig     // mcp_config zip - source of joined.tsrg (obf -> srg)
+}
+
 dependencies {
     implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
     // eventbus-validator 7.0-beta.10 is compiled for Java 21 (class 65.0); this module's toolchain is
@@ -40,6 +46,152 @@ dependencies {
     // toolchain moves to Java 21+ (or pin a Java 17-compiled validator version).
     // annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
     testmodImplementation sourceSets.main.output
+
+    // :common uses JetBrains annotations (@Nullable/@ApiStatus) as compileOnly (minivan provides only
+    // Minecraft); the forge module compiles that same common source, so it needs them too. Fabric gets
+    // them transitively via loom.
+    compileOnly group: 'org.jetbrains', name: 'annotations', version: '24.1.0'
+
+    fart "net.minecraftforge:ForgeAutoRenamingTool:1.0.2:all"
+    mcpConfig "de.oceanlabs.mcp:mcp_config:${mcp_config_version}@zip"
+}
+
+// =====================================================================================================
+// Forge compile remap: SRG-period -> modern-mojmap. The FG7 forge userdev jar carries Mojang's *period*
+// (pre-1.17 Great-Rename) MC class names, while :common is minivan-mapped to *modern* names. Member names
+// already match (both official), so this is a CLASS-ONLY remap: join joined.tsrg (obf->srg) with Mojang's
+// official client mappings (obf->modern), run ForgeAutoRenamingTool over the forge userdev jar, and
+// prepend the result to compileJava's classpath so the modern names win. See common-networking for the
+// canonical copy of this block.
+// =====================================================================================================
+def mojmapDir = layout.buildDirectory.dir("mojmap")
+def joinedTsrgFile = mojmapDir.map { it.file("joined.tsrg") }
+def clientMappingsFile = mojmapDir.map { it.file("client.txt") }
+def srg2mojFile = mojmapDir.map { it.file("srg2mojmap.srg") }
+def moj2periodFile = mojmapDir.map { it.file("moj2period.srg") }
+def remappedForgeJar = mojmapDir.map { it.file("forge-${minecraft_version}-${forge_version}-mojmap.jar") }
+def periodJar = mojmapDir.map { it.file("reobf-period.jar") }
+
+def extractJoinedTsrg = tasks.register('extractJoinedTsrg', Copy) {
+    from({ zipTree(configurations.mcpConfig.singleFile) }) {
+        include 'config/joined.tsrg'
+        eachFile { it.path = it.name }
+    }
+    includeEmptyDirs = false
+    into mojmapDir
+}
+
+def downloadClientMappings = tasks.register('downloadClientMappings') {
+    inputs.property('url', project.mojang_client_mappings_url)
+    inputs.property('sha1', project.mojang_client_mappings_sha1)
+    outputs.file clientMappingsFile
+    doLast {
+        def out = clientMappingsFile.get().asFile
+        out.parentFile.mkdirs()
+        new URL(project.mojang_client_mappings_url).withInputStream { i -> out.withOutputStream { o -> o << i } }
+        def sha1 = java.security.MessageDigest.getInstance('SHA-1').digest(out.bytes).encodeHex().toString()
+        if (sha1 != project.mojang_client_mappings_sha1) {
+            throw new GradleException("client mappings sha1 mismatch: expected ${project.mojang_client_mappings_sha1} got ${sha1}")
+        }
+    }
+}
+
+def buildForgeRemapMaps = tasks.register('buildForgeRemapMaps') {
+    dependsOn extractJoinedTsrg, downloadClientMappings
+    inputs.file joinedTsrgFile
+    inputs.file clientMappingsFile
+    outputs.file srg2mojFile
+    outputs.file moj2periodFile
+    doLast {
+        def obf2srg = [:]
+        joinedTsrgFile.get().asFile.eachLine { line ->
+            if (line && !Character.isWhitespace(line.charAt(0) as char)) {
+                def p = line.trim().split(' ')
+                if (p.length == 2) obf2srg[p[0]] = p[1]
+            }
+        }
+        def obf2moj = [:]
+        clientMappingsFile.get().asFile.eachLine { line ->
+            if (line && !Character.isWhitespace(line.charAt(0) as char) && !line.startsWith('#') && line.endsWith(':') && line.contains(' -> ')) {
+                def parts = line.split(' -> ')
+                def modern = parts[0].trim().replace('.', '/')
+                def obf = parts[1].trim()[0..-2].replace('.', '/')
+                obf2moj[obf] = modern
+            }
+        }
+        def fwd = []
+        def rev = []
+        obf2srg.each { obf, srg ->
+            def moj = obf2moj[obf]
+            if (moj != null && srg != moj) {
+                fwd << "CL: ${srg} ${moj}".toString()
+                rev << "CL: ${moj} ${srg}".toString()
+            }
+        }
+        fwd.sort(); rev.sort()
+        srg2mojFile.get().asFile.parentFile.mkdirs()
+        srg2mojFile.get().asFile.text = fwd.join('\n') + '\n'
+        moj2periodFile.get().asFile.text = rev.join('\n') + '\n'
+        logger.lifecycle("buildForgeRemapMaps: ${fwd.size()} class remaps (srg2moj + moj2period)")
+    }
+}
+
+def remapForgeToMojmap = tasks.register('remapForgeToMojmap', JavaExec) {
+    dependsOn buildForgeRemapMaps
+    inputs.file srg2mojFile
+    outputs.file remappedForgeJar
+    classpath = configurations.fart
+    mainClass = 'net.minecraftforge.fart.Main'
+    doFirst {
+        def forgeJar = configurations.compileClasspath.files.find {
+            it.name == "forge-${minecraft_version}-${forge_version}.jar"
+        }
+        if (forgeJar == null) {
+            throw new GradleException("forge userdev jar (forge-${minecraft_version}-${forge_version}.jar) not found on compileClasspath")
+        }
+        remappedForgeJar.get().asFile.parentFile.mkdirs()
+        args '--input', forgeJar.absolutePath,
+                '--output', remappedForgeJar.get().asFile.absolutePath,
+                '--map', srg2mojFile.get().asFile.absolutePath
+    }
+}
+
+tasks.named('compileJava', JavaCompile) {
+    dependsOn remapForgeToMojmap
+    classpath = files(remappedForgeJar) + classpath
+}
+
+// The testmod source set compiles the shared example mod against Minecraft too, but FG7 only wires the
+// srg-period MC to compileJava - so prepend the same modern-mojmap forge jar here or the testmod fails
+// with "package net.minecraft... does not exist" (it otherwise sees only srg-period names).
+tasks.named('compileTestmodJava', JavaCompile) {
+    dependsOn remapForgeToMojmap
+    classpath = files(remappedForgeJar) + classpath
+}
+
+tasks.named('javadoc', Javadoc) {
+    dependsOn remapForgeToMojmap
+    classpath = files(remappedForgeJar) + classpath
+}
+
+// Stage 1 of reobf: ART-remap the compiled (modern) jar back to period-official class names in place.
+def reobfToPeriod = tasks.register('reobfToPeriod', JavaExec) {
+    dependsOn buildForgeRemapMaps
+    classpath = configurations.fart
+    mainClass = 'net.minecraftforge.fart.Main'
+    doFirst {
+        def jarFile = tasks.named('jar', Jar).get().archiveFile.get().asFile
+        def tmp = periodJar.get().asFile
+        tmp.parentFile.mkdirs()
+        args '--input', jarFile.absolutePath,
+                '--output', tmp.absolutePath,
+                '--map', moj2periodFile.get().asFile.absolutePath
+    }
+    doLast {
+        def jarFile = tasks.named('jar', Jar).get().archiveFile.get().asFile
+        java.nio.file.Files.move(periodJar.get().asFile.toPath(), jarFile.toPath(),
+                java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+    }
 }
 
 // Reobfuscate the named jar to SRG names for 1.20.1 Forge's SRG runtime.
@@ -50,6 +202,8 @@ dependencies {
 // Reobfuscate the jar to SRG names for 1.20.1 Forge's SRG runtime, IN PLACE: the renamer overwrites
 // the jar task's own output, so the single clean-named jar becomes SRG (JM ships clean reobf'd jars,
 // never an -srg classifier). `jar` is finalized by the reobf step.
+// Stage 2 of reobf: renamer reobfs period-official -> srg-runtime via FG7's toSrgFile. The compiled jar
+// is modern-mojmap, so reobfToPeriod (above) runs first. Linear chain: jar -> reobfToPeriod -> renameJar.
 renamer.mappings.from minecraft.dependency.toSrgFile
 
 def reobfJar = renamer.classes(tasks.named('jar', Jar)) {
@@ -57,8 +211,10 @@ def reobfJar = renamer.classes(tasks.named('jar', Jar)) {
     output = tasks.named('jar', Jar).flatMap { it.archiveFile }
 }
 
+reobfToPeriod.configure { finalizedBy reobfJar }
+
 tasks.named('jar', Jar) {
-    finalizedBy reobfJar
+    finalizedBy reobfToPeriod
 }
 
 // The reobf overwrites the jar in place, so tasks that read the jar artifact must run after it.

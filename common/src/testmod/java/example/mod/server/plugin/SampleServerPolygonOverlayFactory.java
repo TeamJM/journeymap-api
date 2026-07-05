@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public final class SampleServerPolygonOverlayFactory
                                                    BlockPos centre, int halfSize)
     {
         int y = centre.getY();
-        OverlayPoints outer = new OverlayPoints(List.of(
+        OverlayPoints outer = new OverlayPoints(Arrays.asList(
                 BlockPos.asLong(centre.getX() - halfSize, y, centre.getZ() - halfSize),
                 BlockPos.asLong(centre.getX() + halfSize, y, centre.getZ() - halfSize),
                 BlockPos.asLong(centre.getX() + halfSize, y, centre.getZ() + halfSize),
@@ -75,6 +76,6 @@ public final class SampleServerPolygonOverlayFactory
                 "Sample Claim",                            // label
                 "Pushed from the example server plugin"); // title
 
-        return new ServerPolygon(overlayId, dimension, List.of(polygon), props);
+        return new ServerPolygon(overlayId, dimension, Arrays.asList(polygon), props);
     }
 }

@@ -44,11 +44,37 @@ public class EventImpl<E> implements Event<E>
         return listeners;
     }
 
-    public record Listener<T>(String modId, Consumer<T> listener, Class<?> subscribingClass)
+    public static final class Listener<T>
     {
+        private final String modId;
+        private final Consumer<T> listener;
+        private final Class<?> subscribingClass;
+
+        public Listener(String modId, Consumer<T> listener, Class<?> subscribingClass)
+        {
+            this.modId = modId;
+            this.listener = listener;
+            this.subscribingClass = subscribingClass;
+        }
+
         public Listener(String modId, Consumer<T> listener)
         {
             this(modId, listener, null);
+        }
+
+        public String modId()
+        {
+            return modId;
+        }
+
+        public Consumer<T> listener()
+        {
+            return listener;
+        }
+
+        public Class<?> subscribingClass()
+        {
+            return subscribingClass;
         }
     }
 

@@ -18,7 +18,7 @@ import journeymap.api.v2.client.util.UIState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.MaterialColor;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public final class SampleMarkerOverlayFactory
             {
                 colorIndex = 1;
             }
-            int color = MapColor.byId(colorIndex).col;
+            int color = MaterialColor.MATERIAL_COLORS[colorIndex].col;
 
             MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f);
             icon.centerAnchors();

@@ -1,6 +1,8 @@
 package journeymap.api.v2.client.event;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.function.Supplier;
 
@@ -71,7 +73,7 @@ public class RegistryEvent extends ClientEvent
          */
         public void register(String modId, String key, long updateTime, Supplier<String> supplier)
         {
-            registrar.register(modId, Component.translatable(key), updateTime, () -> Component.literal(supplier.get()));
+            registrar.register(modId, new TranslatableComponent(key), updateTime, () -> new TextComponent(supplier.get()));
         }
 
         /**

@@ -19,10 +19,10 @@
 
   "environment": "*",
   "depends": {
-    "fabricloader": ">=0.14.11",
-    "fabric-api": "*",
-    "minecraft": ">=1.19.3",
-    "java": ">=17"
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "~1.16.5",
+    "java": ">=8"
   },
   "custom": {
     "modmenu": {

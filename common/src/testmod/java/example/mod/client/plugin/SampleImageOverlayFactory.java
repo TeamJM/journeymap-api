@@ -69,7 +69,7 @@ public final class SampleImageOverlayFactory
         String displayId = String.format("image%s,%s,%s,%s", upperLeft.getX(), upperLeft.getZ(), blocksWide, blocksTall);
         ImageOverlay imageOverlay = new ImageOverlay(ExampleMod.MODID, upperLeft, lowerRight, image);
         imageOverlay.getImage().setOpacity(.8f);
-        imageOverlay.setDimension(Minecraft.getInstance().player.level().dimension());
+        imageOverlay.setDimension(Minecraft.getInstance().player.level.dimension());
         imageOverlay.setLabel("Image Overlay")
                 .setTitle(displayId)
                 .setOverlayListener(new ImageListener(jmAPI, imageOverlay));

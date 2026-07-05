@@ -118,7 +118,7 @@ public final class ServerEventListener
     {
         IServerOverlayAPI overlayApi = jmServerApi.getOverlayApi();
         ServerPolygon polygon = SampleServerPolygonOverlayFactory.createSampleSquare(
-                "sample-claim", player.level().dimension(), centre, 32);
+                "sample-claim", player.level.dimension(), centre, 32);
         overlayApi.show(player, ExampleMod.MODID, polygon);
         ExampleMod.LOGGER.info("Pushed sample claim to %s at %s", player.getName().getString(), centre);
     }

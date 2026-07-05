@@ -65,7 +65,7 @@ enum MockClientAPI implements IClientAPI
     // and avoids all the boilerplate check-and-create-if-missing mess.
     private final LoadingCache<String, LinkedHashMultimap<DisplayType, String>> modDisplayables =
             CacheBuilder.newBuilder().build(
-                    new CacheLoader<>()
+                    new CacheLoader<String, LinkedHashMultimap<DisplayType, String>>()
                     {
                         public LinkedHashMultimap<DisplayType, String> load(String key)
                         {

@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -42,22 +42,24 @@ public class ForgeExampleMod
     {
         BedWaypointHandler.onPlayerSlept(
                 event.getPos(),
-                event.getEntity().level().dimension(),
-                event.getEntity().level().isClientSide());
+                event.getEntity().level.dimension(),
+                event.getEntity().level.isClientSide());
     }
 
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event)
     {
-        if (event.getChunk() instanceof LevelChunk levelChunk && event.getLevel() instanceof Level level)
+        if (event.getChunk() instanceof LevelChunk && event.getWorld() instanceof Level)
         {
-            SlimeChunkOverlayHandler.onChunkLoad(levelChunk, level.dimension(), event.getLevel().isClientSide());
+            LevelChunk levelChunk = (LevelChunk) event.getChunk();
+            Level level = (Level) event.getWorld();
+            SlimeChunkOverlayHandler.onChunkLoad(levelChunk, level.dimension(), level.isClientSide());
         }
     }
 
     @SubscribeEvent
     public static void onChunkUnload(ChunkEvent.Unload event)
     {
-        SlimeChunkOverlayHandler.onChunkUnload(event.getChunk().getPos(), event.getLevel().isClientSide());
+        SlimeChunkOverlayHandler.onChunkUnload(event.getChunk().getPos(), ((Level) event.getWorld()).isClientSide());
     }
 }
