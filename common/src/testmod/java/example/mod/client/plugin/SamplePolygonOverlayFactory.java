@@ -17,9 +17,9 @@ import journeymap.api.v2.client.model.ShapeProperties;
 import journeymap.api.v2.client.model.TextProperties;
 import journeymap.api.v2.client.util.PolygonHelper;
 import journeymap.api.v2.client.util.UIState;
+import journeymap.api.v2.common.util.BlockPos;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ChunkCoordIntPair;
 
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -33,10 +33,10 @@ public final class SamplePolygonOverlayFactory
     {
     }
 
-    public static PolygonOverlay create(ChunkPos chunkCoords, int dimension)
+    public static PolygonOverlay create(ChunkCoordIntPair chunkCoords, int dimension)
     {
         String groupName = "Slime Chunks";
-        String label = String.format("Slime Chunk [%s,%s]", chunkCoords.x, chunkCoords.z);
+        String label = String.format("Slime Chunk [%s,%s]", chunkCoords.chunkXPos, chunkCoords.chunkZPos);
 
         ShapeProperties shapeProps = new ShapeProperties()
                 .setStrokeWidth(2)
@@ -51,7 +51,7 @@ public final class SamplePolygonOverlayFactory
                 .setMinZoom(2)
                 .setFontShadow(true);
 
-        MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.x, 70, chunkCoords.z);
+        MapPolygon polygon = PolygonHelper.createChunkPolygon(chunkCoords.chunkXPos, 70, chunkCoords.chunkZPos);
 
         PolygonOverlay slimeChunkOverlay = new PolygonOverlay(ExampleMod.MODID, dimension, shapeProps, polygon);
         slimeChunkOverlay.setOverlayGroupName(groupName)
@@ -99,8 +99,16 @@ public final class SamplePolygonOverlayFactory
             sp.setStrokeColor(new Random().nextInt(0xffffff));
             sp.setStrokeOpacity(1f);
             String title = "%s blocks away";
-            BlockPos playerLoc = Minecraft.getMinecraft().player.getPosition();
-            int distance = (int) Math.sqrt(playerLoc.distanceSq(blockPosition));
+            // 1.7.10 EntityPlayer has no getPosition(); floor the entity's own double position
+            // fields (BlockPos(double, double, double) does the flooring, MC parity).
+            BlockPos playerLoc = new BlockPos(Minecraft.getMinecraft().thePlayer.posX,
+                    Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ);
+            // BlockPos shim has no distanceSq(); no common/src/main call site needs it, so compute
+            // the squared distance directly here.
+            double dx = playerLoc.getX() - blockPosition.getX();
+            double dy = playerLoc.getY() - blockPosition.getY();
+            double dz = playerLoc.getZ() - blockPosition.getZ();
+            int distance = (int) Math.sqrt(dx * dx + dy * dy + dz * dz);
             overlay.setTitle(String.format(title, distance));
         }
 

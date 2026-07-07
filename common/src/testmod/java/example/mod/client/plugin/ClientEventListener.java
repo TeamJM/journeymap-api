@@ -30,10 +30,11 @@ import journeymap.api.v2.client.fullscreen.ThemeButtonDisplay;
 import journeymap.api.v2.common.event.ClientEventRegistry;
 import journeymap.api.v2.common.event.FullscreenEventRegistry;
 import journeymap.api.v2.common.event.MinimapEventRegistry;
+import journeymap.api.v2.common.util.BlockPos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 
 /**
  * Subscribes to every client-side JourneyMap event registry. Each handler is a
@@ -88,7 +89,11 @@ public class ClientEventListener
 
     private void spawnSampleOverlays(MappingEvent event)
     {
-        BlockPos pos = Minecraft.getMinecraft().player.getPosition();
+        // 1.7.10 EntityPlayer has no getPosition() (that was introduced with BlockPos); build one
+        // from the entity's own floating-point position fields, which the BlockPos(double, double,
+        // double) constructor floors to the containing block (MC parity).
+        BlockPos pos = new BlockPos(Minecraft.getMinecraft().thePlayer.posX,
+                Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.posZ);
 
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Image))
         {
@@ -99,8 +104,12 @@ public class ClientEventListener
             SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
         }
 
-        BlockPos bedLocation = Minecraft.getMinecraft().player.getBedLocation();
-        BlockPos sleepPos = bedLocation != null ? bedLocation : new BlockPos(0, 0, 0);
+        // 1.7.10 EntityPlayer#getBedLocation() returns ChunkCoordinates (the pre-BlockPos position
+        // holder), not BlockPos.
+        ChunkCoordinates bedLocation = Minecraft.getMinecraft().thePlayer.getBedLocation();
+        BlockPos sleepPos = bedLocation != null
+                ? new BlockPos(bedLocation.posX, bedLocation.posY, bedLocation.posZ)
+                : new BlockPos(0, 0, 0);
         SampleWaypointFactory.createBedWaypoint(jmAPI, sleepPos, event.dimension);
 
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
@@ -123,7 +132,8 @@ public class ClientEventListener
     {
         if (event.getActiveUiState().ui.equals(Context.UI.Minimap))
         {
-            String name = event.getWrappedEntity().getEntityRef().get().getName();
+            // 1.7.10 Entity has no getName(); the equivalent is getCommandSenderName().
+            String name = event.getWrappedEntity().getEntityRef().get().getCommandSenderName();
             if (name.toLowerCase().contains("slime"))
             {
                 event.getWrappedEntity().setColor(0x0000FF);

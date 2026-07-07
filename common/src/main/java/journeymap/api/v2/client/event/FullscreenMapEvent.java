@@ -1,7 +1,7 @@
 package journeymap.api.v2.client.event;
 
 import journeymap.api.v2.client.fullscreen.IBlockInfo;
-import net.minecraft.util.math.BlockPos;
+import journeymap.api.v2.common.util.BlockPos;
 
 import java.awt.geom.Point2D;
 

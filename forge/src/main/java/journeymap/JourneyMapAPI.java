@@ -1,6 +1,6 @@
 package journeymap;
 
-import net.minecraftforge.fml.common.Mod;
+import cpw.mods.fml.common.Mod;
 
 @Mod(modid = "journeymap_api")
 public class JourneyMapAPI

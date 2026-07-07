@@ -1,11 +1,11 @@
 package journeymap.api.v2.client.entity;
 
+import journeymap.api.v2.common.util.BlockPos;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
@@ -61,7 +61,7 @@ public interface WrappedEntity
      *
      * @return - the position vector.
      */
-    Vec3d getPosition();
+    Vec3 getPosition();
 
     /**
      * The chunk position of the entity.
@@ -85,7 +85,7 @@ public interface WrappedEntity
      * @return - the custom name.
      */
     @Nullable
-    ITextComponent getCustomName();
+    IChatComponent getCustomName();
 
     /**
      * The color applied to the team-name label for players. Defaults to the
@@ -127,7 +127,7 @@ public interface WrappedEntity
      * @return - the Biome.
      */
     @Nullable
-    Biome getBiome();
+    BiomeGenBase getBiome();
 
     /**
      * The dimension where the entity is located.
@@ -206,14 +206,14 @@ public interface WrappedEntity
      * @return - The tooltip list
      */
     @Nullable
-    List<ITextComponent> getEntityToolTips();
+    List<IChatComponent> getEntityToolTips();
 
     /**
      * Sets the entity tooltip.
      *
      * @param entityToolTips - The tooltip list
      */
-    void setEntityToolTips(@Nullable List<ITextComponent> entityToolTips);
+    void setEntityToolTips(@Nullable List<IChatComponent> entityToolTips);
 
     /**
      * Set the icon location for the entity. The icon is the image shown on the map if the player has display type set to icon.
@@ -227,7 +227,7 @@ public interface WrappedEntity
      *
      * @param customName - the custom name Component.
      */
-    void setCustomName(ITextComponent customName);
+    void setCustomName(IChatComponent customName);
 
     /**
      * Sets the custom name of the entity.

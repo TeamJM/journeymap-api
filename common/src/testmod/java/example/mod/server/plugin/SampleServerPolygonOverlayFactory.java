@@ -13,8 +13,8 @@ import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.server.overlay.OverlayPoints;
 import journeymap.api.v2.server.overlay.OverlayPolygon;
 import journeymap.api.v2.server.overlay.OverlayShapeProps;
+import journeymap.api.v2.common.util.BlockPos;
 import journeymap.api.v2.server.overlay.ServerPolygon;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -53,10 +53,10 @@ public final class SampleServerPolygonOverlayFactory
     {
         int y = centre.getY();
         OverlayPoints outer = new OverlayPoints(Arrays.asList(
-                new BlockPos(centre.getX() - halfSize, y, centre.getZ() - halfSize).toLong(),
-                new BlockPos(centre.getX() + halfSize, y, centre.getZ() - halfSize).toLong(),
-                new BlockPos(centre.getX() + halfSize, y, centre.getZ() + halfSize).toLong(),
-                new BlockPos(centre.getX() - halfSize, y, centre.getZ() + halfSize).toLong()));
+                packedBlockPos(centre.getX() - halfSize, y, centre.getZ() - halfSize),
+                packedBlockPos(centre.getX() + halfSize, y, centre.getZ() - halfSize),
+                packedBlockPos(centre.getX() + halfSize, y, centre.getZ() + halfSize),
+                packedBlockPos(centre.getX() - halfSize, y, centre.getZ() + halfSize)));
 
         OverlayPolygon polygon = new OverlayPolygon(outer, null);
 
@@ -75,5 +75,21 @@ public final class SampleServerPolygonOverlayFactory
                 "Pushed from the example server plugin"); // title
 
         return new ServerPolygon(overlayId, dimension, Arrays.asList(polygon), props);
+    }
+
+    /**
+     * Packs a block coordinate into a single {@code long}, matching the wire format
+     * {@link OverlayPoints} documents ({@code BlockPos#toLong()}). 1.7.10 has no
+     * {@code net.minecraft.util.math.BlockPos} (and the API's own shim
+     * {@link journeymap.api.v2.common.util.BlockPos} does not implement {@code toLong()}, since no
+     * common/src/main call site needs it), so this reproduces the same bit layout MC's real
+     * {@code BlockPos#toLong()} uses on the versions that have it (X: 26 bits at shift 38, Y: 12
+     * bits at shift 26, Z: 26 bits at shift 0 - confirmed by disassembling 1.12.2's
+     * {@code BlockPos.toLong()}), so the wire value this addon sends is identical no matter which
+     * Minecraft version the server addon itself is built against.
+     */
+    private static long packedBlockPos(int x, int y, int z)
+    {
+        return ((long) x & 0x3FFFFFFL) << 38 | ((long) y & 0xFFFL) << 26 | (long) z & 0x3FFFFFFL;
     }
 }

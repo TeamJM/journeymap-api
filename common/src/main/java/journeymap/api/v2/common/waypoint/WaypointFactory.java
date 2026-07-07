@@ -1,6 +1,6 @@
 package journeymap.api.v2.common.waypoint;
 
-import net.minecraft.util.math.BlockPos;
+import journeymap.api.v2.common.util.BlockPos;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 

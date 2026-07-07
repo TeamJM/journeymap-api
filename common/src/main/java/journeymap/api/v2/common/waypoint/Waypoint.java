@@ -1,7 +1,7 @@
 package journeymap.api.v2.common.waypoint;
 
+import journeymap.api.v2.common.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;

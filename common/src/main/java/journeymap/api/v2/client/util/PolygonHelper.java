@@ -23,8 +23,8 @@ package journeymap.api.v2.client.util;
 import journeymap.api.v2.client.model.MapPolygon;
 import journeymap.api.v2.client.model.MapPolygonWithHoles;
 import journeymap.api.v2.common.tuple.Tuple2;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
+import journeymap.api.v2.common.util.BlockPos;
+import net.minecraft.world.ChunkCoordIntPair;
 
 import javax.annotation.Nonnull;
 import java.awt.Polygon;
@@ -107,12 +107,12 @@ public class PolygonHelper
      * @return An Area of the corresponding block coordinates.
      */
     @Nonnull
-    public static Area createChunksArea(@Nonnull final Collection<ChunkPos> chunks)
+    public static Area createChunksArea(@Nonnull final Collection<ChunkCoordIntPair> chunks)
     {
         final Area area = new Area();
-        for (final ChunkPos chunkPos : chunks)
+        for (final ChunkCoordIntPair chunkPos : chunks)
         {
-            area.add(new Area(new Rectangle(chunkPos.getXStart(), chunkPos.getZStart(), 16, 16)));
+            area.add(new Area(new Rectangle(chunkPos.chunkXPos << 4, chunkPos.chunkZPos << 4, 16, 16)));
         }
         return area;
     }
@@ -126,7 +126,7 @@ public class PolygonHelper
      * @return One or more polygons that cover the specified chunks.
      */
     @Nonnull
-    public static List<MapPolygonWithHoles> createChunksPolygon(@Nonnull final Collection<ChunkPos> chunks, final int y)
+    public static List<MapPolygonWithHoles> createChunksPolygon(@Nonnull final Collection<ChunkCoordIntPair> chunks, final int y)
     {
         return createPolygonFromArea(createChunksArea(chunks), y);
     }

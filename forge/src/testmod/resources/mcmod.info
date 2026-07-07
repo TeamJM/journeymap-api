@@ -1,0 +1,11 @@
+[
+{
+  "modid": "examplemod",
+  "name": "Example for JourneyMap API",
+  "description": "Example mod showing how to write a plugin for the JourneyMap API.",
+  "version": "${version}",
+  "mcversion": "${minecraft_version}",
+  "url": "http://journeymap.info",
+  "authorList": ["Techbrew", "Mysticdrew"]
+}
+]

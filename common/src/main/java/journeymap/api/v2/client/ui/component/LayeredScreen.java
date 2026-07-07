@@ -3,17 +3,14 @@ package journeymap.api.v2.client.ui.component;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.IChatComponent;
 import org.lwjgl.input.Keyboard;
-
-import java.io.IOException;
+import org.lwjgl.opengl.GL11;
 
 /*
- * PORT NOTE (1.16.5 -> 1.12.2): 1.12.2's GuiScreen predates the PoseStack-based render pipeline and the
+ * PORT NOTE (1.12.2 -> 1.7.10): 1.7.10's GuiScreen predates the PoseStack-based render pipeline and the
  * narrator subsystem, so this class is adapted to the fixed-function GuiScreen lifecycle
- * (drawScreen/initGui/setWorldAndResolution/onGuiClosed) rather than a line-for-line rename. See
- * task-4.2-report.md DECISIONS for details.
+ * (drawScreen/initGui/setWorldAndResolution/onGuiClosed) rather than a line-for-line rename.
  */
 public abstract class LayeredScreen extends GuiScreen
 {
@@ -24,10 +21,10 @@ public abstract class LayeredScreen extends GuiScreen
     private boolean closing;
 
     /**
-     * The {@code component} parameter is unused on 1.12.2 - GuiScreen has no title/narration concept
+     * The {@code component} parameter is unused on 1.7.10 - GuiScreen has no title/narration concept
      * here - and is kept only for source parity with the 1.16.5 API.
      */
-    protected LayeredScreen(ITextComponent component)
+    protected LayeredScreen(IChatComponent component)
     {
         this.minecraft = Minecraft.getMinecraft();
     }
@@ -39,8 +36,10 @@ public abstract class LayeredScreen extends GuiScreen
         {
             this.backgroundScreen = this.minecraft.currentScreen;
             this.minecraft.currentScreen = this;
-            ScaledResolution scaledResolution = new ScaledResolution(minecraft);
-            this.setWorldAndResolution(minecraft, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight());
+            ScaledResolution scaledResolution = new ScaledResolution(minecraft, minecraft.displayWidth, minecraft.displayHeight);
+            // Call super directly, not the overridden setWorldAndResolution below: backgroundScreen was
+            // just captured above and is already sized correctly, so it must not be cascaded into yet.
+            super.setWorldAndResolution(minecraft, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight());
         }
         else
         {
@@ -48,13 +47,19 @@ public abstract class LayeredScreen extends GuiScreen
         }
     }
 
+    /*
+     * PORT NOTE (1.12.2 -> 1.7.10): 1.7.10's GuiScreen has no onResize(Minecraft, int, int) hook - window
+     * resize is delivered solely through setWorldAndResolution(Minecraft, int, int) (see
+     * Minecraft.resize()). Overriding setWorldAndResolution instead keeps the backgroundScreen in sync
+     * on a real resize, matching the intent of the 1.12.2 onResize override it replaces.
+     */
     @Override
-    public void onResize(Minecraft minecraft, int width, int height)
+    public void setWorldAndResolution(Minecraft minecraft, int width, int height)
     {
-        super.onResize(minecraft, width, height);
+        super.setWorldAndResolution(minecraft, width, height);
         if (this.backgroundScreen != null)
         {
-            this.backgroundScreen.onResize(this.minecraft, this.width, this.height);
+            this.backgroundScreen.setWorldAndResolution(this.minecraft, this.width, this.height);
         }
     }
 
@@ -68,7 +73,7 @@ public abstract class LayeredScreen extends GuiScreen
             this.backgroundScreen.drawScreen(-1, -1, partialTicks);
         }
         // translate z +2000
-        GlStateManager.translate(0.0F, 0.0F, 2000F);
+        GL11.glTranslatef(0.0F, 0.0F, 2000F);
 
         this.renderPopupScreenBackground(mouseX, mouseY, partialTicks);
         this.renderPopupScreen(mouseX, mouseY, partialTicks);
@@ -91,7 +96,7 @@ public abstract class LayeredScreen extends GuiScreen
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    protected void keyTyped(char typedChar, int keyCode)
     {
         if (keyCode == Keyboard.KEY_ESCAPE)
         {

@@ -19,10 +19,10 @@ import journeymap.api.v2.server.event.TeleportEvent;
 import journeymap.api.v2.server.event.WaypointPendingActionEvent;
 import journeymap.api.v2.server.event.WaypointPendingReceivedEvent;
 import journeymap.api.v2.server.event.WaypointShareSubmitEvent;
+import journeymap.api.v2.common.util.BlockPos;
 import journeymap.api.v2.server.overlay.IServerOverlayAPI;
 import journeymap.api.v2.server.overlay.ServerPolygon;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.math.BlockPos;
 
 /**
  * Subscribes to every {@link ServerEventRegistry} event, demonstrating each
@@ -117,10 +117,13 @@ public final class ServerEventListener
     public void pushSampleClaim(EntityPlayerMP player, BlockPos centre)
     {
         IServerOverlayAPI overlayApi = jmServerApi.getOverlayApi();
+        // 1.7.10: EntityPlayerMP's World is the inherited field worldObj (not world), and
+        // World.provider.dimensionId is a plain int field, not a getDimension() method.
         ServerPolygon polygon = SampleServerPolygonOverlayFactory.createSampleSquare(
-                "sample-claim", player.world.provider.getDimension(), centre, 32);
+                "sample-claim", player.worldObj.provider.dimensionId, centre, 32);
         overlayApi.show(player, ExampleMod.MODID, polygon);
-        ExampleMod.LOGGER.info("Pushed sample claim to %s at %s", player.getName(), centre);
+        // 1.7.10 Entity has no getName(); the equivalent is getCommandSenderName().
+        ExampleMod.LOGGER.info("Pushed sample claim to %s at %s", player.getCommandSenderName(), centre);
     }
 
     /**

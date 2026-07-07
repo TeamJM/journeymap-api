@@ -2,7 +2,7 @@ package journeymap.api.v2.client.display;
 
 import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.util.UIState;
-import net.minecraft.util.math.BlockPos;
+import journeymap.api.v2.common.util.BlockPos;
 
 import java.awt.geom.Point2D;
 

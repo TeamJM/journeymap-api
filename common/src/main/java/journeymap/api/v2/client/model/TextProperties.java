@@ -20,7 +20,7 @@
 
 package journeymap.api.v2.client.model;
 
-import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.display.Displayable;
 import journeymap.api.v2.client.util.UIState;
@@ -351,7 +351,7 @@ public class TextProperties
     @Override
     public String toString()
     {
-        return MoreObjects.toStringHelper(this)
+        return Objects.toStringHelper(this)
                 .add("activeMapTypes", activeMapTypes)
                 .add("activeUIs", activeUIs)
                 .add("backgroundColor", backgroundColor)

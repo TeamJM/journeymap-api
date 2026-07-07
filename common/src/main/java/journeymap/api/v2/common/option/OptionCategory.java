@@ -1,6 +1,6 @@
 package journeymap.api.v2.common.option;
 
-import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 public class OptionCategory
 {
@@ -49,7 +49,7 @@ public class OptionCategory
     @Override
     public String toString()
     {
-        return MoreObjects.toStringHelper(this)
+        return Objects.toStringHelper(this)
                 .add("modId", modId)
                 .add("toolTip", toolTip)
                 .add("label", label)

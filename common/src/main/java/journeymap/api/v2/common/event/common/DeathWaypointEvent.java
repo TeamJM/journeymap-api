@@ -1,9 +1,9 @@
 package journeymap.api.v2.common.event.common;
 
-import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import journeymap.api.v2.common.event.impl.CommonEvent;
+import journeymap.api.v2.common.util.BlockPos;
 import journeymap.api.v2.common.waypoint.Waypoint;
-import net.minecraft.util.math.BlockPos;
 
 /**
  * Fired before a death waypoint is created, both client-side (singleplayer or
@@ -50,7 +50,7 @@ public class DeathWaypointEvent extends CommonEvent
     @Override
     public String toString()
     {
-        return MoreObjects.toStringHelper(this)
+        return Objects.toStringHelper(this)
                 .add("waypoint", waypoint)
                 .add("location", location)
                 .add("dimension", dimension)

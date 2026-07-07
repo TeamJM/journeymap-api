@@ -20,8 +20,8 @@
 
 package journeymap.api.v2.client.model;
 
-import com.google.common.base.MoreObjects;
-import net.minecraft.util.math.BlockPos;
+import com.google.common.base.Objects;
+import journeymap.api.v2.common.util.BlockPos;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -99,7 +99,7 @@ public final class MapPolygon
     @Override
     public String toString()
     {
-        return MoreObjects.toStringHelper(this)
+        return Objects.toStringHelper(this)
                 .add("points", points)
                 .toString();
     }

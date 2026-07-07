@@ -15,9 +15,9 @@ import journeymap.api.v2.client.display.MarkerOverlay;
 import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.model.MapImage;
 import journeymap.api.v2.client.util.UIState;
+import journeymap.api.v2.common.util.BlockPos;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -56,7 +56,8 @@ public final class SampleMarkerOverlayFactory
             {
                 colorIndex = 1;
             }
-            int color = MapColor.COLORS[colorIndex].colorValue;
+            // 1.7.10: the map-color array is MapColor.mapColorArray, not MapColor.COLORS.
+            int color = MapColor.mapColorArray[colorIndex].colorValue;
 
             MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f);
             icon.centerAnchors();

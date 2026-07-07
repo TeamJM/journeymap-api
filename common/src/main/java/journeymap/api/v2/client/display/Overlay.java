@@ -20,7 +20,7 @@
 
 package journeymap.api.v2.client.display;
 
-import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import journeymap.api.v2.client.model.TextProperties;
 import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.Context;
@@ -369,9 +369,9 @@ public abstract class Overlay extends Displayable
      * @param instance subclass
      * @return helper for continuing to add properties on subclass
      */
-    protected final MoreObjects.ToStringHelper toStringHelper(Overlay instance)
+    protected final Objects.ToStringHelper toStringHelper(Overlay instance)
     {
-        return MoreObjects.toStringHelper(this)
+        return Objects.toStringHelper(this)
                 .add("label", label)
                 .add("title", title)
                 .add("overlayGroupName", overlayGroupName)

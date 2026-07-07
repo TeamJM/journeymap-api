@@ -15,8 +15,8 @@ import journeymap.api.v2.client.display.ImageOverlay;
 import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.model.MapImage;
 import journeymap.api.v2.client.util.UIState;
+import journeymap.api.v2.common.util.BlockPos;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.BlockPos;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -38,12 +38,15 @@ public final class SampleImageOverlayFactory
         List<ImageOverlay> list = new ArrayList<>();
         try
         {
-            BlockPos start = center.add(-maxDistance / 2, 0, -maxDistance / 2);
+            // BlockPos shim has no add() (no common/src/main call site needs it); apply the offset
+            // to each component directly.
+            BlockPos start = new BlockPos(center.getX() - maxDistance / 2, center.getY(), center.getZ() - maxDistance / 2);
 
             Random random = new Random();
             for (int i = 0; i < quantity; i++)
             {
-                BlockPos pos = start.add(random.nextInt(maxDistance), 0, random.nextInt(maxDistance));
+                BlockPos pos = new BlockPos(start.getX() + random.nextInt(maxDistance), start.getY(),
+                        start.getZ() + random.nextInt(maxDistance));
                 int width = Math.max(32, random.nextInt(maxSize));
                 int height = Math.max(32, random.nextInt(maxSize));
                 ImageOverlay overlay = createOverlay(jmAPI, pos, width, height);
@@ -61,7 +64,7 @@ public final class SampleImageOverlayFactory
 
     static ImageOverlay createOverlay(IClientAPI jmAPI, BlockPos upperLeft, int blocksWide, int blocksTall)
     {
-        BlockPos lowerRight = upperLeft.add(blocksWide, 0, blocksTall);
+        BlockPos lowerRight = new BlockPos(upperLeft.getX() + blocksWide, upperLeft.getY(), upperLeft.getZ() + blocksTall);
 
         MapImage image = new MapImage(createImage(blocksWide, blocksTall));
         image.centerAnchors();
@@ -69,7 +72,9 @@ public final class SampleImageOverlayFactory
         String displayId = String.format("image%s,%s,%s,%s", upperLeft.getX(), upperLeft.getZ(), blocksWide, blocksTall);
         ImageOverlay imageOverlay = new ImageOverlay(ExampleMod.MODID, upperLeft, lowerRight, image);
         imageOverlay.getImage().setOpacity(.8f);
-        imageOverlay.setDimension(Minecraft.getMinecraft().player.world.provider.getDimension());
+        // 1.7.10: World.provider.dimensionId is a plain int field, not a getDimension() method;
+        // thePlayer.worldObj is the player's World.
+        imageOverlay.setDimension(Minecraft.getMinecraft().thePlayer.worldObj.provider.dimensionId);
         imageOverlay.setLabel("Image Overlay")
                 .setTitle(displayId)
                 .setOverlayListener(new ImageListener(jmAPI, imageOverlay));

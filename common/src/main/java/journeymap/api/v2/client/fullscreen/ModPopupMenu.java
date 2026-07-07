@@ -1,7 +1,7 @@
 package journeymap.api.v2.client.fullscreen;
 
+import journeymap.api.v2.common.util.BlockPos;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.math.BlockPos;
 
 public interface ModPopupMenu
 {

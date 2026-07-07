@@ -20,7 +20,6 @@
 
 package journeymap.api.v2.client.model;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import journeymap.api.v2.client.display.Displayable;
 import net.minecraft.util.ResourceLocation;
@@ -348,7 +347,7 @@ public class ShapeProperties
     @Override
     public String toString()
     {
-        return MoreObjects.toStringHelper(this)
+        return Objects.toStringHelper(this)
                 .add("fillColor", fillColor)
                 .add("fillOpacity", fillOpacity)
                 .add("strokeColor", strokeColor)

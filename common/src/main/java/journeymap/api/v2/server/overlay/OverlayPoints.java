@@ -1,15 +1,18 @@
 package journeymap.api.v2.server.overlay;
 
+import journeymap.api.v2.common.util.BlockPos;
+
 import java.util.List;
 import java.util.Objects;
 
 /**
  * A ring of points representing one closed polygon outline (or a hole).
  * <p>
- * Each {@code Long} is a packed {@link net.minecraft.util.math.BlockPos} produced
- * via {@code BlockPos#toLong()}. Points are ordered counterclockwise for the
- * outer ring and clockwise for holes (matching the existing JourneyMap
- * polygon convention).
+ * Each {@code Long} is a packed block position (x in the upper 26 bits, y in
+ * the middle 12 bits, z in the lower 26 bits - the vanilla BlockPos long
+ * format), packed by the JourneyMap mod. Points are ordered counterclockwise
+ * for the outer ring and clockwise for holes (matching the existing
+ * JourneyMap polygon convention).
  */
 public final class OverlayPoints
 {

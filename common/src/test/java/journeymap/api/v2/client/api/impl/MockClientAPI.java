@@ -29,12 +29,12 @@ import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.Displayable;
 import journeymap.api.v2.client.util.UIState;
+import journeymap.api.v2.common.util.BlockPos;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointGroup;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.ChunkCoordIntPair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -80,7 +80,7 @@ enum MockClientAPI implements IClientAPI
         return new UIState(ui, true, 0, 1,
                 Context.MapType.Day,
                 new BlockPos(128, 0, 128), null,
-                new AxisAlignedBB(new BlockPos(0, 0, 0), new BlockPos(256, 256, 256)),
+                AxisAlignedBB.getBoundingBox(0, 0, 0, 256, 256, 256),
                 new Rectangle2D.Double(0, 0, 1240, 960));
     }
 
@@ -129,15 +129,15 @@ enum MockClientAPI implements IClientAPI
     }
 
     @Override
-    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
+    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkCoordIntPair startChunk, ChunkCoordIntPair endChunk,
                                @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback)
     {
         // Determine chunks for coordinates at zoom level
         final int scale = (int) Math.pow(2, zoom);
         final int chunkSize = 32 / scale;
         final int pixels = chunkSize * 16;
-        final int width = Math.min(512, (endChunk.x - startChunk.x) * pixels);
-        final int height = Math.min(512, (endChunk.z - startChunk.z) * pixels);
+        final int width = Math.min(512, (endChunk.chunkXPos - startChunk.chunkXPos) * pixels);
+        final int height = Math.min(512, (endChunk.chunkZPos - startChunk.chunkZPos) * pixels);
 
         Minecraft.getMinecraft().addScheduledTask(() -> callback.accept(createFakeImage(width, height)));
     }

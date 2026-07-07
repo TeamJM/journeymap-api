@@ -1,9 +1,9 @@
 package journeymap.api.v2.server.event;
 
 import journeymap.api.v2.common.event.impl.CommonEvent;
+import journeymap.api.v2.common.util.BlockPos;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 

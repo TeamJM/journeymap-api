@@ -11,7 +11,7 @@ package example.mod.client.plugin.handler;
 import example.mod.ExampleMod;
 import example.mod.client.plugin.SampleWaypointFactory;
 import journeymap.api.v2.client.IClientAPI;
-import net.minecraft.util.math.BlockPos;
+import journeymap.api.v2.common.util.BlockPos;
 
 /**
  * Loader-agnostic handler for "player slept" events. Each loader has a thin

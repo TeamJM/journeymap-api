@@ -17,8 +17,8 @@ import journeymap.api.v2.client.model.MapPolygonWithHoles;
 import journeymap.api.v2.client.model.ShapeProperties;
 import journeymap.api.v2.client.model.TextProperties;
 import journeymap.api.v2.client.util.PolygonHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
+import journeymap.api.v2.common.util.BlockPos;
+import net.minecraft.world.ChunkCoordIntPair;
 
 import java.awt.geom.Area;
 import java.util.ArrayList;
@@ -49,23 +49,24 @@ public final class SampleComplexPolygonOverlayFactory
 
         // an E shape
         {
-            final ChunkPos center = new ChunkPos(new BlockPos(
-                    pos.getX() + random.nextInt(maxDistance) - maxDistance / 2,
-                    pos.getY(),
-                    pos.getZ() + random.nextInt(maxDistance) - maxDistance / 2));
-            final int cx = center.x;
-            final int cz = center.z;
-            final Set<ChunkPos> shape = new HashSet<>();
+            // 1.7.10 has no ChunkPos(BlockPos) constructor; derive the chunk coordinate the same
+            // way that constructor does on later versions (block coordinate >> 4).
+            final int blockX = pos.getX() + random.nextInt(maxDistance) - maxDistance / 2;
+            final int blockZ = pos.getZ() + random.nextInt(maxDistance) - maxDistance / 2;
+            final ChunkCoordIntPair center = new ChunkCoordIntPair(blockX >> 4, blockZ >> 4);
+            final int cx = center.chunkXPos;
+            final int cz = center.chunkZPos;
+            final Set<ChunkCoordIntPair> shape = new HashSet<>();
             shape.add(center);
-            shape.add(new ChunkPos(cx, cz - 1));
-            shape.add(new ChunkPos(cx, cz - 2));
-            shape.add(new ChunkPos(cx + 1, cz - 2));
-            shape.add(new ChunkPos(cx + 2, cz - 2));
-            shape.add(new ChunkPos(cx + 1, cz));
-            shape.add(new ChunkPos(cx, cz + 1));
-            shape.add(new ChunkPos(cx, cz + 2));
-            shape.add(new ChunkPos(cx + 1, cz + 2));
-            shape.add(new ChunkPos(cx + 2, cz + 2));
+            shape.add(new ChunkCoordIntPair(cx, cz - 1));
+            shape.add(new ChunkCoordIntPair(cx, cz - 2));
+            shape.add(new ChunkCoordIntPair(cx + 1, cz - 2));
+            shape.add(new ChunkCoordIntPair(cx + 2, cz - 2));
+            shape.add(new ChunkCoordIntPair(cx + 1, cz));
+            shape.add(new ChunkCoordIntPair(cx, cz + 1));
+            shape.add(new ChunkCoordIntPair(cx, cz + 2));
+            shape.add(new ChunkCoordIntPair(cx + 1, cz + 2));
+            shape.add(new ChunkCoordIntPair(cx + 2, cz + 2));
 
             final List<MapPolygonWithHoles> polygons = PolygonHelper.createChunksPolygon(shape, pos.getY());
 
@@ -83,9 +84,17 @@ public final class SampleComplexPolygonOverlayFactory
                     pos.getX() + random.nextInt(maxDistance) - maxDistance / 2,
                     pos.getY(),
                     pos.getZ() + random.nextInt(maxDistance) - maxDistance / 2);
-            final MapPolygon rect1 = PolygonHelper.createBlockRect(corner, corner.east(20).south(14));
-            final MapPolygon rect2 = PolygonHelper.createBlockRect(corner.east(10).north(4), corner.east(30).south(6));
-            final MapPolygon rect3 = PolygonHelper.createBlockRect(corner.east(15).south(2), corner.east(18).south(4));
+            // The BlockPos shim only implements the members common/src/main actually calls (no
+            // east()/south()/north()); east is +X, south is +Z, north is -Z, so build the offset
+            // corners directly.
+            final MapPolygon rect1 = PolygonHelper.createBlockRect(corner,
+                    new BlockPos(corner.getX() + 20, corner.getY(), corner.getZ() + 14));
+            final MapPolygon rect2 = PolygonHelper.createBlockRect(
+                    new BlockPos(corner.getX() + 10, corner.getY(), corner.getZ() - 4),
+                    new BlockPos(corner.getX() + 30, corner.getY(), corner.getZ() + 6));
+            final MapPolygon rect3 = PolygonHelper.createBlockRect(
+                    new BlockPos(corner.getX() + 15, corner.getY(), corner.getZ() + 2),
+                    new BlockPos(corner.getX() + 18, corner.getY(), corner.getZ() + 4));
 
             final Area composite = PolygonHelper.toArea(rect1);
             composite.add(PolygonHelper.toArea(rect2));

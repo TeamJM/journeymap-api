@@ -16,7 +16,11 @@ dependencies {
 
     compileOnly(project(':common')) {
         capabilities {
-            requireCapability "$group:$mod_id"
+            // Use the group_id property (same source of truth the :common provider registers its
+            // capability under) rather than "$group", which resolves to the :common ProjectDependency's
+            // group. Under --configure-on-demand :common is not configured when this block is evaluated,
+            // so its group is still the default (rootProject name) and the capability request would miss.
+            requireCapability "${project.group_id}:${project.mod_id}"
         }
         def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
         attributes {

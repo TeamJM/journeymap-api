@@ -90,11 +90,14 @@ configurations {
 dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
-    testImplementation group: 'com.google.guava', name: 'guava', version: '33.5.0-jre'
-    // Must match the log4j version Minecraft 1.12.2 ships (log4j-core 2.8.1). A newer log4j-api here
-    // wins conflict resolution against MC's pinned core, and the mismatched pair breaks Minecraft's
-    // Bootstrap logging init (LoaderUtil.getClassLoaders NoSuchMethodError) in tests that boot MC.
-    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.1'
+    // match MC 1.7.10's bundled Guava 17 (main source uses Guava-17-era Objects.toStringHelper)
+    testImplementation group: 'com.google.guava', name: 'guava', version: '17.0'
+    // Must match the log4j version Minecraft 1.7.10 ships (log4j-core 2.0-beta9, pulled transitively
+    // via com.mojang:authlib / net.minecraft:launchwrapper). A newer log4j-api here wins conflict
+    // resolution against MC's pinned core, and the mismatched pair breaks Minecraft's Bootstrap
+    // logging init (AbstractMethodError: Log4jContextFactory does not implement
+    // LoggerContextFactory#getContext) in tests that boot MC (Bootstrap.register()).
+    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.0-beta9'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
     // Mockito 5.x is compiled for Java 11 (class version 55) - the 1.16.5 API targets Java 8, so pin
     // to the last Java-8-compatible line (4.11.0). JUnit 5.10.x keeps its Java 8 baseline.

@@ -13,7 +13,7 @@ import example.mod.client.plugin.SamplePolygonOverlayFactory;
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.PolygonOverlay;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 
@@ -30,7 +30,7 @@ import java.util.Random;
  */
 public final class SlimeChunkOverlayHandler
 {
-    private static final Map<ChunkPos, PolygonOverlay> SLIME_OVERLAYS = new HashMap<>();
+    private static final Map<ChunkCoordIntPair, PolygonOverlay> SLIME_OVERLAYS = new HashMap<>();
     private static IClientAPI jmAPI;
 
     private SlimeChunkOverlayHandler()
@@ -58,7 +58,9 @@ public final class SlimeChunkOverlayHandler
             {
                 return;
             }
-            ChunkPos chunkCoords = chunk.getPos();
+            // 1.7.10 Chunk has no getPos(); its chunk coordinate is the pair of public final int
+            // fields xPosition/zPosition.
+            ChunkCoordIntPair chunkCoords = new ChunkCoordIntPair(chunk.xPosition, chunk.zPosition);
             if (SLIME_OVERLAYS.containsKey(chunkCoords))
             {
                 return;
@@ -73,7 +75,7 @@ public final class SlimeChunkOverlayHandler
         }
     }
 
-    public static void onChunkUnload(ChunkPos chunkCoords, boolean clientSide)
+    public static void onChunkUnload(ChunkCoordIntPair chunkCoords, boolean clientSide)
     {
         if (jmAPI == null || !clientSide)
         {
@@ -88,16 +90,23 @@ public final class SlimeChunkOverlayHandler
 
     private static boolean isSlimeChunk(Chunk chunk)
     {
-        if (chunk.getWorld().isRemote
-                || chunk.getWorld().getMinecraftServer() == null
-                || !(chunk.getWorld() instanceof WorldServer))
+        // 1.7.10 Chunk has no getWorld(); its World is the public field worldObj. World also has
+        // no getMinecraftServer() at all (only WorldServer does), so the instanceof check has to
+        // come before that lookup rather than short-circuiting alongside it.
+        if (chunk.worldObj.isRemote || !(chunk.worldObj instanceof WorldServer))
         {
             return false;
         }
-        WorldServer worldServer = (WorldServer) chunk.getWorld();
+        WorldServer worldServer = (WorldServer) chunk.worldObj;
+        // WorldServer#getMinecraftServer() has no MCP name in stable_12; call the stable_12
+        // (func_) name directly, per the mapping-table's member-name-drift rule.
+        if (worldServer.func_73046_m() == null)
+        {
+            return false;
+        }
         long seed = worldServer.getSeed();
-        int chunkX = chunk.getPos().x;
-        int chunkZ = chunk.getPos().z;
+        int chunkX = chunk.xPosition;
+        int chunkZ = chunk.zPosition;
         // Classic vanilla slime-chunk algorithm (same formula used by EntitySlime.canSpawnHere).
         Random slimeRandom = new Random(seed
                 + (long) (chunkX * chunkX * 4987142)
