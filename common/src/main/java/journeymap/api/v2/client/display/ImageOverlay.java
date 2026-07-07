@@ -22,7 +22,7 @@ package journeymap.api.v2.client.display;
 
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.model.MapImage;
-import net.minecraft.core.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

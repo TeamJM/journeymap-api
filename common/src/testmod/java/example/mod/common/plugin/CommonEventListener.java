@@ -58,6 +58,6 @@ public final class CommonEventListener
     private static void onDeathWaypoint(DeathWaypointEvent event)
     {
         ExampleMod.LOGGER.debug("Common DeathWaypointEvent at %s in %s",
-                event.getLocation(), event.getDimension().location());
+                event.getLocation(), event.getDimension());
     }
 }

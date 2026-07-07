@@ -1,7 +1,7 @@
 package journeymap.api.v2.client.event;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class EntityRegistrationEvent extends ClientEvent
      *
      * @param entityClass - the entity class
      */
-    public EntityRegistrationEvent addPassiveEntity(Class<? extends LivingEntity> entityClass)
+    public EntityRegistrationEvent addPassiveEntity(Class<? extends EntityLivingBase> entityClass)
     {
         entityClasses.computeIfAbsent(Type.PASSIVE, p -> new ArrayList<>()).add(entityClass);
         return this;
@@ -54,7 +54,7 @@ public class EntityRegistrationEvent extends ClientEvent
      *
      * @param entityClass - the entity class
      */
-    public EntityRegistrationEvent addHostileEntity(Class<? extends LivingEntity> entityClass)
+    public EntityRegistrationEvent addHostileEntity(Class<? extends EntityLivingBase> entityClass)
     {
         entityClasses.computeIfAbsent(Type.HOSTILE, h -> new ArrayList<>()).add(entityClass);
         return this;
@@ -65,7 +65,7 @@ public class EntityRegistrationEvent extends ClientEvent
      *
      * @param entityClass - the entity class
      */
-    public EntityRegistrationEvent addVillagerEntity(Class<? extends LivingEntity> entityClass)
+    public EntityRegistrationEvent addVillagerEntity(Class<? extends EntityLivingBase> entityClass)
     {
         entityClasses.computeIfAbsent(Type.VILLAGER, v -> new ArrayList<>()).add(entityClass);
         return this;
@@ -76,7 +76,7 @@ public class EntityRegistrationEvent extends ClientEvent
      *
      * @param entityClass - the entity class
      */
-    public EntityRegistrationEvent addAmbientEntity(Class<? extends LivingEntity> entityClass)
+    public EntityRegistrationEvent addAmbientEntity(Class<? extends EntityLivingBase> entityClass)
     {
         entityClasses.computeIfAbsent(Type.AMBIENT, a -> new ArrayList<>()).add(entityClass);
         return this;
@@ -90,7 +90,7 @@ public class EntityRegistrationEvent extends ClientEvent
     //TODO: Implement - unused currently
     private EntityRegistrationEvent addEntity(Class<? extends Entity> entityClass)
     {
-        if (entityClass.isAssignableFrom(LivingEntity.class))
+        if (entityClass.isAssignableFrom(EntityLivingBase.class))
         {
             throw new UnsupportedOperationException("Attempted to register LivingEntity as a NonLivingEntity");
         }

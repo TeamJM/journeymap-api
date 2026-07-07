@@ -24,9 +24,6 @@ import com.google.common.base.MoreObjects;
 import journeymap.api.v2.client.model.TextProperties;
 import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.Context;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
-
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Arrays;
@@ -45,7 +42,7 @@ public abstract class Overlay extends Displayable
     protected String overlayGroupName;
     protected String title;
     protected String label;
-    protected ResourceKey<Level> dimension;
+    protected int dimension;
     protected int minZoom = FULLSCREEN_ZOOM_MIN;
     protected int maxZoom = ZOOM_IN_MAX;
     protected int displayOrder;
@@ -70,7 +67,7 @@ public abstract class Overlay extends Displayable
      *
      * @return dimension id
      */
-    public ResourceKey<Level> getDimension()
+    public int getDimension()
     {
         return dimension;
     }
@@ -81,7 +78,7 @@ public abstract class Overlay extends Displayable
      * @param dimension the dimension
      * @return this
      */
-    public Overlay setDimension(ResourceKey<Level> dimension)
+    public Overlay setDimension(int dimension)
     {
         this.dimension = dimension;
         return this;

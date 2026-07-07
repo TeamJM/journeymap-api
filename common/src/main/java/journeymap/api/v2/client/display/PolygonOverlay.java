@@ -24,9 +24,6 @@ import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.model.MapPolygon;
 import journeymap.api.v2.client.model.MapPolygonWithHoles;
 import journeymap.api.v2.client.model.ShapeProperties;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
-
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -54,7 +51,7 @@ public final class PolygonOverlay extends Overlay
      * @param modId     Your mod id.
      * @param outerArea A polygon of the outer area to be displayed.
      */
-    public PolygonOverlay(String modId, ResourceKey<Level> dimension, ShapeProperties shapeProperties, MapPolygon outerArea)
+    public PolygonOverlay(String modId, int dimension, ShapeProperties shapeProperties, MapPolygon outerArea)
     {
         this(modId, dimension, shapeProperties, outerArea, null);
     }
@@ -65,7 +62,7 @@ public final class PolygonOverlay extends Overlay
      * @param modId   Your mod id.
      * @param polygon A polygon of the outer area with holes to be displayed.
      */
-    public PolygonOverlay(String modId, ResourceKey<Level> dimension, ShapeProperties shapeProperties, MapPolygonWithHoles polygon)
+    public PolygonOverlay(String modId, int dimension, ShapeProperties shapeProperties, MapPolygonWithHoles polygon)
     {
         this(modId, dimension, shapeProperties, polygon.hull, polygon.holes);
     }
@@ -77,7 +74,7 @@ public final class PolygonOverlay extends Overlay
      * @param outerArea A polygon of the outer area to be displayed.
      * @param holes     (Optional) A list of polygons treated as holes inside the outerArea
      */
-    public PolygonOverlay(String modId, ResourceKey<Level> dimension, ShapeProperties shapeProperties, MapPolygon outerArea, @Nullable List<MapPolygon> holes)
+    public PolygonOverlay(String modId, int dimension, ShapeProperties shapeProperties, MapPolygon outerArea, @Nullable List<MapPolygon> holes)
     {
         super(modId);
         setDimension(dimension);

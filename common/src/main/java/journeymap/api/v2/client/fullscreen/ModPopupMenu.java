@@ -1,7 +1,7 @@
 package journeymap.api.v2.client.fullscreen;
 
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.math.BlockPos;
 
 public interface ModPopupMenu
 {
@@ -19,7 +19,7 @@ public interface ModPopupMenu
      * @param label  - The label, can be the display string or i18n key.
      * @param screen - The screen.
      */
-    ModPopupMenu addMenuItemScreen(String label, Screen screen);
+    ModPopupMenu addMenuItemScreen(String label, GuiScreen screen);
 
     /**
      * Creates a sublist popup menu.

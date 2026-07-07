@@ -1,9 +1,7 @@
 package journeymap.api.v2.common.waypoint;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -88,9 +86,9 @@ public interface Waypoint
 
     void setDimensions(Collection<String> dims);
 
-    default void setPrimaryDimension(ResourceKey<Level> dimension)
+    default void setPrimaryDimension(int dimension)
     {
-        setPrimaryDimension(dimension.location().toString());
+        setPrimaryDimension(String.valueOf(dimension));
     }
 
     void setPrimaryDimension(String dimension);

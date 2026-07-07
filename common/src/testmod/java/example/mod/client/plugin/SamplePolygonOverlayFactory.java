@@ -18,10 +18,8 @@ import journeymap.api.v2.client.model.TextProperties;
 import journeymap.api.v2.client.util.PolygonHelper;
 import journeymap.api.v2.client.util.UIState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -35,7 +33,7 @@ public final class SamplePolygonOverlayFactory
     {
     }
 
-    public static PolygonOverlay create(ChunkPos chunkCoords, ResourceKey<Level> dimension)
+    public static PolygonOverlay create(ChunkPos chunkCoords, int dimension)
     {
         String groupName = "Slime Chunks";
         String label = String.format("Slime Chunk [%s,%s]", chunkCoords.x, chunkCoords.z);
@@ -101,8 +99,8 @@ public final class SamplePolygonOverlayFactory
             sp.setStrokeColor(new Random().nextInt(0xffffff));
             sp.setStrokeOpacity(1f);
             String title = "%s blocks away";
-            BlockPos playerLoc = Minecraft.getInstance().player.blockPosition();
-            int distance = (int) Math.sqrt(playerLoc.distSqr(blockPosition));
+            BlockPos playerLoc = Minecraft.getMinecraft().player.getPosition();
+            int distance = (int) Math.sqrt(playerLoc.distanceSq(blockPosition));
             overlay.setTitle(String.format(title, distance));
         }
 

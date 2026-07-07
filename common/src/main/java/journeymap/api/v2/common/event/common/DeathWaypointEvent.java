@@ -3,9 +3,7 @@ package journeymap.api.v2.common.event.common;
 import com.google.common.base.MoreObjects;
 import journeymap.api.v2.common.event.impl.CommonEvent;
 import journeymap.api.v2.common.waypoint.Waypoint;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Fired before a death waypoint is created, both client-side (singleplayer or
@@ -20,9 +18,9 @@ public class DeathWaypointEvent extends CommonEvent
 {
     private final Waypoint waypoint;
     private final BlockPos location;
-    private final ResourceKey<Level> dimension;
+    private final int dimension;
 
-    public DeathWaypointEvent(Waypoint waypoint, BlockPos location, ResourceKey<Level> dimension, Side side)
+    public DeathWaypointEvent(Waypoint waypoint, BlockPos location, int dimension, Side side)
     {
         super(true, side);
         this.waypoint = waypoint;
@@ -44,7 +42,7 @@ public class DeathWaypointEvent extends CommonEvent
         return location;
     }
 
-    public ResourceKey<Level> getDimension()
+    public int getDimension()
     {
         return dimension;
     }

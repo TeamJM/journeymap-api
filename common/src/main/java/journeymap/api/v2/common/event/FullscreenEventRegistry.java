@@ -9,7 +9,7 @@ import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.event.impl.Event;
 import journeymap.api.v2.common.event.impl.EventFactory;
-import net.minecraft.core.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import java.awt.geom.Point2D;
 

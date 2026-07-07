@@ -21,8 +21,8 @@ import journeymap.api.v2.server.event.WaypointPendingReceivedEvent;
 import journeymap.api.v2.server.event.WaypointShareSubmitEvent;
 import journeymap.api.v2.server.overlay.IServerOverlayAPI;
 import journeymap.api.v2.server.overlay.ServerPolygon;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Subscribes to every {@link ServerEventRegistry} event, demonstrating each
@@ -89,7 +89,7 @@ public final class ServerEventListener
     private void onTeleport(TeleportEvent event)
     {
         ExampleMod.LOGGER.debug("Common TeleportEvent fromLevel=%s destLevel=%s pos=%s",
-                event.getFromLevel().location(), event.getDestinationLevel().location(), event.getPos());
+                event.getFromLevel(), event.getDestinationLevel(), event.getPos());
 
         // Demonstrate the server overlay API: push a sample claim around the
         // teleport destination so the player sees an overlay the moment they
@@ -103,7 +103,7 @@ public final class ServerEventListener
     // The server overlay API is reached via IServerAPI#getOverlayApi(). The
     // calls below show the full surface: push, replace, remove, clear. The
     // example mod does not auto-wire these to a player-join event because the
-    // available loader-agnostic events do not carry the joining ServerPlayer;
+    // available loader-agnostic events do not carry the joining EntityPlayerMP;
     // wire them from your loader entry point or a relevant event of your own.
 
     /**
@@ -114,19 +114,19 @@ public final class ServerEventListener
      * @param player  the recipient
      * @param centre  the block to centre the square on
      */
-    public void pushSampleClaim(ServerPlayer player, BlockPos centre)
+    public void pushSampleClaim(EntityPlayerMP player, BlockPos centre)
     {
         IServerOverlayAPI overlayApi = jmServerApi.getOverlayApi();
         ServerPolygon polygon = SampleServerPolygonOverlayFactory.createSampleSquare(
-                "sample-claim", player.level.dimension(), centre, 32);
+                "sample-claim", player.world.provider.getDimension(), centre, 32);
         overlayApi.show(player, ExampleMod.MODID, polygon);
-        ExampleMod.LOGGER.info("Pushed sample claim to %s at %s", player.getName().getString(), centre);
+        ExampleMod.LOGGER.info("Pushed sample claim to %s at %s", player.getName(), centre);
     }
 
     /**
      * Demo: remove the sample square overlay (by its addon-stable id).
      */
-    public void clearSampleClaim(ServerPlayer player)
+    public void clearSampleClaim(EntityPlayerMP player)
     {
         jmServerApi.getOverlayApi().remove(player, ExampleMod.MODID, "sample-claim");
     }
@@ -135,7 +135,7 @@ public final class ServerEventListener
      * Demo: clear every overlay this addon has shown to the player.
      * Useful on logout or a "reset everything" path.
      */
-    public void clearAllOverlaysForPlayer(ServerPlayer player)
+    public void clearAllOverlaysForPlayer(EntityPlayerMP player)
     {
         jmServerApi.getOverlayApi().clearAll(player, ExampleMod.MODID);
     }

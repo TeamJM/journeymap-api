@@ -1,8 +1,5 @@
 package journeymap.api.v2.server.overlay;
 
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +15,7 @@ import java.util.Objects;
 public final class ServerPolygon
 {
     private final String overlayId;
-    private final ResourceKey<Level> dimension;
+    private final int dimension;
     private final List<OverlayPolygon> polygons;
     private final OverlayShapeProps props;
 
@@ -29,7 +26,7 @@ public final class ServerPolygon
      * @param props     style and visibility for every polygon in this overlay
      */
     public ServerPolygon(String overlayId,
-                         ResourceKey<Level> dimension,
+                         int dimension,
                          List<OverlayPolygon> polygons,
                          OverlayShapeProps props)
     {
@@ -44,7 +41,7 @@ public final class ServerPolygon
         return overlayId;
     }
 
-    public ResourceKey<Level> dimension()
+    public int dimension()
     {
         return dimension;
     }

@@ -1,11 +1,11 @@
 package journeymap.api.v2.client.fullscreen;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 
 import javax.annotation.Nullable;
 
@@ -17,13 +17,13 @@ public interface IBlockInfo
     Block getBlock();
 
     @Nullable
-    BlockState getBlockState();
+    IBlockState getBlockState();
 
     @Nullable
     Biome getBiome();
 
     @Nullable
-    LevelChunk getChunk();
+    Chunk getChunk();
 
     @Nullable
     ChunkPos getChunkPos();

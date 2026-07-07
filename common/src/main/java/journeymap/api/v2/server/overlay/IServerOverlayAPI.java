@@ -1,6 +1,6 @@
 package journeymap.api.v2.server.overlay;
 
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 /**
  * Server-side API for pushing polygon overlays to a single player's
@@ -22,13 +22,13 @@ public interface IServerOverlayAPI
      * the client.
      *
      * <p>Calling with no polygons is a no-op. Calling for an offline or
-     * disconnected {@code ServerPlayer} is a no-op.</p>
+     * disconnected {@code EntityPlayerMP} is a no-op.</p>
      *
      * @param player   the recipient
      * @param modId    the addon's mod id (becomes the JourneyMap displayable owner)
      * @param polygons one or more {@link ServerPolygon}s
      */
-    void show(ServerPlayer player, String modId, ServerPolygon... polygons);
+    void show(EntityPlayerMP player, String modId, ServerPolygon... polygons);
 
     /**
      * Remove a single overlay (by {@code modId} + {@code overlayId}) from a
@@ -39,7 +39,7 @@ public interface IServerOverlayAPI
      * @param modId     the addon's mod id
      * @param overlayId the addon-stable id used in a prior {@code show()}
      */
-    void remove(ServerPlayer player, String modId, String overlayId);
+    void remove(EntityPlayerMP player, String modId, String overlayId);
 
     /**
      * Remove every overlay this addon has shown to the player.
@@ -47,5 +47,5 @@ public interface IServerOverlayAPI
      * @param player the recipient
      * @param modId  the addon's mod id
      */
-    void clearAll(ServerPlayer player, String modId);
+    void clearAll(EntityPlayerMP player, String modId);
 }

@@ -17,10 +17,8 @@ import journeymap.api.v2.client.model.MapPolygonWithHoles;
 import journeymap.api.v2.client.model.ShapeProperties;
 import journeymap.api.v2.client.model.TextProperties;
 import journeymap.api.v2.client.util.PolygonHelper;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 
 import java.awt.geom.Area;
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public final class SampleComplexPolygonOverlayFactory
     {
     }
 
-    public static List<PolygonOverlay> create(IClientAPI jmAPI, BlockPos pos, ResourceKey<Level> dimension, int maxDistance)
+    public static List<PolygonOverlay> create(IClientAPI jmAPI, BlockPos pos, int dimension, int maxDistance)
     {
         final List<PolygonOverlay> result = new ArrayList<>();
         final Random random = ThreadLocalRandom.current();
@@ -106,7 +104,7 @@ public final class SampleComplexPolygonOverlayFactory
         return result;
     }
 
-    private static List<PolygonOverlay> createOverlays(IClientAPI jmAPI, ResourceKey<Level> dimension, String name, String label, List<MapPolygonWithHoles> polygons, TextProperties textProps, ShapeProperties shapeProps)
+    private static List<PolygonOverlay> createOverlays(IClientAPI jmAPI, int dimension, String name, String label, List<MapPolygonWithHoles> polygons, TextProperties textProps, ShapeProperties shapeProps)
     {
         final List<PolygonOverlay> result = new ArrayList<>();
 

@@ -1,13 +1,11 @@
 package journeymap.api.v2.client.entity;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.biome.Biome;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
@@ -63,7 +61,7 @@ public interface WrappedEntity
      *
      * @return - the position vector.
      */
-    Vec3 getPosition();
+    Vec3d getPosition();
 
     /**
      * The chunk position of the entity.
@@ -87,7 +85,7 @@ public interface WrappedEntity
      * @return - the custom name.
      */
     @Nullable
-    Component getCustomName();
+    ITextComponent getCustomName();
 
     /**
      * The color applied to the team-name label for players. Defaults to the
@@ -136,7 +134,7 @@ public interface WrappedEntity
      *
      * @return - the dimension.
      */
-    ResourceKey<Level> getDimension();
+    int getDimension();
 
     /**
      * Is the entity is a player and underground
@@ -208,14 +206,14 @@ public interface WrappedEntity
      * @return - The tooltip list
      */
     @Nullable
-    List<Component> getEntityToolTips();
+    List<ITextComponent> getEntityToolTips();
 
     /**
      * Sets the entity tooltip.
      *
      * @param entityToolTips - The tooltip list
      */
-    void setEntityToolTips(@Nullable List<Component> entityToolTips);
+    void setEntityToolTips(@Nullable List<ITextComponent> entityToolTips);
 
     /**
      * Set the icon location for the entity. The icon is the image shown on the map if the player has display type set to icon.
@@ -229,7 +227,7 @@ public interface WrappedEntity
      *
      * @param customName - the custom name Component.
      */
-    void setCustomName(Component customName);
+    void setCustomName(ITextComponent customName);
 
     /**
      * Sets the custom name of the entity.

@@ -21,8 +21,6 @@
 package journeymap.api.v2.client.event;
 
 import journeymap.api.v2.common.event.impl.JourneyMapEvent;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
 
 /**
  * Parent class for events propagated by the Client API to IClientPlugin implementations.
@@ -33,12 +31,12 @@ public abstract class ClientEvent extends JourneyMapEvent
     /**
      * World dimension where event occurred.
      */
-    public final ResourceKey<Level> dimension;
+    public final int dimension;
 
     /**
      * Constructor.
      */
-    public ClientEvent(boolean cancellable, ResourceKey<Level> dimension)
+    public ClientEvent(boolean cancellable, int dimension)
     {
         super(cancellable);
         this.dimension = dimension;
@@ -49,6 +47,6 @@ public abstract class ClientEvent extends JourneyMapEvent
      */
     public ClientEvent(boolean cancellable)
     {
-        this(cancellable, Level.OVERWORLD);
+        this(cancellable, 0);
     }
 }

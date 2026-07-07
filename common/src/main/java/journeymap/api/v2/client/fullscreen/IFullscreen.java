@@ -3,9 +3,7 @@ package journeymap.api.v2.client.fullscreen;
 import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.util.UIState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.client.gui.GuiScreen;
 
 import java.awt.geom.Point2D;
 
@@ -18,7 +16,7 @@ public interface IFullscreen
      * @param vSlice    - The slice.
      * @param dimension - The dimension
      */
-    void updateMapType(Context.MapType mapType, Integer vSlice, ResourceKey<Level> dimension);
+    void updateMapType(Context.MapType mapType, Integer vSlice, int dimension);
 
     /**
      * Moves to the next maptype
@@ -67,7 +65,7 @@ public interface IFullscreen
      *
      * @return the Screen.
      */
-    Screen getScreen();
+    GuiScreen getScreen();
 
     /**
      * Gets the fullscreen mouseDrag position.

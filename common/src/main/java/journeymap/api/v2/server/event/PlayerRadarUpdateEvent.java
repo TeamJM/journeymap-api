@@ -1,7 +1,7 @@
 package journeymap.api.v2.server.event;
 
 import journeymap.api.v2.common.event.impl.CommonEvent;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -18,17 +18,17 @@ import java.util.UUID;
  */
 public class PlayerRadarUpdateEvent extends CommonEvent
 {
-    private final ServerPlayer receiver;
+    private final EntityPlayerMP receiver;
     private final UUID remoteId;
     @Nullable
-    private final ServerPlayer remote;
+    private final EntityPlayerMP remote;
     private final Action action;
     private boolean visible;
     private final boolean receiverOp;
 
-    public PlayerRadarUpdateEvent(ServerPlayer receiver,
+    public PlayerRadarUpdateEvent(EntityPlayerMP receiver,
                                   UUID remoteId,
-                                  @Nullable ServerPlayer remote,
+                                  @Nullable EntityPlayerMP remote,
                                   Action action,
                                   boolean visible,
                                   boolean receiverOp)
@@ -42,7 +42,7 @@ public class PlayerRadarUpdateEvent extends CommonEvent
         this.receiverOp = receiverOp;
     }
 
-    public ServerPlayer getReceiver()
+    public EntityPlayerMP getReceiver()
     {
         return receiver;
     }
@@ -53,7 +53,7 @@ public class PlayerRadarUpdateEvent extends CommonEvent
     }
 
     @Nullable
-    public ServerPlayer getRemote()
+    public EntityPlayerMP getRemote()
     {
         return remote;
     }

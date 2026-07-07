@@ -12,10 +12,8 @@ import example.mod.ExampleMod;
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointFactory;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 import java.awt.Color;
 
@@ -28,7 +26,7 @@ public final class SampleWaypointFactory
     {
     }
 
-    public static Waypoint createBedWaypoint(IClientAPI jmAPI, BlockPos bedLocation, ResourceKey<Level> dimension)
+    public static Waypoint createBedWaypoint(IClientAPI jmAPI, BlockPos bedLocation, int dimension)
     {
         Waypoint bedWaypoint = null;
         try

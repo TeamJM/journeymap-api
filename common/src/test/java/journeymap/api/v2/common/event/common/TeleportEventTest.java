@@ -2,11 +2,9 @@ package journeymap.api.v2.common.event.common;
 
 import journeymap.api.v2.common.event.impl.CommonEvent;
 import journeymap.api.v2.server.event.TeleportEvent;
-import net.minecraft.SharedConstants;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.Bootstrap;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Bootstrap;
+import net.minecraft.util.math.BlockPos;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -22,22 +20,21 @@ class TeleportEventTest
     @BeforeAll
     static void bootstrapMinecraft()
     {
-        SharedConstants.getCurrentVersion();
-        Bootstrap.bootStrap();
+        Bootstrap.register();
     }
 
     @Test
     void constructorIsCancellableAndServerSide()
     {
-        ServerPlayer player = mock(ServerPlayer.class);
+        EntityPlayerMP player = mock(EntityPlayerMP.class);
         BlockPos pos = new BlockPos(1, 2, 3);
-        TeleportEvent event = new TeleportEvent(player, null, pos, Level.OVERWORLD, Level.OVERWORLD);
+        TeleportEvent event = new TeleportEvent(player, null, pos, 0, 0);
         assertTrue(event.isCancellable());
         assertEquals(CommonEvent.Side.Server, event.getSide());
         assertNull(event.getWaypoint());
         assertSame(player, event.getPlayer());
         assertEquals(pos, event.getPos());
-        assertEquals(Level.OVERWORLD, event.getFromLevel());
-        assertEquals(Level.OVERWORLD, event.getDestinationLevel());
+        assertEquals(0, event.getFromLevel());
+        assertEquals(0, event.getDestinationLevel());
     }
 }

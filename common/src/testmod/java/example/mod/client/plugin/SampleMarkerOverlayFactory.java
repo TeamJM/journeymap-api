@@ -15,10 +15,9 @@ import journeymap.api.v2.client.display.MarkerOverlay;
 import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.model.MapImage;
 import journeymap.api.v2.client.util.UIState;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -57,12 +56,12 @@ public final class SampleMarkerOverlayFactory
             {
                 colorIndex = 1;
             }
-            int color = MaterialColor.MATERIAL_COLORS[colorIndex].col;
+            int color = MapColor.COLORS[colorIndex].colorValue;
 
             MapImage icon = new MapImage(sprites, spriteX, spriteY, iconSize, iconSize, color, 1f);
             icon.centerAnchors();
             MarkerOverlay markerOverlay = new MarkerOverlay(ExampleMod.MODID, pos, icon);
-            markerOverlay.setDimension(Level.OVERWORLD).setTitle("Marker Overlay").setLabel("" + i);
+            markerOverlay.setDimension(0).setTitle("Marker Overlay").setLabel("" + i);
             markerOverlay.setOverlayListener(new MarkerListener(jmAPI, markerOverlay));
 
             try

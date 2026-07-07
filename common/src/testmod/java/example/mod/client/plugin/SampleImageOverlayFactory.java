@@ -8,7 +8,6 @@
 
 package example.mod.client.plugin;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import example.mod.ExampleMod;
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.display.IOverlayListener;
@@ -17,9 +16,10 @@ import journeymap.api.v2.client.fullscreen.ModPopupMenu;
 import journeymap.api.v2.client.model.MapImage;
 import journeymap.api.v2.client.util.UIState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -38,12 +38,12 @@ public final class SampleImageOverlayFactory
         List<ImageOverlay> list = new ArrayList<>();
         try
         {
-            BlockPos start = center.offset(-maxDistance / 2, 0, -maxDistance / 2);
+            BlockPos start = center.add(-maxDistance / 2, 0, -maxDistance / 2);
 
             Random random = new Random();
             for (int i = 0; i < quantity; i++)
             {
-                BlockPos pos = start.offset(random.nextInt(maxDistance), 0, random.nextInt(maxDistance));
+                BlockPos pos = start.add(random.nextInt(maxDistance), 0, random.nextInt(maxDistance));
                 int width = Math.max(32, random.nextInt(maxSize));
                 int height = Math.max(32, random.nextInt(maxSize));
                 ImageOverlay overlay = createOverlay(jmAPI, pos, width, height);
@@ -61,7 +61,7 @@ public final class SampleImageOverlayFactory
 
     static ImageOverlay createOverlay(IClientAPI jmAPI, BlockPos upperLeft, int blocksWide, int blocksTall)
     {
-        BlockPos lowerRight = upperLeft.offset(blocksWide, 0, blocksTall);
+        BlockPos lowerRight = upperLeft.add(blocksWide, 0, blocksTall);
 
         MapImage image = new MapImage(createImage(blocksWide, blocksTall));
         image.centerAnchors();
@@ -69,7 +69,7 @@ public final class SampleImageOverlayFactory
         String displayId = String.format("image%s,%s,%s,%s", upperLeft.getX(), upperLeft.getZ(), blocksWide, blocksTall);
         ImageOverlay imageOverlay = new ImageOverlay(ExampleMod.MODID, upperLeft, lowerRight, image);
         imageOverlay.getImage().setOpacity(.8f);
-        imageOverlay.setDimension(Minecraft.getInstance().player.level.dimension());
+        imageOverlay.setDimension(Minecraft.getMinecraft().player.world.provider.getDimension());
         imageOverlay.setLabel("Image Overlay")
                 .setTitle(displayId)
                 .setOverlayListener(new ImageListener(jmAPI, imageOverlay));
@@ -77,9 +77,9 @@ public final class SampleImageOverlayFactory
         return imageOverlay;
     }
 
-    static NativeImage createImage(int width, int height)
+    static BufferedImage createImage(int width, int height)
     {
-        NativeImage image = new NativeImage(NativeImage.Format.LUMINANCE, width, height, false);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         //TODO: fix
 ////        Graphics2D g = bufferedImage.createGraphics();

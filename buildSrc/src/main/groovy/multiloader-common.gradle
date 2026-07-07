@@ -18,9 +18,19 @@ if (project.snapshot.toBoolean()) {
 group = project.group_id
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(java_version)
     withSourcesJar()
     withJavadocJar()
+}
+
+// LESSON FROM THE 1.16.5 PORT: a jdk-8 toolchain launcher was UNRELIABLE for enforcing the Java-8 API
+// surface - a forked jdk-8 javac still resolved symbols against whatever JRE it actually ran on, so
+// post-8 API calls (e.g. List.of / Stream.toList, added in Java 9/16) could slip through compilation
+// silently and would NoSuchMethodError at runtime on MC's real Java-8 JRE. Compile with the Gradle
+// daemon's own (modern) javac under --release 8 instead - --release enforces the exact Java-8 API
+// surface via the shipped ct.sym, turning those latent runtime crashes into compile errors. Only the
+// compiler moves; nothing here requests a JDK-8 launcher for running Gradle, tests, or FG7's own tasks.
+tasks.withType(JavaCompile).configureEach {
+    options.release = java_version.toInteger()
 }
 
 testing {
@@ -81,10 +91,10 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
     testImplementation group: 'com.google.guava', name: 'guava', version: '33.5.0-jre'
-    // Must match the log4j version Minecraft 1.20.1 ships (log4j-core 2.19.0). A newer log4j-api here
+    // Must match the log4j version Minecraft 1.12.2 ships (log4j-core 2.8.1). A newer log4j-api here
     // wins conflict resolution against MC's pinned core, and the mismatched pair breaks Minecraft's
-    // Bootstrap logging init (ServiceLoaderUtil.loadServices NoSuchMethodError) in tests that boot MC.
-    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.19.0'
+    // Bootstrap logging init (LoaderUtil.getClassLoaders NoSuchMethodError) in tests that boot MC.
+    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
     // Mockito 5.x is compiled for Java 11 (class version 55) - the 1.16.5 API targets Java 8, so pin
     // to the last Java-8-compatible line (4.11.0). JUnit 5.10.x keeps its Java 8 baseline.
@@ -144,8 +154,6 @@ var manifestExpandProps = [
         'version'              : version,
         'group'                : group_id, //Else we target the task's group.
         'minecraft_version'    : minecraft_version,
-        'fabric_api_version'   : fabric_api_version,
-        'fabric_loader_version': fabric_loader_version,
         'mod_name'             : mod_name,
         'mod_author'           : mod_author,
         'mod_id'               : mod_id,
@@ -162,7 +170,7 @@ processResources {
         expand manifestExpandProps
     }
 
-    filesMatching(['pack.mcmeta', 'fabric.mod.json', '*.mixins.json']) {
+    filesMatching(['pack.mcmeta', 'fabric.mod.json', '*.mixins.json', 'mcmod.info']) {
         expand manifestJsonExpandProps
     }
 

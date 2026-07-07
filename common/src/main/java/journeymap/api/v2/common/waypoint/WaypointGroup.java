@@ -1,6 +1,6 @@
 package journeymap.api.v2.common.waypoint;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

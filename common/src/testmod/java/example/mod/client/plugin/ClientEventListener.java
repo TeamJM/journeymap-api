@@ -31,9 +31,9 @@ import journeymap.api.v2.common.event.ClientEventRegistry;
 import journeymap.api.v2.common.event.FullscreenEventRegistry;
 import journeymap.api.v2.common.event.MinimapEventRegistry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Subscribes to every client-side JourneyMap event registry. Each handler is a
@@ -88,7 +88,7 @@ public class ClientEventListener
 
     private void spawnSampleOverlays(MappingEvent event)
     {
-        BlockPos pos = Minecraft.getInstance().player.blockPosition();
+        BlockPos pos = Minecraft.getMinecraft().player.getPosition();
 
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Image))
         {
@@ -99,7 +99,8 @@ public class ClientEventListener
             SampleMarkerOverlayFactory.create(jmAPI, pos, 64, 256);
         }
 
-        BlockPos sleepPos = Minecraft.getInstance().player.getSleepingPos().orElse(new BlockPos(0, 0, 0));
+        BlockPos bedLocation = Minecraft.getMinecraft().player.getBedLocation();
+        BlockPos sleepPos = bedLocation != null ? bedLocation : new BlockPos(0, 0, 0);
         SampleWaypointFactory.createBedWaypoint(jmAPI, sleepPos, event.dimension);
 
         if (jmAPI.playerAccepts(ExampleMod.MODID, DisplayType.Polygon))
@@ -122,7 +123,7 @@ public class ClientEventListener
     {
         if (event.getActiveUiState().ui.equals(Context.UI.Minimap))
         {
-            String name = event.getWrappedEntity().getEntityRef().get().getName().getString();
+            String name = event.getWrappedEntity().getEntityRef().get().getName();
             if (name.toLowerCase().contains("slime"))
             {
                 event.getWrappedEntity().setColor(0x0000FF);
@@ -191,7 +192,7 @@ public class ClientEventListener
     private void onCustomToolbar(FullscreenDisplayEvent.CustomToolbarEvent event)
     {
         CustomToolBarBuilder barBuilder = event.getCustomToolBarBuilder();
-        Screen screen = event.getFullscreen().getMinecraft().screen;
+        GuiScreen screen = event.getFullscreen().getMinecraft().currentScreen;
         int startX = screen.width / 2;
 
         IThemeButton b1 = barBuilder.getThemeButton("Test1", icon("alert"), b -> System.out.println("ALERT"));
@@ -257,6 +258,6 @@ public class ClientEventListener
 
     private static String getTicks()
     {
-        return "Ticks: " + Minecraft.getInstance().gui.getGuiTicks();
+        return "Ticks: " + Minecraft.getMinecraft().ingameGUI.getUpdateCounter();
     }
 }

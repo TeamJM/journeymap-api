@@ -1,101 +1,143 @@
 package journeymap.api.v2.client.ui.component;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.chat.NarratorChatListener;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.text.ITextComponent;
+import org.lwjgl.input.Keyboard;
 
-public abstract class LayeredScreen extends Screen
+import java.io.IOException;
+
+/*
+ * PORT NOTE (1.16.5 -> 1.12.2): 1.12.2's GuiScreen predates the PoseStack-based render pipeline and the
+ * narrator subsystem, so this class is adapted to the fixed-function GuiScreen lifecycle
+ * (drawScreen/initGui/setWorldAndResolution/onGuiClosed) rather than a line-for-line rename. See
+ * task-4.2-report.md DECISIONS for details.
+ */
+public abstract class LayeredScreen extends GuiScreen
 {
     protected Minecraft minecraft;
-    protected Screen backgroundScreen;
+    protected GuiScreen backgroundScreen;
 
-    protected LayeredScreen(Component component)
+    // Guards popLayer() against re-entry; see the comment in popLayer() for why this is required.
+    private boolean closing;
+
+    /**
+     * The {@code component} parameter is unused on 1.12.2 - GuiScreen has no title/narration concept
+     * here - and is kept only for source parity with the 1.16.5 API.
+     */
+    protected LayeredScreen(ITextComponent component)
     {
-        super(component);
-        this.minecraft = Minecraft.getInstance();
+        this.minecraft = Minecraft.getMinecraft();
     }
 
     public void display()
     {
-        if (this.minecraft.screen != null)
+        this.closing = false;
+        if (this.minecraft.currentScreen != null)
         {
-            this.backgroundScreen = this.minecraft.screen;
-            this.minecraft.screen = this;
-            this.init(minecraft, minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight());
-            NarratorChatListener.INSTANCE.sayNow(this.getNarrationMessage());
+            this.backgroundScreen = this.minecraft.currentScreen;
+            this.minecraft.currentScreen = this;
+            ScaledResolution scaledResolution = new ScaledResolution(minecraft);
+            this.setWorldAndResolution(minecraft, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight());
         }
         else
         {
-            this.minecraft.setScreen(this);
-        }
-    }
-
-    public void resize(Minecraft minecraft, int width, int height)
-    {
-        super.resize(minecraft, width, height);
-        if (this.backgroundScreen != null)
-        {
-            this.backgroundScreen.resize(this.minecraft, this.width, this.height);
+            this.minecraft.displayGuiScreen(this);
         }
     }
 
     @Override
-    @Deprecated // do not call super.render, call super.renderPopupScreen instead
-    public final void render(PoseStack graphics, int mouseX, int mouseY, float partialTicks)
+    public void onResize(Minecraft minecraft, int width, int height)
+    {
+        super.onResize(minecraft, width, height);
+        if (this.backgroundScreen != null)
+        {
+            this.backgroundScreen.onResize(this.minecraft, this.width, this.height);
+        }
+    }
+
+    @Override
+    @Deprecated // do not call super.drawScreen, call renderPopupScreen instead
+    public final void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         if (this.backgroundScreen != null)
         // render background screen.
         {
-            this.backgroundScreen.render(graphics, -1, -1, partialTicks);
+            this.backgroundScreen.drawScreen(-1, -1, partialTicks);
         }
         // translate z +2000
-        graphics.translate(0.0D, 0.0D, 2000F);
+        GlStateManager.translate(0.0F, 0.0F, 2000F);
 
-        this.renderPopupScreenBackground(graphics, mouseX, mouseY, partialTicks);
-        this.renderPopupScreen(graphics, mouseX, mouseY, partialTicks);
+        this.renderPopupScreenBackground(mouseX, mouseY, partialTicks);
+        this.renderPopupScreen(mouseX, mouseY, partialTicks);
     }
 
-    protected void renderPopupScreen(PoseStack graphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPopupScreen(int mouseX, int mouseY, float partialTicks)
     {
-        super.render(graphics, mouseX, mouseY, partialTicks);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    protected void renderPopupScreenBackground(PoseStack graphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPopupScreenBackground(int mouseX, int mouseY, float partialTicks)
     {
 
     }
 
     @Override
-    public final void renderBackground(PoseStack graphics)
+    public final void drawDefaultBackground()
     {
         // no use
     }
 
     @Override
-    public void onClose()
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    {
+        if (keyCode == Keyboard.KEY_ESCAPE)
+        {
+            // Esc must not take the vanilla path (super.keyTyped -> displayGuiScreen(null)): after our
+            // onGuiClosed() restored backgroundScreen, displayGuiScreen(null) would keep running and
+            // unconditionally assign currentScreen = null, clobbering the restore and closing the
+            // background screen along with this popup. Pop the layer directly and stop here instead;
+            // popLayer() itself calls displayGuiScreen(null) when there is no background to restore.
+            this.popLayer();
+            return;
+        }
+        super.keyTyped(typedChar, keyCode);
+    }
+
+    @Override
+    public void onGuiClosed()
     {
         this.popLayer();
     }
 
     public void popLayer()
     {
-        if (this.minecraft.screen != null)
+        // Re-entry guard: 1.12.2's GuiScreen has a single lifecycle hook, onGuiClosed(), where the
+        // 1.16.5 original had two distinct ones (onClose() for a self-triggered close, removed() for
+        // the cleanup Minecraft.setScreen() runs on the outgoing screen). Minecraft.displayGuiScreen()
+        // invokes currentScreen.onGuiClosed() before it reassigns currentScreen, and currentScreen
+        // == this for as long as this layer is showing - so both the normal close path and a direct
+        // popLayer() call re-enter this method via onGuiClosed(). Without this guard that re-entry is
+        // unbounded (popLayer() -> onGuiClosed() -> popLayer() -> ...), causing a StackOverflowError.
+        if (this.closing)
         {
-            this.minecraft.screen.removed();
+            return;
         }
+        this.closing = true;
+
         if (this.backgroundScreen != null)
         {
-            this.minecraft.screen = this.backgroundScreen;
+            this.minecraft.currentScreen = this.backgroundScreen;
         }
         else
         {
-            this.minecraft.setScreen(null);
+            this.minecraft.displayGuiScreen(null);
         }
     }
 
-    public Screen getBackgroundScreen()
+    public GuiScreen getBackgroundScreen()
     {
         return this.backgroundScreen;
     }

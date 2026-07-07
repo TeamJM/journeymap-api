@@ -6,8 +6,8 @@ import java.util.Objects;
 /**
  * A ring of points representing one closed polygon outline (or a hole).
  * <p>
- * Each {@code Long} is a packed {@link net.minecraft.core.BlockPos} produced
- * via {@code BlockPos#asLong()}. Points are ordered counterclockwise for the
+ * Each {@code Long} is a packed {@link net.minecraft.util.math.BlockPos} produced
+ * via {@code BlockPos#toLong()}. Points are ordered counterclockwise for the
  * outer ring and clockwise for holes (matching the existing JourneyMap
  * polygon convention).
  */

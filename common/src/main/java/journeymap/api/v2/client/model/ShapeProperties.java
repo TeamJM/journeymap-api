@@ -22,10 +22,11 @@ package journeymap.api.v2.client.model;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.api.v2.client.display.Displayable;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
+
+import java.awt.image.BufferedImage;
 
 /**
  * Properties defining the display of a shape.
@@ -40,7 +41,7 @@ public class ShapeProperties
     private float fillOpacity = .5f;
     private float strokeWidth = 2;
     private StrokePosition strokePosition = StrokePosition.CENTER;
-    private NativeImage image;
+    private BufferedImage image;
     private ResourceLocation imageLocation;
     private double texturePositionX = 0;
     private double texturePositionY = 0;
@@ -185,7 +186,7 @@ public class ShapeProperties
      * @return the image
      */
     @Nullable
-    public NativeImage getImage()
+    public BufferedImage getImage()
     {
         return image;
     }
@@ -196,7 +197,7 @@ public class ShapeProperties
      * @param image the image
      * @return this
      */
-    public ShapeProperties setImage(NativeImage image)
+    public ShapeProperties setImage(BufferedImage image)
     {
         this.image = image;
         return this;

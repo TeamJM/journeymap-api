@@ -1,8 +1,6 @@
 package journeymap.api.v2.common.waypoint;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,14 +37,14 @@ public class WaypointFactory
      *                         False, The waypoint will be flushed when the user changes dimensions and exits the game.
      * @return - The Waypoint with default values set.
      */
-    public static Waypoint createWaypoint(String modId, BlockPos pos, @Nullable String name, ResourceKey<Level> primaryDimension, boolean persistent)
+    public static Waypoint createWaypoint(String modId, BlockPos pos, @Nullable String name, int primaryDimension, boolean persistent)
     {
-        return createWaypoint(modId, pos, name, primaryDimension.location().toString(), persistent);
+        return createWaypoint(modId, pos, name, String.valueOf(primaryDimension), persistent);
     }
 
-    public static Waypoint createWaypoint(String modId, BlockPos pos, ResourceKey<Level> primaryDimension, boolean persistent)
+    public static Waypoint createWaypoint(String modId, BlockPos pos, int primaryDimension, boolean persistent)
     {
-        return createWaypoint(modId, pos, primaryDimension.location().toString(), persistent);
+        return createWaypoint(modId, pos, String.valueOf(primaryDimension), persistent);
     }
 
     public static Waypoint createWaypoint(String modId, BlockPos pos, String primaryDimension, boolean persistent)

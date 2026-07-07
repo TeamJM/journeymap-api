@@ -13,15 +13,13 @@ import example.mod.client.plugin.SamplePolygonOverlayFactory;
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.PolygonOverlay;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Loader-agnostic chunk-load and chunk-unload handlers. Each loader has a thin
@@ -44,7 +42,7 @@ public final class SlimeChunkOverlayHandler
         jmAPI = api;
     }
 
-    public static void onChunkLoad(LevelChunk chunk, ResourceKey<Level> dimension, boolean clientSide)
+    public static void onChunkLoad(Chunk chunk, int dimension, boolean clientSide)
     {
         if (jmAPI == null || !clientSide)
         {
@@ -88,16 +86,24 @@ public final class SlimeChunkOverlayHandler
         }
     }
 
-    private static boolean isSlimeChunk(LevelChunk chunk)
+    private static boolean isSlimeChunk(Chunk chunk)
     {
-        if (chunk.getLevel().isClientSide()
-                || chunk.getLevel().getServer() == null
-                || !(chunk.getLevel() instanceof ServerLevel))
+        if (chunk.getWorld().isRemote
+                || chunk.getWorld().getMinecraftServer() == null
+                || !(chunk.getWorld() instanceof WorldServer))
         {
             return false;
         }
-        ServerLevel serverLevel = (ServerLevel) chunk.getLevel();
-        long seed = serverLevel.getSeed();
-        return WorldgenRandom.seedSlimeChunk(chunk.getPos().x, chunk.getPos().z, seed, 987234911L).nextInt(10) == 0;
+        WorldServer worldServer = (WorldServer) chunk.getWorld();
+        long seed = worldServer.getSeed();
+        int chunkX = chunk.getPos().x;
+        int chunkZ = chunk.getPos().z;
+        // Classic vanilla slime-chunk algorithm (same formula used by EntitySlime.canSpawnHere).
+        Random slimeRandom = new Random(seed
+                + (long) (chunkX * chunkX * 4987142)
+                + (long) (chunkX * 5947611)
+                + (long) (chunkZ * chunkZ) * 4392871L
+                + (long) (chunkZ * 389711) ^ 987234911L);
+        return slimeRandom.nextInt(10) == 0;
     }
 }

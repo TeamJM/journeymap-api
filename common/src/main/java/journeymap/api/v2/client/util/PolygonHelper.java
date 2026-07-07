@@ -23,8 +23,8 @@ package journeymap.api.v2.client.util;
 import journeymap.api.v2.client.model.MapPolygon;
 import journeymap.api.v2.client.model.MapPolygonWithHoles;
 import journeymap.api.v2.common.tuple.Tuple2;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 
 import javax.annotation.Nonnull;
 import java.awt.Polygon;
@@ -112,7 +112,7 @@ public class PolygonHelper
         final Area area = new Area();
         for (final ChunkPos chunkPos : chunks)
         {
-            area.add(new Area(new Rectangle(chunkPos.getMinBlockX(), chunkPos.getMinBlockZ(), 16, 16)));
+            area.add(new Area(new Rectangle(chunkPos.getXStart(), chunkPos.getZStart(), 16, 16)));
         }
         return area;
     }

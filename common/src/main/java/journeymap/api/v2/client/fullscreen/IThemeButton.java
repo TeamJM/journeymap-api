@@ -1,6 +1,6 @@
 package journeymap.api.v2.client.fullscreen;
 
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.GuiButton;
 
 public interface IThemeButton
 {
@@ -43,7 +43,7 @@ public interface IThemeButton
      *
      * @return - The root button.
      */
-    Button getButton();
+    GuiButton getButton();
 
     /**
      * Sets the button to draw or ot.

@@ -7,7 +7,7 @@ import journeymap.api.v2.common.waypoint.WaypointGroup;
 import journeymap.api.v2.server.event.GlobalWaypointEvent;
 import journeymap.api.v2.server.event.GlobalWaypointGroupEvent;
 import journeymap.api.v2.server.overlay.IServerOverlayAPI;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +25,7 @@ public interface IServerAPI extends CommonAPI
      * @param player the server player
      * @return the player's waypoints
      */
-    List<Waypoint> getWaypoints(ServerPlayer player);
+    List<Waypoint> getWaypoints(EntityPlayerMP player);
 
     /**
      * Gets all waypoints stored for the player with the given UUID.

@@ -1,6 +1,6 @@
 package journeymap.api.v2.client.fullscreen;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public interface CustomToolBarBuilder

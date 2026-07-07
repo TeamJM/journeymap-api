@@ -2,8 +2,6 @@ package journeymap.api.v2.common.event.common;
 
 import journeymap.api.v2.common.event.impl.CommonEvent;
 import journeymap.api.v2.common.waypoint.Waypoint;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
 
 /**
  * This event handles all the CRUD operations of a waypoints.
@@ -14,9 +12,9 @@ public class WaypointEvent extends CommonEvent
 {
     public final Waypoint waypoint;
     public final Context context;
-    public final ResourceKey<Level> dimension;
+    public final int dimension;
 
-    public WaypointEvent(Waypoint waypoint, Context context, ResourceKey<Level> dimension)
+    public WaypointEvent(Waypoint waypoint, Context context, int dimension)
     {
         super(context.cancelable, Side.Client);
         this.dimension = dimension;
@@ -27,7 +25,7 @@ public class WaypointEvent extends CommonEvent
     /**
      * Server-side constructor. Use when firing from a server context.
      */
-    public WaypointEvent(Waypoint waypoint, Context context, ResourceKey<Level> dimension, Side side)
+    public WaypointEvent(Waypoint waypoint, Context context, int dimension, Side side)
     {
         super(context.cancelable, side);
         this.dimension = dimension;
@@ -38,7 +36,7 @@ public class WaypointEvent extends CommonEvent
     /**
      * World dimension where event occurred.
      */
-    public ResourceKey<Level> getDimension()
+    public int getDimension()
     {
         return dimension;
     }

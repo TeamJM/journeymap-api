@@ -24,7 +24,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.LinkedHashMultimap;
-import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.display.DisplayType;
@@ -33,18 +32,18 @@ import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointGroup;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
@@ -78,10 +77,10 @@ enum MockClientAPI implements IClientAPI
     @Override
     public UIState getUIState(Context.UI ui)
     {
-        return new UIState(ui, true, Level.OVERWORLD, 1,
+        return new UIState(ui, true, 0, 1,
                 Context.MapType.Day,
                 new BlockPos(128, 0, 128), null,
-                new AABB(Vec3.atCenterOf(new BlockPos(0, 0, 0)), Vec3.atCenterOf(new BlockPos(256, 256, 256))),
+                new AxisAlignedBB(new BlockPos(0, 0, 0), new BlockPos(256, 256, 256)),
                 new Rectangle2D.Double(0, 0, 1240, 960));
     }
 
@@ -130,8 +129,8 @@ enum MockClientAPI implements IClientAPI
     }
 
     @Override
-    public void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, net.minecraft.world.level.ChunkPos startChunk, ChunkPos endChunk,
-                               @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<NativeImage> callback)
+    public void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
+                               @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback)
     {
         // Determine chunks for coordinates at zoom level
         final int scale = (int) Math.pow(2, zoom);
@@ -140,11 +139,11 @@ enum MockClientAPI implements IClientAPI
         final int width = Math.min(512, (endChunk.x - startChunk.x) * pixels);
         final int height = Math.min(512, (endChunk.z - startChunk.z) * pixels);
 
-        Minecraft.getInstance().submit(() -> callback.accept(createFakeImage(width, height)));
+        Minecraft.getMinecraft().addScheduledTask(() -> callback.accept(createFakeImage(width, height)));
     }
 
     @Override
-    public void disableFeature(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, boolean enable)
+    public void disableFeature(@Nullable Integer dimension, Context.MapType mapType, boolean enable)
     {
         log(String.format("Toggled display in %s:%s:%s", dimension, mapType, enable));
     }
@@ -163,7 +162,7 @@ enum MockClientAPI implements IClientAPI
     }
 
     @Override
-    public List<Waypoint> getAllWaypoints(ResourceKey<Level> dim)
+    public List<Waypoint> getAllWaypoints(int dim)
     {
         return null;
     }
@@ -264,11 +263,14 @@ enum MockClientAPI implements IClientAPI
      *
      * @return
      */
-    private NativeImage createFakeImage(int width, int height)
+    private BufferedImage createFakeImage(int width, int height)
     {
-        NativeImage image = new NativeImage(width, height, false);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics();
         int color = new Random().nextInt(0xffffff);
-        image.fillRect(0, 0, 512, 512, color);
+        g.setColor(new Color(color));
+        g.fillRect(0, 0, 512, 512);
+        g.dispose();
         return image;
     }
 

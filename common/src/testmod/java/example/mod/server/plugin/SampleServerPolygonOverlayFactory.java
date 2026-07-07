@@ -14,9 +14,7 @@ import journeymap.api.v2.server.overlay.OverlayPoints;
 import journeymap.api.v2.server.overlay.OverlayPolygon;
 import journeymap.api.v2.server.overlay.OverlayShapeProps;
 import journeymap.api.v2.server.overlay.ServerPolygon;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -50,15 +48,15 @@ public final class SampleServerPolygonOverlayFactory
      * @param halfSize  half the edge length, in blocks
      * @return a {@code ServerPolygon} ready to push via {@code IServerOverlayAPI#show}
      */
-    public static ServerPolygon createSampleSquare(String overlayId, ResourceKey<Level> dimension,
+    public static ServerPolygon createSampleSquare(String overlayId, int dimension,
                                                    BlockPos centre, int halfSize)
     {
         int y = centre.getY();
         OverlayPoints outer = new OverlayPoints(Arrays.asList(
-                BlockPos.asLong(centre.getX() - halfSize, y, centre.getZ() - halfSize),
-                BlockPos.asLong(centre.getX() + halfSize, y, centre.getZ() - halfSize),
-                BlockPos.asLong(centre.getX() + halfSize, y, centre.getZ() + halfSize),
-                BlockPos.asLong(centre.getX() - halfSize, y, centre.getZ() + halfSize)));
+                new BlockPos(centre.getX() - halfSize, y, centre.getZ() - halfSize).toLong(),
+                new BlockPos(centre.getX() + halfSize, y, centre.getZ() - halfSize).toLong(),
+                new BlockPos(centre.getX() + halfSize, y, centre.getZ() + halfSize).toLong(),
+                new BlockPos(centre.getX() - halfSize, y, centre.getZ() + halfSize).toLong()));
 
         OverlayPolygon polygon = new OverlayPolygon(outer, null);
 
@@ -69,8 +67,8 @@ public final class SampleServerPolygonOverlayFactory
                 1.5f,                                      // strokeWidth
                 0.9f,                                      // strokeOpacity
                 1000,                                      // displayOrder
-                UIState.FULLSCREEN_ZOOM_MIN,               // minZoom — visible at the most zoomed-out level
-                UIState.ZOOM_IN_MAX,                       // maxZoom — still visible fully zoomed in
+                UIState.FULLSCREEN_ZOOM_MIN,               // minZoom - visible at the most zoomed-out level
+                UIState.ZOOM_IN_MAX,                       // maxZoom - still visible fully zoomed in
                 EnumSet.allOf(Context.UI.class),           // activeUIs
                 EnumSet.allOf(Context.MapType.class),      // activeMapTypes
                 "Sample Claim",                            // label

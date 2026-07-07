@@ -11,9 +11,7 @@ package example.mod.client.plugin.handler;
 import example.mod.ExampleMod;
 import example.mod.client.plugin.SampleWaypointFactory;
 import journeymap.api.v2.client.IClientAPI;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Loader-agnostic handler for "player slept" events. Each loader has a thin
@@ -32,7 +30,7 @@ public final class BedWaypointHandler
         jmAPI = api;
     }
 
-    public static void onPlayerSlept(BlockPos bedLocation, ResourceKey<Level> dimension, boolean clientSide)
+    public static void onPlayerSlept(BlockPos bedLocation, int dimension, boolean clientSide)
     {
         if (jmAPI == null || !clientSide)
         {

@@ -1,7 +1,13 @@
 package journeymap.api.v2.client.event;
 
 import journeymap.api.v2.client.fullscreen.IFullscreen;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+/*
+ * PORT NOTE (1.16.5 -> 1.12.2): the PoseStack (matrix-stack) render-context parameter/field has no
+ * equivalent in 1.12.2's fixed-function GuiScreen rendering (no matrix-stack object is threaded through
+ * draw calls; transforms are applied directly via GlStateManager against the current GL state). Dropped
+ * rather than stubbed with a meaningless placeholder type. See task-4.2-report.md DECISIONS.
+ */
 
 /**
  * This event fired after map tiles and all entities, polygons, waypoints and before the buttons.
@@ -15,13 +21,11 @@ public class FullscreenRenderEvent extends ClientEvent
     private final int mouseX;
     private final int mouseY;
     private final float partialTicks;
-    private final PoseStack graphics;
 
-    public FullscreenRenderEvent(IFullscreen fullscreen, PoseStack graphics, int mouseX, int mouseY, float partialTicks)
+    public FullscreenRenderEvent(IFullscreen fullscreen, int mouseX, int mouseY, float partialTicks)
     {
         super(false, fullscreen.getUiState().dimension);
         this.fullscreen = fullscreen;
-        this.graphics = graphics;
         this.mouseX = mouseX;
         this.mouseY = mouseY;
         this.partialTicks = partialTicks;
@@ -45,10 +49,5 @@ public class FullscreenRenderEvent extends ClientEvent
     public float getPartialTicks()
     {
         return partialTicks;
-    }
-
-    public PoseStack getGraphics()
-    {
-        return graphics;
     }
 }

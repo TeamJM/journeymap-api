@@ -1,7 +1,5 @@
 package journeymap.api.v2.client.event;
 
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import static journeymap.api.v2.client.event.MappingEvent.Stage.MAPPING_STARTED;
@@ -17,7 +15,7 @@ public class MappingEvent extends ClientEvent
     private final Stage stage;
 
     public MappingEvent(Stage stage,
-                        ResourceKey<Level> dimension,
+                        int dimension,
                         String worldId)
     {
         super(false, dimension);

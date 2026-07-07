@@ -1,8 +1,8 @@
 package journeymap.api.v2.client.event;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import java.util.function.Supplier;
 
@@ -73,7 +73,7 @@ public class RegistryEvent extends ClientEvent
          */
         public void register(String modId, String key, long updateTime, Supplier<String> supplier)
         {
-            registrar.register(modId, new TranslatableComponent(key), updateTime, () -> new TextComponent(supplier.get()));
+            registrar.register(modId, new TextComponentTranslation(key), updateTime, () -> new TextComponentString(supplier.get()));
         }
 
         /**
@@ -81,7 +81,7 @@ public class RegistryEvent extends ClientEvent
          * <p>
          * Please supply a key.tooltip in your lang files so that the dropdown item has a tool tip.
          * <p>
-         * For key please use Component.translateable("key") here will also only render as white and does not support param arguments at this time.
+         * For key please use new TextComponentTranslation("key") here will also only render as white and does not support param arguments at this time.
          * In the future, the dropdown will fully support Components and formatting.
          *
          * @param modId      - The ModId
@@ -89,7 +89,7 @@ public class RegistryEvent extends ClientEvent
          * @param updateTime - How often in milliseconds to update.
          * @param supplier   - The supplier that gets the value to be displayed.
          */
-        public void register(String modId, Component key, long updateTime, Supplier<Component> supplier)
+        public void register(String modId, ITextComponent key, long updateTime, Supplier<ITextComponent> supplier)
         {
             registrar.register(modId, key, updateTime, supplier);
         }
@@ -104,7 +104,7 @@ public class RegistryEvent extends ClientEvent
              * @param updateTime - How often in milliseconds to update.
              * @param supplier   - The supplier that gets the value to be displayed.
              */
-            void register(String modId, Component component, long updateTime, Supplier<Component> supplier);
+            void register(String modId, ITextComponent component, long updateTime, Supplier<ITextComponent> supplier);
         }
     }
 

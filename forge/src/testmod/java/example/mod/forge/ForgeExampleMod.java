@@ -11,12 +11,12 @@ package example.mod.forge;
 import example.mod.ExampleMod;
 import example.mod.client.plugin.handler.BedWaypointHandler;
 import example.mod.client.plugin.handler.SlimeChunkOverlayHandler;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.world.ChunkEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
@@ -25,11 +25,11 @@ import net.minecraftforge.fml.common.Mod;
  * {@code example.mod.client.plugin.handler}. The JourneyMap plugin classes are
  * discovered separately via the {@code @JourneyMapPlugin} annotation.
  *
- * <p>Forge 1.20.1 uses EventBus 5. The static {@code @SubscribeEvent} game
+ * <p>Forge 1.12.2 uses the legacy FML EventBus. The static {@code @SubscribeEvent} game
  * events below are registered on the Forge event bus via
  * {@code MinecraftForge.EVENT_BUS.register(Class)}.</p>
  */
-@Mod(ExampleMod.MODID)
+@Mod(modid = ExampleMod.MODID)
 public class ForgeExampleMod
 {
     public ForgeExampleMod()
@@ -42,24 +42,24 @@ public class ForgeExampleMod
     {
         BedWaypointHandler.onPlayerSlept(
                 event.getPos(),
-                event.getEntity().level.dimension(),
-                event.getEntity().level.isClientSide());
+                event.getEntityPlayer().world.provider.getDimension(),
+                event.getEntityPlayer().world.isRemote);
     }
 
     @SubscribeEvent
     public static void onChunkLoad(ChunkEvent.Load event)
     {
-        if (event.getChunk() instanceof LevelChunk && event.getWorld() instanceof Level)
+        if (event.getChunk() instanceof Chunk && event.getWorld() instanceof World)
         {
-            LevelChunk levelChunk = (LevelChunk) event.getChunk();
-            Level level = (Level) event.getWorld();
-            SlimeChunkOverlayHandler.onChunkLoad(levelChunk, level.dimension(), level.isClientSide());
+            Chunk chunk = event.getChunk();
+            World world = event.getWorld();
+            SlimeChunkOverlayHandler.onChunkLoad(chunk, world.provider.getDimension(), world.isRemote);
         }
     }
 
     @SubscribeEvent
     public static void onChunkUnload(ChunkEvent.Unload event)
     {
-        SlimeChunkOverlayHandler.onChunkUnload(event.getChunk().getPos(), ((Level) event.getWorld()).isClientSide());
+        SlimeChunkOverlayHandler.onChunkUnload(event.getChunk().getPos(), event.getWorld().isRemote);
     }
 }

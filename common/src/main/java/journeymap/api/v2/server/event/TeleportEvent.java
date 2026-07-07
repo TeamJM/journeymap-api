@@ -2,10 +2,8 @@ package journeymap.api.v2.server.event;
 
 import journeymap.api.v2.common.event.impl.CommonEvent;
 import journeymap.api.v2.common.waypoint.Waypoint;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
@@ -15,15 +13,15 @@ import javax.annotation.Nullable;
  */
 public class TeleportEvent extends CommonEvent
 {
-    private final ServerPlayer player;
+    private final EntityPlayerMP player;
     @Nullable
     private final Waypoint waypoint;
     private BlockPos pos;
-    private final ResourceKey<Level> fromLevel;
-    private ResourceKey<Level> destinationLevel;
+    private final int fromLevel;
+    private int destinationLevel;
 
-    public TeleportEvent(ServerPlayer player, @Nullable Waypoint waypoint, BlockPos pos,
-                         ResourceKey<Level> fromLevel, ResourceKey<Level> destinationLevel)
+    public TeleportEvent(EntityPlayerMP player, @Nullable Waypoint waypoint, BlockPos pos,
+                         int fromLevel, int destinationLevel)
     {
         super(true, Side.Server);
         this.player = player;
@@ -37,7 +35,7 @@ public class TeleportEvent extends CommonEvent
      * The player being teleported. Non-null; this event only fires server-side
      * for a concrete teleport request.
      */
-    public ServerPlayer getPlayer()
+    public EntityPlayerMP getPlayer()
     {
         return player;
     }
@@ -56,12 +54,12 @@ public class TeleportEvent extends CommonEvent
         return pos;
     }
 
-    public ResourceKey<Level> getFromLevel()
+    public int getFromLevel()
     {
         return fromLevel;
     }
 
-    public ResourceKey<Level> getDestinationLevel()
+    public int getDestinationLevel()
     {
         return destinationLevel;
     }

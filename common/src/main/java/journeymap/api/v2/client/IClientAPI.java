@@ -20,7 +20,6 @@
 
 package journeymap.api.v2.client;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.Displayable;
@@ -29,12 +28,11 @@ import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.CommonAPI;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointGroup;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
+import net.minecraft.util.math.ChunkPos;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import java.util.function.Consumer;
@@ -136,10 +134,10 @@ public interface IClientAPI extends CommonAPI
      * @param chunkY     The vertical chunk (slice) if the map type isn't day/night/topo
      * @param zoom       The zoom level (0-8)
      * @param showGrid   Whether to include the chunk grid overlay
-     * @param callback   A callback which will receive the NativeImage when available, or null if unavailable
+     * @param callback   A callback which will receive the BufferedImage when available, or null if unavailable
      */
-    void requestMapTile(String modId, ResourceKey<Level> dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
-                        @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<NativeImage> callback);
+    void requestMapTile(String modId, int dimension, Context.MapType mapType, ChunkPos startChunk, ChunkPos endChunk,
+                        @Nullable Integer chunkY, int zoom, boolean showGrid, final Consumer<BufferedImage> callback);
 
     /**
      * Note:  This method IS NOT SUPPORTED for most mods. Talk to Techbrew if you need to use this function.
@@ -150,7 +148,7 @@ public interface IClientAPI extends CommonAPI
      * @param mapType   The map type
      * @param enable    True to enable, false to disable.
      */
-    void disableFeature(@Nullable ResourceKey<Level> dimension, Context.MapType mapType, boolean enable);
+    void disableFeature(@Nullable Integer dimension, Context.MapType mapType, boolean enable);
 
     /**
      * This call gets the current user's data path for saving custom addon data specific to the game/world the user is playing in.
@@ -183,7 +181,7 @@ public interface IClientAPI extends CommonAPI
      * @param dim - The dimension
      * @return The waypoints.
      */
-    List<? extends Waypoint> getAllWaypoints(ResourceKey<Level> dim);
+    List<? extends Waypoint> getAllWaypoints(int dim);
 
     /**
      * Gets the waypoint by display Id for the modId provided.

@@ -1,0 +1,11 @@
+[
+{
+  "modid": "journeymap_api",
+  "name": "JourneyMap API",
+  "description": "An API for other mods to integrate with JourneyMap for Minecraft.",
+  "version": "${version}",
+  "mcversion": "${minecraft_version}",
+  "url": "http://journeymap.info",
+  "authorList": ["mysticdrew"]
+}
+]
