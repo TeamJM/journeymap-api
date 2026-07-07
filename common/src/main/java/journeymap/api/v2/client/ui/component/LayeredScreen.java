@@ -4,11 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.ApiStatus;
 
 public abstract class LayeredScreen extends Screen
 {
     protected Minecraft minecraft;
     protected Screen backgroundScreen;
+
+    private static int backgroundLayerRenderDepth;
 
     protected LayeredScreen(Component component)
     {
@@ -48,7 +51,15 @@ public abstract class LayeredScreen extends Screen
         if (this.backgroundScreen != null)
         // render background screen.
         {
-            this.backgroundScreen.render(graphics, -1, -1, partialTicks);
+            backgroundLayerRenderDepth++;
+            try
+            {
+                this.backgroundScreen.render(graphics, -1, -1, partialTicks);
+            }
+            finally
+            {
+                backgroundLayerRenderDepth--;
+            }
         }
         // translate z +2000
         graphics.pose().translate(0.0D, 0.0D, 2000F);
@@ -98,5 +109,11 @@ public abstract class LayeredScreen extends Screen
     public Screen getBackgroundScreen()
     {
         return this.backgroundScreen;
+    }
+
+    @ApiStatus.Internal
+    public static boolean isRenderingBackgroundLayer()
+    {
+        return backgroundLayerRenderDepth > 0;
     }
 }
