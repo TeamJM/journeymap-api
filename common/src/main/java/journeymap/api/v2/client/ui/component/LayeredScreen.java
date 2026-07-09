@@ -72,8 +72,14 @@ public abstract class LayeredScreen extends GuiScreen
         {
             this.backgroundScreen.drawScreen(-1, -1, partialTicks);
         }
-        // translate z +2000
-        GL11.glTranslatef(0.0F, 0.0F, 2000F);
+        ScaledResolution popupRes = new ScaledResolution(this.minecraft, this.minecraft.displayWidth, this.minecraft.displayHeight);
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0.0D, popupRes.getScaledWidth(), popupRes.getScaledHeight(), 0.0D, 1000.0D, 21000.0D);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+        GL11.glTranslatef(0.0F, 0.0F, -11000.0F);
 
         this.renderPopupScreenBackground(mouseX, mouseY, partialTicks);
         this.renderPopupScreen(mouseX, mouseY, partialTicks);
