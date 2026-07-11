@@ -54,6 +54,50 @@ public final class BlockPos
         return z;
     }
 
+    /**
+     * Packs a block coordinate into a single {@code long}, matching the format used by
+     * {@code net.minecraft.util.math.BlockPos#toLong()} on the Minecraft versions that have it:
+     * x in the upper 26 bits, y in the middle 12 bits, z in the lower 26 bits.
+     * <p>
+     * This is the wire format documented by
+     * {@code journeymap.api.v2.server.overlay.OverlayPoints}, so the packed value is identical
+     * regardless of which Minecraft version an addon is built against.
+     *
+     * @param x block x coordinate
+     * @param y block y coordinate
+     * @param z block z coordinate
+     * @return the packed value
+     */
+    public static long asLong(int x, int y, int z)
+    {
+        return ((long) x & 0x3FFFFFFL) << 38 | ((long) y & 0xFFFL) << 26 | (long) z & 0x3FFFFFFL;
+    }
+
+    /**
+     * Packs this position via {@link #asLong(int, int, int)}.
+     *
+     * @return the packed value
+     */
+    public long toLong()
+    {
+        return asLong(x, y, z);
+    }
+
+    /**
+     * Unpacks a value produced by {@link #asLong(int, int, int)}. Each component is sign-extended
+     * from its field width, so negative coordinates round-trip.
+     *
+     * @param packed a value produced by {@link #asLong(int, int, int)}
+     * @return the unpacked position
+     */
+    public static BlockPos fromLong(long packed)
+    {
+        int x = (int) (packed << 0 >> 38);
+        int y = (int) (packed << 26 >> 52);
+        int z = (int) (packed << 38 >> 38);
+        return new BlockPos(x, y, z);
+    }
+
     @Override
     public boolean equals(Object o)
     {
