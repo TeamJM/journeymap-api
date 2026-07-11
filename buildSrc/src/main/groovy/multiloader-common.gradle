@@ -78,10 +78,6 @@ repositories {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
     }
-
-    maven {
-        url "https://www.cursemaven.com"
-    }
 }
 configurations {
     testImplementation.extendsFrom implementation
