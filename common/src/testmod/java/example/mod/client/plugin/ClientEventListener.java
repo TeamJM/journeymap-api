@@ -12,7 +12,6 @@ import example.mod.ExampleMod;
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.common.Context;
 import journeymap.api.v2.client.display.DisplayType;
-import journeymap.api.v2.client.event.DeathWaypointEvent;
 import journeymap.api.v2.client.event.DisplayUpdateEvent;
 import journeymap.api.v2.client.event.EntityRadarUpdateEvent;
 import journeymap.api.v2.client.event.EntityRegistrationEvent;
@@ -28,8 +27,10 @@ import journeymap.api.v2.client.fullscreen.IThemeButton;
 import journeymap.api.v2.client.fullscreen.IThemeToolBar;
 import journeymap.api.v2.client.fullscreen.ThemeButtonDisplay;
 import journeymap.api.v2.common.event.ClientEventRegistry;
+import journeymap.api.v2.common.event.CommonEventRegistry;
 import journeymap.api.v2.common.event.FullscreenEventRegistry;
 import journeymap.api.v2.common.event.MinimapEventRegistry;
+import journeymap.api.v2.common.event.common.DeathWaypointEvent;
 import journeymap.api.v2.common.util.BlockPos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -68,7 +69,7 @@ public class ClientEventListener
     {
         ClientEventRegistry.MAPPING_EVENT.subscribe(ExampleMod.MODID, this::onMappingEvent);
         ClientEventRegistry.DISPLAY_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onDisplayUpdate);
-        ClientEventRegistry.DEATH_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onDeathWaypoint);
+        CommonEventRegistry.DEATH_WAYPOINT_EVENT.subscribe(ExampleMod.MODID, this::onDeathWaypoint);
         ClientEventRegistry.ENTITY_RADAR_UPDATE_EVENT.subscribe(ExampleMod.MODID, this::onRadarEntityUpdate);
         ClientEventRegistry.ENTITY_REGISTRATION_EVENT.subscribe(ExampleMod.MODID, this::onEntityRegistration);
         ClientEventRegistry.OPTIONS_REGISTRY_EVENT.subscribe(ExampleMod.MODID, this::onOptionsRegistry);

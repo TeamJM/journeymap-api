@@ -2,7 +2,6 @@ package journeymap.api.v2.common.event;
 
 import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.IClientPlugin;
-import journeymap.api.v2.client.event.DeathWaypointEvent;
 import journeymap.api.v2.client.event.DisplayUpdateEvent;
 import journeymap.api.v2.client.event.EntityRadarUpdateEvent;
 import journeymap.api.v2.client.event.EntityRegistrationEvent;
@@ -18,14 +17,6 @@ import journeymap.api.v2.common.event.impl.EventFactory;
  */
 public class ClientEventRegistry
 {
-
-    /**
-     * Indicates a Death Waypoint is about to be created for the player.
-     * Event will be a {@link DeathWaypointEvent}, which can be cancelled.
-     * Can be cancelled, which will prevent the waypoint creation.
-     */
-    public static final Event<DeathWaypointEvent> DEATH_WAYPOINT_EVENT = EventFactory.create(DeathWaypointEvent.class);
-
     /**
      * Indicates a change in the display characteristics of the specified UI.
      * Event will be a {@link DisplayUpdateEvent}, which can not be cancelled.
