@@ -33,7 +33,6 @@ import java.awt.geom.Area;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -229,32 +228,95 @@ public class PolygonHelper
             }
         }
 
-        final List<Tuple<MapPolygon, Area>> holeAreas = holes.stream()
-                .map(hole -> new Tuple<>(hole, toArea(hole)))
+        // Pair each hull with its filled area (nesting ignored) so a hole can be tested
+        // for containment against it.
+        final List<Tuple<MapPolygon, Area>> hullAreas = hulls.stream()
+                .map(hull -> new Tuple<>(hull, toArea(hull)))
                 .collect(Collectors.toList());
 
-        final List<MapPolygonWithHoles> result = new ArrayList<>();
-        for (final MapPolygon hull : hulls)
+        final List<List<MapPolygon>> hullHoles = new ArrayList<>();
+        for (int index = 0; index < hulls.size(); ++index)
         {
-            final Area hullArea = toArea(hull);
-            final List<MapPolygon> hullHoles = new ArrayList<>();
+            hullHoles.add(new ArrayList<>());
+        }
 
-            for (final Iterator<Tuple<MapPolygon, Area>> iterator = holeAreas.iterator(); iterator.hasNext(); )
+        for (final MapPolygon hole : holes)
+        {
+            final Area holeArea = toArea(hole);
+            int owner = -1;
+            long ownerArea = Long.MAX_VALUE;
+
+            // A hole is carved from the innermost hull that fully contains it.  Containing
+            // hulls are nested, so the one with the smallest ring area is the immediate
+            // owner.  Nested hulls differ in area, so this pairing is independent of the
+            // contour order.
+            for (int index = 0; index < hullAreas.size(); ++index)
             {
-                final Tuple<MapPolygon, Area> holeArea = iterator.next();
-                final Area intersection = new Area(hullArea);
-                intersection.intersect(holeArea.getB());
-                if (!intersection.isEmpty())
+                if (!contains(hullAreas.get(index).getB(), holeArea))
                 {
-                    hullHoles.add(holeArea.getA());
-                    iterator.remove();
+                    continue;
+                }
+                final long area = ringArea(hullAreas.get(index).getA());
+                if (owner < 0 || area < ownerArea)
+                {
+                    owner = index;
+                    ownerArea = area;
                 }
             }
 
-            result.add(new MapPolygonWithHoles(hull, hullHoles));
+            // Malformed input can leave a hole with no containing hull; drop it rather
+            // than forcing it onto an unrelated hull.
+            if (owner >= 0)
+            {
+                hullHoles.get(owner).add(hole);
+            }
+        }
+
+        final List<MapPolygonWithHoles> result = new ArrayList<>();
+        for (int index = 0; index < hulls.size(); ++index)
+        {
+            result.add(new MapPolygonWithHoles(hulls.get(index), hullHoles.get(index)));
         }
 
         return result;
+    }
+
+    /**
+     * Determines whether the filled {@code hull} area fully contains the filled
+     * {@code hole} area, i.e. the hole lies entirely inside the hull.  This is
+     * stronger than a mere intersection: an island hull sitting inside a hole
+     * intersects that hole without containing it.
+     *
+     * @param hull The candidate containing area.
+     * @param hole The hole area.
+     * @return True if the hole is fully contained by the hull.
+     */
+    private static boolean contains(@Nonnull final Area hull, @Nonnull final Area hole)
+    {
+        final Area remainder = new Area(hole);
+        remainder.subtract(hull);
+        return remainder.isEmpty();
+    }
+
+    /**
+     * Twice the unsigned area enclosed by the polygon ring, via the shoelace formula.
+     * Only used to rank containing hulls by size, so the constant factor of two is
+     * irrelevant.
+     *
+     * @param polygon The polygon.
+     * @return Twice the unsigned enclosed area.
+     */
+    private static long ringArea(@Nonnull final MapPolygon polygon)
+    {
+        long sum = 0;
+        final List<BlockPos> points = polygon.getPoints();
+        BlockPos a = points.get(points.size() - 1);
+        for (final BlockPos b : points)
+        {
+            sum += (long) (b.getX() - a.getX()) * (b.getZ() + a.getZ());
+            a = b;
+        }
+        return Math.abs(sum);
     }
 
     /**
