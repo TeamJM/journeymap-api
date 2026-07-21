@@ -134,6 +134,33 @@ class PolygonHelperTest
         assertTrue(expected.equals(reunion(grouped)), "dropping the orphan leaves the hull's fill intact");
     }
 
+    /**
+     * A hole that pokes outside every hull (possible only for arbitrary input, not for the
+     * normalized {@code Area} contours {@code createPolygonFromArea} emits) is contained by no
+     * hull, so it falls back to the first hull it intersects.  This preserves the pre-fix
+     * behavior for {@code classifyAndGroup}'s documented arbitrary-polygon input: the overlapping
+     * quadrant is carved rather than the whole hull rendering solid.
+     */
+    @Test
+    void partiallyOverlappingHoleFallsBackToTheHullItIntersects()
+    {
+        final MapPolygon square = hull(0, 0, 100, 100);
+        final MapPolygon overhangingHole = hole(50, 50, 150, 150);   // only its lower-left quadrant is inside
+
+        final List<MapPolygonWithHoles> grouped =
+                PolygonHelper.classifyAndGroup(Arrays.asList(square, overhangingHole));
+
+        assertEquals(1, grouped.size());
+        assertEquals(1, grouped.get(0).holes.size(),
+                "the partially overlapping hole falls back to the hull it intersects");
+        assertSame(overhangingHole, grouped.get(0).holes.get(0));
+
+        final Area expected = new Area(new Rectangle(0, 0, 100, 100));
+        expected.subtract(new Area(new Rectangle(50, 50, 100, 100)));   // only the overlap is carved
+        assertTrue(expected.equals(reunion(grouped)),
+                "the overlapping quadrant is carved from the hull");
+    }
+
     private static MapPolygon hull(final int minX, final int minZ, final int maxX, final int maxZ)
     {
         // createBlockRect emits counter-clockwise winding, which classifyAndGroup treats as a hull.

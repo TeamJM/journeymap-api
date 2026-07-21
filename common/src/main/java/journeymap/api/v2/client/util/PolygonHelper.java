@@ -206,6 +206,14 @@ public class PolygonHelper
      * <p>
      * Assumes that hulls use CCW point winding and holes use CW point winding, which seems to be
      * consistent with {@link #createPolygonFromArea}.
+     * <p>
+     * Each hole is grouped with the innermost hull that fully contains it.  A hole that no hull
+     * contains but that intersects one or more hulls (possible only for arbitrary input, not for
+     * the normalized {@link Area} contours {@link #createPolygonFromArea} emits) falls back to the
+     * first hull it intersects; a hole that touches no hull is dropped.  The innermost-owner
+     * result is independent of contour order when the hulls strictly nest, as they do for
+     * normalized {@code Area} contours; for overlapping or equal-area hulls that both contain a
+     * hole the first candidate wins.
      *
      * @param polygons The input list of {@link MapPolygon}s.
      * @return The resulting list of {@link MapPolygonWithHoles}.
@@ -235,40 +243,46 @@ public class PolygonHelper
                 .collect(Collectors.toList());
 
         final List<List<MapPolygon>> hullHoles = new ArrayList<>();
-        for (int index = 0; index < hulls.size(); ++index)
-        {
-            hullHoles.add(new ArrayList<>());
-        }
+        hulls.forEach(hull -> hullHoles.add(new ArrayList<>()));
 
         for (final MapPolygon hole : holes)
         {
             final Area holeArea = toArea(hole);
             int owner = -1;
             long ownerArea = Long.MAX_VALUE;
+            int fallback = -1;
 
-            // A hole is carved from the innermost hull that fully contains it.  Containing
-            // hulls are nested, so the one with the smallest ring area is the immediate
-            // owner.  Nested hulls differ in area, so this pairing is independent of the
-            // contour order.
+            // A hole is carved from the innermost hull that fully contains it: containing hulls
+            // nest, so the smallest by ring area is the immediate owner.  For the normalized Area
+            // contours createPolygonFromArea emits, nested hulls differ in area and this pairing
+            // is independent of the contour order; for arbitrary input with overlapping or
+            // equal-area hulls that both contain the hole, the first candidate wins.
             for (int index = 0; index < hullAreas.size(); ++index)
             {
-                if (!contains(hullAreas.get(index).getB(), holeArea))
+                final Area hullArea = hullAreas.get(index).getB();
+                if (contains(hullArea, holeArea))
                 {
-                    continue;
+                    final long area = ringArea(hullAreas.get(index).getA());
+                    if (owner < 0 || area < ownerArea)
+                    {
+                        owner = index;
+                        ownerArea = area;
+                    }
                 }
-                final long area = ringArea(hullAreas.get(index).getA());
-                if (owner < 0 || area < ownerArea)
+                else if (fallback < 0 && intersects(hullArea, holeArea))
                 {
-                    owner = index;
-                    ownerArea = area;
+                    fallback = index;
                 }
             }
 
-            // Malformed input can leave a hole with no containing hull; drop it rather
-            // than forcing it onto an unrelated hull.
-            if (owner >= 0)
+            // Prefer the innermost containing hull.  A hole that no hull contains but that
+            // intersects one (possible only for arbitrary, non-normalized input) keeps the
+            // pre-fix behavior of grouping with the first hull it intersects; a hole that
+            // touches no hull is dropped rather than forced onto an unrelated hull.
+            final int target = owner >= 0 ? owner : fallback;
+            if (target >= 0)
             {
-                hullHoles.get(owner).add(hole);
+                hullHoles.get(target).add(hole);
             }
         }
 
@@ -299,15 +313,31 @@ public class PolygonHelper
     }
 
     /**
-     * Twice the unsigned area enclosed by the polygon ring, via the shoelace formula.
-     * Only used to rank containing hulls by size, so the constant factor of two is
-     * irrelevant.
+     * Determines whether the filled {@code hull} and {@code hole} areas overlap at all.  Used only
+     * as the fallback association for an arbitrary-input hole that no hull fully contains.
+     *
+     * @param hull The candidate hull area.
+     * @param hole The hole area.
+     * @return True if the two areas intersect.
+     */
+    private static boolean intersects(@Nonnull final Area hull, @Nonnull final Area hole)
+    {
+        final Area intersection = new Area(hull);
+        intersection.intersect(hole);
+        return !intersection.isEmpty();
+    }
+
+    /**
+     * Twice the signed area enclosed by the polygon ring, via the shoelace formula.  The sign
+     * encodes winding (negative for the clockwise winding a hole uses) and the magnitude is twice
+     * the enclosed area; the constant factor of two is irrelevant to both callers.
      *
      * @param polygon The polygon.
-     * @return Twice the unsigned enclosed area.
+     * @return Twice the signed enclosed area.
      */
-    private static long ringArea(@Nonnull final MapPolygon polygon)
+    private static long signedRingArea(@Nonnull final MapPolygon polygon)
     {
+        // from https://stackoverflow.com/a/18472899/43534
         long sum = 0;
         final List<BlockPos> points = polygon.getPoints();
         BlockPos a = points.get(points.size() - 1);
@@ -316,7 +346,18 @@ public class PolygonHelper
             sum += (long) (b.getX() - a.getX()) * (b.getZ() + a.getZ());
             a = b;
         }
-        return Math.abs(sum);
+        return sum;
+    }
+
+    /**
+     * Twice the unsigned area enclosed by the polygon ring, used to rank containing hulls by size.
+     *
+     * @param polygon The polygon.
+     * @return Twice the unsigned enclosed area.
+     */
+    private static long ringArea(@Nonnull final MapPolygon polygon)
+    {
+        return Math.abs(signedRingArea(polygon));
     }
 
     /**
@@ -368,15 +409,6 @@ public class PolygonHelper
      */
     private static boolean isHole(@Nonnull final MapPolygon polygon)
     {
-        // from https://stackoverflow.com/a/18472899/43534
-        long sum = 0;
-        final List<BlockPos> points = polygon.getPoints();
-        BlockPos a = points.get(points.size() - 1);
-        for (final BlockPos b : points)
-        {
-            sum += (long) (b.getX() - a.getX()) * (b.getZ() + a.getZ());
-            a = b;
-        }
-        return sum < 0;
+        return signedRingArea(polygon) < 0;
     }
 }
