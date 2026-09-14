@@ -32,7 +32,21 @@ public enum DisplayType
     Marker(MarkerOverlay.class),
     Polygon(PolygonOverlay.class);
 
-    private static HashMap<Class<? extends Displayable>, DisplayType> reverseLookup;
+    /**
+     * Class to type lookup, built once when the enum initializes. It used to be built lazily on the first
+     * {@link #of(Class)} call in an unsynchronized map; two threads constructing their first Displayable at
+     * the same time (JourneyMap's automap region threads) could see the half-built map and get an
+     * IllegalArgumentException for a perfectly valid class.
+     */
+    private static final HashMap<Class<? extends Displayable>, DisplayType> REVERSE_LOOKUP = new HashMap<>();
+
+    static
+    {
+        for (DisplayType type : DisplayType.values())
+        {
+            REVERSE_LOOKUP.put(type.getImplClass(), type);
+        }
+    }
     private final Class<? extends Displayable> implClass;
 
     DisplayType(Class<? extends Displayable> implClass)
@@ -48,15 +62,7 @@ public enum DisplayType
      */
     public static DisplayType of(Class<? extends Displayable> implClass)
     {
-        if (reverseLookup == null)
-        {
-            reverseLookup = new HashMap<>();
-            for (DisplayType type : DisplayType.values())
-            {
-                reverseLookup.put(type.getImplClass(), type);
-            }
-        }
-        DisplayType displayType = reverseLookup.get(implClass);
+        DisplayType displayType = REVERSE_LOOKUP.get(implClass);
         if (displayType == null)
         {
             throw new IllegalArgumentException("Not a valid Displayable implementation: " + implClass);
