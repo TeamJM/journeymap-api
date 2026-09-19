@@ -25,6 +25,7 @@ import journeymap.api.v2.client.display.Context;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.Displayable;
 import journeymap.api.v2.client.event.MappingEvent;
+import journeymap.api.v2.client.map.IMapLayer;
 import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.CommonAPI;
 import journeymap.api.v2.common.waypoint.Waypoint;
@@ -302,4 +303,21 @@ public interface IClientAPI extends CommonAPI
      * @return - true or false
      */
     boolean minimapEnabled();
+
+    /**
+     * Registers a map layer the mod renders from JourneyMap's chunk scans. Call during
+     * {@link IClientPlugin#initialize}; a layer registered later takes effect from the next mapping session.
+     * Registering a layer with the mod id and layer id of an existing one replaces it.
+     *
+     * @param layer the layer
+     */
+    void registerMapLayer(IMapLayer layer);
+
+    /**
+     * Removes a map layer registered by {@link #registerMapLayer}. Takes effect from the next mapping session.
+     *
+     * @param modId   the owning mod's id
+     * @param layerId the layer id within the mod
+     */
+    void unregisterMapLayer(String modId, String layerId);
 }

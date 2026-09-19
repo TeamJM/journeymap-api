@@ -21,7 +21,7 @@ import journeymap.api.v2.common.JourneyMapPlugin;
  * {@link JourneyMapPlugin} annotation; Fabric also references this class from
  * the {@code journeymap} entrypoint in {@code fabric.mod.json}.
  */
-@JourneyMapPlugin(apiVersion = "2.0.0")
+@JourneyMapPlugin(apiVersion = "2.0.1")
 public class ExampleJourneymapPlugin implements IClientPlugin
 {
     private static ExampleJourneymapPlugin INSTANCE;
@@ -51,6 +51,8 @@ public class ExampleJourneymapPlugin implements IClientPlugin
         // forward sleep/chunk events into them.
         BedWaypointHandler.setApi(jmAPI);
         SlimeChunkOverlayHandler.setApi(jmAPI);
+        // A map type of our own: painted like the vanilla map item from JourneyMap's chunk scans.
+        jmAPI.registerMapLayer(new SampleVanillaMapLayer());
 
         ExampleMod.LOGGER.info("Initialized %s", getClass().getName());
     }
