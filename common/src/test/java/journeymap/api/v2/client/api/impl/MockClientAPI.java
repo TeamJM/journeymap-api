@@ -29,6 +29,7 @@ import journeymap.api.v2.client.IClientAPI;
 import journeymap.api.v2.client.display.Context;
 import journeymap.api.v2.client.display.DisplayType;
 import journeymap.api.v2.client.display.Displayable;
+import journeymap.api.v2.client.map.IMapLayer;
 import journeymap.api.v2.client.util.UIState;
 import journeymap.api.v2.common.waypoint.Waypoint;
 import journeymap.api.v2.common.waypoint.WaypointGroup;
@@ -256,6 +257,18 @@ enum MockClientAPI implements IClientAPI
     public boolean minimapEnabled()
     {
         return false;
+    }
+
+    @Override
+    public void registerMapLayer(IMapLayer layer)
+    {
+        log("registerMapLayer " + layer.getModId() + ":" + layer.getLayerId());
+    }
+
+    @Override
+    public void unregisterMapLayer(String modId, String layerId)
+    {
+        log("unregisterMapLayer " + modId + ":" + layerId);
     }
 
     /**
