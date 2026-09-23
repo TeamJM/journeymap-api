@@ -65,12 +65,6 @@ public final class SampleVanillaMapLayer implements IMapLayer
     }
 
     @Override
-    public boolean requiresCaveSlices()
-    {
-        return false;
-    }
-
-    @Override
     public ResourceKey<Level> getDimension()
     {
         // Every dimension.

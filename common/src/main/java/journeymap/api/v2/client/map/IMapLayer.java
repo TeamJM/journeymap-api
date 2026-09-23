@@ -28,7 +28,9 @@ import javax.annotation.Nullable;
 
 /**
  * A map layer supplied by a mod: JourneyMap scans each chunk once and hands the scan to every registered
- * layer, which paints the chunk's 16x16 pixels for its own map type.
+ * layer, which paints the chunk's 16x16 pixels for its own map type. Mod layers are surface layers: each
+ * gets a map type of its own (fullscreen toolbar button, map-type hotkey cycle, minimap map type option)
+ * and its own region images.
  *
  * <p>Register through {@link journeymap.api.v2.client.IClientAPI#registerMapLayer(IMapLayer)} during
  * {@link journeymap.api.v2.client.IClientPlugin#initialize} (before any world is joined); layers registered
@@ -59,22 +61,14 @@ public interface IMapLayer
     String getDisplayName();
 
     /**
-     * The icon of this layer's map-type button on the fullscreen map and minimap, a texture in the mod's
+     * The icon of this layer's button on the fullscreen map's map-type toolbar, a texture in the mod's
      * assets (for example {@code mymod:textures/gui/heat_layer.png}). Drawn at the theme's button icon
-     * size, so a 24x24 image with a transparent background matches JourneyMap's own icons.
+     * size and tinted with the theme's icon color, so a 24x24 white-on-transparent image matches
+     * JourneyMap's own icons.
      *
      * @return the icon texture
      */
     Identifier getIcon();
-
-    /**
-     * Whether this layer renders per cave slice (vertical chunk) rather than once for the surface. A cave
-     * layer's {@link #render} is called once per active slice with that slice's index; a surface layer is
-     * called once with slice index {@code -1}.
-     *
-     * @return whether this is a cave-slice layer
-     */
-    boolean requiresCaveSlices();
 
     /**
      * @return the dimension this layer applies to, or {@code null} for every dimension
@@ -85,9 +79,10 @@ public interface IMapLayer
     /**
      * Paints one chunk of this layer.
      *
-     * @param scan       the chunk's scan (surface columns, and cave slices when {@link #requiresCaveSlices()})
+     * @param scan       the chunk's scan (its surface columns; cave slices are present when the pass also
+     *                   renders caves)
      * @param context    the settings of this mapping pass
-     * @param sliceIndex the cave slice index for a cave layer, {@code -1} for a surface layer
+     * @param sliceIndex always {@code -1} (reserved for cave-slice layers, which are not supported yet)
      * @param pixels     256 ARGB pixels to fill, row-major ({@code z * 16 + x}); 0 leaves a pixel unpainted
      */
     void render(IChunkScan scan, IScanContext context, int sliceIndex, int[] pixels);
